@@ -1,0 +1,326 @@
+DIGEST 2daf482314fde2e2fccaa1a2337354f5
+FTheroies.Circulation
+R177:180 Coq.Lists.List <> <> lib
+R207:217 Coq.Sorting.Permutation <> <> lib
+R244:249 Coq.ZArith.ZArith <> <> lib
+R276:280 Coq.micromega.Psatz <> <> lib
+R307:315 Coq.Classes.Morphisms <> <> lib
+R333:342 Theroies.Automation <> <> lib
+R360:365 Theroies.Extras <> <> lib
+R383:392 Theroies.Blockchain <> <> lib
+R410:415 Theroies.Finite <> <> lib
+R425:437 Coq.Lists.List ListNotations <> mod
+sec 449:459 <> Circulation
+R483:491 Theroies.Blockchain <> ChainBase class
+binder 471:479 <> ChainBase:1
+R505:510 Theroies.Finite <> Finite class
+R512:518 Theroies.Blockchain <> Address meth
+binder 505:518 <> H:2
+def 554:564 <> circulation
+R573:583 Theroies.Blockchain <> Environment rec
+binder 567:569 <> env:3
+R591:594 Theroies.Extras <> sumZ def
+R624:631 Theroies.Finite <> elements meth
+R633:639 Theroies.Blockchain <> Address meth
+R597:616 Theroies.Blockchain <> env_account_balances proj
+R618:620 Theroies.Circulation <> env:3 var
+prf 1013:1030 <> address_reorganize
+R1039:1045 Theroies.Blockchain <> Address meth
+binder 1033:1033 <> a:4
+binder 1035:1035 <> b:5
+R1058:1063 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1053:1056 Coq.Init.Logic <> ::type_scope:x_'<>'_x not
+R1052:1052 Theroies.Circulation <> a:4 var
+R1057:1057 Theroies.Circulation <> b:5 var
+R1064:1070 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R1074:1075 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 1071:1073 <> suf:6
+R1076:1086 Coq.Sorting.Permutation <> Permutation ind
+R1105:1112 Theroies.Finite <> elements meth
+R1114:1120 Theroies.Blockchain <> Address meth
+R1095:1098 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R1089:1089 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R1091:1092 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R1094:1094 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R1090:1090 Theroies.Circulation <> a:4 var
+R1093:1093 Theroies.Circulation <> b:5 var
+R1099:1101 Theroies.Circulation <> suf:6 var
+R1158:1178 Theroies.Extras <> NoDup_incl_reorganize thm
+R1182:1182 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R1184:1185 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R1187:1187 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R1222:1225 Coq.Lists.List <> incl def
+R1158:1178 Theroies.Extras <> NoDup_incl_reorganize thm
+R1182:1182 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R1184:1185 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R1187:1187 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+prf 1285:1308 <> eval_action_from_to_same
+R1323:1333 Theroies.Blockchain <> Environment rec
+binder 1317:1319 <> pre:7
+R1349:1354 Theroies.Blockchain <> Action rec
+binder 1343:1345 <> act:8
+R1371:1381 Theroies.Blockchain <> Environment rec
+binder 1364:1367 <> post:9
+R1402:1405 Coq.Init.Datatypes <> list ind
+R1407:1412 Theroies.Blockchain <> Action rec
+binder 1391:1398 <> new_acts:10
+R1429:1444 Theroies.Blockchain <> ActionEvaluation ind
+R1446:1448 Theroies.Circulation <> pre:7 var
+R1450:1452 Theroies.Circulation <> act:8 var
+R1454:1457 Theroies.Circulation <> post:9 var
+R1459:1466 Theroies.Circulation <> new_acts:10 var
+binder 1422:1425 <> eval:11
+R1502:1507 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1487:1489 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1473:1481 Theroies.Blockchain <> eval_from def
+R1483:1486 Theroies.Circulation <> eval:11 var
+R1490:1496 Theroies.Blockchain <> eval_to def
+R1498:1501 Theroies.Circulation <> eval:11 var
+R1524:1526 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1508:1518 Theroies.Circulation <> circulation def
+R1520:1523 Theroies.Circulation <> post:9 var
+R1527:1537 Theroies.Circulation <> circulation def
+R1539:1541 Theroies.Circulation <> pre:7 var
+R1581:1591 Theroies.Circulation <> circulation def
+R1607:1614 Theroies.Finite <> elements meth
+R1616:1622 Theroies.Blockchain <> Address meth
+R1607:1614 Theroies.Finite <> elements meth
+R1616:1622 Theroies.Blockchain <> Address meth
+R1689:1708 Theroies.Blockchain <> account_balance_post thm
+R1689:1708 Theroies.Blockchain <> account_balance_post thm
+R1689:1708 Theroies.Blockchain <> account_balance_post thm
+prf 1803:1835 <> eval_action_circulation_unchanged
+R1850:1860 Theroies.Blockchain <> Environment rec
+binder 1844:1846 <> pre:12
+R1876:1881 Theroies.Blockchain <> Action rec
+binder 1870:1872 <> act:13
+R1898:1908 Theroies.Blockchain <> Environment rec
+binder 1891:1894 <> post:14
+R1929:1932 Coq.Init.Datatypes <> list ind
+R1934:1939 Theroies.Blockchain <> Action rec
+binder 1918:1925 <> new_acts:15
+R1984:1989 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1946:1961 Theroies.Blockchain <> ActionEvaluation ind
+R1963:1965 Theroies.Circulation <> pre:12 var
+R1967:1969 Theroies.Circulation <> act:13 var
+R1971:1974 Theroies.Circulation <> post:14 var
+R1976:1983 Theroies.Circulation <> new_acts:15 var
+R2006:2008 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1990:2000 Theroies.Circulation <> circulation def
+R2002:2005 Theroies.Circulation <> post:14 var
+R2009:2019 Theroies.Circulation <> circulation def
+R2021:2023 Theroies.Circulation <> pre:12 var
+R2060:2075 Theroies.Blockchain <> address_eqb_spec meth
+R2095:2101 Theroies.Blockchain <> eval_to def
+R2078:2086 Theroies.Blockchain <> eval_from def
+R2060:2075 Theroies.Blockchain <> address_eqb_spec meth
+R2095:2101 Theroies.Blockchain <> eval_to def
+R2078:2086 Theroies.Blockchain <> eval_from def
+R2164:2181 Theroies.Circulation <> address_reorganize thm
+R2164:2181 Theroies.Circulation <> address_reorganize thm
+R2219:2233 Coq.Sorting.Permutation <> Permutation_sym thm
+R2219:2233 Coq.Sorting.Permutation <> Permutation_sym thm
+R2253:2263 Theroies.Circulation <> circulation def
+R2279:2294 Theroies.Extras <> sumZ_permutation thm
+R2279:2294 Theroies.Extras <> sumZ_permutation thm
+R2279:2294 Theroies.Extras <> sumZ_permutation thm
+R2279:2294 Theroies.Extras <> sumZ_permutation thm
+R2321:2343 Theroies.Blockchain <> account_balance_post_to thm
+R2321:2343 Theroies.Blockchain <> account_balance_post_to thm
+R2321:2343 Theroies.Blockchain <> account_balance_post_to thm
+R2375:2399 Theroies.Blockchain <> account_balance_post_from thm
+R2375:2399 Theroies.Blockchain <> account_balance_post_from thm
+R2375:2399 Theroies.Blockchain <> account_balance_post_from thm
+R2465:2467 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2430:2433 Theroies.Extras <> sumZ def
+R2436:2455 Theroies.Blockchain <> env_account_balances proj
+R2468:2471 Theroies.Extras <> sumZ def
+R2474:2493 Theroies.Blockchain <> env_account_balances proj
+R2465:2467 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2430:2433 Theroies.Extras <> sumZ def
+R2436:2455 Theroies.Blockchain <> env_account_balances proj
+R2468:2471 Theroies.Extras <> sumZ def
+R2474:2493 Theroies.Blockchain <> env_account_balances proj
+R2533:2549 Coq.Sorting.Permutation <> Permutation_NoDup thm
+R2533:2549 Coq.Sorting.Permutation <> Permutation_NoDup thm
+R2597:2597 Coq.Init.Logic <> ::type_scope:'~'_x not
+R2598:2599 Coq.Lists.List <> In def
+R2602:2610 Theroies.Blockchain <> eval_from def
+R2597:2597 Coq.Init.Logic <> ::type_scope:'~'_x not
+R2598:2599 Coq.Lists.List <> In def
+R2602:2610 Theroies.Blockchain <> eval_from def
+R2635:2646 Theroies.Extras <> in_NoDup_app thm
+R2650:2650 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2665:2666 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2679:2679 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2651:2659 Theroies.Blockchain <> eval_from def
+R2667:2673 Theroies.Blockchain <> eval_to def
+R2635:2646 Theroies.Extras <> in_NoDup_app thm
+R2650:2650 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2665:2666 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2679:2679 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2651:2659 Theroies.Blockchain <> eval_from def
+R2667:2673 Theroies.Blockchain <> eval_to def
+R2723:2723 Coq.Init.Logic <> ::type_scope:'~'_x not
+R2724:2725 Coq.Lists.List <> In def
+R2728:2734 Theroies.Blockchain <> eval_to def
+R2723:2723 Coq.Init.Logic <> ::type_scope:'~'_x not
+R2724:2725 Coq.Lists.List <> In def
+R2728:2734 Theroies.Blockchain <> eval_to def
+R2759:2770 Theroies.Extras <> in_NoDup_app thm
+R2774:2774 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2789:2790 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2803:2803 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2775:2783 Theroies.Blockchain <> eval_from def
+R2791:2797 Theroies.Blockchain <> eval_to def
+R2759:2770 Theroies.Extras <> in_NoDup_app thm
+R2774:2774 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2789:2790 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2803:2803 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2775:2783 Theroies.Blockchain <> eval_from def
+R2791:2797 Theroies.Blockchain <> eval_to def
+R2860:2890 Theroies.Blockchain <> account_balance_post_irrelevant thm
+R2860:2890 Theroies.Blockchain <> account_balance_post_irrelevant thm
+inst 3078:3095 <> circulation_proper
+R3101:3106 Coq.Classes.Morphisms <> Proper class
+R3134:3144 Theroies.Circulation <> circulation def
+R3125:3129 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R3109:3124 Theroies.Blockchain <> EnvironmentEquiv rec
+R3130:3131 Coq.Init.Logic <> eq ind
+R3180:3190 Theroies.Circulation <> circulation def
+R3193:3212 Theroies.Blockchain <> env_account_balances proj
+R3228:3235 Theroies.Finite <> elements meth
+R3237:3243 Theroies.Blockchain <> Address meth
+R3228:3235 Theroies.Finite <> elements meth
+R3237:3243 Theroies.Blockchain <> Address meth
+prf 3458:3482 <> circulation_add_new_block
+binder 3484:3489 <> header:16
+binder 3491:3493 <> env:17
+R3544:3548 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3499:3509 Theroies.Circulation <> circulation def
+R3512:3531 Theroies.Blockchain <> add_new_block_to_env def
+R3533:3538 Theroies.Circulation <> header:16 var
+R3540:3542 Theroies.Circulation <> env:17 var
+R3565:3567 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R3550:3560 Theroies.Circulation <> circulation def
+R3562:3564 Theroies.Circulation <> env:17 var
+R3568:3579 Theroies.Blockchain <> block_reward proj
+R3581:3586 Theroies.Circulation <> header:16 var
+R3616:3622 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R3626:3627 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 3623:3625 <> suf:18
+R3628:3638 Coq.Sorting.Permutation <> Permutation ind
+R3673:3680 Theroies.Finite <> elements meth
+R3682:3688 Theroies.Blockchain <> Address meth
+R3663:3666 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3641:3641 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R3662:3662 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R3642:3654 Theroies.Blockchain <> block_creator proj
+R3667:3669 Theroies.Circulation <> suf:18 var
+R3616:3622 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R3626:3627 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 3623:3625 <> suf:19
+R3628:3638 Coq.Sorting.Permutation <> Permutation ind
+R3673:3680 Theroies.Finite <> elements meth
+R3682:3688 Theroies.Blockchain <> Address meth
+R3663:3666 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3641:3641 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R3662:3662 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R3642:3654 Theroies.Blockchain <> block_creator proj
+R3667:3669 Theroies.Circulation <> suf:19 var
+R3703:3723 Theroies.Extras <> NoDup_incl_reorganize thm
+R3753:3756 Coq.Lists.List <> incl def
+R3703:3723 Theroies.Extras <> NoDup_incl_reorganize thm
+R3833:3849 Coq.Sorting.Permutation <> Permutation_NoDup thm
+R3857:3868 Theroies.Finite <> elements_set meth
+R3870:3876 Theroies.Blockchain <> Address meth
+R3833:3849 Coq.Sorting.Permutation <> Permutation_NoDup thm
+R3857:3868 Theroies.Finite <> elements_set meth
+R3870:3876 Theroies.Blockchain <> Address meth
+R3902:3912 Theroies.Circulation <> circulation def
+R3947:3957 Theroies.Blockchain <> add_balance def
+R3970:3984 Theroies.Blockchain <> address_eq_refl thm
+R3970:3984 Theroies.Blockchain <> address_eq_refl thm
+R3970:3984 Theroies.Blockchain <> address_eq_refl thm
+R4025:4027 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4020:4022 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4015:4017 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4035:4037 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4030:4032 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4025:4027 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4020:4022 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4015:4017 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4035:4037 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4030:4032 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4054:4056 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4054:4056 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4089:4100 Theroies.Extras <> in_NoDup_app thm
+R4157:4157 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R4178:4178 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R4158:4170 Theroies.Blockchain <> block_creator proj
+R4119:4131 Theroies.Blockchain <> block_creator proj
+R4089:4100 Theroies.Extras <> in_NoDup_app thm
+R4157:4157 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R4178:4178 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R4158:4170 Theroies.Blockchain <> block_creator proj
+R4119:4131 Theroies.Blockchain <> block_creator proj
+R4307:4322 Coq.Logic.Decidable <> not_or thm
+R4307:4322 Coq.Logic.Decidable <> not_or thm
+R4351:4366 Theroies.Blockchain <> address_eqb_spec meth
+R4371:4383 Theroies.Blockchain <> block_creator proj
+R4351:4366 Theroies.Blockchain <> address_eqb_spec meth
+R4371:4383 Theroies.Blockchain <> block_creator proj
+R4424:4428 Coq.Init.Logic <> proj2 thm
+R4424:4428 Coq.Init.Logic <> proj2 thm
+R4513:4521 Theroies.Blockchain <> ChainStep ind
+R4513:4521 Theroies.Blockchain <> ChainStep ind
+prf 4761:4776 <> step_circulation
+binder 4779:4782 <> prev:20
+binder 4784:4787 <> next:21
+R4798:4806 Theroies.Blockchain <> ChainStep ind
+R4808:4811 Theroies.Circulation <> prev:20 var
+R4813:4816 Theroies.Circulation <> next:21 var
+binder 4791:4794 <> step:22
+R4839:4843 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4823:4833 Theroies.Circulation <> circulation def
+R4835:4838 Theroies.Circulation <> next:21 var
+R4850:4853 Theroies.Circulation <> step:22 var
+R4864:4873 Theroies.Blockchain <> step_block constr
+R4919:4921 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R4903:4913 Theroies.Circulation <> circulation def
+R4915:4918 Theroies.Circulation <> prev:20 var
+R4922:4933 Theroies.Blockchain <> block_reward proj
+R4951:4961 Theroies.Circulation <> circulation def
+R4963:4966 Theroies.Circulation <> prev:20 var
+R5074:5098 Theroies.Circulation <> circulation_add_new_block thm
+R5074:5098 Theroies.Circulation <> circulation_add_new_block thm
+R5074:5098 Theroies.Circulation <> circulation_add_new_block thm
+R5135:5167 Theroies.Circulation <> eval_action_circulation_unchanged thm
+R5135:5167 Theroies.Circulation <> eval_action_circulation_unchanged thm
+R5135:5167 Theroies.Circulation <> eval_action_circulation_unchanged thm
+R5135:5167 Theroies.Circulation <> eval_action_circulation_unchanged thm
+prf 5241:5263 <> chain_trace_circulation
+R5282:5291 Theroies.Blockchain <> ChainState rec
+binder 5274:5278 <> state:24
+R5311:5320 Theroies.Blockchain <> ChainTrace def
+R5322:5332 Theroies.Blockchain <> empty_state def
+R5334:5338 Theroies.Circulation <> state:24 var
+binder 5303:5307 <> trace:25
+R5362:5364 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5345:5355 Theroies.Circulation <> circulation def
+R5357:5361 Theroies.Circulation <> state:24 var
+R5365:5368 Theroies.Extras <> sumZ def
+R5384:5395 Theroies.Blockchain <> trace_blocks def
+R5397:5401 Theroies.Circulation <> trace:25 var
+R5370:5381 Theroies.Blockchain <> block_reward proj
+R5423:5433 Theroies.Blockchain <> empty_state def
+R5423:5433 Theroies.Blockchain <> empty_state def
+R5515:5525 Theroies.Circulation <> circulation def
+R5543:5550 Theroies.Finite <> elements meth
+R5552:5558 Theroies.Blockchain <> Address meth
+R5543:5550 Theroies.Finite <> elements meth
+R5552:5558 Theroies.Blockchain <> Address meth
+R5581:5596 Theroies.Circulation <> step_circulation thm
+R5581:5596 Theroies.Circulation <> step_circulation thm
+R5581:5596 Theroies.Circulation <> step_circulation thm
+R5696:5706 Theroies.Circulation Circulation <> sec

@@ -1,0 +1,302 @@
+DIGEST 240ca0adfbb0ab32a49dd9a798412239
+FTheroies.ResultMonad
+R15:20 Theroies.Monads <> <> lib
+ind 34:39 <> result
+constr 50:51 <> Ok
+constr 63:65 <> Err
+binder 41:41 <> T:1
+binder 43:43 <> E:2
+R58:58 Theroies.ResultMonad <> T:1 var
+binder 54:54 <> t:5
+R72:72 Theroies.ResultMonad <> E:2 var
+binder 68:68 <> e:6
+R87:88 Theroies.ResultMonad <> Ok constr
+R87:88 Theroies.ResultMonad <> Ok constr
+R107:109 Theroies.ResultMonad <> Err constr
+R107:109 Theroies.ResultMonad <> Err constr
+inst 135:146 <> Monad_result
+binder 149:149 <> E:7
+R154:158 Theroies.Monads <> Monad class
+binder 165:165 <> T:8
+R170:175 Theroies.ResultMonad <> result ind
+R177:177 Theroies.ResultMonad <> T:8 var
+R179:179 Theroies.ResultMonad <> E:7 var
+R190:192 Theroies.Monads <> ret meth
+R190:192 Theroies.Monads <> ret meth
+R190:192 Theroies.Monads <> ret meth
+R212:215 Theroies.Monads <> bind meth
+R212:215 Theroies.Monads <> bind meth
+binder 196:196 <> t:9
+R201:202 Theroies.ResultMonad <> Ok constr
+R204:204 Theroies.ResultMonad <> t:9 var
+binder 221:222 <> mt:10
+binder 224:224 <> f:11
+R240:241 Theroies.ResultMonad <> mt:10 var
+R255:256 Theroies.ResultMonad <> Ok constr
+R263:263 Theroies.ResultMonad <> f:11 var
+R274:276 Theroies.ResultMonad <> Err constr
+R283:285 Theroies.ResultMonad <> Err constr
+inst 319:340 <> MonadLaws_Monad_result
+binder 343:343 <> E:13
+R348:356 Theroies.Monads <> MonadLaws class
+R360:371 Theroies.ResultMonad <> Monad_result inst
+R373:373 Theroies.ResultMonad <> E:13 var
+def 504:519 <> result_of_option
+binder 522:522 <> T:14
+binder 524:524 <> E:15
+R539:544 Coq.Init.Datatypes <> option ind
+R546:546 Theroies.ResultMonad <> T:14 var
+binder 535:535 <> o:16
+R556:556 Theroies.ResultMonad <> E:15 var
+binder 550:552 <> err:17
+R561:566 Theroies.ResultMonad <> result ind
+R568:568 Theroies.ResultMonad <> T:14 var
+R570:570 Theroies.ResultMonad <> E:15 var
+R583:583 Theroies.ResultMonad <> o:16 var
+R594:597 Coq.Init.Datatypes <> Some constr
+R604:605 Theroies.ResultMonad <> Ok constr
+R613:616 Coq.Init.Datatypes <> None constr
+R621:623 Theroies.ResultMonad <> Err constr
+R625:627 Theroies.ResultMonad <> err:17 var
+def 648:663 <> option_of_result
+binder 666:666 <> T:19
+binder 668:668 <> E:20
+R683:688 Theroies.ResultMonad <> result ind
+R690:690 Theroies.ResultMonad <> T:19 var
+R692:692 Theroies.ResultMonad <> E:20 var
+binder 679:679 <> r:21
+R697:702 Coq.Init.Datatypes <> option ind
+R704:704 Theroies.ResultMonad <> T:19 var
+R717:717 Theroies.ResultMonad <> r:21 var
+R728:729 Theroies.ResultMonad <> Ok constr
+R736:739 Coq.Init.Datatypes <> Some constr
+R747:749 Theroies.ResultMonad <> Err constr
+R756:759 Coq.Init.Datatypes <> None constr
+inst 785:800 <> option_to_result
+binder 811:811 <> E:23
+R831:840 Theroies.Monads <> MonadTrans class
+binder 847:847 <> T:24
+R853:856 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R852:852 Theroies.ResultMonad <> E:23 var
+R857:862 Theroies.ResultMonad <> result ind
+R864:864 Theroies.ResultMonad <> T:24 var
+R866:866 Theroies.ResultMonad <> E:23 var
+R869:874 Coq.Init.Datatypes <> option ind
+R884:887 Theroies.Monads <> lift meth
+R884:887 Theroies.Monads <> lift meth
+R884:887 Theroies.Monads <> lift meth
+binder 889:889 <> T:25
+R898:903 Coq.Init.Datatypes <> option ind
+R905:905 Theroies.ResultMonad <> T:25 var
+binder 892:894 <> opt:26
+binder 908:910 <> err:27
+R916:931 Theroies.ResultMonad <> result_of_option def
+R933:933 Theroies.ResultMonad <> T:25 var
+R937:939 Theroies.ResultMonad <> opt:26 var
+R941:943 Theroies.ResultMonad <> err:27 var
+inst 966:981 <> result_to_option
+binder 992:992 <> E:28
+R1012:1021 Theroies.Monads <> MonadTrans class
+R1023:1028 Coq.Init.Datatypes <> option ind
+binder 1035:1035 <> T:29
+R1040:1045 Theroies.ResultMonad <> result ind
+R1047:1047 Theroies.ResultMonad <> T:29 var
+R1049:1049 Theroies.ResultMonad <> E:28 var
+R1060:1063 Theroies.Monads <> lift meth
+R1060:1063 Theroies.Monads <> lift meth
+R1060:1063 Theroies.Monads <> lift meth
+binder 1065:1065 <> T:30
+R1074:1079 Theroies.ResultMonad <> result ind
+R1081:1081 Theroies.ResultMonad <> T:30 var
+binder 1068:1070 <> opt:31
+R1090:1105 Theroies.ResultMonad <> option_of_result def
+R1107:1107 Theroies.ResultMonad <> T:30 var
+R1111:1113 Theroies.ResultMonad <> opt:31 var
+def 1131:1143 <> unpack_result
+binder 1146:1146 <> T:32
+binder 1148:1148 <> E:33
+R1163:1168 Theroies.ResultMonad <> result ind
+R1170:1170 Theroies.ResultMonad <> T:32 var
+R1172:1172 Theroies.ResultMonad <> E:33 var
+binder 1159:1159 <> r:34
+R1186:1186 Theroies.ResultMonad <> r:34 var
+R1201:1201 Theroies.ResultMonad <> r:35 var
+R1228:1229 Theroies.ResultMonad <> Ok constr
+R1236:1236 Theroies.ResultMonad <> T:32 var
+R1258:1260 Theroies.ResultMonad <> Err constr
+R1267:1267 Theroies.ResultMonad <> E:33 var
+R1300:1301 Theroies.ResultMonad <> Ok constr
+R1314:1316 Theroies.ResultMonad <> Err constr
+def 1344:1353 <> bind_error
+binder 1356:1356 <> T:37
+binder 1358:1359 <> E1:38
+binder 1361:1362 <> E2:39
+R1379:1382 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1377:1378 Theroies.ResultMonad <> E1:38 var
+R1383:1384 Theroies.ResultMonad <> E2:39 var
+binder 1373:1373 <> f:40
+R1392:1397 Theroies.ResultMonad <> result ind
+R1399:1399 Theroies.ResultMonad <> T:37 var
+R1401:1402 Theroies.ResultMonad <> E1:38 var
+binder 1388:1388 <> r:41
+R1407:1412 Theroies.ResultMonad <> result ind
+R1414:1414 Theroies.ResultMonad <> T:37 var
+R1416:1417 Theroies.ResultMonad <> E2:39 var
+R1430:1430 Theroies.ResultMonad <> r:41 var
+R1441:1442 Theroies.ResultMonad <> Ok constr
+R1449:1450 Theroies.ResultMonad <> Ok constr
+R1458:1460 Theroies.ResultMonad <> Err constr
+R1467:1469 Theroies.ResultMonad <> Err constr
+R1472:1472 Theroies.ResultMonad <> f:40 var
+def 1496:1499 <> isOk
+binder 1502:1502 <> T:43
+binder 1504:1504 <> E:44
+R1519:1524 Theroies.ResultMonad <> result ind
+R1526:1526 Theroies.ResultMonad <> T:43 var
+R1528:1528 Theroies.ResultMonad <> E:44 var
+binder 1515:1515 <> r:45
+R1540:1540 Theroies.ResultMonad <> r:45 var
+R1549:1550 Theroies.ResultMonad <> Ok constr
+R1557:1560 Coq.Init.Datatypes <> true constr
+R1564:1566 Theroies.ResultMonad <> Err constr
+R1573:1577 Coq.Init.Datatypes <> false constr
+def 1595:1599 <> isErr
+binder 1602:1602 <> T:47
+binder 1604:1604 <> E:48
+R1619:1624 Theroies.ResultMonad <> result ind
+R1626:1626 Theroies.ResultMonad <> T:47 var
+R1628:1628 Theroies.ResultMonad <> E:48 var
+binder 1615:1615 <> r:49
+R1640:1640 Theroies.ResultMonad <> r:49 var
+R1649:1650 Theroies.ResultMonad <> Ok constr
+R1657:1661 Coq.Init.Datatypes <> false constr
+R1665:1667 Theroies.ResultMonad <> Err constr
+R1674:1677 Coq.Init.Datatypes <> true constr
+prf 1692:1715 <> result_of_option_eq_some
+binder 1727:1727 <> T:51
+binder 1729:1729 <> E:52
+R1744:1749 Coq.Init.Datatypes <> option ind
+R1751:1751 Theroies.ResultMonad <> T:51 var
+binder 1740:1740 <> x:53
+R1759:1759 Theroies.ResultMonad <> E:52 var
+binder 1755:1755 <> e:54
+R1767:1767 Theroies.ResultMonad <> T:51 var
+binder 1763:1763 <> y:55
+R1800:1804 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R1793:1795 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1773:1788 Theroies.ResultMonad <> result_of_option def
+R1792:1792 Theroies.ResultMonad <> e:54 var
+R1790:1790 Theroies.ResultMonad <> x:53 var
+R1796:1797 Theroies.ResultMonad <> Ok constr
+R1799:1799 Theroies.ResultMonad <> y:55 var
+R1806:1808 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1805:1805 Theroies.ResultMonad <> x:53 var
+R1809:1812 Coq.Init.Datatypes <> Some constr
+R1814:1814 Theroies.ResultMonad <> y:55 var
+prf 1921:1944 <> result_of_option_eq_none
+binder 1956:1956 <> T:56
+binder 1958:1958 <> E:57
+R1973:1978 Coq.Init.Datatypes <> option ind
+R1980:1980 Theroies.ResultMonad <> T:56 var
+binder 1969:1969 <> x:58
+R1992:1992 Theroies.ResultMonad <> E:57 var
+binder 1984:1985 <> e1:59
+binder 1987:1988 <> e2:60
+R2028:2031 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2019:2021 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1998:2013 Theroies.ResultMonad <> result_of_option def
+R2017:2018 Theroies.ResultMonad <> e1:59 var
+R2015:2015 Theroies.ResultMonad <> x:58 var
+R2022:2024 Theroies.ResultMonad <> Err constr
+R2026:2027 Theroies.ResultMonad <> e2:60 var
+R2033:2035 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2032:2032 Theroies.ResultMonad <> x:58 var
+R2036:2039 Coq.Init.Datatypes <> None constr
+prf 2108:2114 <> isOk_Ok
+binder 2126:2126 <> T:61
+binder 2128:2128 <> E:62
+R2143:2148 Theroies.ResultMonad <> result ind
+R2150:2150 Theroies.ResultMonad <> T:61 var
+R2152:2152 Theroies.ResultMonad <> E:62 var
+binder 2139:2139 <> r:63
+R2160:2160 Theroies.ResultMonad <> T:61 var
+binder 2156:2156 <> x:64
+R2174:2177 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2167:2169 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2166:2166 Theroies.ResultMonad <> r:63 var
+R2170:2171 Theroies.ResultMonad <> Ok constr
+R2173:2173 Theroies.ResultMonad <> x:64 var
+R2184:2186 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2178:2181 Theroies.ResultMonad <> isOk def
+R2183:2183 Theroies.ResultMonad <> r:63 var
+R2187:2190 Coq.Init.Datatypes <> true constr
+prf 2235:2242 <> isOk_Err
+binder 2254:2254 <> T:65
+binder 2256:2256 <> E:66
+R2271:2276 Theroies.ResultMonad <> result ind
+R2278:2278 Theroies.ResultMonad <> T:65 var
+R2280:2280 Theroies.ResultMonad <> E:66 var
+binder 2267:2267 <> r:67
+R2288:2288 Theroies.ResultMonad <> E:66 var
+binder 2284:2284 <> e:68
+R2303:2306 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2295:2297 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2294:2294 Theroies.ResultMonad <> r:67 var
+R2298:2300 Theroies.ResultMonad <> Err constr
+R2302:2302 Theroies.ResultMonad <> e:68 var
+R2313:2315 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2307:2310 Theroies.ResultMonad <> isOk def
+R2312:2312 Theroies.ResultMonad <> r:67 var
+R2316:2320 Coq.Init.Datatypes <> false constr
+prf 2365:2375 <> isOk_exists
+binder 2387:2387 <> T:69
+binder 2389:2389 <> E:70
+R2404:2409 Theroies.ResultMonad <> result ind
+R2411:2411 Theroies.ResultMonad <> T:69 var
+R2413:2413 Theroies.ResultMonad <> E:70 var
+binder 2400:2400 <> r:71
+R2432:2436 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R2425:2427 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2419:2422 Theroies.ResultMonad <> isOk def
+R2424:2424 Theroies.ResultMonad <> r:71 var
+R2428:2431 Coq.Init.Datatypes <> true constr
+R2437:2443 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R2449:2450 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R2448:2448 Theroies.ResultMonad <> T:69 var
+binder 2444:2444 <> x:72
+R2452:2454 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2451:2451 Theroies.ResultMonad <> r:71 var
+R2455:2456 Theroies.ResultMonad <> Ok constr
+R2458:2458 Theroies.ResultMonad <> x:72 var
+R2564:2570 Theroies.ResultMonad <> isOk_Ok thm
+R2564:2570 Theroies.ResultMonad <> isOk_Ok thm
+prf 2596:2610 <> isOk_not_exists
+binder 2622:2622 <> T:73
+binder 2624:2624 <> E:74
+R2639:2644 Theroies.ResultMonad <> result ind
+R2646:2646 Theroies.ResultMonad <> T:73 var
+R2648:2648 Theroies.ResultMonad <> E:74 var
+binder 2635:2635 <> r:75
+R2668:2672 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R2660:2662 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2654:2657 Theroies.ResultMonad <> isOk def
+R2659:2659 Theroies.ResultMonad <> r:75 var
+R2663:2667 Coq.Init.Datatypes <> false constr
+R2684:2684 Theroies.ResultMonad <> T:73 var
+binder 2680:2680 <> x:76
+R2688:2691 Coq.Init.Logic <> ::type_scope:x_'<>'_x not
+R2687:2687 Theroies.ResultMonad <> r:75 var
+R2692:2693 Theroies.ResultMonad <> Ok constr
+R2695:2695 Theroies.ResultMonad <> x:76 var
+prf 2801:2814 <> isOk_neq_isErr
+binder 2826:2826 <> T:77
+binder 2828:2828 <> E:78
+R2843:2848 Theroies.ResultMonad <> result ind
+R2850:2850 Theroies.ResultMonad <> T:77 var
+R2852:2852 Theroies.ResultMonad <> E:78 var
+binder 2839:2839 <> r:79
+R2864:2867 Coq.Init.Logic <> ::type_scope:x_'<>'_x not
+R2858:2861 Theroies.ResultMonad <> isOk def
+R2863:2863 Theroies.ResultMonad <> r:79 var
+R2868:2872 Theroies.ResultMonad <> isErr def
+R2874:2874 Theroies.ResultMonad <> r:79 var

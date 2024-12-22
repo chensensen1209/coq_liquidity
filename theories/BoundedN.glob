@@ -1,0 +1,587 @@
+DIGEST deb527c531cb4c6ff391c2cdd26068d4
+FTheroies.BoundedN
+R117:122 Coq.NArith.NArith <> <> lib
+R124:129 Coq.ZArith.ZArith <> <> lib
+R147:152 Theroies.Monads <> <> lib
+R170:175 Theroies.Finite <> <> lib
+R193:198 Theroies.Extras <> <> lib
+R216:225 Theroies.Automation <> <> lib
+R252:260 Coq.Logic.Eqdep_dec <> <> lib
+R287:290 Coq.Lists.List <> <> lib
+R317:321 Coq.micromega.Psatz <> <> lib
+R343:351 stdpp.countable <> <> lib
+R361:373 Coq.Lists.List ListNotations <> mod
+ind 807:814 <> BoundedN
+constr 833:839 <> bounded
+R825:825 Coq.Numbers.BinNums <> N ind
+binder 817:821 <> bound:1
+R846:846 Coq.Numbers.BinNums <> N ind
+binder 842:842 <> n:4
+R854:854 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R865:868 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R860:863 Coq.NArith.BinNat <> ::N_scope:x_'?='_x not
+R855:859 Theroies.BoundedN <> bound:1 var
+R864:864 Theroies.BoundedN <> n:4 var
+R869:870 Coq.Init.Datatypes <> Gt constr
+R885:891 Theroies.BoundedN <> bounded constr
+R885:891 Theroies.BoundedN <> bounded constr
+mod 906:913 <> BoundedN
+def 929:932 BoundedN to_N
+R943:943 Coq.Numbers.BinNums <> N ind
+binder 935:939 <> bound:5
+R951:958 Theroies.BoundedN <> BoundedN ind
+R960:964 Theroies.BoundedN <> bound:5 var
+binder 947:947 <> n:6
+R969:969 Coq.Numbers.BinNums <> N ind
+R994:994 Theroies.BoundedN <> n:6 var
+binder 983:985 <> val:7
+R999:1001 Theroies.BoundedN <> val:7 var
+def 1018:1020 BoundedN eqb
+R1031:1031 Coq.Numbers.BinNums <> N ind
+binder 1023:1027 <> bound:8
+R1041:1048 Theroies.BoundedN <> BoundedN ind
+R1050:1054 Theroies.BoundedN <> bound:8 var
+binder 1035:1035 <> a:9
+binder 1037:1037 <> b:10
+R1059:1062 Coq.Init.Datatypes <> bool ind
+R1071:1075 Coq.NArith.BinNat N eqb def
+R1078:1081 Theroies.BoundedN BoundedN to_N def
+R1083:1083 Theroies.BoundedN <> a:9 var
+R1087:1090 Theroies.BoundedN BoundedN to_N def
+R1092:1092 Theroies.BoundedN <> b:10 var
+def 1110:1121 BoundedN of_N_compare
+R1132:1132 Coq.Numbers.BinNums <> N ind
+binder 1124:1128 <> bound:11
+R1140:1140 Coq.Numbers.BinNums <> N ind
+binder 1136:1136 <> n:12
+R1145:1150 Coq.Init.Datatypes <> option ind
+R1153:1153 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1164:1167 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1159:1162 Coq.NArith.BinNat <> ::N_scope:x_'?='_x not
+R1154:1158 Theroies.BoundedN <> bound:11 var
+R1163:1163 Theroies.BoundedN <> n:12 var
+R1168:1169 Coq.Init.Datatypes <> Gt constr
+R1190:1193 Coq.NArith.BinNat <> ::N_scope:x_'?='_x not
+R1185:1189 Theroies.BoundedN <> bound:11 var
+R1194:1194 Theroies.BoundedN <> n:12 var
+R1212:1217 Coq.Init.Datatypes <> option ind
+R1224:1226 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1220:1223 Theroies.BoundedN <> comp:13 var
+R1227:1228 Coq.Init.Datatypes <> Gt constr
+R1243:1244 Coq.Init.Datatypes <> Gt constr
+R1249:1252 Coq.Init.Datatypes <> Some constr
+R1254:1260 Coq.Init.Logic <> eq_refl constr
+R1273:1276 Coq.Init.Datatypes <> None constr
+def 1301:1304 BoundedN of_N
+R1315:1315 Coq.Numbers.BinNums <> N ind
+binder 1307:1311 <> bound:14
+R1323:1323 Coq.Numbers.BinNums <> N ind
+binder 1319:1319 <> n:15
+R1328:1333 Coq.Init.Datatypes <> option ind
+R1336:1343 Theroies.BoundedN <> BoundedN ind
+R1345:1349 Theroies.BoundedN <> bound:14 var
+R1365:1376 Theroies.BoundedN BoundedN of_N_compare def
+R1378:1378 Theroies.BoundedN <> n:15 var
+R1391:1394 Coq.Init.Datatypes <> Some constr
+R1403:1406 Coq.Init.Datatypes <> Some constr
+R1409:1415 Theroies.BoundedN <> bounded constr
+R1417:1417 Theroies.BoundedN <> n:15 var
+R1430:1433 Coq.Init.Datatypes <> None constr
+R1438:1441 Coq.Init.Datatypes <> None constr
+def 1466:1471 BoundedN to_nat
+R1482:1482 Coq.Numbers.BinNums <> N ind
+binder 1474:1478 <> bound:16
+R1490:1497 Theroies.BoundedN <> BoundedN ind
+R1499:1503 Theroies.BoundedN <> bound:16 var
+binder 1486:1486 <> n:17
+R1508:1510 Coq.Init.Datatypes <> nat ind
+R1519:1526 Coq.NArith.BinNat N to_nat def
+R1529:1532 Theroies.BoundedN BoundedN to_N def
+R1534:1534 Theroies.BoundedN <> n:17 var
+def 1552:1557 BoundedN of_nat
+R1568:1568 Coq.Numbers.BinNums <> N ind
+binder 1560:1564 <> bound:18
+R1576:1578 Coq.Init.Datatypes <> nat ind
+binder 1572:1572 <> n:19
+R1583:1588 Coq.Init.Datatypes <> option ind
+R1591:1598 Theroies.BoundedN <> BoundedN ind
+R1600:1604 Theroies.BoundedN <> bound:18 var
+R1614:1617 Theroies.BoundedN BoundedN of_N def
+R1620:1627 Coq.NArith.BinNat N of_nat def
+R1629:1629 Theroies.BoundedN <> n:19 var
+def 1647:1650 BoundedN to_Z
+R1661:1661 Coq.Numbers.BinNums <> N ind
+binder 1653:1657 <> bound:20
+R1669:1676 Theroies.BoundedN <> BoundedN ind
+R1678:1682 Theroies.BoundedN <> bound:20 var
+binder 1665:1665 <> n:21
+R1687:1687 Coq.Numbers.BinNums <> Z ind
+R1696:1701 Coq.ZArith.BinInt Z of_N def
+R1704:1707 Theroies.BoundedN BoundedN to_N def
+R1709:1709 Theroies.BoundedN <> n:21 var
+def 1727:1730 BoundedN of_Z
+R1741:1741 Coq.Numbers.BinNums <> N ind
+binder 1733:1737 <> bound:22
+R1749:1749 Coq.Numbers.BinNums <> Z ind
+binder 1745:1745 <> z:23
+R1754:1759 Coq.Init.Datatypes <> option ind
+R1762:1769 Theroies.BoundedN <> BoundedN ind
+R1771:1775 Theroies.BoundedN <> bound:22 var
+R1790:1793 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R1789:1789 Theroies.BoundedN <> z:23 var
+R1814:1817 Theroies.BoundedN BoundedN of_N def
+R1820:1825 Coq.ZArith.BinInt Z to_N def
+R1827:1827 Theroies.BoundedN <> z:23 var
+R1804:1807 Coq.Init.Datatypes <> None constr
+def 1845:1854 BoundedN of_Z_const
+R1865:1865 Coq.Numbers.BinNums <> N ind
+binder 1857:1861 <> bound:24
+R1873:1873 Coq.Numbers.BinNums <> Z ind
+binder 1869:1869 <> z:25
+R1883:1895 Theroies.Extras <> unpack_option def
+R1899:1902 Theroies.BoundedN BoundedN of_Z def
+R1904:1908 Theroies.BoundedN <> bound:24 var
+R1910:1910 Theroies.BoundedN <> z:25 var
+prf 1923:1930 BoundedN to_N_inj
+R1941:1941 Coq.Numbers.BinNums <> N ind
+binder 1933:1937 <> bound:26
+R1951:1958 Theroies.BoundedN <> BoundedN ind
+R1960:1964 Theroies.BoundedN <> bound:26 var
+binder 1945:1945 <> a:27
+binder 1947:1947 <> b:28
+R1988:1991 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1979:1981 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1973:1976 Theroies.BoundedN BoundedN to_N def
+R1978:1978 Theroies.BoundedN <> a:27 var
+R1982:1985 Theroies.BoundedN BoundedN to_N def
+R1987:1987 Theroies.BoundedN <> b:28 var
+R1993:1995 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1992:1992 Theroies.BoundedN <> a:27 var
+R1996:1996 Theroies.BoundedN <> b:28 var
+R2090:2096 Coq.Logic.Eqdep_dec <> UIP_dec thm
+R2090:2096 Coq.Logic.Eqdep_dec <> UIP_dec thm
+prf 2175:2182 BoundedN eqb_spec
+R2193:2193 Coq.Numbers.BinNums <> N ind
+binder 2185:2189 <> bound:29
+R2203:2210 Theroies.BoundedN <> BoundedN ind
+R2212:2216 Theroies.BoundedN <> bound:29 var
+binder 2197:2197 <> a:30
+binder 2199:2199 <> b:31
+R2225:2236 Coq.Bool.Bool <> reflect ind
+R2240:2242 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2239:2239 Theroies.BoundedN <> a:30 var
+R2243:2243 Theroies.BoundedN <> b:31 var
+R2247:2249 Theroies.BoundedN BoundedN eqb def
+R2253:2253 Theroies.BoundedN <> b:31 var
+R2251:2251 Theroies.BoundedN <> a:30 var
+R2277:2279 Theroies.BoundedN BoundedN eqb def
+R2296:2305 Coq.NArith.BinNat N eqb_spec thm
+R2317:2320 Theroies.BoundedN BoundedN to_N def
+R2308:2311 Theroies.BoundedN BoundedN to_N def
+R2296:2305 Coq.NArith.BinNat N eqb_spec thm
+R2317:2320 Theroies.BoundedN BoundedN to_N def
+R2308:2311 Theroies.BoundedN BoundedN to_N def
+prf 2448:2455 BoundedN eqb_refl
+R2466:2466 Coq.Numbers.BinNums <> N ind
+binder 2458:2462 <> bound:32
+R2474:2481 Theroies.BoundedN <> BoundedN ind
+R2483:2487 Theroies.BoundedN <> bound:32 var
+binder 2470:2470 <> n:33
+R2503:2505 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2496:2498 Theroies.BoundedN BoundedN eqb def
+R2502:2502 Theroies.BoundedN <> n:33 var
+R2500:2500 Theroies.BoundedN <> n:33 var
+R2506:2509 Coq.Init.Datatypes <> true constr
+R2531:2538 Theroies.BoundedN BoundedN eqb_spec thm
+R2531:2538 Theroies.BoundedN BoundedN eqb_spec thm
+prf 2567:2576 BoundedN to_nat_inj
+R2587:2587 Coq.Numbers.BinNums <> N ind
+binder 2579:2583 <> bound:34
+R2597:2604 Theroies.BoundedN <> BoundedN ind
+R2606:2610 Theroies.BoundedN <> bound:34 var
+binder 2591:2591 <> a:35
+binder 2593:2593 <> b:36
+R2638:2641 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2627:2629 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2619:2624 Theroies.BoundedN BoundedN to_nat def
+R2626:2626 Theroies.BoundedN <> a:35 var
+R2630:2635 Theroies.BoundedN BoundedN to_nat def
+R2637:2637 Theroies.BoundedN <> b:36 var
+R2643:2645 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2642:2642 Theroies.BoundedN <> a:35 var
+R2646:2646 Theroies.BoundedN <> b:36 var
+R2683:2690 Theroies.BoundedN BoundedN to_N_inj thm
+R2683:2690 Theroies.BoundedN BoundedN to_N_inj thm
+R2704:2709 Theroies.BoundedN BoundedN to_nat def
+R2732:2740 Coq.NArith.Nnat N2Nat inj thm
+R2732:2740 Coq.NArith.Nnat N2Nat inj thm
+prf 2759:2766 BoundedN to_Z_inj
+R2777:2777 Coq.Numbers.BinNums <> N ind
+binder 2769:2773 <> bound:37
+R2787:2794 Theroies.BoundedN <> BoundedN ind
+R2796:2800 Theroies.BoundedN <> bound:37 var
+binder 2781:2781 <> a:38
+binder 2783:2783 <> b:39
+R2824:2827 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2815:2817 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2809:2812 Theroies.BoundedN BoundedN to_Z def
+R2814:2814 Theroies.BoundedN <> a:38 var
+R2818:2821 Theroies.BoundedN BoundedN to_Z def
+R2823:2823 Theroies.BoundedN <> b:39 var
+R2829:2831 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2828:2828 Theroies.BoundedN <> a:38 var
+R2832:2832 Theroies.BoundedN <> b:39 var
+R2869:2876 Theroies.BoundedN BoundedN to_N_inj thm
+R2869:2876 Theroies.BoundedN BoundedN to_N_inj thm
+R2890:2893 Theroies.BoundedN BoundedN to_Z def
+R2916:2922 Coq.ZArith.Znat N2Z inj thm
+R2916:2922 Coq.ZArith.Znat N2Z inj thm
+prf 2941:2947 BoundedN of_to_N
+R2958:2958 Coq.Numbers.BinNums <> N ind
+binder 2950:2954 <> bound:40
+R2966:2973 Theroies.BoundedN <> BoundedN ind
+R2975:2979 Theroies.BoundedN <> bound:40 var
+binder 2962:2962 <> n:41
+R3001:3003 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2988:2991 Theroies.BoundedN BoundedN of_N def
+R2994:2997 Theroies.BoundedN BoundedN to_N def
+R2999:2999 Theroies.BoundedN <> n:41 var
+R3004:3007 Coq.Init.Datatypes <> Some constr
+R3009:3009 Theroies.BoundedN <> n:41 var
+R3064:3067 Theroies.BoundedN BoundedN of_N def
+R3083:3094 Theroies.BoundedN BoundedN of_N_compare def
+R3105:3108 Coq.Init.Datatypes <> Some constr
+R3083:3094 Theroies.BoundedN BoundedN of_N_compare def
+R3105:3108 Coq.Init.Datatypes <> Some constr
+R3133:3144 Theroies.BoundedN BoundedN of_N_compare def
+prf 3184:3192 BoundedN of_to_nat
+R3203:3203 Coq.Numbers.BinNums <> N ind
+binder 3195:3199 <> bound:42
+R3211:3218 Theroies.BoundedN <> BoundedN ind
+R3220:3224 Theroies.BoundedN <> bound:42 var
+binder 3207:3207 <> n:43
+R3250:3252 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3233:3238 Theroies.BoundedN BoundedN of_nat def
+R3241:3246 Theroies.BoundedN BoundedN to_nat def
+R3248:3248 Theroies.BoundedN <> n:43 var
+R3253:3256 Coq.Init.Datatypes <> Some constr
+R3258:3258 Theroies.BoundedN <> n:43 var
+R3281:3286 Theroies.BoundedN BoundedN to_nat def
+R3289:3294 Theroies.BoundedN BoundedN of_nat def
+R3309:3316 Coq.NArith.Nnat N2Nat id thm
+R3309:3316 Coq.NArith.Nnat N2Nat id thm
+R3309:3316 Coq.NArith.Nnat N2Nat id thm
+R3329:3335 Theroies.BoundedN BoundedN of_to_N thm
+R3329:3335 Theroies.BoundedN BoundedN of_to_N thm
+prf 3354:3366 BoundedN of_n_not_lt_0
+R3373:3373 Coq.Numbers.BinNums <> N ind
+binder 3369:3369 <> n:44
+R3399:3401 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3391:3394 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R3383:3388 Coq.ZArith.BinInt Z of_N def
+R3390:3390 Theroies.BoundedN <> n:44 var
+R3402:3406 Coq.Init.Datatypes <> false constr
+R3432:3441 Coq.ZArith.BinInt Z ltb_spec thm
+R3444:3449 Coq.ZArith.BinInt Z of_N def
+R3432:3441 Coq.ZArith.BinInt Z ltb_spec thm
+R3444:3449 Coq.ZArith.BinInt Z of_N def
+R3470:3479 Coq.ZArith.Zorder <> Zlt_not_le thm
+R3470:3479 Coq.ZArith.Zorder <> Zlt_not_le thm
+R3506:3518 Coq.ZArith.Znat N2Z is_nonneg thm
+R3506:3518 Coq.ZArith.Znat N2Z is_nonneg thm
+prf 3560:3566 BoundedN of_to_Z
+R3577:3577 Coq.Numbers.BinNums <> N ind
+binder 3569:3573 <> bound:45
+R3585:3592 Theroies.BoundedN <> BoundedN ind
+R3594:3598 Theroies.BoundedN <> bound:45 var
+binder 3581:3581 <> n:46
+R3620:3622 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3607:3610 Theroies.BoundedN BoundedN of_Z def
+R3613:3616 Theroies.BoundedN BoundedN to_Z def
+R3618:3618 Theroies.BoundedN <> n:46 var
+R3623:3626 Coq.Init.Datatypes <> Some constr
+R3628:3628 Theroies.BoundedN <> n:46 var
+R3651:3654 Theroies.BoundedN BoundedN to_Z def
+R3657:3660 Theroies.BoundedN BoundedN of_Z def
+R3675:3687 Theroies.BoundedN BoundedN of_n_not_lt_0 thm
+R3675:3687 Theroies.BoundedN BoundedN of_n_not_lt_0 thm
+R3675:3687 Theroies.BoundedN BoundedN of_n_not_lt_0 thm
+R3702:3707 Coq.ZArith.Znat N2Z id thm
+R3702:3707 Coq.ZArith.Znat N2Z id thm
+R3702:3707 Coq.ZArith.Znat N2Z id thm
+R3720:3726 Theroies.BoundedN BoundedN of_to_N thm
+R3720:3726 Theroies.BoundedN BoundedN of_to_N thm
+prf 3745:3753 BoundedN of_N_some
+R3764:3764 Coq.Numbers.BinNums <> N ind
+binder 3756:3760 <> bound:47
+R3772:3772 Coq.Numbers.BinNums <> N ind
+binder 3768:3768 <> m:48
+R3780:3787 Theroies.BoundedN <> BoundedN ind
+R3789:3793 Theroies.BoundedN <> bound:47 var
+binder 3776:3776 <> n:49
+R3817:3820 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3808:3810 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3802:3805 Theroies.BoundedN BoundedN of_N def
+R3807:3807 Theroies.BoundedN <> m:48 var
+R3811:3814 Coq.Init.Datatypes <> Some constr
+R3816:3816 Theroies.BoundedN <> n:49 var
+R3827:3829 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3821:3824 Theroies.BoundedN BoundedN to_N def
+R3826:3826 Theroies.BoundedN <> n:49 var
+R3830:3830 Theroies.BoundedN <> m:48 var
+R3867:3870 Theroies.BoundedN BoundedN of_N def
+R3892:3903 Theroies.BoundedN BoundedN of_N_compare def
+R3892:3903 Theroies.BoundedN BoundedN of_N_compare def
+prf 3962:3970 BoundedN of_N_none
+R3981:3981 Coq.Numbers.BinNums <> N ind
+binder 3973:3977 <> bound:50
+R3989:3989 Coq.Numbers.BinNums <> N ind
+binder 3985:3985 <> m:51
+R4018:4021 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4011:4013 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3999:4002 Theroies.BoundedN BoundedN of_N def
+R4004:4008 Theroies.BoundedN <> bound:50 var
+R4010:4010 Theroies.BoundedN <> m:51 var
+R4014:4017 Coq.Init.Datatypes <> None constr
+R4027:4030 Coq.NArith.BinNat <> ::N_scope:x_'<='_x not
+R4022:4026 Theroies.BoundedN <> bound:50 var
+R4031:4031 Theroies.BoundedN <> m:51 var
+R4068:4071 Theroies.BoundedN BoundedN of_N def
+R4093:4104 Theroies.BoundedN BoundedN of_N_compare def
+R4093:4104 Theroies.BoundedN BoundedN of_N_compare def
+R4146:4157 Theroies.BoundedN BoundedN of_N_compare def
+R4187:4190 Coq.NArith.BinNat <> ::N_scope:x_'?='_x not
+R4187:4190 Coq.NArith.BinNat <> ::N_scope:x_'?='_x not
+prf 4233:4243 BoundedN of_nat_some
+R4254:4254 Coq.Numbers.BinNums <> N ind
+binder 4246:4250 <> bound:52
+R4262:4264 Coq.Init.Datatypes <> nat ind
+binder 4258:4258 <> m:53
+R4272:4279 Theroies.BoundedN <> BoundedN ind
+R4281:4285 Theroies.BoundedN <> bound:52 var
+binder 4268:4268 <> n:54
+R4311:4314 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4302:4304 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4294:4299 Theroies.BoundedN BoundedN of_nat def
+R4301:4301 Theroies.BoundedN <> m:53 var
+R4305:4308 Coq.Init.Datatypes <> Some constr
+R4310:4310 Theroies.BoundedN <> n:54 var
+R4323:4325 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4315:4320 Theroies.BoundedN BoundedN to_nat def
+R4322:4322 Theroies.BoundedN <> n:54 var
+R4326:4326 Theroies.BoundedN <> m:53 var
+R4363:4368 Theroies.BoundedN BoundedN to_nat def
+R4384:4392 Theroies.BoundedN BoundedN of_N_some thm
+R4384:4392 Theroies.BoundedN BoundedN of_N_some thm
+R4384:4392 Theroies.BoundedN BoundedN of_N_some thm
+R4408:4415 Coq.NArith.Nnat Nat2N id thm
+R4408:4415 Coq.NArith.Nnat Nat2N id thm
+prf 4434:4444 BoundedN of_nat_none
+R4455:4455 Coq.Numbers.BinNums <> N ind
+binder 4447:4451 <> bound:55
+R4463:4465 Coq.Init.Datatypes <> nat ind
+binder 4459:4459 <> m:56
+R4496:4499 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4489:4491 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4475:4480 Theroies.BoundedN BoundedN of_nat def
+R4482:4486 Theroies.BoundedN <> bound:55 var
+R4488:4488 Theroies.BoundedN <> m:56 var
+R4492:4495 Coq.Init.Datatypes <> None constr
+R4505:4508 Coq.NArith.BinNat <> ::N_scope:x_'<='_x not
+R4500:4504 Theroies.BoundedN <> bound:55 var
+R4509:4516 Coq.NArith.BinNat N of_nat def
+R4518:4518 Theroies.BoundedN <> m:56 var
+R4536:4544 Theroies.BoundedN BoundedN of_N_none thm
+R4536:4544 Theroies.BoundedN BoundedN of_N_none thm
+prf 4561:4573 BoundedN in_map_of_nat
+R4584:4584 Coq.Numbers.BinNums <> N ind
+binder 4576:4580 <> bound:57
+R4592:4599 Theroies.BoundedN <> BoundedN ind
+R4601:4605 Theroies.BoundedN <> bound:57 var
+binder 4588:4588 <> n:58
+R4614:4617 Coq.Init.Datatypes <> list ind
+R4619:4621 Coq.Init.Datatypes <> nat ind
+binder 4609:4610 <> xs:59
+R4666:4670 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R4630:4631 Coq.Lists.List <> In def
+R4636:4645 Theroies.Extras <> map_option def
+R4663:4664 Theroies.BoundedN <> xs:59 var
+R4649:4654 Theroies.BoundedN BoundedN of_nat def
+R4656:4660 Theroies.BoundedN <> bound:57 var
+R4633:4633 Theroies.BoundedN <> n:58 var
+R4671:4672 Coq.Lists.List <> In def
+R4685:4686 Theroies.BoundedN <> xs:59 var
+R4675:4680 Theroies.BoundedN BoundedN to_nat def
+R4682:4682 Theroies.BoundedN <> n:58 var
+R4793:4798 Theroies.BoundedN BoundedN of_nat def
+R4793:4798 Theroies.BoundedN BoundedN of_nat def
+R4927:4937 Theroies.BoundedN BoundedN of_nat_some thm
+R4927:4937 Theroies.BoundedN BoundedN of_nat_some thm
+R5029:5037 Theroies.BoundedN BoundedN of_to_nat thm
+R5029:5037 Theroies.BoundedN BoundedN of_to_nat thm
+R5029:5037 Theroies.BoundedN BoundedN of_to_nat thm
+R5167:5175 Theroies.BoundedN BoundedN of_to_nat thm
+R5167:5175 Theroies.BoundedN BoundedN of_to_nat thm
+R5167:5175 Theroies.BoundedN BoundedN of_to_nat thm
+mod 5244:5248 <> BoundedN.Stdpp
+R5262:5270 stdpp.countable <> <> mod
+prf 5283:5288 BoundedN.Stdpp eq_dec
+R5299:5299 Coq.Numbers.BinNums <> N ind
+binder 5291:5295 <> bound:60
+R5304:5313 stdpp.base <> EqDecision abbrev
+R5316:5323 Theroies.BoundedN <> BoundedN ind
+R5325:5329 Theroies.BoundedN <> bound:60 var
+R5378:5394 Theroies.BoundedN BoundedN eqb_spec thm
+R5378:5394 Theroies.BoundedN BoundedN eqb_spec thm
+inst 5458:5470 BoundedN.Stdpp BoundedNEqDec
+R5481:5481 Coq.Numbers.BinNums <> N ind
+binder 5473:5477 <> bound:61
+R5486:5495 stdpp.base <> EqDecision abbrev
+R5498:5505 Theroies.BoundedN <> BoundedN ind
+R5507:5511 Theroies.BoundedN <> bound:61 var
+R5523:5528 Theroies.BoundedN BoundedN.Stdpp eq_dec thm
+def 5547:5560 BoundedN.Stdpp encode_bounded
+R5571:5571 Coq.Numbers.BinNums <> N ind
+binder 5563:5567 <> bound:62
+R5579:5586 Theroies.BoundedN <> BoundedN ind
+R5588:5592 Theroies.BoundedN <> bound:62 var
+binder 5575:5575 <> n:63
+R5597:5604 Coq.Numbers.BinNums <> positive ind
+R5615:5620 stdpp.countable <> encode meth
+R5623:5626 Theroies.BoundedN BoundedN to_N def
+R5628:5628 Theroies.BoundedN <> n:63 var
+def 5648:5661 BoundedN.Stdpp decode_bounded
+R5672:5672 Coq.Numbers.BinNums <> N ind
+binder 5664:5668 <> bound:64
+R5680:5687 Coq.Numbers.BinNums <> positive ind
+binder 5676:5676 <> n:65
+R5692:5697 Coq.Init.Datatypes <> option ind
+R5700:5707 Theroies.BoundedN <> BoundedN ind
+R5709:5713 Theroies.BoundedN <> bound:64 var
+R5733:5737 Theroies.Monads <> :::x_'>>='_x not
+R5725:5730 stdpp.countable <> decode meth
+R5732:5732 Theroies.BoundedN <> n:65 var
+R5738:5741 Theroies.BoundedN BoundedN of_N def
+prf 5755:5775 BoundedN.Stdpp decode_encode_bounded
+R5786:5786 Coq.Numbers.BinNums <> N ind
+binder 5778:5782 <> bound:66
+R5794:5801 Theroies.BoundedN <> BoundedN ind
+R5803:5807 Theroies.BoundedN <> bound:66 var
+binder 5790:5790 <> n:67
+R5851:5853 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5818:5831 Theroies.BoundedN BoundedN.Stdpp decode_bounded def
+R5834:5847 Theroies.BoundedN BoundedN.Stdpp encode_bounded def
+R5849:5849 Theroies.BoundedN <> n:67 var
+R5854:5857 Coq.Init.Datatypes <> Some constr
+R5859:5859 Theroies.BoundedN <> n:67 var
+R5886:5899 Theroies.BoundedN BoundedN.Stdpp decode_bounded def
+R5902:5915 Theroies.BoundedN BoundedN.Stdpp encode_bounded def
+R5932:5944 stdpp.countable <> decode_encode meth
+R5932:5944 stdpp.countable <> decode_encode meth
+R5932:5944 stdpp.countable <> decode_encode meth
+R5970:5976 Theroies.BoundedN BoundedN of_to_N thm
+R5970:5976 Theroies.BoundedN BoundedN of_to_N thm
+inst 6009:6025 BoundedN.Stdpp BoundedNCountable
+R6036:6036 Coq.Numbers.BinNums <> N ind
+binder 6028:6032 <> bound:68
+R6041:6049 stdpp.countable <> Countable class
+R6052:6059 Theroies.BoundedN <> BoundedN ind
+R6061:6065 Theroies.BoundedN <> bound:68 var
+R6080:6085 stdpp.countable <> encode meth
+R6080:6085 stdpp.countable <> encode meth
+R6080:6085 stdpp.countable <> encode meth
+R6115:6120 stdpp.countable <> decode meth
+R6115:6120 stdpp.countable <> decode meth
+R6150:6162 stdpp.countable <> decode_encode meth
+R6150:6162 stdpp.countable <> decode_encode meth
+R6090:6103 Theroies.BoundedN BoundedN.Stdpp encode_bounded def
+R6125:6138 Theroies.BoundedN BoundedN.Stdpp decode_bounded def
+R6167:6187 Theroies.BoundedN BoundedN.Stdpp decode_encode_bounded thm
+R6200:6204 Theroies.BoundedN BoundedN.Stdpp <> mod
+def 6221:6236 BoundedN bounded_elements
+R6247:6247 Coq.Numbers.BinNums <> N ind
+binder 6239:6243 <> bound:69
+R6252:6255 Coq.Init.Datatypes <> list ind
+R6258:6265 Theroies.BoundedN <> BoundedN ind
+R6267:6271 Theroies.BoundedN <> bound:69 var
+R6281:6290 Theroies.Extras <> map_option def
+R6300:6307 Coq.Lists.List <> seq def
+R6312:6319 Coq.NArith.BinNat N to_nat def
+R6321:6325 Theroies.BoundedN <> bound:69 var
+R6292:6297 Theroies.BoundedN BoundedN of_nat def
+prf 6339:6358 BoundedN bounded_elements_set
+R6369:6369 Coq.Numbers.BinNums <> N ind
+binder 6361:6365 <> bound:70
+R6378:6382 Coq.Lists.List <> NoDup ind
+R6385:6400 Theroies.BoundedN BoundedN bounded_elements def
+R6402:6406 Theroies.BoundedN <> bound:70 var
+R6430:6445 Theroies.BoundedN BoundedN bounded_elements def
+R6464:6472 Coq.Lists.List <> seq_NoDup thm
+R6475:6482 Coq.NArith.BinNat N to_nat def
+R6464:6472 Coq.Lists.List <> seq_NoDup thm
+R6475:6482 Coq.NArith.BinNat N to_nat def
+R6520:6525 Coq.Lists.List <> in_seq thm
+R6528:6535 Coq.NArith.BinNat N to_nat def
+R6520:6525 Coq.Lists.List <> in_seq thm
+R6528:6535 Coq.NArith.BinNat N to_nat def
+binder 6579:6579 <> n:71
+R6584:6588 Coq.Init.Logic <> proj1 thm
+R6599:6599 Theroies.BoundedN <> n:71 var
+binder 6579:6579 <> n:72
+R6584:6588 Coq.Init.Logic <> proj1 thm
+R6599:6599 Theroies.BoundedN <> n:72 var
+R6739:6747 Coq.Init.Logic <> or_introl constr
+R6749:6755 Coq.Init.Logic <> eq_refl constr
+R6739:6747 Coq.Init.Logic <> or_introl constr
+R6749:6755 Coq.Init.Logic <> eq_refl constr
+R6852:6857 Theroies.BoundedN BoundedN of_nat def
+R6852:6857 Theroies.BoundedN BoundedN of_nat def
+R6898:6908 Theroies.BoundedN BoundedN of_nat_none thm
+R6898:6908 Theroies.BoundedN BoundedN of_nat_none thm
+R6977:6989 Theroies.BoundedN BoundedN in_map_of_nat thm
+R6977:6989 Theroies.BoundedN BoundedN in_map_of_nat thm
+R7011:7021 Theroies.BoundedN BoundedN of_nat_some thm
+R7011:7021 Theroies.BoundedN BoundedN of_nat_some thm
+R7144:7152 Coq.Init.Logic <> or_intror constr
+R7144:7152 Coq.Init.Logic <> or_intror constr
+prf 7180:7199 BoundedN bounded_elements_all
+R7210:7210 Coq.Numbers.BinNums <> N ind
+binder 7202:7206 <> bound:73
+binder 7226:7226 <> a:74
+R7229:7230 Coq.Lists.List <> In def
+R7235:7250 Theroies.BoundedN BoundedN bounded_elements def
+R7252:7256 Theroies.BoundedN <> bound:73 var
+R7232:7232 Theroies.BoundedN <> a:74 var
+R7280:7295 Theroies.BoundedN BoundedN bounded_elements def
+R7322:7334 Theroies.BoundedN BoundedN in_map_of_nat thm
+R7322:7334 Theroies.BoundedN BoundedN in_map_of_nat thm
+R7347:7352 Coq.Lists.List <> in_seq thm
+R7347:7352 Coq.Lists.List <> in_seq thm
+R7366:7371 Theroies.BoundedN BoundedN to_nat def
+R7421:7421 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7432:7435 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7427:7430 Coq.NArith.BinNat <> ::N_scope:x_'?='_x not
+R7436:7437 Coq.Init.Datatypes <> Gt constr
+R7451:7453 Coq.NArith.BinNat <> ::N_scope:x_'>'_x not
+R7421:7421 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7432:7435 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7427:7430 Coq.NArith.BinNat <> ::N_scope:x_'?='_x not
+R7436:7437 Coq.Init.Datatypes <> Gt constr
+R7451:7453 Coq.NArith.BinNat <> ::N_scope:x_'>'_x not
+inst 7499:7513 BoundedN BoundedN_finite
+R7524:7524 Coq.Numbers.BinNums <> N ind
+binder 7516:7520 <> bound:75
+R7529:7534 Theroies.Finite <> Finite class
+R7537:7544 Theroies.BoundedN <> BoundedN ind
+R7546:7550 Theroies.BoundedN <> bound:75 var
+R7563:7570 Theroies.Finite <> elements meth
+R7563:7570 Theroies.Finite <> elements meth
+R7563:7570 Theroies.Finite <> elements meth
+R7606:7617 Theroies.Finite <> elements_set meth
+R7606:7617 Theroies.Finite <> elements_set meth
+R7657:7668 Theroies.Finite <> elements_all meth
+R7657:7668 Theroies.Finite <> elements_all meth
+R7575:7590 Theroies.BoundedN BoundedN bounded_elements def
+R7622:7641 Theroies.BoundedN BoundedN bounded_elements_set thm
+R7673:7692 Theroies.BoundedN BoundedN bounded_elements_all thm
+R7709:7716 Theroies.BoundedN BoundedN <> mod

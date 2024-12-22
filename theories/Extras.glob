@@ -1,0 +1,2119 @@
+DIGEST 5f87ff24b58c8745973d98331db2a133
+FTheroies.Extras
+R88:93 Coq.ZArith.ZArith <> <> lib
+R120:123 Coq.Lists.List <> <> lib
+R150:160 Coq.Sorting.Permutation <> <> lib
+R187:195 Coq.Classes.Morphisms <> <> lib
+R222:226 Coq.micromega.Psatz <> <> lib
+R253:261 Coq.Logic.Eqdep_dec <> <> lib
+R279:288 Theroies.Automation <> <> lib
+R298:310 Coq.Lists.List ListNotations <> mod
+def 445:454 <> find_first
+binder 457:457 <> A:1
+binder 459:459 <> B:2
+R475:478 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R474:474 Theroies.Extras <> A:1 var
+R479:484 Coq.Init.Datatypes <> option ind
+R486:486 Theroies.Extras <> B:2 var
+binder 470:470 <> f:3
+R494:497 Coq.Init.Datatypes <> list ind
+R499:499 Theroies.Extras <> A:1 var
+binder 490:490 <> l:4
+R506:511 Coq.Init.Datatypes <> option ind
+R513:513 Theroies.Extras <> B:2 var
+R526:526 Theroies.Extras <> l:4 var
+R539:542 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R537:538 Coq.Lists.List <> hd def
+R543:544 Coq.Lists.List <> tl def
+R555:555 Theroies.Extras <> f:3 var
+R583:586 Coq.Init.Datatypes <> Some constr
+R593:596 Coq.Init.Datatypes <> Some constr
+R618:621 Coq.Init.Datatypes <> None constr
+R626:635 Theroies.Extras <> find_first:5 def
+R637:637 Theroies.Extras <> f:3 var
+R666:667 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R672:675 Coq.Init.Datatypes <> None constr
+def 802:811 <> map_option
+binder 814:814 <> A:7
+binder 816:816 <> B:8
+R832:835 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R831:831 Theroies.Extras <> A:7 var
+R836:841 Coq.Init.Datatypes <> option ind
+R843:843 Theroies.Extras <> B:8 var
+binder 827:827 <> f:9
+R851:854 Coq.Init.Datatypes <> list ind
+R856:856 Theroies.Extras <> A:7 var
+binder 847:847 <> l:10
+R863:866 Coq.Init.Datatypes <> list ind
+R868:868 Theroies.Extras <> B:8 var
+R881:881 Theroies.Extras <> l:10 var
+R894:897 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R892:893 Coq.Lists.List <> hd def
+R898:899 Coq.Lists.List <> tl def
+R910:910 Theroies.Extras <> f:9 var
+R940:943 Coq.Init.Datatypes <> Some constr
+R951:954 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R955:964 Theroies.Extras <> map_option:11 def
+R966:966 Theroies.Extras <> f:9 var
+R991:994 Coq.Init.Datatypes <> None constr
+R999:1008 Theroies.Extras <> map_option:11 def
+R1010:1010 Theroies.Extras <> f:9 var
+R1039:1040 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R1045:1046 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+def 1416:1427 <> with_default
+binder 1430:1430 <> A:13
+R1445:1445 Theroies.Extras <> A:13 var
+binder 1441:1441 <> a:14
+R1453:1458 Coq.Init.Datatypes <> option ind
+R1460:1460 Theroies.Extras <> A:13 var
+binder 1449:1449 <> o:15
+R1465:1465 Theroies.Extras <> A:13 var
+R1478:1478 Theroies.Extras <> o:15 var
+R1489:1492 Coq.Init.Datatypes <> Some constr
+R1505:1508 Coq.Init.Datatypes <> None constr
+R1513:1513 Theroies.Extras <> a:14 var
+def 1534:1546 <> unpack_option
+binder 1549:1549 <> A:17
+R1564:1569 Coq.Init.Datatypes <> option ind
+R1571:1571 Theroies.Extras <> A:17 var
+binder 1560:1560 <> a:18
+R1585:1585 Theroies.Extras <> a:18 var
+R1600:1600 Theroies.Extras <> a:19 var
+R1627:1630 Coq.Init.Datatypes <> Some constr
+R1637:1637 Theroies.Extras <> A:17 var
+R1659:1662 Coq.Init.Datatypes <> None constr
+R1667:1670 Coq.Init.Datatypes <> unit ind
+R1703:1706 Coq.Init.Datatypes <> Some constr
+R1719:1722 Coq.Init.Datatypes <> None constr
+R1727:1728 Coq.Init.Datatypes <> tt constr
+def 1747:1750 <> sumZ
+binder 1753:1753 <> A:21
+R1769:1772 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1768:1768 Theroies.Extras <> A:21 var
+R1773:1773 Coq.Numbers.BinNums <> Z ind
+binder 1764:1764 <> f:22
+R1782:1785 Coq.Init.Datatypes <> list ind
+R1787:1787 Theroies.Extras <> A:21 var
+binder 1777:1778 <> xs:23
+R1792:1792 Coq.Numbers.BinNums <> Z ind
+R1805:1806 Theroies.Extras <> xs:23 var
+R1817:1818 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R1830:1833 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R1844:1846 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R1841:1841 Theroies.Extras <> f:22 var
+R1847:1850 Theroies.Extras <> sumZ:24 def
+R1852:1852 Theroies.Extras <> f:22 var
+def 1875:1880 <> sumnat
+binder 1883:1883 <> A:26
+R1899:1902 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1898:1898 Theroies.Extras <> A:26 var
+R1903:1905 Coq.Init.Datatypes <> nat ind
+binder 1894:1894 <> f:27
+R1914:1917 Coq.Init.Datatypes <> list ind
+R1919:1919 Theroies.Extras <> A:26 var
+binder 1909:1910 <> xs:28
+R1924:1926 Coq.Init.Datatypes <> nat ind
+R1939:1940 Theroies.Extras <> xs:28 var
+R1951:1952 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R1964:1967 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R1978:1980 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R1975:1975 Theroies.Extras <> f:27 var
+R1981:1986 Theroies.Extras <> sumnat:29 def
+R1988:1988 Theroies.Extras <> f:27 var
+prf 2008:2017 <> sumnat_app
+binder 2026:2026 <> A:31
+R2042:2045 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2041:2041 Theroies.Extras <> A:31 var
+R2046:2048 Coq.Init.Datatypes <> nat ind
+binder 2037:2037 <> f:32
+R2060:2063 Coq.Init.Datatypes <> list ind
+R2065:2065 Theroies.Extras <> A:31 var
+binder 2052:2053 <> xs:33
+binder 2055:2056 <> ys:34
+R2091:2093 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2072:2077 Theroies.Extras <> sumnat def
+R2084:2087 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R2082:2083 Theroies.Extras <> xs:33 var
+R2088:2089 Theroies.Extras <> ys:34 var
+R2079:2079 Theroies.Extras <> f:32 var
+R2105:2107 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R2094:2099 Theroies.Extras <> sumnat def
+R2103:2104 Theroies.Extras <> xs:33 var
+R2101:2101 Theroies.Extras <> f:32 var
+R2108:2113 Theroies.Extras <> sumnat def
+R2117:2118 Theroies.Extras <> ys:34 var
+R2115:2115 Theroies.Extras <> f:32 var
+prf 2229:2246 <> sumnat_permutation
+binder 2255:2255 <> A:35
+R2271:2274 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2270:2270 Theroies.Extras <> A:35 var
+R2275:2277 Coq.Init.Datatypes <> nat ind
+binder 2266:2266 <> f:36
+R2289:2292 Coq.Init.Datatypes <> list ind
+R2294:2294 Theroies.Extras <> A:35 var
+binder 2281:2282 <> xs:37
+binder 2284:2285 <> ys:38
+R2314:2324 Coq.Sorting.Permutation <> Permutation ind
+R2329:2330 Theroies.Extras <> ys:38 var
+R2326:2327 Theroies.Extras <> xs:37 var
+binder 2304:2310 <> perm_eq:39
+R2348:2350 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2337:2342 Theroies.Extras <> sumnat def
+R2346:2347 Theroies.Extras <> xs:37 var
+R2344:2344 Theroies.Extras <> f:36 var
+R2351:2356 Theroies.Extras <> sumnat def
+R2360:2361 Theroies.Extras <> ys:38 var
+R2358:2358 Theroies.Extras <> f:36 var
+inst 2435:2452 <> sumnat_perm_proper
+binder 2455:2455 <> A:40
+R2469:2474 Coq.Classes.Morphisms <> Proper class
+R2511:2516 Theroies.Extras <> sumnat def
+R2479:2483 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R2477:2478 Coq.Init.Logic <> eq ind
+R2502:2506 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R2484:2494 Coq.Sorting.Permutation <> Permutation ind
+R2500:2500 Theroies.Extras <> A:40 var
+R2507:2508 Coq.Init.Logic <> eq ind
+R2557:2574 Theroies.Extras <> sumnat_permutation thm
+R2557:2574 Theroies.Extras <> sumnat_permutation thm
+prf 2589:2604 <> sumZ_permutation
+binder 2613:2613 <> A:41
+R2629:2632 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2628:2628 Theroies.Extras <> A:41 var
+R2633:2633 Coq.Numbers.BinNums <> Z ind
+binder 2624:2624 <> f:42
+R2645:2648 Coq.Init.Datatypes <> list ind
+R2650:2650 Theroies.Extras <> A:41 var
+binder 2637:2638 <> xs:43
+binder 2640:2641 <> ys:44
+R2670:2680 Coq.Sorting.Permutation <> Permutation ind
+R2685:2686 Theroies.Extras <> ys:44 var
+R2682:2683 Theroies.Extras <> xs:43 var
+binder 2660:2666 <> perm_eq:45
+R2702:2704 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2693:2696 Theroies.Extras <> sumZ def
+R2700:2701 Theroies.Extras <> xs:43 var
+R2698:2698 Theroies.Extras <> f:42 var
+R2705:2708 Theroies.Extras <> sumZ def
+R2712:2713 Theroies.Extras <> ys:44 var
+R2710:2710 Theroies.Extras <> f:42 var
+inst 2787:2802 <> sumZ_perm_proper
+binder 2805:2805 <> A:46
+R2819:2824 Coq.Classes.Morphisms <> Proper class
+R2861:2864 Theroies.Extras <> sumZ def
+R2829:2833 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R2827:2828 Coq.Init.Logic <> eq ind
+R2852:2856 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R2834:2844 Coq.Sorting.Permutation <> Permutation ind
+R2850:2850 Theroies.Extras <> A:46 var
+R2857:2858 Coq.Init.Logic <> eq ind
+R2905:2920 Theroies.Extras <> sumZ_permutation thm
+R2905:2920 Theroies.Extras <> sumZ_permutation thm
+prf 2955:2962 <> sumZ_app
+binder 2971:2971 <> A:47
+R2987:2990 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2986:2986 Theroies.Extras <> A:47 var
+R2991:2991 Coq.Numbers.BinNums <> Z ind
+binder 2982:2982 <> f:48
+R3003:3006 Coq.Init.Datatypes <> list ind
+R3008:3008 Theroies.Extras <> A:47 var
+binder 2995:2996 <> xs:49
+binder 2998:2999 <> ys:50
+R3032:3034 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3015:3018 Theroies.Extras <> sumZ def
+R3025:3028 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3023:3024 Theroies.Extras <> xs:49 var
+R3029:3030 Theroies.Extras <> ys:50 var
+R3020:3020 Theroies.Extras <> f:48 var
+R3044:3046 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R3035:3038 Theroies.Extras <> sumZ def
+R3042:3043 Theroies.Extras <> xs:49 var
+R3040:3040 Theroies.Extras <> f:48 var
+R3047:3050 Theroies.Extras <> sumZ def
+R3054:3055 Theroies.Extras <> ys:50 var
+R3052:3052 Theroies.Extras <> f:48 var
+prf 3166:3179 <> in_app_cons_or
+binder 3182:3182 <> A:51
+R3199:3199 Theroies.Extras <> A:51 var
+binder 3193:3193 <> x:52
+binder 3195:3195 <> y:53
+R3211:3214 Coq.Init.Datatypes <> list ind
+R3216:3216 Theroies.Extras <> A:51 var
+binder 3203:3204 <> xs:54
+binder 3206:3207 <> ys:55
+R3229:3234 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3224:3227 Coq.Init.Logic <> ::type_scope:x_'<>'_x not
+R3223:3223 Theroies.Extras <> x:52 var
+R3228:3228 Theroies.Extras <> y:53 var
+R3255:3260 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3235:3236 Coq.Lists.List <> In def
+R3243:3246 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3241:3242 Theroies.Extras <> xs:54 var
+R3248:3251 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R3247:3247 Theroies.Extras <> y:53 var
+R3252:3253 Theroies.Extras <> ys:55 var
+R3238:3238 Theroies.Extras <> x:52 var
+R3261:3262 Coq.Lists.List <> In def
+R3269:3272 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3267:3268 Theroies.Extras <> xs:54 var
+R3273:3274 Theroies.Extras <> ys:55 var
+R3264:3264 Theroies.Extras <> x:52 var
+R3316:3324 Coq.Lists.List <> in_or_app thm
+R3316:3324 Coq.Lists.List <> in_or_app thm
+R3335:3343 Coq.Lists.List <> in_app_or thm
+R3335:3343 Coq.Lists.List <> in_app_or thm
+prf 3474:3483 <> incl_split
+binder 3486:3486 <> A:56
+R3505:3508 Coq.Init.Datatypes <> list ind
+R3510:3510 Theroies.Extras <> A:56 var
+binder 3497:3497 <> l:57
+binder 3499:3499 <> m:58
+binder 3501:3501 <> n:59
+R3532:3535 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3517:3520 Coq.Lists.List <> incl def
+R3531:3531 Theroies.Extras <> n:59 var
+R3524:3527 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3523:3523 Theroies.Extras <> l:57 var
+R3528:3528 Theroies.Extras <> m:58 var
+R3544:3547 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R3536:3539 Coq.Lists.List <> incl def
+R3543:3543 Theroies.Extras <> n:59 var
+R3541:3541 Theroies.Extras <> l:57 var
+R3548:3551 Coq.Lists.List <> incl def
+R3555:3555 Theroies.Extras <> n:59 var
+R3553:3553 Theroies.Extras <> m:58 var
+R3586:3589 Coq.Lists.List <> incl def
+prf 3617:3637 <> NoDup_incl_reorganize
+binder 3646:3646 <> A:60
+R3670:3673 Coq.Init.Datatypes <> list ind
+R3675:3675 Theroies.Extras <> A:60 var
+binder 3663:3663 <> l:61
+binder 3665:3666 <> l':62
+R3690:3695 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3682:3686 Coq.Lists.List <> NoDup ind
+R3688:3689 Theroies.Extras <> l':62 var
+R3705:3710 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3696:3699 Coq.Lists.List <> incl def
+R3704:3704 Theroies.Extras <> l:61 var
+R3701:3702 Theroies.Extras <> l':62 var
+R3711:3717 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R3721:3722 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 3718:3720 <> suf:63
+R3723:3733 Coq.Sorting.Permutation <> Permutation ind
+R3747:3747 Theroies.Extras <> l:61 var
+R3738:3741 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3736:3737 Theroies.Extras <> l':62 var
+R3742:3744 Theroies.Extras <> suf:63 var
+R3849:3864 Coq.Sorting.Permutation <> Permutation_refl thm
+R3849:3864 Coq.Sorting.Permutation <> Permutation_refl thm
+R3887:3888 Coq.Lists.List <> In def
+R3887:3888 Coq.Lists.List <> In def
+R3958:3965 Coq.Lists.List <> in_split thm
+R3958:3965 Coq.Lists.List <> in_split thm
+R4053:4056 Coq.Lists.List <> incl def
+R4066:4069 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4053:4056 Coq.Lists.List <> incl def
+R4066:4069 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4114:4122 Coq.Lists.List <> in_or_app thm
+R4114:4122 Coq.Lists.List <> in_or_app thm
+R4140:4149 Theroies.Extras <> incl_split thm
+R4151:4151 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R4153:4153 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R4140:4149 Theroies.Extras <> incl_split thm
+R4151:4151 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R4153:4153 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R4293:4301 Coq.Lists.List <> in_app_or thm
+R4293:4301 Coq.Lists.List <> in_app_or thm
+prf 4504:4515 <> in_NoDup_app
+binder 4518:4518 <> A:64
+R4533:4533 Theroies.Extras <> A:64 var
+binder 4529:4529 <> x:65
+R4543:4546 Coq.Init.Datatypes <> list ind
+R4548:4548 Theroies.Extras <> A:64 var
+binder 4537:4537 <> l:66
+binder 4539:4539 <> m:67
+R4561:4564 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4555:4556 Coq.Lists.List <> In def
+R4560:4560 Theroies.Extras <> l:66 var
+R4558:4558 Theroies.Extras <> x:65 var
+R4579:4582 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4565:4569 Coq.Lists.List <> NoDup ind
+R4573:4576 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4572:4572 Theroies.Extras <> l:66 var
+R4577:4577 Theroies.Extras <> m:67 var
+R4583:4583 Coq.Init.Logic <> ::type_scope:'~'_x not
+R4584:4585 Coq.Lists.List <> In def
+R4589:4589 Theroies.Extras <> m:67 var
+R4587:4587 Theroies.Extras <> x:65 var
+R4649:4656 Coq.Lists.List <> in_split thm
+R4649:4656 Coq.Lists.List <> in_split thm
+R4705:4705 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4719:4723 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4708:4711 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4713:4716 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4735:4738 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4740:4744 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4752:4752 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4747:4750 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4705:4705 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4719:4723 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4708:4711 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4713:4716 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4735:4738 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4740:4744 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4752:4752 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4747:4750 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R4784:4797 Coq.Lists.List <> NoDup_remove_2 thm
+R4784:4797 Coq.Lists.List <> NoDup_remove_2 thm
+R4836:4844 Coq.Lists.List <> app_assoc thm
+R4836:4844 Coq.Lists.List <> app_assoc thm
+R4836:4844 Coq.Lists.List <> app_assoc thm
+R4886:4898 Coq.Lists.List <> app_comm_cons thm
+R4886:4898 Coq.Lists.List <> app_comm_cons thm
+R4886:4898 Coq.Lists.List <> app_comm_cons thm
+R4929:4937 Coq.Lists.List <> app_assoc thm
+R4929:4937 Coq.Lists.List <> app_assoc thm
+R4929:4937 Coq.Lists.List <> app_assoc thm
+prf 4952:4958 <> seq_app
+binder 4960:4964 <> start:68
+binder 4966:4969 <> len1:69
+binder 4971:4974 <> len2:70
+R5003:5005 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4980:4982 Coq.Lists.List <> seq def
+R4995:4997 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R4991:4994 Theroies.Extras <> len1:69 var
+R4998:5001 Theroies.Extras <> len2:70 var
+R4984:4988 Theroies.Extras <> start:68 var
+R5020:5023 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R5006:5008 Coq.Lists.List <> seq def
+R5016:5019 Theroies.Extras <> len1:69 var
+R5010:5014 Theroies.Extras <> start:68 var
+R5024:5026 Coq.Lists.List <> seq def
+R5043:5046 Theroies.Extras <> len2:70 var
+R5034:5036 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R5029:5033 Theroies.Extras <> start:68 var
+R5037:5040 Theroies.Extras <> len1:69 var
+R5135:5145 Coq.Arith.PeanoNat Nat add_0_r thm
+R5135:5145 Coq.Arith.PeanoNat Nat add_0_r thm
+R5135:5145 Coq.Arith.PeanoNat Nat add_0_r thm
+prf 5225:5234 <> sumZ_seq_S
+binder 5236:5236 <> f:71
+binder 5238:5242 <> start:72
+binder 5244:5246 <> len:73
+R5278:5280 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5252:5255 Theroies.Extras <> sumZ def
+R5260:5262 Coq.Lists.List <> seq def
+R5271:5271 Coq.Init.Datatypes <> S constr
+R5273:5275 Theroies.Extras <> len:73 var
+R5264:5268 Theroies.Extras <> start:72 var
+R5257:5257 Theroies.Extras <> f:71 var
+R5303:5305 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R5281:5284 Theroies.Extras <> sumZ def
+R5289:5291 Coq.Lists.List <> seq def
+R5299:5301 Theroies.Extras <> len:73 var
+R5293:5297 Theroies.Extras <> start:72 var
+R5286:5286 Theroies.Extras <> f:71 var
+R5306:5306 Theroies.Extras <> f:71 var
+R5314:5316 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R5309:5313 Theroies.Extras <> start:72 var
+R5317:5319 Theroies.Extras <> len:73 var
+R5345:5345 Coq.Init.Datatypes <> S constr
+R5361:5363 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R5345:5345 Coq.Init.Datatypes <> S constr
+R5361:5363 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R5390:5396 Theroies.Extras <> seq_app thm
+R5390:5396 Theroies.Extras <> seq_app thm
+R5390:5396 Theroies.Extras <> seq_app thm
+R5422:5429 Theroies.Extras <> sumZ_app thm
+R5422:5429 Theroies.Extras <> sumZ_app thm
+R5422:5429 Theroies.Extras <> sumZ_app thm
+prf 5458:5484 <> forall_respects_permutation
+binder 5487:5487 <> A:74
+R5499:5502 Coq.Init.Datatypes <> list ind
+R5504:5504 Theroies.Extras <> A:74 var
+binder 5491:5492 <> xs:75
+binder 5494:5495 <> ys:76
+binder 5507:5507 <> P:77
+R5530:5533 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5513:5523 Coq.Sorting.Permutation <> Permutation ind
+R5528:5529 Theroies.Extras <> ys:76 var
+R5525:5526 Theroies.Extras <> xs:75 var
+R5545:5548 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5534:5539 Coq.Lists.List <> Forall ind
+R5543:5544 Theroies.Extras <> xs:75 var
+R5541:5541 Theroies.Extras <> P:77 var
+R5549:5554 Coq.Lists.List <> Forall ind
+R5558:5559 Theroies.Extras <> ys:76 var
+R5556:5556 Theroies.Extras <> P:77 var
+R5596:5608 Coq.Lists.List <> Forall_forall thm
+R5596:5608 Coq.Lists.List <> Forall_forall thm
+R5642:5646 Coq.Init.Logic <> proj1 thm
+R5649:5661 Coq.Lists.List <> Forall_forall thm
+R5642:5646 Coq.Init.Logic <> proj1 thm
+R5649:5661 Coq.Lists.List <> Forall_forall thm
+R5694:5707 Coq.Sorting.Permutation <> Permutation_in thm
+R5694:5707 Coq.Sorting.Permutation <> Permutation_in thm
+inst 5768:5792 <> Forall_Permutation_proper
+binder 5795:5795 <> A:78
+R5802:5807 Coq.Classes.Morphisms <> Proper class
+R5843:5848 Coq.Lists.List <> Forall ind
+R5850:5850 Theroies.Extras <> A:78 var
+R5812:5816 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R5810:5811 Coq.Init.Logic <> eq ind
+R5831:5835 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R5818:5828 Coq.Sorting.Permutation <> Permutation ind
+R5830:5830 Theroies.Extras <> A:78 var
+R5836:5838 Coq.Init.Logic <> iff def
+R5916:5942 Theroies.Extras <> forall_respects_permutation thm
+R5916:5942 Theroies.Extras <> forall_respects_permutation thm
+R5916:5942 Theroies.Extras <> forall_respects_permutation thm
+inst 5992:6017 <> forallb_Permutation_proper
+binder 6020:6020 <> A:79
+R6027:6032 Coq.Classes.Morphisms <> Proper class
+R6067:6073 Coq.Lists.List <> forallb def
+R6075:6075 Theroies.Extras <> A:79 var
+R6037:6041 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R6035:6036 Coq.Init.Logic <> eq ind
+R6056:6060 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R6043:6053 Coq.Sorting.Permutation <> Permutation ind
+R6055:6055 Theroies.Extras <> A:79 var
+R6061:6062 Coq.Init.Logic <> eq ind
+binder 6106:6106 <> f:80
+R6117:6120 Coq.Init.Datatypes <> list ind
+binder 6109:6110 <> xs:81
+binder 6112:6113 <> ys:82
+R6156:6159 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6139:6149 Coq.Sorting.Permutation <> Permutation ind
+R6154:6155 Theroies.Extras <> ys:82 var
+R6151:6152 Theroies.Extras <> xs:81 var
+R6179:6182 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6172:6174 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6160:6166 Coq.Lists.List <> forallb def
+R6170:6171 Theroies.Extras <> xs:81 var
+R6168:6168 Theroies.Extras <> f:80 var
+R6175:6178 Coq.Init.Datatypes <> true constr
+R6195:6197 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6183:6189 Coq.Lists.List <> forallb def
+R6193:6194 Theroies.Extras <> ys:82 var
+R6191:6191 Theroies.Extras <> f:80 var
+R6198:6201 Coq.Init.Datatypes <> true constr
+binder 6106:6106 <> f:83
+R6117:6120 Coq.Init.Datatypes <> list ind
+binder 6109:6110 <> xs:84
+binder 6112:6113 <> ys:85
+R6156:6159 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6139:6149 Coq.Sorting.Permutation <> Permutation ind
+R6154:6155 Theroies.Extras <> ys:85 var
+R6151:6152 Theroies.Extras <> xs:84 var
+R6179:6182 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6172:6174 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6160:6166 Coq.Lists.List <> forallb def
+R6170:6171 Theroies.Extras <> xs:84 var
+R6168:6168 Theroies.Extras <> f:83 var
+R6175:6178 Coq.Init.Datatypes <> true constr
+R6195:6197 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6183:6189 Coq.Lists.List <> forallb def
+R6193:6194 Theroies.Extras <> ys:85 var
+R6191:6191 Theroies.Extras <> f:83 var
+R6198:6201 Coq.Init.Datatypes <> true constr
+R6248:6261 Coq.Lists.List <> forallb_forall thm
+R6248:6261 Coq.Lists.List <> forallb_forall thm
+R6299:6303 Coq.Init.Logic <> proj1 thm
+R6306:6319 Coq.Lists.List <> forallb_forall thm
+R6299:6303 Coq.Init.Logic <> proj1 thm
+R6306:6319 Coq.Lists.List <> forallb_forall thm
+R6412:6418 Coq.Lists.List <> forallb def
+R6440:6446 Coq.Lists.List <> forallb def
+R6412:6418 Coq.Lists.List <> forallb def
+R6440:6446 Coq.Lists.List <> forallb def
+R6440:6446 Coq.Lists.List <> forallb def
+R6549:6563 Coq.Sorting.Permutation <> Permutation_sym thm
+R6549:6563 Coq.Sorting.Permutation <> Permutation_sym thm
+prf 6604:6626 <> Forall_false_filter_nil
+binder 6629:6629 <> A:86
+R6648:6651 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6647:6647 Theroies.Extras <> A:86 var
+R6652:6655 Coq.Init.Datatypes <> bool ind
+binder 6640:6643 <> pred:87
+R6663:6666 Coq.Init.Datatypes <> list ind
+R6668:6668 Theroies.Extras <> A:86 var
+binder 6659:6659 <> l:88
+R6709:6712 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6675:6680 Coq.Lists.List <> Forall ind
+R6708:6708 Theroies.Extras <> l:88 var
+binder 6687:6687 <> a:89
+R6698:6700 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6692:6695 Theroies.Extras <> pred:87 var
+R6697:6697 Theroies.Extras <> a:89 var
+R6701:6705 Coq.Init.Datatypes <> false constr
+R6726:6728 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6713:6718 Coq.Lists.List <> filter def
+R6725:6725 Theroies.Extras <> l:88 var
+R6720:6723 Theroies.Extras <> pred:87 var
+R6729:6730 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+prf 6894:6903 <> Forall_app
+binder 6906:6906 <> A:90
+R6922:6925 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6921:6921 Theroies.Extras <> A:90 var
+binder 6917:6917 <> P:91
+R6940:6943 Coq.Init.Datatypes <> list ind
+R6945:6945 Theroies.Extras <> A:90 var
+binder 6933:6933 <> l:92
+binder 6935:6936 <> l':93
+R6977:6981 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R6962:6965 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R6952:6957 Coq.Lists.List <> Forall ind
+R6961:6961 Theroies.Extras <> l:92 var
+R6959:6959 Theroies.Extras <> P:91 var
+R6966:6971 Coq.Lists.List <> Forall ind
+R6975:6976 Theroies.Extras <> l':93 var
+R6973:6973 Theroies.Extras <> P:91 var
+R6982:6987 Coq.Lists.List <> Forall ind
+R6993:6996 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R6992:6992 Theroies.Extras <> l:92 var
+R6997:6998 Theroies.Extras <> l':93 var
+R6989:6989 Theroies.Extras <> P:91 var
+R7354:7357 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7369:7372 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7358:7363 Coq.Lists.List <> Forall ind
+R7373:7378 Coq.Lists.List <> Forall ind
+R7354:7357 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7369:7372 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7358:7363 Coq.Lists.List <> Forall ind
+R7373:7378 Coq.Lists.List <> Forall ind
+prf 7483:7492 <> filter_app
+binder 7495:7495 <> A:94
+R7507:7510 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7506:7506 Theroies.Extras <> A:94 var
+R7511:7514 Coq.Init.Datatypes <> bool ind
+binder 7499:7502 <> pred:95
+R7525:7528 Coq.Init.Datatypes <> list ind
+R7530:7530 Theroies.Extras <> A:94 var
+binder 7518:7518 <> l:96
+binder 7520:7521 <> l':97
+R7558:7560 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7537:7542 Coq.Lists.List <> filter def
+R7551:7554 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R7550:7550 Theroies.Extras <> l:96 var
+R7555:7556 Theroies.Extras <> l':97 var
+R7544:7547 Theroies.Extras <> pred:95 var
+R7574:7577 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R7561:7566 Coq.Lists.List <> filter def
+R7573:7573 Theroies.Extras <> l:96 var
+R7568:7571 Theroies.Extras <> pred:95 var
+R7578:7583 Coq.Lists.List <> filter def
+R7590:7591 Theroies.Extras <> l':97 var
+R7585:7588 Theroies.Extras <> pred:95 var
+prf 7698:7707 <> filter_map
+binder 7710:7710 <> A:98
+binder 7712:7712 <> B:99
+R7728:7731 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7727:7727 Theroies.Extras <> A:98 var
+R7732:7732 Theroies.Extras <> B:99 var
+binder 7723:7723 <> f:100
+R7744:7747 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7743:7743 Theroies.Extras <> B:99 var
+R7748:7751 Coq.Init.Datatypes <> bool ind
+binder 7736:7739 <> pred:101
+R7759:7762 Coq.Init.Datatypes <> list ind
+R7764:7764 Theroies.Extras <> A:98 var
+binder 7755:7755 <> l:102
+R7792:7796 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7771:7776 Coq.Lists.List <> filter def
+R7784:7786 Coq.Lists.List <> map def
+R7790:7790 Theroies.Extras <> l:102 var
+R7788:7788 Theroies.Extras <> f:100 var
+R7778:7781 Theroies.Extras <> pred:101 var
+R7797:7799 Coq.Lists.List <> map def
+R7804:7809 Coq.Lists.List <> filter def
+R7833:7833 Theroies.Extras <> l:102 var
+binder 7816:7816 <> a:103
+R7821:7824 Theroies.Extras <> pred:101 var
+R7827:7827 Theroies.Extras <> f:100 var
+R7829:7829 Theroies.Extras <> a:103 var
+R7801:7801 Theroies.Extras <> f:100 var
+prf 7945:7956 <> filter_false
+binder 7959:7959 <> A:104
+R7974:7977 Coq.Init.Datatypes <> list ind
+R7979:7979 Theroies.Extras <> A:104 var
+binder 7970:7970 <> l:105
+R8011:8013 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7986:7991 Coq.Lists.List <> filter def
+R8010:8010 Theroies.Extras <> l:105 var
+R8003:8007 Coq.Init.Datatypes <> false constr
+R8014:8015 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+prf 8056:8066 <> filter_true
+binder 8069:8069 <> A:106
+R8084:8087 Coq.Init.Datatypes <> list ind
+R8089:8089 Theroies.Extras <> A:106 var
+binder 8080:8080 <> l:107
+R8120:8122 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8096:8101 Coq.Lists.List <> filter def
+R8119:8119 Theroies.Extras <> l:107 var
+R8113:8116 Coq.Init.Datatypes <> true constr
+R8123:8123 Theroies.Extras <> l:107 var
+prf 8204:8221 <> Permutation_filter
+binder 8224:8224 <> A:108
+R8243:8246 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R8242:8242 Theroies.Extras <> A:108 var
+R8247:8250 Coq.Init.Datatypes <> bool ind
+binder 8235:8238 <> pred:109
+R8261:8264 Coq.Init.Datatypes <> list ind
+R8266:8266 Theroies.Extras <> A:108 var
+binder 8254:8254 <> l:110
+binder 8256:8257 <> l':111
+R8289:8294 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R8273:8283 Coq.Sorting.Permutation <> Permutation ind
+R8287:8288 Theroies.Extras <> l':111 var
+R8285:8285 Theroies.Extras <> l:110 var
+R8295:8305 Coq.Sorting.Permutation <> Permutation ind
+R8324:8329 Coq.Lists.List <> filter def
+R8336:8337 Theroies.Extras <> l':111 var
+R8331:8334 Theroies.Extras <> pred:109 var
+R8308:8313 Coq.Lists.List <> filter def
+R8320:8320 Theroies.Extras <> l:110 var
+R8315:8318 Theroies.Extras <> pred:109 var
+def 8532:8534 <> zip
+binder 8537:8537 <> X:112
+binder 8539:8539 <> Y:113
+R8548:8551 Coq.Init.Datatypes <> list ind
+R8553:8553 Theroies.Extras <> X:112 var
+binder 8543:8544 <> xs:114
+R8562:8565 Coq.Init.Datatypes <> list ind
+R8567:8567 Theroies.Extras <> Y:113 var
+binder 8557:8558 <> ys:115
+R8572:8575 Coq.Init.Datatypes <> list ind
+R8579:8581 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R8578:8578 Theroies.Extras <> X:112 var
+R8582:8582 Theroies.Extras <> Y:113 var
+R8600:8601 Theroies.Extras <> ys:115 var
+R8596:8597 Theroies.Extras <> xs:114 var
+R8613:8616 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R8622:8625 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R8638:8641 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R8632:8632 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R8634:8635 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R8637:8637 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R8642:8644 Theroies.Extras <> zip:116 def
+R8649:8650 Theroies.Extras <> ys:115 var
+R8646:8647 Theroies.Extras <> xs:114 var
+R8664:8665 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+prf 8681:8687 <> zip_app
+binder 8690:8690 <> X:119
+binder 8692:8692 <> Y:120
+R8705:8708 Coq.Init.Datatypes <> list ind
+R8710:8710 Theroies.Extras <> X:119 var
+binder 8696:8697 <> xs:121
+binder 8699:8701 <> xs':122
+R8723:8726 Coq.Init.Datatypes <> list ind
+R8728:8728 Theroies.Extras <> Y:120 var
+binder 8714:8715 <> ys:123
+binder 8717:8719 <> ys':124
+R8756:8761 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R8744:8746 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8735:8740 Coq.Init.Datatypes <> length def
+R8742:8743 Theroies.Extras <> xs:121 var
+R8747:8752 Coq.Init.Datatypes <> length def
+R8754:8755 Theroies.Extras <> ys:123 var
+R8789:8791 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8762:8764 Theroies.Extras <> zip def
+R8781:8784 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R8779:8780 Theroies.Extras <> ys:123 var
+R8785:8787 Theroies.Extras <> ys':124 var
+R8769:8772 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R8767:8768 Theroies.Extras <> xs:121 var
+R8773:8775 Theroies.Extras <> xs':122 var
+R8801:8804 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R8792:8794 Theroies.Extras <> zip def
+R8799:8800 Theroies.Extras <> ys:123 var
+R8796:8797 Theroies.Extras <> xs:121 var
+R8805:8807 Theroies.Extras <> zip def
+R8813:8815 Theroies.Extras <> ys':124 var
+R8809:8811 Theroies.Extras <> xs':122 var
+R9027:9033 Coq.Init.Logic <> f_equal thm
+R9027:9033 Coq.Init.Logic <> f_equal thm
+prf 9067:9073 <> zip_map
+binder 9076:9076 <> A:125
+binder 9078:9078 <> B:126
+binder 9080:9080 <> C:127
+binder 9082:9082 <> D:128
+R9091:9094 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9090:9090 Theroies.Extras <> A:125 var
+R9095:9095 Theroies.Extras <> B:126 var
+binder 9086:9086 <> f:129
+R9104:9107 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9103:9103 Theroies.Extras <> C:127 var
+R9108:9108 Theroies.Extras <> D:128 var
+binder 9099:9099 <> g:130
+R9117:9120 Coq.Init.Datatypes <> list ind
+R9122:9122 Theroies.Extras <> A:125 var
+binder 9112:9113 <> xs:131
+R9131:9134 Coq.Init.Datatypes <> list ind
+R9136:9136 Theroies.Extras <> C:127 var
+binder 9126:9127 <> ys:132
+R9168:9172 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R9143:9145 Theroies.Extras <> zip def
+R9159:9161 Coq.Lists.List <> map def
+R9165:9166 Theroies.Extras <> ys:132 var
+R9163:9163 Theroies.Extras <> g:130 var
+R9148:9150 Coq.Lists.List <> map def
+R9154:9155 Theroies.Extras <> xs:131 var
+R9152:9152 Theroies.Extras <> f:129 var
+R9173:9175 Coq.Lists.List <> map def
+R9206:9208 Theroies.Extras <> zip def
+R9213:9214 Theroies.Extras <> ys:132 var
+R9210:9211 Theroies.Extras <> xs:131 var
+R9183:9183 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9185:9186 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9188:9188 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 9187:9187 <> y:133
+binder 9184:9184 <> x:134
+binder 9183:9188 <> pat:135
+R9193:9193 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9197:9198 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9202:9202 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9194:9194 Theroies.Extras <> f:129 var
+R9196:9196 Theroies.Extras <> x:134 var
+R9199:9199 Theroies.Extras <> g:130 var
+R9201:9201 Theroies.Extras <> y:133 var
+prf 9366:9380 <> existsb_forallb
+binder 9383:9383 <> A:136
+binder 9386:9386 <> f:137
+R9393:9396 Coq.Init.Datatypes <> list ind
+R9398:9398 Theroies.Extras <> A:136 var
+binder 9389:9389 <> l:138
+R9416:9418 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R9405:9411 Coq.Lists.List <> existsb def
+R9415:9415 Theroies.Extras <> l:138 var
+R9413:9413 Theroies.Extras <> f:137 var
+R9419:9422 Coq.Init.Datatypes <> negb def
+R9425:9431 Coq.Lists.List <> forallb def
+R9455:9455 Theroies.Extras <> l:138 var
+binder 9438:9438 <> x:139
+R9443:9446 Coq.Init.Datatypes <> negb def
+R9449:9449 Theroies.Extras <> f:137 var
+R9451:9451 Theroies.Extras <> x:139 var
+R9526:9539 Coq.Bool.Bool <> negb_andb thm
+R9542:9561 Coq.Bool.Bool <> negb_involutive thm
+R9526:9539 Coq.Bool.Bool <> negb_andb thm
+R9526:9539 Coq.Bool.Bool <> negb_andb thm
+R9542:9561 Coq.Bool.Bool <> negb_involutive thm
+R9542:9561 Coq.Bool.Bool <> negb_involutive thm
+def 9579:9581 <> All
+binder 9584:9584 <> A:140
+R9593:9596 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9592:9592 Theroies.Extras <> A:140 var
+binder 9588:9588 <> f:141
+R9608:9611 Coq.Init.Datatypes <> list ind
+R9613:9613 Theroies.Extras <> A:140 var
+binder 9604:9604 <> l:142
+R9634:9634 Theroies.Extras <> l:142 var
+R9645:9646 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R9651:9654 Coq.Init.Logic <> True ind
+R9661:9664 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R9674:9677 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R9671:9671 Theroies.Extras <> f:141 var
+R9678:9680 Theroies.Extras <> All:143 def
+R9682:9682 Theroies.Extras <> f:141 var
+prf 9701:9707 <> All_app
+binder 9710:9710 <> A:145
+binder 9713:9713 <> f:146
+R9723:9726 Coq.Init.Datatypes <> list ind
+R9728:9728 Theroies.Extras <> A:145 var
+binder 9716:9716 <> l:147
+binder 9718:9719 <> l':148
+R9750:9754 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R9735:9737 Theroies.Extras <> All def
+R9743:9746 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R9742:9742 Theroies.Extras <> l:147 var
+R9747:9748 Theroies.Extras <> l':148 var
+R9739:9739 Theroies.Extras <> f:146 var
+R9762:9765 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R9755:9757 Theroies.Extras <> All def
+R9761:9761 Theroies.Extras <> l:147 var
+R9759:9759 Theroies.Extras <> f:146 var
+R9766:9768 Theroies.Extras <> All def
+R9772:9773 Theroies.Extras <> l':148 var
+R9770:9770 Theroies.Extras <> f:146 var
+prf 9865:9871 <> All_map
+binder 9874:9874 <> A:149
+binder 9876:9876 <> B:150
+R9885:9888 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9884:9884 Theroies.Extras <> B:150 var
+binder 9880:9880 <> g:151
+R9901:9904 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9900:9900 Theroies.Extras <> A:149 var
+R9905:9905 Theroies.Extras <> B:150 var
+binder 9896:9896 <> f:152
+R9913:9916 Coq.Init.Datatypes <> list ind
+R9918:9918 Theroies.Extras <> A:149 var
+binder 9909:9909 <> l:153
+R9940:9944 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R9925:9927 Theroies.Extras <> All def
+R9932:9934 Coq.Lists.List <> map def
+R9938:9938 Theroies.Extras <> l:153 var
+R9936:9936 Theroies.Extras <> f:152 var
+R9929:9929 Theroies.Extras <> g:151 var
+R9945:9947 Theroies.Extras <> All def
+R9968:9968 Theroies.Extras <> l:153 var
+binder 9954:9954 <> a:154
+R9959:9959 Theroies.Extras <> g:151 var
+R9962:9962 Theroies.Extras <> f:152 var
+R9964:9964 Theroies.Extras <> a:154 var
+prf 10043:10052 <> All_ext_in
+binder 10055:10055 <> A:155
+R10066:10069 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10065:10065 Theroies.Extras <> A:155 var
+binder 10059:10059 <> f:156
+binder 10061:10061 <> g:157
+R10081:10084 Coq.Init.Datatypes <> list ind
+R10086:10086 Theroies.Extras <> A:155 var
+binder 10077:10077 <> l:158
+R10100:10105 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10093:10095 Theroies.Extras <> All def
+R10099:10099 Theroies.Extras <> l:158 var
+R10097:10097 Theroies.Extras <> f:156 var
+R10106:10106 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10137:10143 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 10114:10114 <> a:159
+R10123:10126 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10117:10118 Coq.Lists.List <> In def
+R10122:10122 Theroies.Extras <> l:158 var
+R10120:10120 Theroies.Extras <> a:159 var
+R10130:10133 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10127:10127 Theroies.Extras <> f:156 var
+R10129:10129 Theroies.Extras <> a:159 var
+R10134:10134 Theroies.Extras <> g:157 var
+R10136:10136 Theroies.Extras <> a:159 var
+R10144:10146 Theroies.Extras <> All def
+R10150:10150 Theroies.Extras <> l:158 var
+R10148:10148 Theroies.Extras <> g:157 var
+prf 10261:10270 <> sumZ_seq_n
+R10280:10283 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10277:10279 Coq.Init.Datatypes <> nat ind
+R10284:10284 Coq.Numbers.BinNums <> Z ind
+binder 10273:10273 <> f:160
+binder 10287:10287 <> n:161
+binder 10289:10291 <> len:162
+R10315:10319 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10297:10300 Theroies.Extras <> sumZ def
+R10305:10307 Coq.Lists.List <> seq def
+R10311:10313 Theroies.Extras <> len:162 var
+R10309:10309 Theroies.Extras <> n:161 var
+R10302:10302 Theroies.Extras <> f:160 var
+R10320:10323 Theroies.Extras <> sumZ def
+R10347:10349 Coq.Lists.List <> seq def
+R10353:10355 Theroies.Extras <> len:162 var
+binder 10330:10330 <> i:163
+R10335:10335 Theroies.Extras <> f:160 var
+R10339:10341 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R10338:10338 Theroies.Extras <> i:163 var
+R10342:10342 Theroies.Extras <> n:161 var
+R10443:10449 Coq.Init.Logic <> f_equal thm
+R10443:10449 Coq.Init.Logic <> f_equal thm
+R10475:10475 Coq.Init.Datatypes <> S constr
+R10475:10475 Coq.Init.Datatypes <> S constr
+R10475:10475 Coq.Init.Datatypes <> S constr
+R10504:10506 Coq.Lists.List <> seq def
+R10504:10506 Coq.Lists.List <> seq def
+R10564:10566 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R10560:10562 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R10577:10579 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R10580:10580 Coq.Init.Datatypes <> S constr
+R10564:10566 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R10560:10562 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R10577:10579 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R10580:10580 Coq.Init.Datatypes <> S constr
+prf 10605:10613 <> sumZ_zero
+binder 10616:10616 <> A:164
+R10624:10627 Coq.Init.Datatypes <> list ind
+R10629:10629 Theroies.Extras <> A:164 var
+binder 10620:10620 <> l:165
+R10657:10659 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10636:10639 Theroies.Extras <> sumZ def
+R10656:10656 Theroies.Extras <> l:165 var
+prf 10703:10714 <> sumZ_seq_feq
+R10726:10729 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10723:10725 Coq.Init.Datatypes <> nat ind
+R10730:10730 Coq.Numbers.BinNums <> Z ind
+binder 10717:10717 <> f:166
+binder 10719:10719 <> g:167
+binder 10733:10735 <> len:168
+R10777:10782 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 10749:10749 <> i:169
+R10759:10762 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10753:10755 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
+R10752:10752 Theroies.Extras <> i:169 var
+R10756:10758 Theroies.Extras <> len:168 var
+R10766:10768 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10763:10763 Theroies.Extras <> f:166 var
+R10765:10765 Theroies.Extras <> i:169 var
+R10769:10769 Theroies.Extras <> g:167 var
+R10771:10771 Theroies.Extras <> i:169 var
+R10801:10803 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10783:10786 Theroies.Extras <> sumZ def
+R10791:10793 Coq.Lists.List <> seq def
+R10797:10799 Theroies.Extras <> len:168 var
+R10788:10788 Theroies.Extras <> g:167 var
+R10804:10807 Theroies.Extras <> sumZ def
+R10812:10814 Coq.Lists.List <> seq def
+R10818:10820 Theroies.Extras <> len:168 var
+R10809:10809 Theroies.Extras <> f:166 var
+R10922:10931 Theroies.Extras <> sumZ_seq_n thm
+R10922:10931 Theroies.Extras <> sumZ_seq_n thm
+R10922:10931 Theroies.Extras <> sumZ_seq_n thm
+R10922:10931 Theroies.Extras <> sumZ_seq_n thm
+R10986:10992 Coq.Init.Logic <> f_equal thm
+R10986:10992 Coq.Init.Logic <> f_equal thm
+R11051:11053 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R11051:11053 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+prf 11086:11096 <> sumZ_firstn
+binder 11099:11099 <> A:170
+binder 11102:11108 <> default:171
+R11116:11119 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11115:11115 Theroies.Extras <> A:170 var
+R11120:11120 Coq.Numbers.BinNums <> Z ind
+binder 11111:11111 <> f:172
+binder 11123:11123 <> n:173
+binder 11125:11125 <> l:174
+R11131:11131 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11164:11170 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11145:11148 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R11133:11136 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R11132:11132 Theroies.Extras <> n:173 var
+R11137:11142 Coq.Init.Datatypes <> length def
+R11144:11144 Theroies.Extras <> l:174 var
+R11158:11160 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11149:11149 Theroies.Extras <> f:172 var
+R11151:11157 Theroies.Extras <> default:171 var
+R11190:11194 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11171:11174 Theroies.Extras <> sumZ def
+R11179:11184 Coq.Lists.List <> firstn def
+R11188:11188 Theroies.Extras <> l:174 var
+R11186:11186 Theroies.Extras <> n:173 var
+R11176:11176 Theroies.Extras <> f:172 var
+R11195:11198 Theroies.Extras <> sumZ def
+R11232:11234 Coq.Lists.List <> seq def
+R11238:11238 Theroies.Extras <> n:173 var
+binder 11205:11205 <> i:175
+R11210:11210 Theroies.Extras <> f:172 var
+R11213:11215 Coq.Lists.List <> nth def
+R11221:11227 Theroies.Extras <> default:171 var
+R11219:11219 Theroies.Extras <> l:174 var
+R11217:11217 Theroies.Extras <> i:175 var
+R11323:11332 Theroies.Extras <> sumZ_seq_n thm
+R11323:11332 Theroies.Extras <> sumZ_seq_n thm
+R11323:11332 Theroies.Extras <> sumZ_seq_n thm
+R11426:11437 Theroies.Extras <> sumZ_seq_feq thm
+R11448:11450 Coq.Init.Datatypes <> nat ind
+binder 11444:11444 <> i:176
+R11426:11437 Theroies.Extras <> sumZ_seq_feq thm
+R11448:11450 Coq.Init.Datatypes <> nat ind
+binder 11444:11444 <> i:177
+R11426:11437 Theroies.Extras <> sumZ_seq_feq thm
+R11448:11450 Coq.Init.Datatypes <> nat ind
+binder 11444:11444 <> i:178
+R11426:11437 Theroies.Extras <> sumZ_seq_feq thm
+R11448:11450 Coq.Init.Datatypes <> nat ind
+binder 11444:11444 <> i:179
+R11480:11488 Theroies.Extras <> sumZ_zero thm
+R11480:11488 Theroies.Extras <> sumZ_zero thm
+R11480:11488 Theroies.Extras <> sumZ_zero thm
+R11520:11522 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R11520:11522 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R11552:11558 Coq.Init.Logic <> f_equal thm
+R11552:11558 Coq.Init.Logic <> f_equal thm
+R11594:11605 Theroies.Extras <> sumZ_seq_feq thm
+R11594:11605 Theroies.Extras <> sumZ_seq_feq thm
+R11652:11654 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R11652:11654 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+prf 11720:11729 <> sumZ_skipn
+binder 11732:11732 <> A:180
+binder 11735:11741 <> default:181
+R11749:11752 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11748:11748 Theroies.Extras <> A:180 var
+R11753:11753 Coq.Numbers.BinNums <> Z ind
+binder 11744:11744 <> f:182
+binder 11756:11756 <> n:183
+binder 11758:11758 <> l:184
+R11782:11786 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11764:11767 Theroies.Extras <> sumZ def
+R11772:11776 Coq.Lists.List <> skipn def
+R11780:11780 Theroies.Extras <> l:184 var
+R11778:11778 Theroies.Extras <> n:183 var
+R11769:11769 Theroies.Extras <> f:182 var
+R11787:11790 Theroies.Extras <> sumZ def
+R11830:11832 Coq.Lists.List <> seq def
+R11845:11847 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R11837:11842 Coq.Init.Datatypes <> length def
+R11844:11844 Theroies.Extras <> l:184 var
+R11848:11848 Theroies.Extras <> n:183 var
+binder 11797:11797 <> i:185
+R11802:11802 Theroies.Extras <> f:182 var
+R11805:11807 Coq.Lists.List <> nth def
+R11819:11825 Theroies.Extras <> default:181 var
+R11817:11817 Theroies.Extras <> l:184 var
+R11811:11813 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R11810:11810 Theroies.Extras <> n:183 var
+R11814:11814 Theroies.Extras <> i:185 var
+R11925:11935 Coq.Arith.PeanoNat Nat sub_0_r thm
+R11925:11935 Coq.Arith.PeanoNat Nat sub_0_r thm
+R11925:11935 Coq.Arith.PeanoNat Nat sub_0_r thm
+R11954:11964 Theroies.Extras <> sumZ_firstn thm
+R11954:11964 Theroies.Extras <> sumZ_firstn thm
+R11954:11964 Theroies.Extras <> sumZ_firstn thm
+R11954:11964 Theroies.Extras <> sumZ_firstn thm
+R11994:12003 Coq.Lists.List <> firstn_all thm
+R11994:12003 Coq.Lists.List <> firstn_all thm
+R11994:12003 Coq.Lists.List <> firstn_all thm
+prf 12104:12111 <> sumZ_add
+binder 12114:12114 <> A:186
+R12125:12128 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12124:12124 Theroies.Extras <> A:186 var
+R12129:12129 Coq.Numbers.BinNums <> Z ind
+binder 12118:12118 <> f:187
+binder 12120:12120 <> g:188
+binder 12132:12132 <> l:189
+R12165:12167 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12138:12141 Theroies.Extras <> sumZ def
+R12164:12164 Theroies.Extras <> l:189 var
+binder 12148:12148 <> a:190
+R12156:12158 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R12153:12153 Theroies.Extras <> f:187 var
+R12155:12155 Theroies.Extras <> a:190 var
+R12159:12159 Theroies.Extras <> g:188 var
+R12161:12161 Theroies.Extras <> a:190 var
+R12176:12178 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R12168:12171 Theroies.Extras <> sumZ def
+R12175:12175 Theroies.Extras <> l:189 var
+R12173:12173 Theroies.Extras <> f:187 var
+R12179:12182 Theroies.Extras <> sumZ def
+R12186:12186 Theroies.Extras <> l:189 var
+R12184:12184 Theroies.Extras <> g:188 var
+prf 12243:12250 <> sumZ_sub
+binder 12253:12253 <> A:191
+R12264:12267 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12263:12263 Theroies.Extras <> A:191 var
+R12268:12268 Coq.Numbers.BinNums <> Z ind
+binder 12257:12257 <> f:192
+binder 12259:12259 <> g:193
+binder 12271:12271 <> l:194
+R12304:12308 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12277:12280 Theroies.Extras <> sumZ def
+R12303:12303 Theroies.Extras <> l:194 var
+binder 12287:12287 <> a:195
+R12295:12297 Coq.ZArith.BinInt <> ::Z_scope:x_'-'_x not
+R12292:12292 Theroies.Extras <> f:192 var
+R12294:12294 Theroies.Extras <> a:195 var
+R12298:12298 Theroies.Extras <> g:193 var
+R12300:12300 Theroies.Extras <> a:195 var
+R12317:12319 Coq.ZArith.BinInt <> ::Z_scope:x_'-'_x not
+R12309:12312 Theroies.Extras <> sumZ def
+R12316:12316 Theroies.Extras <> l:194 var
+R12314:12314 Theroies.Extras <> f:192 var
+R12320:12323 Theroies.Extras <> sumZ def
+R12327:12327 Theroies.Extras <> l:194 var
+R12325:12325 Theroies.Extras <> g:193 var
+prf 12380:12393 <> sumZ_seq_split
+binder 12395:12403 <> split_len:196
+R12413:12416 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12410:12412 Coq.Init.Datatypes <> nat ind
+R12417:12417 Coq.Numbers.BinNums <> Z ind
+binder 12406:12406 <> f:197
+binder 12420:12424 <> start:198
+binder 12426:12428 <> len:199
+R12456:12461 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12444:12447 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R12435:12443 Theroies.Extras <> split_len:196 var
+R12448:12450 Theroies.Extras <> len:199 var
+R12484:12488 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12462:12465 Theroies.Extras <> sumZ def
+R12470:12472 Coq.Lists.List <> seq def
+R12480:12482 Theroies.Extras <> len:199 var
+R12474:12478 Theroies.Extras <> start:198 var
+R12467:12467 Theroies.Extras <> f:197 var
+R12517:12519 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R12489:12492 Theroies.Extras <> sumZ def
+R12497:12499 Coq.Lists.List <> seq def
+R12507:12515 Theroies.Extras <> split_len:196 var
+R12501:12505 Theroies.Extras <> start:198 var
+R12494:12494 Theroies.Extras <> f:197 var
+R12520:12523 Theroies.Extras <> sumZ def
+R12528:12530 Coq.Lists.List <> seq def
+R12556:12558 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R12553:12555 Theroies.Extras <> len:199 var
+R12559:12567 Theroies.Extras <> split_len:196 var
+R12538:12540 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12533:12537 Theroies.Extras <> start:198 var
+R12541:12549 Theroies.Extras <> split_len:196 var
+R12525:12525 Theroies.Extras <> f:197 var
+R12592:12599 Theroies.Extras <> sumZ_app thm
+R12592:12599 Theroies.Extras <> sumZ_app thm
+R12592:12599 Theroies.Extras <> sumZ_app thm
+R12615:12621 Theroies.Extras <> seq_app thm
+R12615:12621 Theroies.Extras <> seq_app thm
+R12615:12621 Theroies.Extras <> seq_app thm
+R12661:12664 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12680:12680 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12668:12670 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R12661:12664 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12680:12680 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12668:12670 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+prf 12716:12729 <> sumZ_sumZ_swap
+binder 12732:12732 <> A:200
+binder 12734:12734 <> B:201
+R12743:12746 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12742:12742 Theroies.Extras <> A:200 var
+R12748:12751 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12747:12747 Theroies.Extras <> B:201 var
+R12752:12752 Coq.Numbers.BinNums <> Z ind
+binder 12738:12738 <> f:202
+R12761:12764 Coq.Init.Datatypes <> list ind
+R12766:12766 Theroies.Extras <> A:200 var
+binder 12756:12757 <> xs:203
+R12775:12778 Coq.Init.Datatypes <> list ind
+R12780:12780 Theroies.Extras <> B:201 var
+binder 12770:12771 <> ys:204
+R12821:12825 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12787:12790 Theroies.Extras <> sumZ def
+R12819:12820 Theroies.Extras <> xs:203 var
+binder 12797:12797 <> a:205
+R12802:12805 Theroies.Extras <> sumZ def
+R12814:12815 Theroies.Extras <> ys:204 var
+R12808:12808 Theroies.Extras <> f:202 var
+R12810:12810 Theroies.Extras <> a:205 var
+R12826:12829 Theroies.Extras <> sumZ def
+R12867:12868 Theroies.Extras <> ys:204 var
+binder 12836:12836 <> b:206
+R12841:12844 Theroies.Extras <> sumZ def
+R12863:12864 Theroies.Extras <> xs:203 var
+binder 12851:12851 <> a:207
+R12856:12856 Theroies.Extras <> f:202 var
+R12860:12860 Theroies.Extras <> b:206 var
+R12858:12858 Theroies.Extras <> a:207 var
+R12953:12961 Theroies.Extras <> sumZ_zero thm
+R12953:12961 Theroies.Extras <> sumZ_zero thm
+R12953:12961 Theroies.Extras <> sumZ_zero thm
+prf 13077:13086 <> All_Forall
+binder 13089:13089 <> A:208
+R13097:13100 Coq.Init.Datatypes <> list ind
+R13102:13102 Theroies.Extras <> A:208 var
+binder 13093:13093 <> l:209
+binder 13105:13105 <> f:210
+R13118:13122 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R13111:13113 Theroies.Extras <> All def
+R13117:13117 Theroies.Extras <> l:209 var
+R13115:13115 Theroies.Extras <> f:210 var
+R13123:13128 Coq.Lists.List <> Forall ind
+R13132:13132 Theroies.Extras <> l:209 var
+R13130:13130 Theroies.Extras <> f:210 var
+prf 13302:13309 <> all_incl
+binder 13312:13312 <> A:211
+R13323:13326 Coq.Init.Datatypes <> list ind
+R13328:13328 Theroies.Extras <> A:211 var
+binder 13316:13316 <> l:212
+binder 13318:13319 <> l':213
+binder 13331:13331 <> f:214
+R13346:13349 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R13337:13340 Coq.Lists.List <> incl def
+R13344:13345 Theroies.Extras <> l':213 var
+R13342:13342 Theroies.Extras <> l:212 var
+R13358:13361 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R13350:13352 Theroies.Extras <> All def
+R13356:13357 Theroies.Extras <> l':213 var
+R13354:13354 Theroies.Extras <> f:214 var
+R13362:13364 Theroies.Extras <> All def
+R13368:13368 Theroies.Extras <> l:212 var
+R13366:13366 Theroies.Extras <> f:214 var
+R13405:13414 Theroies.Extras <> All_Forall thm
+R13405:13414 Theroies.Extras <> All_Forall thm
+R13425:13434 Theroies.Extras <> All_Forall thm
+R13425:13434 Theroies.Extras <> All_Forall thm
+R13452:13464 Coq.Lists.List <> Forall_forall thm
+R13452:13464 Coq.Lists.List <> Forall_forall thm
+R13481:13493 Coq.Lists.List <> Forall_forall thm
+R13481:13493 Coq.Lists.List <> Forall_forall thm
+prf 13528:13538 <> firstn_incl
+binder 13541:13541 <> A:215
+binder 13544:13544 <> n:216
+R13551:13554 Coq.Init.Datatypes <> list ind
+R13556:13556 Theroies.Extras <> A:215 var
+binder 13547:13547 <> l:217
+R13561:13564 Coq.Lists.List <> incl def
+R13579:13579 Theroies.Extras <> l:217 var
+R13567:13572 Coq.Lists.List <> firstn def
+R13576:13576 Theroies.Extras <> l:217 var
+R13574:13574 Theroies.Extras <> n:216 var
+R13598:13601 Coq.Lists.List <> incl def
+prf 13802:13811 <> skipn_incl
+binder 13814:13814 <> A:218
+binder 13817:13817 <> n:219
+R13824:13827 Coq.Init.Datatypes <> list ind
+R13829:13829 Theroies.Extras <> A:218 var
+binder 13820:13820 <> l:220
+R13834:13837 Coq.Lists.List <> incl def
+R13851:13851 Theroies.Extras <> l:220 var
+R13840:13844 Coq.Lists.List <> skipn def
+R13848:13848 Theroies.Extras <> l:220 var
+R13846:13846 Theroies.Extras <> n:219 var
+R13870:13873 Coq.Lists.List <> incl def
+prf 14031:14046 <> sumZ_seq_feq_rel
+R14058:14061 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14055:14057 Coq.Init.Datatypes <> nat ind
+R14062:14062 Coq.Numbers.BinNums <> Z ind
+binder 14049:14049 <> f:221
+binder 14051:14051 <> g:222
+binder 14065:14067 <> len:223
+R14075:14078 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14074:14074 Coq.Numbers.BinNums <> Z ind
+R14080:14083 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14079:14079 Coq.Numbers.BinNums <> Z ind
+binder 14070:14070 <> R:224
+R14105:14110 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14094:14102 Coq.Classes.RelationClasses <> Reflexive class
+R14104:14104 Theroies.Extras <> R:224 var
+R14139:14144 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14111:14116 Coq.Classes.Morphisms <> Proper class
+R14134:14138 Coq.ZArith.BinInt Z add def
+R14120:14124 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R14119:14119 Theroies.Extras <> R:224 var
+R14126:14130 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R14125:14125 Theroies.Extras <> R:224 var
+R14131:14131 Theroies.Extras <> R:224 var
+R14185:14190 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 14153:14153 <> i:225
+R14163:14166 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14157:14159 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
+R14156:14156 Theroies.Extras <> i:225 var
+R14160:14162 Theroies.Extras <> len:223 var
+R14167:14167 Theroies.Extras <> R:224 var
+R14176:14176 Theroies.Extras <> g:222 var
+R14178:14178 Theroies.Extras <> i:225 var
+R14170:14170 Theroies.Extras <> f:221 var
+R14172:14172 Theroies.Extras <> i:225 var
+R14191:14191 Theroies.Extras <> R:224 var
+R14215:14218 Theroies.Extras <> sumZ def
+R14223:14225 Coq.Lists.List <> seq def
+R14229:14231 Theroies.Extras <> len:223 var
+R14220:14220 Theroies.Extras <> g:222 var
+R14194:14197 Theroies.Extras <> sumZ def
+R14202:14204 Coq.Lists.List <> seq def
+R14208:14210 Theroies.Extras <> len:223 var
+R14199:14199 Theroies.Extras <> f:221 var
+R14374:14383 Theroies.Extras <> sumZ_seq_n thm
+R14374:14383 Theroies.Extras <> sumZ_seq_n thm
+R14374:14383 Theroies.Extras <> sumZ_seq_n thm
+R14374:14383 Theroies.Extras <> sumZ_seq_n thm
+R14495:14497 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R14495:14497 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+prf 14530:14540 <> sumZ_map_id
+binder 14543:14543 <> A:226
+R14552:14555 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14551:14551 Theroies.Extras <> A:226 var
+R14556:14556 Coq.Numbers.BinNums <> Z ind
+binder 14547:14547 <> f:227
+binder 14559:14559 <> l:228
+R14573:14575 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14565:14568 Theroies.Extras <> sumZ def
+R14572:14572 Theroies.Extras <> l:228 var
+R14570:14570 Theroies.Extras <> f:227 var
+R14576:14579 Theroies.Extras <> sumZ def
+R14585:14587 Coq.Lists.List <> map def
+R14591:14591 Theroies.Extras <> l:228 var
+R14589:14589 Theroies.Extras <> f:227 var
+R14581:14582 Coq.Init.Datatypes <> id def
+R14637:14638 Coq.Init.Datatypes <> id def
+prf 14672:14678 <> sumZ_le
+binder 14690:14690 <> A:229
+R14701:14704 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14700:14700 Theroies.Extras <> A:229 var
+R14705:14705 Coq.Numbers.BinNums <> Z ind
+binder 14694:14694 <> f:230
+binder 14696:14696 <> g:231
+R14714:14717 Coq.Init.Datatypes <> list ind
+R14719:14719 Theroies.Extras <> A:229 var
+binder 14709:14710 <> xs:232
+R14725:14725 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14757:14763 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 14733:14733 <> x:233
+R14743:14746 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14736:14737 Coq.Lists.List <> In def
+R14741:14742 Theroies.Extras <> xs:232 var
+R14739:14739 Theroies.Extras <> x:233 var
+R14750:14753 Coq.ZArith.BinInt <> ::Z_scope:x_'<='_x not
+R14747:14747 Theroies.Extras <> f:230 var
+R14749:14749 Theroies.Extras <> x:233 var
+R14754:14754 Theroies.Extras <> g:231 var
+R14756:14756 Theroies.Extras <> x:233 var
+R14773:14776 Coq.ZArith.BinInt <> ::Z_scope:x_'<='_x not
+R14764:14767 Theroies.Extras <> sumZ def
+R14771:14772 Theroies.Extras <> xs:232 var
+R14769:14769 Theroies.Extras <> f:230 var
+R14777:14780 Theroies.Extras <> sumZ def
+R14784:14785 Theroies.Extras <> xs:232 var
+R14782:14782 Theroies.Extras <> g:231 var
+R14859:14867 Coq.ZArith.BinInt Z le_refl thm
+R14859:14867 Coq.ZArith.BinInt Z le_refl thm
+R14880:14892 Coq.ZArith.BinInt Z add_le_mono thm
+R14880:14892 Coq.ZArith.BinInt Z add_le_mono thm
+R14912:14916 Coq.Lists.List <> in_eq thm
+R14912:14916 Coq.Lists.List <> in_eq thm
+R14970:14976 Coq.Lists.List <> in_cons thm
+R14970:14976 Coq.Lists.List <> in_cons thm
+prf 14991:15006 <> sumZ_nonnegative
+binder 15018:15018 <> A:234
+R15027:15030 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15026:15026 Theroies.Extras <> A:234 var
+R15031:15031 Coq.Numbers.BinNums <> Z ind
+binder 15022:15022 <> f:235
+R15039:15042 Coq.Init.Datatypes <> list ind
+R15044:15044 Theroies.Extras <> A:234 var
+binder 15035:15035 <> l:236
+R15050:15050 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15079:15085 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 15058:15058 <> x:237
+R15067:15070 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15061:15062 Coq.Lists.List <> In def
+R15066:15066 Theroies.Extras <> l:236 var
+R15064:15064 Theroies.Extras <> x:237 var
+R15072:15075 Coq.ZArith.BinInt <> ::Z_scope:x_'<='_x not
+R15076:15076 Theroies.Extras <> f:235 var
+R15078:15078 Theroies.Extras <> x:237 var
+R15087:15090 Coq.ZArith.BinInt <> ::Z_scope:x_'<='_x not
+R15091:15094 Theroies.Extras <> sumZ def
+R15098:15098 Theroies.Extras <> l:236 var
+R15096:15096 Theroies.Extras <> f:235 var
+R15132:15140 Theroies.Extras <> sumZ_zero thm
+R15132:15140 Theroies.Extras <> sumZ_zero thm
+R15132:15140 Theroies.Extras <> sumZ_zero thm
+R15155:15161 Theroies.Extras <> sumZ_le thm
+R15155:15161 Theroies.Extras <> sumZ_le thm
+prf 15176:15182 <> sumZ_eq
+binder 15194:15194 <> A:238
+R15205:15208 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15204:15204 Theroies.Extras <> A:238 var
+R15209:15209 Coq.Numbers.BinNums <> Z ind
+binder 15198:15198 <> f:239
+binder 15200:15200 <> g:240
+R15217:15220 Coq.Init.Datatypes <> list ind
+R15222:15222 Theroies.Extras <> A:238 var
+binder 15213:15213 <> l:241
+R15228:15228 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15258:15264 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 15236:15236 <> x:242
+R15245:15248 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15239:15240 Coq.Lists.List <> In def
+R15244:15244 Theroies.Extras <> l:241 var
+R15242:15242 Theroies.Extras <> x:242 var
+R15252:15254 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15249:15249 Theroies.Extras <> f:239 var
+R15251:15251 Theroies.Extras <> x:242 var
+R15255:15255 Theroies.Extras <> g:240 var
+R15257:15257 Theroies.Extras <> x:242 var
+R15273:15275 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15265:15268 Theroies.Extras <> sumZ def
+R15272:15272 Theroies.Extras <> l:241 var
+R15270:15270 Theroies.Extras <> f:239 var
+R15276:15279 Theroies.Extras <> sumZ def
+R15283:15283 Theroies.Extras <> l:241 var
+R15281:15281 Theroies.Extras <> g:240 var
+R15313:15323 Theroies.Extras <> sumZ_map_id thm
+R15313:15323 Theroies.Extras <> sumZ_map_id thm
+R15313:15323 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15343:15353 Theroies.Extras <> sumZ_map_id thm
+R15384:15393 Coq.Lists.List <> map_ext_in thm
+R15384:15393 Coq.Lists.List <> map_ext_in thm
+prf 15408:15417 <> sumZ_in_le
+binder 15429:15429 <> A:243
+R15437:15437 Theroies.Extras <> A:243 var
+binder 15433:15433 <> x:244
+R15446:15449 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15445:15445 Theroies.Extras <> A:243 var
+R15450:15450 Coq.Numbers.BinNums <> Z ind
+binder 15441:15441 <> f:245
+R15458:15461 Coq.Init.Datatypes <> list ind
+R15463:15463 Theroies.Extras <> A:243 var
+binder 15454:15454 <> l:246
+R15469:15469 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15498:15504 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 15477:15477 <> y:247
+R15486:15489 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15480:15481 Coq.Lists.List <> In def
+R15485:15485 Theroies.Extras <> l:246 var
+R15483:15483 Theroies.Extras <> y:247 var
+R15491:15494 Coq.ZArith.BinInt <> ::Z_scope:x_'<='_x not
+R15495:15495 Theroies.Extras <> f:245 var
+R15497:15497 Theroies.Extras <> y:247 var
+R15511:15516 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15505:15506 Coq.Lists.List <> In def
+R15510:15510 Theroies.Extras <> l:246 var
+R15508:15508 Theroies.Extras <> x:244 var
+R15520:15523 Coq.ZArith.BinInt <> ::Z_scope:x_'<='_x not
+R15517:15517 Theroies.Extras <> f:245 var
+R15519:15519 Theroies.Extras <> x:244 var
+R15524:15527 Theroies.Extras <> sumZ def
+R15531:15531 Theroies.Extras <> l:246 var
+R15529:15529 Theroies.Extras <> f:245 var
+R15612:15617 Coq.Lists.List <> in_inv thm
+R15612:15617 Coq.Lists.List <> in_inv thm
+R15679:15687 Coq.ZArith.BinInt Z add_0_r thm
+R15679:15687 Coq.ZArith.BinInt Z add_0_r thm
+R15679:15687 Coq.ZArith.BinInt Z add_0_r thm
+R15709:15721 Coq.ZArith.BinInt Z add_le_mono thm
+R15709:15721 Coq.ZArith.BinInt Z add_le_mono thm
+R15751:15766 Theroies.Extras <> sumZ_nonnegative thm
+R15751:15766 Theroies.Extras <> sumZ_nonnegative thm
+R15829:15835 Coq.Lists.List <> in_cons thm
+R15829:15835 Coq.Lists.List <> in_cons thm
+R15867:15875 Coq.ZArith.BinInt Z add_0_l thm
+R15867:15875 Coq.ZArith.BinInt Z add_0_l thm
+R15867:15875 Coq.ZArith.BinInt Z add_0_l thm
+R15897:15909 Coq.ZArith.BinInt Z add_le_mono thm
+R15897:15909 Coq.ZArith.BinInt Z add_le_mono thm
+R15952:15956 Coq.Lists.List <> in_eq thm
+R15952:15956 Coq.Lists.List <> in_eq thm
+R16044:16050 Coq.Lists.List <> in_cons thm
+R16044:16050 Coq.Lists.List <> in_cons thm
+prf 16065:16074 <> firstn_map
+binder 16077:16077 <> A:248
+binder 16079:16079 <> B:249
+R16088:16091 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R16087:16087 Theroies.Extras <> A:248 var
+R16092:16092 Theroies.Extras <> B:249 var
+binder 16083:16083 <> f:250
+binder 16095:16095 <> n:251
+binder 16097:16097 <> l:252
+R16121:16123 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R16103:16108 Coq.Lists.List <> firstn def
+R16113:16115 Coq.Lists.List <> map def
+R16119:16119 Theroies.Extras <> l:252 var
+R16117:16117 Theroies.Extras <> f:250 var
+R16110:16110 Theroies.Extras <> n:251 var
+R16124:16126 Coq.Lists.List <> map def
+R16131:16136 Coq.Lists.List <> firstn def
+R16140:16140 Theroies.Extras <> l:252 var
+R16138:16138 Theroies.Extras <> n:251 var
+R16128:16128 Theroies.Extras <> f:250 var
+R16232:16238 Coq.Init.Logic <> f_equal thm
+R16232:16238 Coq.Init.Logic <> f_equal thm
+prf 16261:16269 <> skipn_map
+binder 16272:16272 <> A:253
+binder 16274:16274 <> B:254
+R16283:16286 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R16282:16282 Theroies.Extras <> A:253 var
+R16287:16287 Theroies.Extras <> B:254 var
+binder 16278:16278 <> f:255
+binder 16290:16290 <> n:256
+binder 16292:16292 <> l:257
+R16315:16317 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R16298:16302 Coq.Lists.List <> skipn def
+R16307:16309 Coq.Lists.List <> map def
+R16313:16313 Theroies.Extras <> l:257 var
+R16311:16311 Theroies.Extras <> f:255 var
+R16304:16304 Theroies.Extras <> n:256 var
+R16318:16320 Coq.Lists.List <> map def
+R16325:16329 Coq.Lists.List <> skipn def
+R16333:16333 Theroies.Extras <> l:257 var
+R16331:16331 Theroies.Extras <> n:256 var
+R16322:16322 Theroies.Extras <> f:255 var
+prf 16429:16439 <> map_nth_alt
+binder 16442:16442 <> A:258
+binder 16444:16444 <> B:259
+binder 16447:16447 <> n:260
+R16454:16457 Coq.Init.Datatypes <> list ind
+R16459:16459 Theroies.Extras <> A:258 var
+binder 16450:16450 <> l:261
+R16468:16471 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R16467:16467 Theroies.Extras <> A:258 var
+R16472:16472 Theroies.Extras <> B:259 var
+binder 16463:16463 <> f:262
+binder 16475:16476 <> d1:263
+binder 16478:16479 <> d2:264
+R16503:16508 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R16487:16489 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
+R16486:16486 Theroies.Extras <> n:260 var
+R16490:16495 Coq.Init.Datatypes <> length def
+R16497:16497 Theroies.Extras <> l:261 var
+R16527:16529 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R16509:16511 Coq.Lists.List <> nth def
+R16525:16526 Theroies.Extras <> d1:263 var
+R16516:16518 Coq.Lists.List <> map def
+R16522:16522 Theroies.Extras <> l:261 var
+R16520:16520 Theroies.Extras <> f:262 var
+R16513:16513 Theroies.Extras <> n:260 var
+R16530:16530 Theroies.Extras <> f:262 var
+R16533:16535 Coq.Lists.List <> nth def
+R16541:16542 Theroies.Extras <> d2:264 var
+R16539:16539 Theroies.Extras <> l:261 var
+R16537:16537 Theroies.Extras <> n:260 var
+prf 16708:16717 <> sumnat_max
+binder 16720:16720 <> A:265
+R16729:16732 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R16728:16728 Theroies.Extras <> A:265 var
+R16733:16735 Coq.Init.Datatypes <> nat ind
+binder 16724:16724 <> f:266
+binder 16738:16738 <> l:267
+binder 16740:16742 <> max:268
+R16748:16748 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R16779:16785 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 16756:16756 <> a:269
+R16765:16768 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R16759:16760 Coq.Lists.List <> In def
+R16764:16764 Theroies.Extras <> l:267 var
+R16762:16762 Theroies.Extras <> a:269 var
+R16772:16775 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R16769:16769 Theroies.Extras <> f:266 var
+R16771:16771 Theroies.Extras <> a:269 var
+R16776:16778 Theroies.Extras <> max:268 var
+R16796:16799 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R16786:16791 Theroies.Extras <> sumnat def
+R16795:16795 Theroies.Extras <> l:267 var
+R16793:16793 Theroies.Extras <> f:266 var
+R16803:16805 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
+R16800:16802 Theroies.Extras <> max:268 var
+R16806:16811 Coq.Init.Datatypes <> length def
+R16813:16813 Theroies.Extras <> l:267 var
+R17007:17015 Coq.Init.Logic <> or_introl constr
+R17017:17023 Coq.Init.Logic <> eq_refl constr
+R17007:17015 Coq.Init.Logic <> or_introl constr
+R17017:17023 Coq.Init.Logic <> eq_refl constr
+prf 17051:17061 <> list_eq_nth
+binder 17064:17064 <> A:270
+R17076:17079 Coq.Init.Datatypes <> list ind
+R17081:17081 Theroies.Extras <> A:270 var
+binder 17068:17069 <> xs:271
+binder 17071:17072 <> ys:272
+R17109:17114 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17097:17099 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17088:17093 Coq.Init.Datatypes <> length def
+R17095:17096 Theroies.Extras <> xs:271 var
+R17100:17105 Coq.Init.Datatypes <> length def
+R17107:17108 Theroies.Extras <> ys:272 var
+R17115:17115 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17192:17198 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 17123:17123 <> i:273
+binder 17125:17125 <> a:274
+binder 17127:17128 <> a':275
+R17154:17157 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17145:17147 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17131:17139 Coq.Lists.List <> nth_error def
+R17144:17144 Theroies.Extras <> i:273 var
+R17141:17142 Theroies.Extras <> xs:271 var
+R17148:17151 Coq.Init.Datatypes <> Some constr
+R17153:17153 Theroies.Extras <> a:274 var
+R17182:17185 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17172:17174 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17158:17166 Coq.Lists.List <> nth_error def
+R17171:17171 Theroies.Extras <> i:273 var
+R17168:17169 Theroies.Extras <> ys:272 var
+R17175:17178 Coq.Init.Datatypes <> Some constr
+R17180:17181 Theroies.Extras <> a':275 var
+R17187:17189 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17186:17186 Theroies.Extras <> a:274 var
+R17190:17191 Theroies.Extras <> a':275 var
+R17201:17203 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17199:17200 Theroies.Extras <> xs:271 var
+R17204:17205 Theroies.Extras <> ys:272 var
+R17426:17432 Coq.Init.Logic <> f_equal thm
+R17426:17432 Coq.Init.Logic <> f_equal thm
+R17515:17515 Coq.Init.Datatypes <> S constr
+R17515:17515 Coq.Init.Datatypes <> S constr
+prf 17544:17559 <> nth_error_seq_in
+binder 17561:17561 <> i:276
+binder 17563:17567 <> start:277
+binder 17569:17571 <> len:278
+R17584:17589 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17578:17580 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
+R17577:17577 Theroies.Extras <> i:276 var
+R17581:17583 Theroies.Extras <> len:278 var
+R17617:17619 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17590:17598 Coq.Lists.List <> nth_error def
+R17616:17616 Theroies.Extras <> i:276 var
+R17601:17603 Coq.Lists.List <> seq def
+R17611:17613 Theroies.Extras <> len:278 var
+R17605:17609 Theroies.Extras <> start:277 var
+R17620:17623 Coq.Init.Datatypes <> Some constr
+R17631:17633 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R17626:17630 Theroies.Extras <> start:277 var
+R17634:17634 Theroies.Extras <> i:276 var
+prf 17827:17840 <> nth_error_snoc
+binder 17843:17843 <> B:279
+R17851:17854 Coq.Init.Datatypes <> list ind
+R17856:17856 Theroies.Extras <> B:279 var
+binder 17847:17847 <> l:280
+R17864:17864 Theroies.Extras <> B:279 var
+binder 17860:17860 <> x:281
+R17902:17904 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17871:17879 Coq.Lists.List <> nth_error def
+R17893:17898 Coq.Init.Datatypes <> length def
+R17900:17900 Theroies.Extras <> l:280 var
+R17883:17886 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R17882:17882 Theroies.Extras <> l:280 var
+R17887:17887 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R17889:17889 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R17888:17888 Theroies.Extras <> x:281 var
+R17905:17908 Coq.Init.Datatypes <> Some constr
+R17910:17910 Theroies.Extras <> x:281 var
+R17930:17943 Coq.Lists.List <> nth_error_app2 thm
+R17930:17943 Coq.Lists.List <> nth_error_app2 thm
+R17930:17943 Coq.Lists.List <> nth_error_app2 thm
+R17976:17978 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R17968:17973 Coq.Init.Datatypes <> length def
+R17979:17984 Coq.Init.Datatypes <> length def
+R17976:17978 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R17968:17973 Coq.Init.Datatypes <> length def
+R17979:17984 Coq.Init.Datatypes <> length def
+prf 18016:18027 <> NoDup_filter
+binder 18030:18030 <> A:282
+R18039:18042 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18038:18038 Theroies.Extras <> A:282 var
+R18043:18046 Coq.Init.Datatypes <> bool ind
+binder 18034:18034 <> f:283
+binder 18049:18049 <> l:284
+R18062:18067 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18055:18059 Coq.Lists.List <> NoDup ind
+R18061:18061 Theroies.Extras <> l:284 var
+R18068:18072 Coq.Lists.List <> NoDup ind
+R18075:18080 Coq.Lists.List <> filter def
+R18084:18084 Theroies.Extras <> l:284 var
+R18082:18082 Theroies.Extras <> f:283 var
+R18220:18228 Coq.Lists.List <> filter_In thm
+R18220:18228 Coq.Lists.List <> filter_In thm
+R18220:18228 Coq.Lists.List <> filter_In thm
+prf 18254:18262 <> NoDup_map
+binder 18265:18265 <> A:285
+binder 18267:18267 <> B:286
+R18276:18279 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18275:18275 Theroies.Extras <> A:285 var
+R18280:18280 Theroies.Extras <> B:286 var
+binder 18271:18271 <> f:287
+binder 18283:18283 <> l:288
+R18296:18301 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18289:18293 Coq.Lists.List <> NoDup ind
+R18295:18295 Theroies.Extras <> l:288 var
+R18302:18302 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18357:18363 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 18310:18310 <> a:289
+binder 18312:18313 <> a':290
+R18322:18325 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18316:18317 Coq.Lists.List <> In def
+R18321:18321 Theroies.Extras <> l:288 var
+R18319:18319 Theroies.Extras <> a:289 var
+R18333:18336 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18326:18327 Coq.Lists.List <> In def
+R18332:18332 Theroies.Extras <> l:288 var
+R18329:18330 Theroies.Extras <> a':290 var
+R18347:18350 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18340:18342 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R18337:18337 Theroies.Extras <> f:287 var
+R18339:18339 Theroies.Extras <> a:289 var
+R18343:18343 Theroies.Extras <> f:287 var
+R18345:18346 Theroies.Extras <> a':290 var
+R18352:18354 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R18351:18351 Theroies.Extras <> a:289 var
+R18355:18356 Theroies.Extras <> a':290 var
+R18364:18368 Coq.Lists.List <> NoDup ind
+R18371:18373 Coq.Lists.List <> map def
+R18377:18377 Theroies.Extras <> l:288 var
+R18375:18375 Theroies.Extras <> f:287 var
+R18492:18501 Coq.Lists.List <> in_map_iff thm
+R18492:18501 Coq.Lists.List <> in_map_iff thm
+R18492:18501 Coq.Lists.List <> in_map_iff thm
+prf 18648:18657 <> filter_all
+binder 18660:18660 <> A:291
+R18669:18672 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18668:18668 Theroies.Extras <> A:291 var
+R18673:18676 Coq.Init.Datatypes <> bool ind
+binder 18664:18664 <> f:292
+R18684:18687 Coq.Init.Datatypes <> list ind
+R18689:18689 Theroies.Extras <> A:291 var
+binder 18680:18680 <> l:293
+R18696:18696 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18727:18733 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 18704:18704 <> a:294
+R18713:18716 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18707:18708 Coq.Lists.List <> In def
+R18712:18712 Theroies.Extras <> l:293 var
+R18710:18710 Theroies.Extras <> a:294 var
+R18720:18722 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R18717:18717 Theroies.Extras <> f:292 var
+R18719:18719 Theroies.Extras <> a:294 var
+R18723:18726 Coq.Init.Datatypes <> true constr
+R18744:18746 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R18734:18739 Coq.Lists.List <> filter def
+R18743:18743 Theroies.Extras <> l:293 var
+R18741:18741 Theroies.Extras <> f:292 var
+R18747:18747 Theroies.Extras <> l:293 var
+R18851:18857 Coq.Init.Logic <> f_equal thm
+R18851:18857 Coq.Init.Logic <> f_equal thm
+def 18927:18930 <> sumN
+binder 18933:18933 <> A:295
+R18949:18952 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18948:18948 Theroies.Extras <> A:295 var
+R18953:18953 Coq.Numbers.BinNums <> N ind
+binder 18944:18944 <> f:296
+R18962:18965 Coq.Init.Datatypes <> list ind
+R18967:18967 Theroies.Extras <> A:295 var
+binder 18957:18958 <> xs:297
+R18972:18972 Coq.Numbers.BinNums <> N ind
+R18985:18986 Theroies.Extras <> xs:297 var
+R18997:18998 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R19010:19013 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R19024:19026 Coq.NArith.BinNat <> ::N_scope:x_'+'_x not
+R19021:19021 Theroies.Extras <> f:296 var
+R19027:19030 Theroies.Extras <> sumN:298 def
+R19032:19032 Theroies.Extras <> f:296 var
+prf 19072:19087 <> sumN_permutation
+binder 19090:19090 <> A:300
+R19106:19109 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19105:19105 Theroies.Extras <> A:300 var
+R19110:19110 Coq.Numbers.BinNums <> N ind
+binder 19101:19101 <> f:301
+R19122:19125 Coq.Init.Datatypes <> list ind
+R19127:19127 Theroies.Extras <> A:300 var
+binder 19114:19115 <> xs:302
+binder 19117:19118 <> ys:303
+R19141:19151 Coq.Sorting.Permutation <> Permutation ind
+R19156:19157 Theroies.Extras <> ys:303 var
+R19153:19154 Theroies.Extras <> xs:302 var
+binder 19131:19137 <> perm_eq:304
+R19173:19175 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19164:19167 Theroies.Extras <> sumN def
+R19171:19172 Theroies.Extras <> xs:302 var
+R19169:19169 Theroies.Extras <> f:301 var
+R19176:19179 Theroies.Extras <> sumN def
+R19183:19184 Theroies.Extras <> ys:303 var
+R19181:19181 Theroies.Extras <> f:301 var
+inst 19260:19275 <> sumN_perm_proper
+binder 19278:19278 <> A:305
+R19292:19297 Coq.Classes.Morphisms <> Proper class
+R19334:19337 Theroies.Extras <> sumN def
+R19302:19306 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R19300:19301 Coq.Init.Logic <> eq ind
+R19325:19329 Coq.Classes.Morphisms ProperNotations ::signature_scope:x_'==>'_x not
+R19307:19317 Coq.Sorting.Permutation <> Permutation ind
+R19323:19323 Theroies.Extras <> A:305 var
+R19330:19331 Coq.Init.Logic <> eq ind
+R19380:19395 Theroies.Extras <> sumN_permutation thm
+R19380:19395 Theroies.Extras <> sumN_permutation thm
+prf 19410:19417 <> sumN_map
+binder 19420:19420 <> A:306
+binder 19422:19422 <> B:307
+R19438:19441 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19437:19437 Theroies.Extras <> A:306 var
+R19442:19442 Theroies.Extras <> B:307 var
+binder 19433:19433 <> f:308
+R19451:19454 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19450:19450 Theroies.Extras <> B:307 var
+R19455:19455 Coq.Numbers.BinNums <> N ind
+binder 19446:19446 <> g:309
+R19464:19467 Coq.Init.Datatypes <> list ind
+R19469:19469 Theroies.Extras <> A:306 var
+binder 19459:19460 <> xs:310
+R19493:19497 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19476:19479 Theroies.Extras <> sumN def
+R19484:19486 Coq.Lists.List <> map def
+R19490:19491 Theroies.Extras <> xs:310 var
+R19488:19488 Theroies.Extras <> f:308 var
+R19481:19481 Theroies.Extras <> g:309 var
+R19498:19501 Theroies.Extras <> sumN def
+R19522:19523 Theroies.Extras <> xs:310 var
+binder 19508:19508 <> a:311
+R19513:19513 Theroies.Extras <> g:309 var
+R19516:19516 Theroies.Extras <> f:308 var
+R19518:19518 Theroies.Extras <> a:311 var
+prf 19607:19617 <> sumN_map_id
+binder 19620:19620 <> A:312
+R19629:19632 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19628:19628 Theroies.Extras <> A:312 var
+R19633:19633 Coq.Numbers.BinNums <> N ind
+binder 19624:19624 <> f:313
+binder 19636:19636 <> l:314
+R19650:19652 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19642:19645 Theroies.Extras <> sumN def
+R19649:19649 Theroies.Extras <> l:314 var
+R19647:19647 Theroies.Extras <> f:313 var
+R19653:19656 Theroies.Extras <> sumN def
+R19662:19664 Coq.Lists.List <> map def
+R19668:19668 Theroies.Extras <> l:314 var
+R19666:19666 Theroies.Extras <> f:313 var
+R19658:19659 Coq.Init.Datatypes <> id def
+R19714:19715 Coq.Init.Datatypes <> id def
+prf 19749:19756 <> sumN_app
+binder 19765:19765 <> A:315
+R19781:19784 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19780:19780 Theroies.Extras <> A:315 var
+R19785:19785 Coq.Numbers.BinNums <> N ind
+binder 19776:19776 <> f:316
+R19797:19800 Coq.Init.Datatypes <> list ind
+R19802:19802 Theroies.Extras <> A:315 var
+binder 19789:19790 <> xs:317
+binder 19792:19793 <> ys:318
+R19826:19828 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19809:19812 Theroies.Extras <> sumN def
+R19819:19822 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R19817:19818 Theroies.Extras <> xs:317 var
+R19823:19824 Theroies.Extras <> ys:318 var
+R19814:19814 Theroies.Extras <> f:316 var
+R19838:19840 Coq.NArith.BinNat <> ::N_scope:x_'+'_x not
+R19829:19832 Theroies.Extras <> sumN def
+R19836:19837 Theroies.Extras <> xs:317 var
+R19834:19834 Theroies.Extras <> f:316 var
+R19841:19844 Theroies.Extras <> sumN def
+R19848:19849 Theroies.Extras <> ys:318 var
+R19846:19846 Theroies.Extras <> f:316 var
+prf 19960:19969 <> sumN_split
+binder 19981:19981 <> A:319
+R19997:20000 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19996:19996 Theroies.Extras <> A:319 var
+R20001:20001 Coq.Numbers.BinNums <> N ind
+binder 19992:19992 <> f:320
+R20013:20013 Theroies.Extras <> A:319 var
+binder 20005:20005 <> x:321
+binder 20007:20007 <> y:322
+binder 20009:20009 <> z:323
+R20022:20025 Coq.Init.Datatypes <> list ind
+R20027:20027 Theroies.Extras <> A:319 var
+binder 20017:20018 <> xs:324
+R20048:20053 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20036:20038 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20033:20033 Theroies.Extras <> f:320 var
+R20035:20035 Theroies.Extras <> z:323 var
+R20042:20044 Coq.NArith.BinNat <> ::N_scope:x_'+'_x not
+R20039:20039 Theroies.Extras <> f:320 var
+R20041:20041 Theroies.Extras <> x:321 var
+R20045:20045 Theroies.Extras <> f:320 var
+R20047:20047 Theroies.Extras <> y:322 var
+R20070:20074 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20054:20057 Theroies.Extras <> sumN def
+R20063:20066 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R20062:20062 Theroies.Extras <> z:323 var
+R20067:20068 Theroies.Extras <> xs:324 var
+R20059:20059 Theroies.Extras <> f:320 var
+R20075:20078 Theroies.Extras <> sumN def
+R20084:20087 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R20083:20083 Theroies.Extras <> x:321 var
+R20089:20092 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R20088:20088 Theroies.Extras <> y:322 var
+R20093:20094 Theroies.Extras <> xs:324 var
+R20080:20080 Theroies.Extras <> f:320 var
+prf 20129:20137 <> sumN_swap
+binder 20149:20149 <> A:325
+R20165:20168 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20164:20164 Theroies.Extras <> A:325 var
+R20169:20169 Coq.Numbers.BinNums <> N ind
+binder 20160:20160 <> f:326
+R20179:20179 Theroies.Extras <> A:325 var
+binder 20173:20173 <> x:327
+binder 20175:20175 <> y:328
+R20188:20191 Coq.Init.Datatypes <> list ind
+R20193:20193 Theroies.Extras <> A:325 var
+binder 20183:20184 <> xs:329
+R20220:20224 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20199:20202 Theroies.Extras <> sumN def
+R20208:20211 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R20207:20207 Theroies.Extras <> x:327 var
+R20213:20216 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R20212:20212 Theroies.Extras <> y:328 var
+R20217:20218 Theroies.Extras <> xs:329 var
+R20204:20204 Theroies.Extras <> f:326 var
+R20225:20228 Theroies.Extras <> sumN def
+R20234:20237 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R20233:20233 Theroies.Extras <> y:328 var
+R20239:20242 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R20238:20238 Theroies.Extras <> x:327 var
+R20243:20244 Theroies.Extras <> xs:329 var
+R20230:20230 Theroies.Extras <> f:326 var
+R20273:20288 Theroies.Extras <> sumN_permutation thm
+R20291:20299 Coq.Sorting.Permutation <> perm_swap constr
+R20273:20288 Theroies.Extras <> sumN_permutation thm
+R20291:20299 Coq.Sorting.Permutation <> perm_swap constr
+prf 20314:20323 <> sumN_in_le
+binder 20335:20335 <> A:330
+R20351:20354 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20350:20350 Theroies.Extras <> A:330 var
+R20355:20355 Coq.Numbers.BinNums <> N ind
+binder 20346:20346 <> f:331
+R20363:20363 Theroies.Extras <> A:330 var
+binder 20359:20359 <> x:332
+R20372:20375 Coq.Init.Datatypes <> list ind
+R20377:20377 Theroies.Extras <> A:330 var
+binder 20367:20368 <> xs:333
+R20390:20393 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20383:20384 Coq.Lists.List <> In def
+R20388:20389 Theroies.Extras <> xs:333 var
+R20386:20386 Theroies.Extras <> x:332 var
+R20397:20400 Coq.NArith.BinNat <> ::N_scope:x_'<='_x not
+R20394:20394 Theroies.Extras <> f:331 var
+R20396:20396 Theroies.Extras <> x:332 var
+R20401:20404 Theroies.Extras <> sumN def
+R20408:20409 Theroies.Extras <> xs:333 var
+R20406:20406 Theroies.Extras <> f:331 var
+R20487:20492 Coq.Lists.List <> in_inv thm
+R20487:20492 Coq.Lists.List <> in_inv thm
+prf 20620:20627 <> sumN_inv
+binder 20639:20639 <> A:334
+R20655:20658 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20654:20654 Theroies.Extras <> A:334 var
+R20659:20659 Coq.Numbers.BinNums <> N ind
+binder 20650:20650 <> f:335
+R20667:20667 Theroies.Extras <> A:334 var
+binder 20663:20663 <> x:336
+R20676:20679 Coq.Init.Datatypes <> list ind
+R20681:20681 Theroies.Extras <> A:334 var
+binder 20671:20672 <> xs:337
+R20702:20706 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20696:20698 Coq.NArith.BinNat <> ::N_scope:x_'+'_x not
+R20687:20690 Theroies.Extras <> sumN def
+R20694:20695 Theroies.Extras <> xs:337 var
+R20692:20692 Theroies.Extras <> f:335 var
+R20699:20699 Theroies.Extras <> f:335 var
+R20701:20701 Theroies.Extras <> x:336 var
+R20707:20710 Theroies.Extras <> sumN def
+R20716:20719 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R20715:20715 Theroies.Extras <> x:336 var
+R20720:20721 Theroies.Extras <> xs:337 var
+R20712:20712 Theroies.Extras <> f:335 var
+R20763:20772 Coq.NArith.BinNat N add_comm thm
+R20763:20772 Coq.NArith.BinNat N add_comm thm
+R20763:20772 Coq.NArith.BinNat N add_comm thm
+def 20793:20798 <> isSome
+binder 20801:20801 <> A:338
+R20816:20821 Coq.Init.Datatypes <> option ind
+R20823:20823 Theroies.Extras <> A:338 var
+binder 20812:20812 <> a:339
+R20835:20835 Theroies.Extras <> a:339 var
+R20844:20847 Coq.Init.Datatypes <> Some constr
+R20854:20857 Coq.Init.Datatypes <> true constr
+R20861:20864 Coq.Init.Datatypes <> None constr
+R20869:20873 Coq.Init.Datatypes <> false constr
+def 20891:20896 <> isNone
+binder 20899:20899 <> A:341
+R20914:20919 Coq.Init.Datatypes <> option ind
+R20921:20921 Theroies.Extras <> A:341 var
+binder 20910:20910 <> a:342
+R20933:20933 Theroies.Extras <> a:342 var
+R20942:20945 Coq.Init.Datatypes <> Some constr
+R20952:20956 Coq.Init.Datatypes <> false constr
+R20960:20963 Coq.Init.Datatypes <> None constr
+R20968:20971 Coq.Init.Datatypes <> true constr
+prf 20985:21004 <> with_default_is_some
+binder 21016:21016 <> A:344
+R21031:21036 Coq.Init.Datatypes <> option ind
+R21038:21038 Theroies.Extras <> A:344 var
+binder 21027:21027 <> x:345
+R21046:21046 Theroies.Extras <> A:344 var
+binder 21042:21042 <> y:346
+R21068:21075 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21060:21062 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21052:21057 Theroies.Extras <> isSome def
+R21059:21059 Theroies.Extras <> x:345 var
+R21063:21067 Coq.Init.Datatypes <> false constr
+R21092:21094 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21076:21087 Theroies.Extras <> with_default def
+R21091:21091 Theroies.Extras <> x:345 var
+R21089:21089 Theroies.Extras <> y:346 var
+R21095:21095 Theroies.Extras <> y:346 var
+prf 21135:21152 <> with_default_indep
+binder 21155:21155 <> A:347
+R21163:21168 Coq.Init.Datatypes <> option ind
+R21170:21170 Theroies.Extras <> A:347 var
+binder 21159:21159 <> o:348
+binder 21173:21173 <> d:349
+binder 21176:21177 <> d':350
+binder 21179:21179 <> v:351
+R21195:21198 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21186:21188 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21185:21185 Theroies.Extras <> o:348 var
+R21189:21192 Coq.Init.Datatypes <> Some constr
+R21194:21194 Theroies.Extras <> v:351 var
+R21215:21217 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21199:21210 Theroies.Extras <> with_default def
+R21214:21214 Theroies.Extras <> o:348 var
+R21212:21212 Theroies.Extras <> d:349 var
+R21218:21229 Theroies.Extras <> with_default def
+R21234:21234 Theroies.Extras <> o:348 var
+R21231:21232 Theroies.Extras <> d':350 var
+prf 21277:21287 <> isSome_some
+binder 21299:21299 <> A:352
+R21314:21319 Coq.Init.Datatypes <> option ind
+R21321:21321 Theroies.Extras <> A:352 var
+binder 21310:21310 <> x:353
+R21329:21329 Theroies.Extras <> A:352 var
+binder 21325:21325 <> y:354
+R21345:21348 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21336:21338 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21335:21335 Theroies.Extras <> x:353 var
+R21339:21342 Coq.Init.Datatypes <> Some constr
+R21344:21344 Theroies.Extras <> y:354 var
+R21357:21359 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21349:21354 Theroies.Extras <> isSome def
+R21356:21356 Theroies.Extras <> x:353 var
+R21360:21363 Coq.Init.Datatypes <> true constr
+prf 21408:21418 <> isSome_none
+binder 21430:21430 <> A:355
+R21445:21450 Coq.Init.Datatypes <> option ind
+R21452:21452 Theroies.Extras <> A:355 var
+binder 21441:21441 <> x:356
+R21466:21469 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21459:21461 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21458:21458 Theroies.Extras <> x:356 var
+R21462:21465 Coq.Init.Datatypes <> None constr
+R21478:21480 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21470:21475 Theroies.Extras <> isSome def
+R21477:21477 Theroies.Extras <> x:356 var
+R21481:21485 Coq.Init.Datatypes <> false constr
+prf 21530:21542 <> isSome_exists
+binder 21554:21554 <> A:357
+R21569:21574 Coq.Init.Datatypes <> option ind
+R21576:21576 Theroies.Extras <> A:357 var
+binder 21565:21565 <> x:358
+R21597:21601 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R21590:21592 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21582:21587 Theroies.Extras <> isSome def
+R21589:21589 Theroies.Extras <> x:358 var
+R21593:21596 Coq.Init.Datatypes <> true constr
+R21602:21608 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R21614:21615 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R21613:21613 Theroies.Extras <> A:357 var
+binder 21609:21609 <> y:359
+R21617:21619 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21616:21616 Theroies.Extras <> x:358 var
+R21620:21623 Coq.Init.Datatypes <> Some constr
+R21625:21625 Theroies.Extras <> y:359 var
+R21732:21742 Theroies.Extras <> isSome_some thm
+R21732:21742 Theroies.Extras <> isSome_some thm
+prf 21768:21784 <> isSome_not_exists
+binder 21796:21796 <> A:360
+R21811:21816 Coq.Init.Datatypes <> option ind
+R21818:21818 Theroies.Extras <> A:360 var
+binder 21807:21807 <> x:361
+R21840:21844 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R21832:21834 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21824:21829 Theroies.Extras <> isSome def
+R21831:21831 Theroies.Extras <> x:361 var
+R21835:21839 Coq.Init.Datatypes <> false constr
+R21856:21856 Theroies.Extras <> A:360 var
+binder 21852:21852 <> y:362
+R21860:21863 Coq.Init.Logic <> ::type_scope:x_'<>'_x not
+R21859:21859 Theroies.Extras <> x:361 var
+R21864:21867 Coq.Init.Datatypes <> Some constr
+R21869:21869 Theroies.Extras <> y:362 var
+R21945:21955 Theroies.Extras <> isSome_none thm
+R21945:21955 Theroies.Extras <> isSome_none thm

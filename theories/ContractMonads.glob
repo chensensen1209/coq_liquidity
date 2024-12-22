@@ -1,0 +1,864 @@
+DIGEST fc97e0e6831109e9b8dd96a5e9dddbaf
+FTheroies.ContractMonads
+R24:47 Coq.Logic.FunctionalExtensionality <> <> lib
+R74:77 Coq.Lists.List <> <> lib
+R95:104 Theroies.Blockchain <> <> lib
+R122:127 Theroies.Monads <> <> lib
+R145:155 Theroies.ResultMonad <> <> lib
+R173:184 Theroies.Serializable <> <> lib
+R194:206 Coq.Lists.List ListNotations <> mod
+sec 218:231 <> ContractMonads
+R244:252 Theroies.Blockchain <> ChainBase class
+binder 244:252 <> H:1
+def 268:281 <> ContractReader
+binder 284:284 <> T:2
+R311:314 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R306:310 Theroies.Blockchain <> Chain rec
+R334:338 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R370:370 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R315:333 Theroies.Blockchain <> ContractCallContext rec
+R366:368 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R344:346 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R339:343 Theroies.Blockchain <> Chain rec
+R347:365 Theroies.Blockchain <> ContractCallContext rec
+R369:369 Theroies.ContractMonads <> T:2 var
+def 385:403 <> run_contract_reader
+binder 418:418 <> T:3
+R449:453 Theroies.Blockchain <> Chain rec
+binder 441:445 <> chain:4
+R475:493 Theroies.Blockchain <> ContractCallContext rec
+binder 469:471 <> ctx:5
+R513:526 Theroies.ContractMonads <> ContractReader def
+R528:528 Theroies.ContractMonads <> T:3 var
+binder 509:509 <> m:6
+R533:533 Theroies.ContractMonads <> T:3 var
+R563:563 Theroies.ContractMonads <> m:6 var
+R565:569 Theroies.ContractMonads <> chain:4 var
+R571:573 Theroies.ContractMonads <> ctx:5 var
+R545:545 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R547:548 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R550:551 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R558:558 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R552:557 Theroies.ResultMonad <> result ind
+inst 603:623 <> contract_reader_monad
+R627:631 Theroies.Monads <> Monad class
+R633:646 Theroies.ContractMonads <> ContractReader def
+R656:658 Theroies.Monads <> ret meth
+R656:658 Theroies.Monads <> ret meth
+R656:658 Theroies.Monads <> ret meth
+R699:702 Theroies.Monads <> bind meth
+R699:702 Theroies.Monads <> bind meth
+binder 662:662 <> x:7
+binder 664:668 <> chain:8
+binder 670:672 <> ctx:9
+R677:677 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R683:684 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R688:689 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R691:691 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R678:682 Theroies.ContractMonads <> chain:8 var
+R685:687 Theroies.ContractMonads <> ctx:9 var
+R690:690 Theroies.ContractMonads <> x:7 var
+binder 708:711 <> prev:10
+binder 713:713 <> f:11
+binder 715:719 <> chain:12
+binder 721:723 <> ctx:13
+R761:764 Theroies.ContractMonads <> prev:10 var
+R766:770 Theroies.ContractMonads <> chain:12 var
+R772:774 Theroies.ContractMonads <> ctx:13 var
+R740:740 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R746:747 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R751:752 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R756:756 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R786:786 Theroies.ContractMonads <> f:11 var
+R792:796 Theroies.ContractMonads <> chain:12 var
+R798:800 Theroies.ContractMonads <> ctx:13 var
+inst 824:843 <> contract_reader_laws
+R847:855 Theroies.Monads <> MonadLaws class
+R857:877 Theroies.ContractMonads <> contract_reader_monad inst
+R954:978 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R954:978 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R954:978 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R954:978 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R1066:1090 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R1066:1090 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R1066:1090 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R1066:1090 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+def 1160:1173 <> ContractIniter
+binder 1176:1180 <> Setup:14
+binder 1182:1186 <> Error:15
+binder 1188:1188 <> T:16
+R1215:1218 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1210:1214 Theroies.Blockchain <> Chain rec
+R1238:1241 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1219:1237 Theroies.Blockchain <> ContractCallContext rec
+R1247:1253 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1306:1306 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1242:1246 Theroies.ContractMonads <> Setup:14 var
+R1289:1291 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1281:1283 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1259:1261 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1254:1258 Theroies.Blockchain <> Chain rec
+R1262:1280 Theroies.Blockchain <> ContractCallContext rec
+R1284:1288 Theroies.ContractMonads <> Setup:14 var
+R1292:1297 Theroies.ResultMonad <> result ind
+R1299:1299 Theroies.ContractMonads <> T:16 var
+R1301:1305 Theroies.ContractMonads <> Error:15 var
+def 1321:1339 <> run_contract_initer
+binder 1354:1358 <> Setup:17
+binder 1360:1364 <> Error:18
+binder 1366:1366 <> T:19
+R1392:1405 Theroies.ContractMonads <> ContractIniter def
+R1407:1411 Theroies.ContractMonads <> Setup:17 var
+R1413:1417 Theroies.ContractMonads <> Error:18 var
+R1419:1419 Theroies.ContractMonads <> T:19 var
+binder 1388:1388 <> m:20
+R1443:1447 Theroies.Blockchain <> Chain rec
+binder 1435:1439 <> chain:21
+R1469:1487 Theroies.Blockchain <> ContractCallContext rec
+binder 1463:1465 <> ctx:22
+R1511:1515 Theroies.ContractMonads <> Setup:17 var
+binder 1503:1507 <> setup:23
+R1532:1537 Theroies.ResultMonad <> result ind
+R1539:1539 Theroies.ContractMonads <> T:19 var
+R1541:1545 Theroies.ContractMonads <> Error:18 var
+R1575:1575 Theroies.ContractMonads <> m:20 var
+R1577:1581 Theroies.ContractMonads <> chain:21 var
+R1583:1585 Theroies.ContractMonads <> ctx:22 var
+R1587:1591 Theroies.ContractMonads <> setup:23 var
+R1557:1557 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1559:1560 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1562:1563 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1565:1566 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1570:1570 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1619:1637 Theroies.ContractMonads <> run_contract_initer def
+R1619:1637 Theroies.ContractMonads <> run_contract_initer def
+inst 1669:1689 <> contract_initer_monad
+binder 1700:1704 <> Setup:24
+binder 1706:1710 <> Error:25
+R1730:1734 Theroies.Monads <> Monad class
+R1737:1750 Theroies.ContractMonads <> ContractIniter def
+R1752:1756 Theroies.ContractMonads <> Setup:24 var
+R1758:1762 Theroies.ContractMonads <> Error:25 var
+R1773:1775 Theroies.Monads <> ret meth
+R1773:1775 Theroies.Monads <> ret meth
+R1773:1775 Theroies.Monads <> ret meth
+R1832:1835 Theroies.Monads <> bind meth
+R1832:1835 Theroies.Monads <> bind meth
+binder 1779:1779 <> x:26
+binder 1781:1785 <> chain:27
+binder 1787:1789 <> ctx:28
+binder 1791:1795 <> setup:29
+R1800:1800 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1806:1807 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1811:1812 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1818:1819 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1824:1824 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1801:1805 Theroies.ContractMonads <> chain:27 var
+R1808:1810 Theroies.ContractMonads <> ctx:28 var
+R1813:1817 Theroies.ContractMonads <> setup:29 var
+R1820:1821 Theroies.ResultMonad <> Ok constr
+R1823:1823 Theroies.ContractMonads <> x:26 var
+binder 1841:1844 <> prev:30
+binder 1846:1846 <> f:31
+binder 1848:1852 <> chain:32
+binder 1854:1856 <> ctx:33
+binder 1858:1862 <> setup:34
+R1907:1910 Theroies.ContractMonads <> prev:30 var
+R1912:1916 Theroies.ContractMonads <> chain:32 var
+R1918:1920 Theroies.ContractMonads <> ctx:33 var
+R1922:1926 Theroies.ContractMonads <> setup:34 var
+R1879:1879 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1885:1886 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1890:1891 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1897:1898 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1902:1902 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1962:1963 Theroies.ResultMonad <> Ok constr
+R1972:1972 Theroies.ContractMonads <> f:31 var
+R1978:1982 Theroies.ContractMonads <> chain:32 var
+R1984:1986 Theroies.ContractMonads <> ctx:33 var
+R1988:1992 Theroies.ContractMonads <> setup:34 var
+R2003:2005 Theroies.ResultMonad <> Err constr
+R2012:2012 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2018:2019 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2023:2024 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2030:2031 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2037:2037 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2013:2017 Theroies.ContractMonads <> chain:32 var
+R2020:2022 Theroies.ContractMonads <> ctx:33 var
+R2025:2029 Theroies.ContractMonads <> setup:34 var
+R2032:2034 Theroies.ResultMonad <> Err constr
+inst 2072:2091 <> contract_initer_laws
+binder 2102:2106 <> Setup:36
+binder 2108:2112 <> Error:37
+R2132:2140 Theroies.Monads <> MonadLaws class
+R2144:2164 Theroies.ContractMonads <> contract_initer_monad inst
+R2166:2170 Theroies.ContractMonads <> Setup:36 var
+R2172:2176 Theroies.ContractMonads <> Error:37 var
+R2254:2278 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2254:2278 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2254:2278 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2254:2278 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2254:2278 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2369:2393 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2369:2393 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2369:2393 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2369:2393 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R2369:2393 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+inst 2471:2504 <> contract_reader_to_contract_initer
+binder 2515:2519 <> Setup:38
+binder 2521:2525 <> Error:39
+R2545:2554 Theroies.Monads <> MonadTrans class
+R2557:2570 Theroies.ContractMonads <> ContractIniter def
+R2572:2576 Theroies.ContractMonads <> Setup:38 var
+R2578:2582 Theroies.ContractMonads <> Error:39 var
+R2585:2598 Theroies.ContractMonads <> ContractReader def
+R2608:2611 Theroies.Monads <> lift meth
+R2608:2611 Theroies.Monads <> lift meth
+R2608:2611 Theroies.Monads <> lift meth
+R2625:2638 Theroies.ContractMonads <> ContractReader def
+binder 2616:2621 <> reader:40
+binder 2643:2647 <> chain:41
+binder 2649:2651 <> ctx:42
+binder 2653:2657 <> setup:43
+R2695:2700 Theroies.ContractMonads <> reader:40 var
+R2702:2706 Theroies.ContractMonads <> chain:41 var
+R2708:2710 Theroies.ContractMonads <> ctx:42 var
+R2674:2674 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2680:2681 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2685:2686 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2690:2690 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2722:2722 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2728:2729 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2733:2734 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2740:2741 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2748:2748 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2723:2727 Theroies.ContractMonads <> chain:41 var
+R2730:2732 Theroies.ContractMonads <> ctx:42 var
+R2735:2739 Theroies.ContractMonads <> setup:43 var
+R2742:2743 Theroies.ResultMonad <> Ok constr
+inst 2771:2795 <> result_to_contract_initer
+binder 2806:2810 <> Setup:44
+binder 2812:2816 <> Error:45
+R2836:2845 Theroies.Monads <> MonadTrans class
+R2848:2861 Theroies.ContractMonads <> ContractIniter def
+R2863:2867 Theroies.ContractMonads <> Setup:44 var
+R2869:2873 Theroies.ContractMonads <> Error:45 var
+binder 2881:2881 <> T:46
+R2886:2891 Theroies.ResultMonad <> result ind
+R2893:2893 Theroies.ContractMonads <> T:46 var
+R2895:2899 Theroies.ContractMonads <> Error:45 var
+R2910:2913 Theroies.Monads <> lift meth
+R2910:2913 Theroies.Monads <> lift meth
+R2910:2913 Theroies.Monads <> lift meth
+R2924:2929 Theroies.ResultMonad <> result ind
+binder 2918:2920 <> opt:47
+binder 2940:2944 <> chain:48
+binder 2946:2948 <> ctx:49
+binder 2950:2954 <> setup:50
+R2959:2959 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2965:2966 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2970:2971 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2977:2978 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2982:2982 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2960:2964 Theroies.ContractMonads <> chain:48 var
+R2967:2969 Theroies.ContractMonads <> ctx:49 var
+R2972:2976 Theroies.ContractMonads <> setup:50 var
+R2979:2981 Theroies.ContractMonads <> opt:47 var
+def 3000:3015 <> ContractReceiver
+binder 3018:3022 <> State:51
+binder 3024:3026 <> Msg:52
+binder 3028:3032 <> Error:53
+binder 3034:3034 <> T:54
+R3061:3064 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3056:3060 Theroies.Blockchain <> Chain rec
+R3084:3087 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3065:3083 Theroies.Blockchain <> ContractCallContext rec
+R3093:3096 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3088:3092 Theroies.ContractMonads <> State:51 var
+R3107:3110 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3097:3102 Coq.Init.Datatypes <> option ind
+R3104:3106 Theroies.ContractMonads <> Msg:52 var
+R3126:3132 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3216:3216 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3111:3114 Coq.Init.Datatypes <> list ind
+R3116:3125 Theroies.Blockchain <> ActionBody ind
+R3199:3201 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R3181:3183 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R3168:3170 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R3160:3162 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R3138:3140 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R3133:3137 Theroies.Blockchain <> Chain rec
+R3141:3159 Theroies.Blockchain <> ContractCallContext rec
+R3163:3167 Theroies.ContractMonads <> State:51 var
+R3171:3176 Coq.Init.Datatypes <> option ind
+R3178:3180 Theroies.ContractMonads <> Msg:52 var
+R3184:3187 Coq.Init.Datatypes <> list ind
+R3189:3198 Theroies.Blockchain <> ActionBody ind
+R3202:3207 Theroies.ResultMonad <> result ind
+R3209:3209 Theroies.ContractMonads <> T:54 var
+R3211:3215 Theroies.ContractMonads <> Error:53 var
+inst 3236:3258 <> contract_receiver_monad
+binder 3267:3271 <> State:55
+binder 3273:3275 <> Msg:56
+binder 3277:3281 <> Error:57
+R3299:3303 Theroies.Monads <> Monad class
+R3306:3321 Theroies.ContractMonads <> ContractReceiver def
+R3323:3327 Theroies.ContractMonads <> State:55 var
+R3329:3331 Theroies.ContractMonads <> Msg:56 var
+R3333:3337 Theroies.ContractMonads <> Error:57 var
+R3348:3350 Theroies.Monads <> ret meth
+R3348:3350 Theroies.Monads <> ret meth
+R3348:3350 Theroies.Monads <> ret meth
+R3427:3430 Theroies.Monads <> bind meth
+R3427:3430 Theroies.Monads <> bind meth
+binder 3354:3354 <> x:58
+binder 3356:3360 <> chain:59
+binder 3362:3364 <> ctx:60
+binder 3366:3370 <> state:61
+binder 3372:3374 <> msg:62
+binder 3376:3379 <> acts:63
+R3384:3384 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3390:3391 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3395:3396 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3402:3403 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3407:3408 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3413:3414 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3419:3419 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3385:3389 Theroies.ContractMonads <> chain:59 var
+R3392:3394 Theroies.ContractMonads <> ctx:60 var
+R3397:3401 Theroies.ContractMonads <> state:61 var
+R3404:3406 Theroies.ContractMonads <> msg:62 var
+R3409:3412 Theroies.ContractMonads <> acts:63 var
+R3415:3416 Theroies.ResultMonad <> Ok constr
+R3418:3418 Theroies.ContractMonads <> x:58 var
+binder 3436:3439 <> prev:64
+binder 3441:3441 <> f:65
+binder 3443:3447 <> chain:66
+binder 3449:3451 <> ctx:67
+binder 3453:3457 <> state:68
+binder 3459:3461 <> msg:69
+binder 3463:3466 <> acts:70
+R3522:3525 Theroies.ContractMonads <> prev:64 var
+R3527:3531 Theroies.ContractMonads <> chain:66 var
+R3533:3535 Theroies.ContractMonads <> ctx:67 var
+R3537:3541 Theroies.ContractMonads <> state:68 var
+R3543:3545 Theroies.ContractMonads <> msg:69 var
+R3547:3550 Theroies.ContractMonads <> acts:70 var
+R3483:3483 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3489:3490 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3494:3495 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3501:3502 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3506:3507 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3512:3513 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3517:3517 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3586:3587 Theroies.ResultMonad <> Ok constr
+R3596:3596 Theroies.ContractMonads <> f:65 var
+R3602:3606 Theroies.ContractMonads <> chain:66 var
+R3608:3610 Theroies.ContractMonads <> ctx:67 var
+R3612:3616 Theroies.ContractMonads <> state:68 var
+R3618:3620 Theroies.ContractMonads <> msg:69 var
+R3622:3625 Theroies.ContractMonads <> acts:70 var
+R3636:3638 Theroies.ResultMonad <> Err constr
+R3645:3645 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3651:3652 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3656:3657 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3663:3664 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3668:3669 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3674:3675 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3681:3681 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3646:3650 Theroies.ContractMonads <> chain:66 var
+R3653:3655 Theroies.ContractMonads <> ctx:67 var
+R3658:3662 Theroies.ContractMonads <> state:68 var
+R3665:3667 Theroies.ContractMonads <> msg:69 var
+R3670:3673 Theroies.ContractMonads <> acts:70 var
+R3676:3678 Theroies.ResultMonad <> Err constr
+def 3710:3730 <> run_contract_receiver
+binder 3745:3749 <> State:72
+binder 3751:3753 <> Msg:73
+binder 3755:3759 <> Error:74
+binder 3761:3761 <> T:75
+R3788:3803 Theroies.ContractMonads <> ContractReceiver def
+R3805:3809 Theroies.ContractMonads <> State:72 var
+R3811:3813 Theroies.ContractMonads <> Msg:73 var
+R3815:3819 Theroies.ContractMonads <> Error:74 var
+R3821:3821 Theroies.ContractMonads <> T:75 var
+binder 3784:3784 <> m:76
+R3845:3849 Theroies.Blockchain <> Chain rec
+binder 3837:3841 <> chain:77
+R3871:3889 Theroies.Blockchain <> ContractCallContext rec
+binder 3865:3867 <> ctx:78
+R3913:3917 Theroies.ContractMonads <> State:72 var
+binder 3905:3909 <> state:79
+R3939:3944 Coq.Init.Datatypes <> option ind
+R3946:3948 Theroies.ContractMonads <> Msg:73 var
+binder 3933:3935 <> msg:80
+R3965:3970 Theroies.ResultMonad <> result ind
+R3974:3976 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R3973:3973 Theroies.ContractMonads <> T:75 var
+R3977:3980 Coq.Init.Datatypes <> list ind
+R3982:3991 Theroies.Blockchain <> ActionBody ind
+R3994:3998 Theroies.ContractMonads <> Error:74 var
+R4040:4040 Theroies.ContractMonads <> m:76 var
+R4042:4046 Theroies.ContractMonads <> chain:77 var
+R4048:4050 Theroies.ContractMonads <> ctx:78 var
+R4052:4056 Theroies.ContractMonads <> state:79 var
+R4058:4060 Theroies.ContractMonads <> msg:80 var
+R4062:4063 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R4010:4010 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4012:4013 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4015:4016 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4018:4019 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4021:4022 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4027:4028 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4035:4035 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4029:4034 Theroies.ResultMonad <> result ind
+R4092:4093 Theroies.ResultMonad <> Ok constr
+R4102:4103 Theroies.ResultMonad <> Ok constr
+R4105:4105 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4109:4110 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4115:4115 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4121:4123 Theroies.ResultMonad <> Err constr
+R4130:4132 Theroies.ResultMonad <> Err constr
+R4161:4181 Theroies.ContractMonads <> run_contract_receiver def
+R4161:4181 Theroies.ContractMonads <> run_contract_receiver def
+inst 4215:4236 <> contract_receiver_laws
+binder 4247:4251 <> State:82
+binder 4253:4255 <> Msg:83
+binder 4257:4261 <> Error:84
+R4281:4289 Theroies.Monads <> MonadLaws class
+R4292:4314 Theroies.ContractMonads <> contract_receiver_monad inst
+R4316:4320 Theroies.ContractMonads <> State:82 var
+R4322:4324 Theroies.ContractMonads <> Msg:83 var
+R4326:4330 Theroies.ContractMonads <> Error:84 var
+R4408:4432 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4408:4432 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4408:4432 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4408:4432 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4408:4432 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4408:4432 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4408:4432 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4527:4551 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4527:4551 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4527:4551 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4527:4551 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4527:4551 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4527:4551 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+R4527:4551 Coq.Logic.FunctionalExtensionality <> functional_extensionality thm
+inst 4633:4659 <> contract_reader_to_receiver
+binder 4670:4674 <> State:85
+binder 4676:4678 <> Msg:86
+binder 4680:4684 <> Error:87
+R4704:4713 Theroies.Monads <> MonadTrans class
+R4716:4731 Theroies.ContractMonads <> ContractReceiver def
+R4733:4737 Theroies.ContractMonads <> State:85 var
+R4739:4741 Theroies.ContractMonads <> Msg:86 var
+R4743:4747 Theroies.ContractMonads <> Error:87 var
+R4750:4763 Theroies.ContractMonads <> ContractReader def
+R4773:4776 Theroies.Monads <> lift meth
+R4773:4776 Theroies.Monads <> lift meth
+R4773:4776 Theroies.Monads <> lift meth
+R4790:4803 Theroies.ContractMonads <> ContractReader def
+binder 4781:4786 <> reader:88
+binder 4808:4812 <> chain:89
+binder 4814:4816 <> ctx:90
+binder 4818:4822 <> state:91
+binder 4824:4826 <> msg:92
+binder 4828:4831 <> acts:93
+R4869:4874 Theroies.ContractMonads <> reader:88 var
+R4876:4880 Theroies.ContractMonads <> chain:89 var
+R4882:4884 Theroies.ContractMonads <> ctx:90 var
+R4848:4848 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4854:4855 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4859:4860 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4864:4864 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4896:4896 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4902:4903 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4907:4908 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4914:4915 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4919:4920 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4925:4926 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4933:4933 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4897:4901 Theroies.ContractMonads <> chain:89 var
+R4904:4906 Theroies.ContractMonads <> ctx:90 var
+R4909:4913 Theroies.ContractMonads <> state:91 var
+R4916:4918 Theroies.ContractMonads <> msg:92 var
+R4921:4924 Theroies.ContractMonads <> acts:93 var
+R4927:4928 Theroies.ResultMonad <> Ok constr
+inst 4956:4982 <> result_to_contract_receiver
+binder 4993:4997 <> State:94
+binder 4999:5001 <> Msg:95
+binder 5003:5007 <> Error:96
+R5027:5036 Theroies.Monads <> MonadTrans class
+R5039:5054 Theroies.ContractMonads <> ContractReceiver def
+R5056:5060 Theroies.ContractMonads <> State:94 var
+R5062:5064 Theroies.ContractMonads <> Msg:95 var
+R5066:5070 Theroies.ContractMonads <> Error:96 var
+binder 5078:5078 <> T:97
+R5083:5088 Theroies.ResultMonad <> result ind
+R5090:5090 Theroies.ContractMonads <> T:97 var
+R5092:5096 Theroies.ContractMonads <> Error:96 var
+R5107:5110 Theroies.Monads <> lift meth
+R5107:5110 Theroies.Monads <> lift meth
+R5107:5110 Theroies.Monads <> lift meth
+R5121:5126 Theroies.ResultMonad <> result ind
+binder 5115:5117 <> opt:98
+binder 5137:5141 <> chain:99
+binder 5143:5145 <> ctx:100
+binder 5147:5151 <> state:101
+binder 5153:5155 <> msg:102
+binder 5157:5160 <> acts:103
+R5165:5165 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5171:5172 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5176:5177 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5183:5184 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5188:5189 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5194:5195 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5199:5199 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5166:5170 Theroies.ContractMonads <> chain:99 var
+R5173:5175 Theroies.ContractMonads <> ctx:100 var
+R5178:5182 Theroies.ContractMonads <> state:101 var
+R5185:5187 Theroies.ContractMonads <> msg:102 var
+R5190:5193 Theroies.ContractMonads <> acts:103 var
+R5196:5198 Theroies.ContractMonads <> opt:98 var
+def 5217:5228 <> chain_height
+R5232:5245 Theroies.ContractMonads <> ContractReader def
+R5247:5249 Coq.Init.Datatypes <> nat ind
+binder 5260:5264 <> chain:104
+binder 5266:5268 <> ctx:105
+R5273:5273 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5279:5280 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5284:5285 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5304:5304 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5274:5278 Theroies.ContractMonads <> chain:104 var
+R5281:5283 Theroies.ContractMonads <> ctx:105 var
+R5286:5297 Theroies.Blockchain <> chain_height proj
+R5299:5303 Theroies.ContractMonads <> chain:104 var
+def 5319:5330 <> current_slot
+R5334:5347 Theroies.ContractMonads <> ContractReader def
+R5349:5351 Coq.Init.Datatypes <> nat ind
+binder 5362:5366 <> chain:106
+binder 5368:5370 <> ctx:107
+R5375:5375 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5381:5382 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5386:5387 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5406:5406 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5376:5380 Theroies.ContractMonads <> chain:106 var
+R5383:5385 Theroies.ContractMonads <> ctx:107 var
+R5388:5399 Theroies.Blockchain <> current_slot proj
+R5401:5405 Theroies.ContractMonads <> chain:106 var
+def 5421:5436 <> finalized_height
+R5440:5453 Theroies.ContractMonads <> ContractReader def
+R5455:5457 Coq.Init.Datatypes <> nat ind
+binder 5468:5472 <> chain:108
+binder 5474:5476 <> ctx:109
+R5481:5481 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5487:5488 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5492:5493 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5516:5516 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5482:5486 Theroies.ContractMonads <> chain:108 var
+R5489:5491 Theroies.ContractMonads <> ctx:109 var
+R5494:5509 Theroies.Blockchain <> finalized_height proj
+R5511:5515 Theroies.ContractMonads <> chain:108 var
+def 5531:5541 <> caller_addr
+R5545:5558 Theroies.ContractMonads <> ContractReader def
+R5560:5566 Theroies.Blockchain <> Address meth
+binder 5577:5581 <> chain:110
+binder 5583:5585 <> ctx:111
+R5590:5590 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5596:5597 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5601:5602 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5615:5615 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5591:5595 Theroies.ContractMonads <> chain:110 var
+R5598:5600 Theroies.ContractMonads <> ctx:111 var
+R5603:5610 Theroies.Blockchain <> ctx_from proj
+R5612:5614 Theroies.ContractMonads <> ctx:111 var
+def 5630:5636 <> my_addr
+R5640:5653 Theroies.ContractMonads <> ContractReader def
+R5655:5661 Theroies.Blockchain <> Address meth
+binder 5672:5676 <> chain:112
+binder 5678:5680 <> ctx:113
+R5685:5685 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5691:5692 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5696:5697 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5722:5722 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5686:5690 Theroies.ContractMonads <> chain:112 var
+R5693:5695 Theroies.ContractMonads <> ctx:113 var
+R5698:5717 Theroies.Blockchain <> ctx_contract_address proj
+R5719:5721 Theroies.ContractMonads <> ctx:113 var
+def 5737:5746 <> my_balance
+R5750:5763 Theroies.ContractMonads <> ContractReader def
+R5765:5770 Theroies.Blockchain <> Amount def
+binder 5781:5785 <> chain:114
+binder 5787:5789 <> ctx:115
+R5794:5794 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5800:5801 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5805:5806 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5831:5831 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5795:5799 Theroies.ContractMonads <> chain:114 var
+R5802:5804 Theroies.ContractMonads <> ctx:115 var
+R5807:5826 Theroies.Blockchain <> ctx_contract_balance proj
+R5828:5830 Theroies.ContractMonads <> ctx:115 var
+def 5846:5856 <> call_amount
+R5860:5873 Theroies.ContractMonads <> ContractReader def
+R5875:5880 Theroies.Blockchain <> Amount def
+binder 5891:5895 <> chain:116
+binder 5897:5899 <> ctx:117
+R5904:5904 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5910:5911 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5915:5916 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5931:5931 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5905:5909 Theroies.ContractMonads <> chain:116 var
+R5912:5914 Theroies.ContractMonads <> ctx:117 var
+R5917:5926 Theroies.Blockchain <> ctx_amount proj
+R5928:5930 Theroies.ContractMonads <> ctx:117 var
+def 5946:5961 <> deployment_setup
+binder 5964:5968 <> Setup:118
+binder 5970:5974 <> Error:119
+R5988:6001 Theroies.ContractMonads <> ContractIniter def
+R6003:6007 Theroies.ContractMonads <> Setup:118 var
+R6009:6013 Theroies.ContractMonads <> Error:119 var
+R6015:6019 Theroies.ContractMonads <> Setup:118 var
+binder 6030:6034 <> chain:120
+binder 6036:6038 <> ctx:121
+binder 6040:6044 <> setup:122
+R6049:6049 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6055:6056 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6060:6061 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6067:6068 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6077:6077 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6050:6054 Theroies.ContractMonads <> chain:120 var
+R6057:6059 Theroies.ContractMonads <> ctx:121 var
+R6062:6066 Theroies.ContractMonads <> setup:122 var
+R6069:6070 Theroies.ResultMonad <> Ok constr
+R6072:6076 Theroies.ContractMonads <> setup:122 var
+def 6092:6108 <> reject_deployment
+binder 6111:6115 <> Setup:123
+binder 6117:6121 <> State:124
+binder 6123:6127 <> Error:125
+R6144:6148 Theroies.ContractMonads <> Error:125 var
+binder 6138:6140 <> err:126
+R6155:6168 Theroies.ContractMonads <> ContractIniter def
+R6170:6174 Theroies.ContractMonads <> Setup:123 var
+R6176:6180 Theroies.ContractMonads <> Error:125 var
+R6182:6186 Theroies.ContractMonads <> State:124 var
+binder 6197:6201 <> chain:127
+binder 6203:6205 <> ctx:128
+binder 6207:6211 <> setup:129
+R6216:6216 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6222:6223 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6227:6228 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6234:6235 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6243:6243 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6217:6221 Theroies.ContractMonads <> chain:127 var
+R6224:6226 Theroies.ContractMonads <> ctx:128 var
+R6229:6233 Theroies.ContractMonads <> setup:129 var
+R6236:6238 Theroies.ResultMonad <> Err constr
+R6240:6242 Theroies.ContractMonads <> err:126 var
+def 6258:6274 <> accept_deployment
+binder 6289:6293 <> Setup:130
+binder 6295:6299 <> Error:131
+binder 6301:6305 <> State:132
+R6336:6340 Theroies.ContractMonads <> State:132 var
+binder 6328:6332 <> state:133
+R6357:6370 Theroies.ContractMonads <> ContractIniter def
+R6372:6376 Theroies.ContractMonads <> Setup:130 var
+R6378:6382 Theroies.ContractMonads <> Error:131 var
+R6384:6388 Theroies.ContractMonads <> State:132 var
+R6395:6397 Theroies.Monads <> ret meth
+R6399:6403 Theroies.ContractMonads <> state:133 var
+def 6418:6425 <> call_msg
+binder 6440:6444 <> State:134
+binder 6446:6448 <> Msg:135
+binder 6450:6454 <> Error:136
+R6482:6486 Theroies.ContractMonads <> Error:136 var
+binder 6476:6478 <> err:137
+R6503:6518 Theroies.ContractMonads <> ContractReceiver def
+R6520:6524 Theroies.ContractMonads <> State:134 var
+R6526:6528 Theroies.ContractMonads <> Msg:135 var
+R6530:6534 Theroies.ContractMonads <> Error:136 var
+R6536:6538 Theroies.ContractMonads <> Msg:135 var
+binder 6549:6553 <> chain:138
+binder 6555:6557 <> ctx:139
+binder 6559:6563 <> state:140
+binder 6565:6567 <> msg:141
+binder 6569:6572 <> acts:142
+R6577:6577 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6583:6584 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6588:6589 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6595:6596 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6600:6601 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6606:6607 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6632:6632 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6578:6582 Theroies.ContractMonads <> chain:138 var
+R6585:6587 Theroies.ContractMonads <> ctx:139 var
+R6590:6594 Theroies.ContractMonads <> state:140 var
+R6597:6599 Theroies.ContractMonads <> msg:141 var
+R6602:6605 Theroies.ContractMonads <> acts:142 var
+R6608:6623 Theroies.ResultMonad <> result_of_option def
+R6629:6631 Theroies.ContractMonads <> err:137 var
+R6625:6627 Theroies.ContractMonads <> msg:141 var
+def 6647:6654 <> my_state
+binder 6668:6672 <> State:143
+binder 6674:6676 <> Msg:144
+binder 6678:6682 <> Error:145
+R6705:6720 Theroies.ContractMonads <> ContractReceiver def
+R6722:6726 Theroies.ContractMonads <> State:143 var
+R6728:6730 Theroies.ContractMonads <> Msg:144 var
+R6732:6736 Theroies.ContractMonads <> Error:145 var
+R6738:6742 Theroies.ContractMonads <> State:143 var
+binder 6753:6757 <> chain:146
+binder 6759:6761 <> ctx:147
+binder 6763:6767 <> state:148
+binder 6769:6771 <> msg:149
+binder 6773:6776 <> acts:150
+R6781:6781 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6787:6788 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6792:6793 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6799:6800 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6804:6805 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6810:6811 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6820:6820 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6782:6786 Theroies.ContractMonads <> chain:146 var
+R6789:6791 Theroies.ContractMonads <> ctx:147 var
+R6794:6798 Theroies.ContractMonads <> state:148 var
+R6801:6803 Theroies.ContractMonads <> msg:149 var
+R6806:6809 Theroies.ContractMonads <> acts:150 var
+R6812:6813 Theroies.ResultMonad <> Ok constr
+R6815:6819 Theroies.ContractMonads <> state:148 var
+def 6835:6839 <> queue
+binder 6853:6857 <> State:151
+binder 6859:6861 <> Msg:152
+binder 6863:6867 <> Error:153
+R6895:6904 Theroies.Blockchain <> ActionBody ind
+binder 6889:6891 <> act:154
+R6920:6935 Theroies.ContractMonads <> ContractReceiver def
+R6937:6941 Theroies.ContractMonads <> State:151 var
+R6943:6945 Theroies.ContractMonads <> Msg:152 var
+R6947:6951 Theroies.ContractMonads <> Error:153 var
+R6953:6956 Coq.Init.Datatypes <> unit ind
+binder 6967:6971 <> chain:155
+binder 6973:6975 <> ctx:156
+binder 6977:6981 <> state:157
+binder 6983:6985 <> msg:158
+binder 6987:6990 <> acts:159
+R6995:6995 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7001:7002 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7006:7007 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7013:7014 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7018:7019 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7033:7034 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7040:7040 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6996:7000 Theroies.ContractMonads <> chain:155 var
+R7003:7005 Theroies.ContractMonads <> ctx:156 var
+R7008:7012 Theroies.ContractMonads <> state:157 var
+R7015:7017 Theroies.ContractMonads <> msg:158 var
+R7024:7027 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R7020:7023 Theroies.ContractMonads <> acts:159 var
+R7028:7028 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R7032:7032 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R7029:7031 Theroies.ContractMonads <> act:154 var
+R7035:7036 Theroies.ResultMonad <> Ok constr
+R7038:7039 Coq.Init.Datatypes <> tt constr
+def 7055:7065 <> reject_call
+binder 7079:7083 <> State:160
+binder 7085:7087 <> Msg:161
+binder 7089:7093 <> Error:162
+R7121:7125 Theroies.ContractMonads <> Error:162 var
+binder 7115:7117 <> err:163
+R7141:7156 Theroies.ContractMonads <> ContractReceiver def
+R7158:7162 Theroies.ContractMonads <> State:160 var
+R7164:7166 Theroies.ContractMonads <> Msg:161 var
+R7168:7172 Theroies.ContractMonads <> Error:162 var
+R7174:7178 Theroies.ContractMonads <> State:160 var
+binder 7189:7193 <> chain:164
+binder 7195:7197 <> ctx:165
+binder 7199:7203 <> state:166
+binder 7205:7207 <> msg:167
+binder 7209:7212 <> acts:168
+R7217:7217 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7223:7224 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7228:7229 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7235:7236 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7240:7241 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7244:7245 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7253:7253 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7218:7222 Theroies.ContractMonads <> chain:164 var
+R7225:7227 Theroies.ContractMonads <> ctx:165 var
+R7230:7234 Theroies.ContractMonads <> state:166 var
+R7237:7239 Theroies.ContractMonads <> msg:167 var
+R7242:7243 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R7246:7248 Theroies.ResultMonad <> Err constr
+R7250:7252 Theroies.ContractMonads <> err:163 var
+def 7268:7278 <> accept_call
+binder 7292:7296 <> State:169
+binder 7298:7300 <> Msg:170
+binder 7302:7306 <> Error:171
+R7340:7344 Theroies.ContractMonads <> State:169 var
+binder 7328:7336 <> new_state:172
+R7360:7375 Theroies.ContractMonads <> ContractReceiver def
+R7377:7381 Theroies.ContractMonads <> State:169 var
+R7383:7385 Theroies.ContractMonads <> Msg:170 var
+R7387:7391 Theroies.ContractMonads <> Error:171 var
+R7393:7397 Theroies.ContractMonads <> State:169 var
+binder 7408:7412 <> chain:173
+binder 7414:7416 <> ctx:174
+binder 7418:7422 <> state:175
+binder 7424:7426 <> msg:176
+binder 7428:7431 <> acts:177
+R7436:7436 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7442:7443 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7447:7448 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7454:7455 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7459:7460 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7465:7466 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7479:7479 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7437:7441 Theroies.ContractMonads <> chain:173 var
+R7444:7446 Theroies.ContractMonads <> ctx:174 var
+R7449:7453 Theroies.ContractMonads <> state:175 var
+R7456:7458 Theroies.ContractMonads <> msg:176 var
+R7461:7464 Theroies.ContractMonads <> acts:177 var
+R7467:7468 Theroies.ResultMonad <> Ok constr
+R7470:7478 Theroies.ContractMonads <> new_state:172 var
+def 7494:7507 <> build_contract
+binder 7521:7525 <> Setup:178
+binder 7527:7529 <> Msg:179
+binder 7531:7535 <> State:180
+binder 7537:7541 <> Error:181
+R7563:7574 Theroies.Serializable <> Serializable class
+R7576:7580 Theroies.ContractMonads <> Setup:178 var
+binder 7563:7580 <> H0:182
+R7595:7606 Theroies.Serializable <> Serializable class
+R7608:7610 Theroies.ContractMonads <> Msg:179 var
+binder 7595:7610 <> H1:183
+R7625:7636 Theroies.Serializable <> Serializable class
+R7638:7642 Theroies.ContractMonads <> State:180 var
+binder 7625:7642 <> H2:184
+R7657:7668 Theroies.Serializable <> Serializable class
+R7670:7674 Theroies.ContractMonads <> Error:181 var
+binder 7657:7674 <> H3:185
+R7696:7709 Theroies.ContractMonads <> ContractIniter def
+R7711:7715 Theroies.ContractMonads <> Setup:178 var
+R7717:7721 Theroies.ContractMonads <> Error:181 var
+R7723:7727 Theroies.ContractMonads <> State:180 var
+binder 7689:7692 <> init:186
+R7752:7767 Theroies.ContractMonads <> ContractReceiver def
+R7769:7773 Theroies.ContractMonads <> State:180 var
+R7775:7777 Theroies.ContractMonads <> Msg:179 var
+R7779:7783 Theroies.ContractMonads <> Error:181 var
+R7785:7789 Theroies.ContractMonads <> State:180 var
+binder 7742:7748 <> receive:187
+R7805:7812 Theroies.Blockchain <> Contract rec
+R7830:7834 Theroies.ContractMonads <> Error:181 var
+R7824:7828 Theroies.ContractMonads <> State:180 var
+R7820:7822 Theroies.ContractMonads <> Msg:179 var
+R7814:7818 Theroies.ContractMonads <> Setup:178 var
+R7844:7847 Theroies.Blockchain <> init proj
+R7844:7847 Theroies.Blockchain <> init proj
+R7844:7847 Theroies.Blockchain <> init proj
+R7885:7891 Theroies.Blockchain <> receive proj
+R7885:7891 Theroies.Blockchain <> receive proj
+R7853:7871 Theroies.ContractMonads <> run_contract_initer def
+R7873:7876 Theroies.ContractMonads <> init:186 var
+R7897:7917 Theroies.ContractMonads <> run_contract_receiver def
+R7919:7925 Theroies.ContractMonads <> receive:187 var
+R7938:7951 Theroies.ContractMonads ContractMonads <> sec

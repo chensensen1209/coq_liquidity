@@ -1,0 +1,1691 @@
+DIGEST 6b2b5dbf7538da869a4c8fc910a9f8ee
+FTheroies.BuildUtils
+R24:26 Coq.micromega.Lia <> <> lib
+R53:56 Coq.Lists.List <> <> lib
+R66:78 Coq.Lists.List ListNotations <> mod
+R105:119 Coq.Logic.Decidable <> <> lib
+R146:151 Coq.ZArith.ZArith <> <> lib
+R169:178 Theroies.Automation <> <> lib
+R196:207 RecordUpdate.RecordUpdate <> <> lib
+R225:234 Theroies.Blockchain <> <> lib
+R252:263 Theroies.Serializable <> <> lib
+R281:291 Theroies.ResultMonad <> <> lib
+sec 303:312 <> BuildUtils
+R336:344 Theroies.Blockchain <> ChainBase class
+binder 324:332 <> BaseTypes:1
+prf 355:375 <> reachable_empty_state
+R381:389 Theroies.Blockchain <> reachable def
+R391:401 Theroies.Blockchain <> empty_state def
+prf 501:515 <> reachable_trans
+binder 517:520 <> from:2
+binder 522:523 <> to:3
+R543:546 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R529:537 Theroies.Blockchain <> reachable def
+R539:542 Theroies.BuildUtils <> from:2 var
+R565:568 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R547:556 Theroies.Blockchain <> ChainTrace def
+R558:561 Theroies.BuildUtils <> from:2 var
+R563:564 Theroies.BuildUtils <> to:3 var
+R569:577 Theroies.Blockchain <> reachable def
+R579:580 Theroies.BuildUtils <> to:3 var
+R621:641 Theroies.ChainedList <> clist_app def
+R621:641 Theroies.ChainedList <> clist_app def
+R658:678 Theroies.ChainedList <> clist_app def
+R658:678 Theroies.ChainedList <> clist_app def
+prf 768:781 <> reachable_step
+binder 783:786 <> from:4
+binder 788:789 <> to:5
+R809:812 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R795:803 Theroies.Blockchain <> reachable def
+R805:808 Theroies.BuildUtils <> from:4 var
+R830:833 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R813:821 Theroies.Blockchain <> ChainStep ind
+R823:826 Theroies.BuildUtils <> from:4 var
+R828:829 Theroies.BuildUtils <> to:5 var
+R834:842 Theroies.Blockchain <> reachable def
+R844:845 Theroies.BuildUtils <> to:5 var
+R962:970 Theroies.Blockchain <> ChainStep ind
+R962:970 Theroies.Blockchain <> ChainStep ind
+def 1495:1511 <> reachable_through
+binder 1513:1515 <> mid:6
+binder 1517:1518 <> to:7
+R1536:1539 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R1523:1531 Theroies.Blockchain <> reachable def
+R1533:1535 Theroies.BuildUtils <> mid:6 var
+R1540:1548 Coq.Init.Logic <> inhabited ind
+R1551:1560 Theroies.Blockchain <> ChainTrace def
+R1562:1564 Theroies.BuildUtils <> mid:6 var
+R1566:1567 Theroies.BuildUtils <> to:7 var
+prf 1627:1648 <> reachable_through_refl
+binder 1659:1664 <> bstate:8
+R1685:1688 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1669:1677 Theroies.Blockchain <> reachable def
+R1679:1684 Theroies.BuildUtils <> bstate:8 var
+R1689:1705 Theroies.BuildUtils <> reachable_through def
+R1707:1712 Theroies.BuildUtils <> bstate:8 var
+R1714:1719 Theroies.BuildUtils <> bstate:8 var
+prf 1856:1879 <> reachable_through_trans'
+binder 1890:1893 <> from:9
+binder 1895:1897 <> mid:10
+binder 1899:1900 <> to:11
+R1931:1934 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1905:1921 Theroies.BuildUtils <> reachable_through def
+R1923:1926 Theroies.BuildUtils <> from:9 var
+R1928:1930 Theroies.BuildUtils <> mid:10 var
+R1951:1954 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1935:1943 Theroies.Blockchain <> ChainStep ind
+R1945:1947 Theroies.BuildUtils <> mid:10 var
+R1949:1950 Theroies.BuildUtils <> to:11 var
+R1955:1971 Theroies.BuildUtils <> reachable_through def
+R1973:1976 Theroies.BuildUtils <> from:9 var
+R1978:1979 Theroies.BuildUtils <> to:11 var
+prf 2115:2137 <> reachable_through_trans
+binder 2148:2151 <> from:12
+binder 2153:2155 <> mid:13
+binder 2157:2158 <> to:14
+R2189:2192 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2163:2179 Theroies.BuildUtils <> reachable_through def
+R2181:2184 Theroies.BuildUtils <> from:12 var
+R2186:2188 Theroies.BuildUtils <> mid:13 var
+R2217:2220 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2193:2209 Theroies.BuildUtils <> reachable_through def
+R2211:2213 Theroies.BuildUtils <> mid:13 var
+R2215:2216 Theroies.BuildUtils <> to:14 var
+R2221:2237 Theroies.BuildUtils <> reachable_through def
+R2239:2242 Theroies.BuildUtils <> from:12 var
+R2244:2245 Theroies.BuildUtils <> to:14 var
+R2344:2364 Theroies.ChainedList <> clist_app def
+R2344:2364 Theroies.ChainedList <> clist_app def
+prf 2538:2559 <> reachable_through_step
+binder 2570:2573 <> from:15
+binder 2575:2576 <> to:16
+R2595:2598 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2581:2589 Theroies.Blockchain <> reachable def
+R2591:2594 Theroies.BuildUtils <> from:15 var
+R2616:2619 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2599:2607 Theroies.Blockchain <> ChainStep ind
+R2609:2612 Theroies.BuildUtils <> from:15 var
+R2614:2615 Theroies.BuildUtils <> to:16 var
+R2620:2636 Theroies.BuildUtils <> reachable_through def
+R2638:2641 Theroies.BuildUtils <> from:15 var
+R2643:2644 Theroies.BuildUtils <> to:16 var
+R2686:2707 Theroies.BuildUtils <> reachable_through_refl thm
+R2686:2707 Theroies.BuildUtils <> reachable_through_refl thm
+R2731:2754 Theroies.BuildUtils <> reachable_through_trans' thm
+R2731:2754 Theroies.BuildUtils <> reachable_through_trans' thm
+prf 2856:2882 <> reachable_through_reachable
+binder 2893:2896 <> from:17
+binder 2898:2899 <> to:18
+R2929:2932 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2904:2920 Theroies.BuildUtils <> reachable_through def
+R2922:2925 Theroies.BuildUtils <> from:17 var
+R2927:2928 Theroies.BuildUtils <> to:18 var
+R2933:2941 Theroies.Blockchain <> reachable def
+R2943:2944 Theroies.BuildUtils <> to:18 var
+R3010:3030 Theroies.ChainedList <> clist_app def
+R3010:3030 Theroies.ChainedList <> clist_app def
+prf 3426:3460 <> reachable_through_contract_deployed
+binder 3471:3474 <> from:19
+binder 3476:3477 <> to:20
+binder 3479:3482 <> addr:21
+binder 3484:3485 <> wc:22
+R3515:3518 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3490:3506 Theroies.BuildUtils <> reachable_through def
+R3508:3511 Theroies.BuildUtils <> from:19 var
+R3513:3514 Theroies.BuildUtils <> to:20 var
+R3552:3559 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3542:3544 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3519:3531 Theroies.Blockchain <> env_contracts proj
+R3533:3536 Theroies.BuildUtils <> from:19 var
+R3538:3541 Theroies.BuildUtils <> addr:21 var
+R3545:3548 Coq.Init.Datatypes <> Some constr
+R3550:3551 Theroies.BuildUtils <> wc:22 var
+R3581:3583 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3560:3572 Theroies.Blockchain <> env_contracts proj
+R3574:3575 Theroies.BuildUtils <> to:20 var
+R3577:3580 Theroies.BuildUtils <> addr:21 var
+R3584:3587 Coq.Init.Datatypes <> Some constr
+R3589:3590 Theroies.BuildUtils <> wc:22 var
+prf 4081:4112 <> reachable_through_contract_state
+binder 4123:4126 <> from:23
+binder 4128:4129 <> to:24
+binder 4131:4134 <> addr:25
+binder 4136:4141 <> cstate:26
+R4171:4174 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4146:4162 Theroies.BuildUtils <> reachable_through def
+R4164:4167 Theroies.BuildUtils <> from:23 var
+R4169:4170 Theroies.BuildUtils <> to:24 var
+R4218:4225 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4204:4206 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4175:4193 Theroies.Blockchain <> env_contract_states proj
+R4195:4198 Theroies.BuildUtils <> from:23 var
+R4200:4203 Theroies.BuildUtils <> addr:25 var
+R4207:4210 Coq.Init.Datatypes <> Some constr
+R4212:4217 Theroies.BuildUtils <> cstate:26 var
+R4226:4232 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R4243:4244 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 4233:4242 <> new_cstate:27
+R4272:4274 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4245:4263 Theroies.Blockchain <> env_contract_states proj
+R4265:4266 Theroies.BuildUtils <> to:24 var
+R4268:4271 Theroies.BuildUtils <> addr:25 var
+R4275:4278 Coq.Init.Datatypes <> Some constr
+R4280:4289 Theroies.BuildUtils <> new_cstate:27 var
+prf 4753:4782 <> reachable_through_chain_height
+binder 4793:4796 <> from:28
+binder 4798:4799 <> to:29
+R4829:4832 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4804:4820 Theroies.BuildUtils <> reachable_through def
+R4822:4825 Theroies.BuildUtils <> from:28 var
+R4827:4828 Theroies.BuildUtils <> to:29 var
+R4852:4855 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R4839:4850 Theroies.Blockchain <> chain_height proj
+R4833:4836 Theroies.BuildUtils <> from:28 var
+R4860:4871 Theroies.Blockchain <> chain_height proj
+R4856:4857 Theroies.BuildUtils <> to:29 var
+R4972:4982 Coq.Arith.PeanoNat Nat le_refl thm
+R4972:4982 Coq.Arith.PeanoNat Nat le_refl thm
+prf 5251:5280 <> reachable_through_current_slot
+binder 5291:5294 <> from:30
+binder 5296:5297 <> to:31
+R5327:5330 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5302:5318 Theroies.BuildUtils <> reachable_through def
+R5320:5323 Theroies.BuildUtils <> from:30 var
+R5325:5326 Theroies.BuildUtils <> to:31 var
+R5350:5353 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R5337:5348 Theroies.Blockchain <> current_slot proj
+R5331:5334 Theroies.BuildUtils <> from:30 var
+R5358:5369 Theroies.Blockchain <> current_slot proj
+R5354:5355 Theroies.BuildUtils <> to:31 var
+R5470:5480 Coq.Arith.PeanoNat Nat le_refl thm
+R5470:5480 Coq.Arith.PeanoNat Nat le_refl thm
+prf 5753:5786 <> reachable_through_finalized_height
+binder 5797:5800 <> from:32
+binder 5802:5803 <> to:33
+R5833:5836 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5808:5824 Theroies.BuildUtils <> reachable_through def
+R5826:5829 Theroies.BuildUtils <> from:32 var
+R5831:5832 Theroies.BuildUtils <> to:33 var
+R5860:5863 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R5843:5858 Theroies.Blockchain <> finalized_height proj
+R5837:5840 Theroies.BuildUtils <> from:32 var
+R5868:5883 Theroies.Blockchain <> finalized_height proj
+R5864:5865 Theroies.BuildUtils <> to:33 var
+R5984:5990 Coq.Arith.Le <> le_refl abbrev
+R5984:5990 Coq.Arith.Le <> le_refl abbrev
+prf 6241:6269 <> deployment_amount_nonnegative
+binder 6281:6285 <> Setup:34
+R6297:6308 Theroies.Serializable <> Serializable class
+R6310:6314 Theroies.BuildUtils <> Setup:34 var
+binder 6297:6314 <> H:35
+binder 6355:6360 <> bstate:36
+binder 6362:6366 <> caddr:37
+binder 6368:6375 <> dep_info:38
+R6424:6433 Theroies.Blockchain <> ChainTrace def
+R6435:6445 Theroies.Blockchain <> empty_state def
+R6447:6452 Theroies.BuildUtils <> bstate:36 var
+binder 6416:6420 <> trace:39
+R6507:6512 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6491:6493 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6458:6472 Theroies.Blockchain <> deployment_info def
+R6486:6490 Theroies.BuildUtils <> caddr:37 var
+R6480:6484 Theroies.BuildUtils <> trace:39 var
+R6474:6478 Theroies.BuildUtils <> Setup:34 var
+R6494:6497 Coq.Init.Datatypes <> Some constr
+R6499:6506 Theroies.BuildUtils <> dep_info:38 var
+R6515:6518 Coq.ZArith.BinInt <> ::Z_scope:x_'<='_x not
+R6529:6545 Theroies.Blockchain <> deployment_amount proj
+R6519:6526 Theroies.BuildUtils <> dep_info:38 var
+R6599:6609 Theroies.Blockchain <> empty_state def
+R6599:6609 Theroies.Blockchain <> empty_state def
+R6885:6891 Coq.ZArith.BinInt Z ge_le thm
+R6885:6891 Coq.ZArith.BinInt Z ge_le thm
+def 6911:6939 <> receiver_can_receive_transfer
+R6951:6960 Theroies.Blockchain <> ChainState rec
+binder 6942:6947 <> bstate:40
+binder 6963:6970 <> act_body:41
+R6983:6990 Theroies.BuildUtils <> act_body:41 var
+R7001:7012 Theroies.Blockchain <> act_transfer constr
+R7052:7060 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R7295:7295 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R7044:7046 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7022:7040 Theroies.Blockchain <> address_is_contract meth
+R7047:7051 Coq.Init.Datatypes <> false constr
+R7061:7067 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R7076:7083 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 7068:7069 <> wc:43
+binder 7071:7075 <> state:44
+R7117:7126 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7107:7109 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7084:7096 Theroies.Blockchain <> env_contracts proj
+R7098:7103 Theroies.BuildUtils <> bstate:40 var
+R7110:7113 Coq.Init.Datatypes <> Some constr
+R7115:7116 Theroies.BuildUtils <> wc:43 var
+R7169:7178 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7156:7158 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7127:7145 Theroies.Blockchain <> env_contract_states proj
+R7147:7152 Theroies.BuildUtils <> bstate:40 var
+R7159:7162 Coq.Init.Datatypes <> Some constr
+R7164:7168 Theroies.BuildUtils <> state:44 var
+R7200:7209 Theroies.Blockchain <> ChainState rec
+binder 7187:7196 <> bstate_new:45
+binder 7212:7214 <> ctx:46
+R7217:7223 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R7233:7234 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 7224:7232 <> new_state:47
+R7274:7276 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7235:7244 Theroies.Blockchain <> wc_receive def
+R7246:7247 Theroies.BuildUtils <> wc:43 var
+R7249:7258 Theroies.BuildUtils <> bstate_new:45 var
+R7260:7262 Theroies.BuildUtils <> ctx:46 var
+R7264:7268 Theroies.BuildUtils <> state:44 var
+R7270:7273 Coq.Init.Datatypes <> None constr
+R7277:7278 Theroies.ResultMonad <> Ok constr
+R7280:7280 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7290:7291 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7294:7294 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7281:7289 Theroies.BuildUtils <> new_state:47 var
+R7292:7293 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R7306:7309 Coq.Init.Logic <> True ind
+ax 7687:7714 <> deployable_address_decidable
+binder 7725:7730 <> bstate:48
+binder 7732:7733 <> wc:49
+binder 7735:7739 <> setup:50
+binder 7741:7750 <> act_origin:51
+binder 7752:7759 <> act_from:52
+binder 7761:7766 <> amount:53
+R7787:7792 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7771:7779 Theroies.Blockchain <> reachable def
+R7781:7786 Theroies.BuildUtils <> bstate:48 var
+R7793:7801 Coq.Logic.Decidable <> decidable def
+R7804:7810 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R7821:7822 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 7811:7814 <> addr:54
+binder 7816:7820 <> state:55
+R7854:7869 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7847:7849 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7823:7841 Theroies.Blockchain <> address_is_contract meth
+R7843:7846 Theroies.BuildUtils <> addr:54 var
+R7850:7853 Coq.Init.Datatypes <> true constr
+R7902:7917 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7895:7897 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7870:7882 Theroies.Blockchain <> env_contracts proj
+R7884:7889 Theroies.BuildUtils <> bstate:48 var
+R7891:7894 Theroies.BuildUtils <> addr:54 var
+R7898:7901 Coq.Init.Datatypes <> None constr
+R8086:8088 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7918:7924 Theroies.Blockchain <> wc_init def
+R7926:7927 Theroies.BuildUtils <> wc:49 var
+R7948:7963 Theroies.Blockchain <> transfer_balance def
+R7965:7972 Theroies.BuildUtils <> act_from:52 var
+R7974:7977 Theroies.BuildUtils <> addr:54 var
+R7979:7984 Theroies.BuildUtils <> amount:53 var
+R7986:7991 Theroies.BuildUtils <> bstate:48 var
+R8013:8021 Theroies.Blockchain <> build_ctx constr
+R8023:8032 Theroies.BuildUtils <> act_origin:51 var
+R8034:8041 Theroies.BuildUtils <> act_from:52 var
+R8043:8046 Theroies.BuildUtils <> addr:54 var
+R8048:8053 Theroies.BuildUtils <> amount:53 var
+R8055:8060 Theroies.BuildUtils <> amount:53 var
+R8081:8085 Theroies.BuildUtils <> setup:50 var
+R8089:8090 Theroies.ResultMonad <> Ok constr
+R8092:8096 Theroies.BuildUtils <> state:55 var
+R8172:8178 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R8194:8195 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 8179:8184 <> bstate:57
+binder 8186:8193 <> new_acts:58
+R8196:8204 Coq.Init.Logic <> inhabited ind
+R8207:8222 Theroies.Blockchain <> ActionEvaluation ind
+R8228:8233 Theroies.BuildUtils <> bstate:57 var
+R8235:8242 Theroies.BuildUtils <> new_acts:58 var
+R8172:8178 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R8194:8195 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 8179:8184 <> bstate:59
+binder 8186:8193 <> new_acts:60
+R8196:8204 Coq.Init.Logic <> inhabited ind
+R8207:8222 Theroies.Blockchain <> ActionEvaluation ind
+R8228:8233 Theroies.BuildUtils <> bstate:59 var
+R8235:8242 Theroies.BuildUtils <> new_acts:60 var
+R8248:8252 Coq.Init.Logic <> False ind
+R8248:8252 Coq.Init.Logic <> False ind
+R8401:8403 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8449:8457 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8546:8548 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8404:8413 Theroies.Blockchain <> act_origin proj
+R8404:8413 Theroies.Blockchain <> act_origin proj
+R8404:8413 Theroies.Blockchain <> act_origin proj
+R8421:8428 Theroies.Blockchain <> act_from proj
+R8421:8428 Theroies.Blockchain <> act_from proj
+R8436:8443 Theroies.Blockchain <> act_body proj
+R8436:8443 Theroies.Blockchain <> act_body proj
+R8458:8467 Theroies.Blockchain <> act_origin proj
+R8458:8467 Theroies.Blockchain <> act_origin proj
+R8458:8467 Theroies.Blockchain <> act_origin proj
+R8475:8482 Theroies.Blockchain <> act_from proj
+R8475:8482 Theroies.Blockchain <> act_from proj
+R8490:8497 Theroies.Blockchain <> act_body proj
+R8490:8497 Theroies.Blockchain <> act_body proj
+R8520:8523 Coq.Init.Datatypes <> Some constr
+R8534:8537 Coq.Init.Datatypes <> None constr
+R8401:8403 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8449:8457 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8546:8548 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8404:8413 Theroies.Blockchain <> act_origin proj
+R8404:8413 Theroies.Blockchain <> act_origin proj
+R8404:8413 Theroies.Blockchain <> act_origin proj
+R8421:8428 Theroies.Blockchain <> act_from proj
+R8421:8428 Theroies.Blockchain <> act_from proj
+R8436:8443 Theroies.Blockchain <> act_body proj
+R8436:8443 Theroies.Blockchain <> act_body proj
+R8458:8467 Theroies.Blockchain <> act_origin proj
+R8458:8467 Theroies.Blockchain <> act_origin proj
+R8458:8467 Theroies.Blockchain <> act_origin proj
+R8475:8482 Theroies.Blockchain <> act_from proj
+R8475:8482 Theroies.Blockchain <> act_from proj
+R8490:8497 Theroies.Blockchain <> act_body proj
+R8490:8497 Theroies.Blockchain <> act_body proj
+R8520:8523 Coq.Init.Datatypes <> Some constr
+R8534:8537 Coq.Init.Datatypes <> None constr
+R8553:8557 Coq.Init.Logic <> False ind
+R8553:8557 Coq.Init.Logic <> False ind
+R8587:8589 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8635:8643 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8689:8691 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8590:8599 Theroies.Blockchain <> act_origin proj
+R8590:8599 Theroies.Blockchain <> act_origin proj
+R8590:8599 Theroies.Blockchain <> act_origin proj
+R8607:8614 Theroies.Blockchain <> act_from proj
+R8607:8614 Theroies.Blockchain <> act_from proj
+R8622:8629 Theroies.Blockchain <> act_body proj
+R8622:8629 Theroies.Blockchain <> act_body proj
+R8644:8653 Theroies.Blockchain <> act_origin proj
+R8644:8653 Theroies.Blockchain <> act_origin proj
+R8644:8653 Theroies.Blockchain <> act_origin proj
+R8661:8668 Theroies.Blockchain <> act_from proj
+R8661:8668 Theroies.Blockchain <> act_from proj
+R8676:8683 Theroies.Blockchain <> act_body proj
+R8676:8683 Theroies.Blockchain <> act_body proj
+R8587:8589 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8635:8643 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8689:8691 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8590:8599 Theroies.Blockchain <> act_origin proj
+R8590:8599 Theroies.Blockchain <> act_origin proj
+R8590:8599 Theroies.Blockchain <> act_origin proj
+R8607:8614 Theroies.Blockchain <> act_from proj
+R8607:8614 Theroies.Blockchain <> act_from proj
+R8622:8629 Theroies.Blockchain <> act_body proj
+R8622:8629 Theroies.Blockchain <> act_body proj
+R8644:8653 Theroies.Blockchain <> act_origin proj
+R8644:8653 Theroies.Blockchain <> act_origin proj
+R8644:8653 Theroies.Blockchain <> act_origin proj
+R8661:8668 Theroies.Blockchain <> act_from proj
+R8661:8668 Theroies.Blockchain <> act_from proj
+R8676:8683 Theroies.Blockchain <> act_body proj
+R8676:8683 Theroies.Blockchain <> act_body proj
+R8696:8700 Coq.Init.Logic <> False ind
+R8696:8700 Coq.Init.Logic <> False ind
+R8852:8854 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8831:8840 Theroies.Blockchain <> wc_receive def
+R8855:8856 Theroies.ResultMonad <> Ok constr
+R8852:8854 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8831:8840 Theroies.Blockchain <> wc_receive def
+R8855:8856 Theroies.ResultMonad <> Ok constr
+R8922:8924 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8907:8913 Theroies.Blockchain <> wc_init def
+R8925:8926 Theroies.ResultMonad <> Ok constr
+R8922:8924 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8907:8913 Theroies.Blockchain <> wc_init def
+R8925:8926 Theroies.ResultMonad <> Ok constr
+R8974:8985 Theroies.Blockchain <> act_transfer constr
+R8974:8985 Theroies.Blockchain <> act_transfer constr
+R9007:9019 Theroies.Blockchain <> eval_transfer constr
+R8945:8955 Theroies.Blockchain <> eval_deploy constr
+R8876:8884 Theroies.Blockchain <> eval_call constr
+R9124:9127 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R9124:9127 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R9167:9177 Theroies.Blockchain <> Environment rec
+R9167:9177 Theroies.Blockchain <> Environment rec
+R9245:9247 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R9219:9238 Theroies.Blockchain <> env_account_balances proj
+prf 9545:9571 <> action_evaluation_decidable
+binder 9582:9587 <> bstate:61
+binder 9589:9591 <> act:62
+R9612:9617 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9596:9604 Theroies.Blockchain <> reachable def
+R9606:9611 Theroies.BuildUtils <> bstate:61 var
+R9618:9626 Coq.Logic.Decidable <> decidable def
+R9629:9635 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R9652:9653 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 9636:9642 <> bstate':63
+binder 9644:9651 <> new_acts:64
+R9654:9662 Coq.Init.Logic <> inhabited ind
+R9665:9680 Theroies.Blockchain <> ActionEvaluation ind
+R9682:9687 Theroies.BuildUtils <> bstate:61 var
+R9689:9691 Theroies.BuildUtils <> act:62 var
+R9693:9699 Theroies.BuildUtils <> bstate':63 var
+R9701:9708 Theroies.BuildUtils <> new_acts:64 var
+def 13942:13961 <> produces_no_new_acts
+binder 13963:13965 <> act:65
+binder 13986:13991 <> bstate:66
+binder 13993:13999 <> bstate':67
+binder 14001:14008 <> new_acts:68
+R14055:14058 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14011:14026 Theroies.Blockchain <> ActionEvaluation ind
+R14028:14033 Theroies.BuildUtils <> bstate:66 var
+R14035:14037 Theroies.BuildUtils <> act:65 var
+R14039:14045 Theroies.BuildUtils <> bstate':67 var
+R14047:14054 Theroies.BuildUtils <> new_acts:68 var
+R14067:14069 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14059:14066 Theroies.BuildUtils <> new_acts:68 var
+R14070:14071 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+def 14265:14273 <> emptyable
+binder 14275:14279 <> queue:69
+R14325:14330 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R14293:14298 Coq.Lists.List <> Forall ind
+R14320:14324 Theroies.BuildUtils <> queue:69 var
+R14300:14318 Theroies.Blockchain <> act_is_from_account def
+R14331:14336 Coq.Lists.List <> Forall ind
+R14359:14363 Theroies.BuildUtils <> queue:69 var
+R14338:14357 Theroies.BuildUtils <> produces_no_new_acts def
+prf 14414:14437 <> empty_queue_is_emptyable
+R14441:14449 Theroies.BuildUtils <> emptyable def
+R14451:14452 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+prf 14546:14559 <> emptyable_cons
+binder 14570:14570 <> x:70
+binder 14572:14572 <> l:71
+R14595:14598 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14577:14585 Theroies.BuildUtils <> emptyable def
+R14589:14592 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R14588:14588 Theroies.BuildUtils <> x:70 var
+R14593:14593 Theroies.BuildUtils <> l:71 var
+R14599:14607 Theroies.BuildUtils <> emptyable def
+R14609:14609 Theroies.BuildUtils <> l:71 var
+R14671:14685 Coq.Lists.List <> Forall_inv_tail thm
+R14671:14685 Coq.Lists.List <> Forall_inv_tail thm
+R14721:14735 Coq.Lists.List <> Forall_inv_tail thm
+R14721:14735 Coq.Lists.List <> Forall_inv_tail thm
+prf 15256:15276 <> wc_receive_to_receive
+binder 15288:15292 <> Setup:72
+binder 15294:15296 <> Msg:73
+binder 15298:15302 <> State:74
+binder 15304:15308 <> Error:75
+R15356:15367 Theroies.Serializable <> Serializable class
+R15369:15373 Theroies.BuildUtils <> Setup:72 var
+binder 15356:15373 <> H:76
+R15414:15425 Theroies.Serializable <> Serializable class
+R15427:15429 Theroies.BuildUtils <> Msg:73 var
+binder 15414:15429 <> H0:77
+R15470:15481 Theroies.Serializable <> Serializable class
+R15483:15487 Theroies.BuildUtils <> State:74 var
+binder 15470:15487 <> H1:78
+R15528:15539 Theroies.Serializable <> Serializable class
+R15541:15545 Theroies.BuildUtils <> Error:75 var
+binder 15528:15545 <> H2:79
+R15596:15603 Theroies.Blockchain <> Contract rec
+R15621:15625 Theroies.BuildUtils <> Error:75 var
+R15615:15619 Theroies.BuildUtils <> State:74 var
+R15611:15613 Theroies.BuildUtils <> Msg:73 var
+R15605:15609 Theroies.BuildUtils <> Setup:72 var
+binder 15585:15592 <> contract:80
+binder 15664:15668 <> chain:81
+binder 15670:15673 <> cctx:82
+binder 15675:15680 <> cstate:83
+binder 15682:15684 <> msg:84
+binder 15686:15695 <> new_cstate:85
+binder 15697:15704 <> new_acts:86
+R15784:15790 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R15756:15758 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15719:15725 Theroies.Blockchain <> receive proj
+R15709:15716 Theroies.BuildUtils <> contract:80 var
+R15747:15750 Coq.Init.Datatypes <> Some constr
+R15752:15754 Theroies.BuildUtils <> msg:84 var
+R15739:15744 Theroies.BuildUtils <> cstate:83 var
+R15734:15737 Theroies.BuildUtils <> cctx:82 var
+R15728:15732 Theroies.BuildUtils <> chain:81 var
+R15759:15760 Theroies.ResultMonad <> Ok constr
+R15762:15762 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15773:15774 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15783:15783 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15763:15772 Theroies.BuildUtils <> new_cstate:85 var
+R15775:15782 Theroies.BuildUtils <> new_acts:86 var
+R15883:15885 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15791:15800 Theroies.Blockchain <> wc_receive def
+R15802:15809 Theroies.BuildUtils <> contract:80 var
+R15811:15815 Theroies.BuildUtils <> chain:81 var
+R15817:15820 Theroies.BuildUtils <> cctx:82 var
+R15825:15833 Theroies.Serializable <> serialize meth
+R15835:15839 Theroies.BuildUtils <> State:74 var
+R15844:15849 Theroies.BuildUtils <> cstate:83 var
+R15853:15856 Coq.Init.Datatypes <> Some constr
+R15861:15869 Theroies.Serializable <> serialize meth
+R15871:15873 Theroies.BuildUtils <> Msg:73 var
+R15878:15880 Theroies.BuildUtils <> msg:84 var
+R15886:15887 Theroies.ResultMonad <> Ok constr
+R15889:15889 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15921:15922 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15931:15931 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15892:15900 Theroies.Serializable <> serialize meth
+R15902:15906 Theroies.BuildUtils <> State:74 var
+R15911:15920 Theroies.BuildUtils <> new_cstate:85 var
+R15923:15930 Theroies.BuildUtils <> new_acts:86 var
+R15993:16013 Theroies.Serializable <> deserialize_serialize meth
+R15993:16013 Theroies.Serializable <> deserialize_serialize meth
+R15993:16013 Theroies.Serializable <> deserialize_serialize meth
+R15993:16013 Theroies.Serializable <> deserialize_serialize meth
+R15993:16013 Theroies.Serializable <> deserialize_serialize meth
+R16065:16081 Theroies.Blockchain <> wc_receive_strong thm
+R16065:16081 Theroies.Blockchain <> wc_receive_strong thm
+R16208:16226 Theroies.Serializable <> serialize_injective thm
+R16208:16226 Theroies.Serializable <> serialize_injective thm
+R16264:16284 Theroies.Serializable <> deserialize_serialize meth
+R16264:16284 Theroies.Serializable <> deserialize_serialize meth
+R16264:16284 Theroies.Serializable <> deserialize_serialize meth
+R16403:16423 Theroies.Serializable <> deserialize_serialize meth
+R16403:16423 Theroies.Serializable <> deserialize_serialize meth
+R16403:16423 Theroies.Serializable <> deserialize_serialize meth
+prf 16542:16556 <> wc_init_to_init
+binder 16568:16572 <> Setup:87
+binder 16574:16576 <> Msg:88
+binder 16578:16582 <> State:89
+binder 16584:16588 <> Error:90
+R16631:16642 Theroies.Serializable <> Serializable class
+R16644:16648 Theroies.BuildUtils <> Setup:87 var
+binder 16631:16648 <> H:91
+R16684:16695 Theroies.Serializable <> Serializable class
+R16697:16699 Theroies.BuildUtils <> Msg:88 var
+binder 16684:16699 <> H0:92
+R16735:16746 Theroies.Serializable <> Serializable class
+R16748:16752 Theroies.BuildUtils <> State:89 var
+binder 16735:16752 <> H1:93
+R16788:16799 Theroies.Serializable <> Serializable class
+R16801:16805 Theroies.BuildUtils <> Error:90 var
+binder 16788:16805 <> H2:94
+R16851:16858 Theroies.Blockchain <> Contract rec
+R16876:16880 Theroies.BuildUtils <> Error:90 var
+R16870:16874 Theroies.BuildUtils <> State:89 var
+R16866:16868 Theroies.BuildUtils <> Msg:88 var
+R16860:16864 Theroies.BuildUtils <> Setup:87 var
+binder 16840:16847 <> contract:95
+binder 16914:16918 <> chain:96
+binder 16920:16923 <> cctx:97
+binder 16925:16930 <> cstate:98
+binder 16932:16936 <> setup:99
+R16985:16991 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R16973:16975 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R16951:16954 Theroies.Blockchain <> init proj
+R16941:16948 Theroies.BuildUtils <> contract:95 var
+R16968:16972 Theroies.BuildUtils <> setup:99 var
+R16963:16966 Theroies.BuildUtils <> cctx:97 var
+R16957:16961 Theroies.BuildUtils <> chain:96 var
+R16976:16977 Theroies.ResultMonad <> Ok constr
+R16979:16984 Theroies.BuildUtils <> cstate:98 var
+R17048:17050 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R16992:16998 Theroies.Blockchain <> wc_init def
+R17000:17007 Theroies.BuildUtils <> contract:95 var
+R17009:17013 Theroies.BuildUtils <> chain:96 var
+R17015:17018 Theroies.BuildUtils <> cctx:97 var
+R17023:17031 Theroies.Serializable <> serialize meth
+R17033:17037 Theroies.BuildUtils <> Setup:87 var
+R17042:17046 Theroies.BuildUtils <> setup:99 var
+R17051:17052 Theroies.ResultMonad <> Ok constr
+R17057:17065 Theroies.Serializable <> serialize meth
+R17067:17071 Theroies.BuildUtils <> State:89 var
+R17076:17081 Theroies.BuildUtils <> cstate:98 var
+R17140:17160 Theroies.Serializable <> deserialize_serialize meth
+R17140:17160 Theroies.Serializable <> deserialize_serialize meth
+R17140:17160 Theroies.Serializable <> deserialize_serialize meth
+R17209:17222 Theroies.Blockchain <> wc_init_strong thm
+R17209:17222 Theroies.Blockchain <> wc_init_strong thm
+R17337:17355 Theroies.Serializable <> serialize_injective thm
+R17337:17355 Theroies.Serializable <> serialize_injective thm
+R17397:17417 Theroies.Serializable <> deserialize_serialize meth
+R17397:17417 Theroies.Serializable <> deserialize_serialize meth
+R17397:17417 Theroies.Serializable <> deserialize_serialize meth
+prf 17584:17592 <> add_block
+binder 17603:17608 <> bstate:100
+binder 17610:17615 <> reward:101
+binder 17617:17623 <> creator:102
+binder 17625:17628 <> acts:103
+binder 17630:17638 <> slot_incr:104
+R17659:17664 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17643:17651 Theroies.Blockchain <> reachable def
+R17653:17658 Theroies.BuildUtils <> bstate:100 var
+R17694:17699 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17689:17691 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17665:17681 Theroies.Blockchain <> chain_state_queue proj
+R17683:17688 Theroies.BuildUtils <> bstate:100 var
+R17692:17693 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R17735:17740 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17727:17729 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17700:17718 Theroies.Blockchain <> address_is_contract meth
+R17720:17726 Theroies.BuildUtils <> creator:102 var
+R17730:17734 Coq.Init.Datatypes <> false constr
+R17752:17756 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17747:17750 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R17741:17746 Theroies.BuildUtils <> reward:101 var
+R17776:17781 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17767:17769 Coq.Init.Peano <> ::nat_scope:x_'>'_x not
+R17758:17766 Theroies.BuildUtils <> slot_incr:104 var
+R17813:17818 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17782:17787 Coq.Lists.List <> Forall ind
+R17809:17812 Theroies.BuildUtils <> acts:103 var
+R17789:17807 Theroies.Blockchain <> act_is_from_account def
+R17852:17860 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R18269:18269 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R17819:17824 Coq.Lists.List <> Forall ind
+R17848:17851 Theroies.BuildUtils <> acts:103 var
+R17826:17846 Theroies.Blockchain <> act_origin_is_eq_from def
+R17861:17867 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R17875:17883 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 17868:17874 <> bstate':105
+R17916:17923 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R17884:17900 Theroies.BuildUtils <> reachable_through def
+R17902:17907 Theroies.BuildUtils <> bstate:100 var
+R17909:17915 Theroies.BuildUtils <> bstate':105 var
+R17956:17963 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R17949:17951 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17924:17940 Theroies.Blockchain <> chain_state_queue proj
+R17942:17948 Theroies.BuildUtils <> bstate':105 var
+R17952:17955 Theroies.BuildUtils <> acts:103 var
+R17964:17979 Theroies.Blockchain <> EnvironmentEquiv rec
+R17989:17995 Theroies.BuildUtils <> bstate':105 var
+R18006:18025 Theroies.Blockchain <> add_new_block_to_env def
+R18030:18041 Theroies.Blockchain <> block_height proj
+R18030:18041 Theroies.Blockchain <> block_height proj
+R18030:18041 Theroies.Blockchain <> block_height proj
+R18081:18090 Theroies.Blockchain <> block_slot proj
+R18081:18090 Theroies.Blockchain <> block_slot proj
+R18138:18159 Theroies.Blockchain <> block_finalized_height proj
+R18138:18159 Theroies.Blockchain <> block_finalized_height proj
+R18199:18211 Theroies.Blockchain <> block_creator proj
+R18199:18211 Theroies.Blockchain <> block_creator proj
+R18235:18246 Theroies.Blockchain <> block_reward proj
+R18235:18246 Theroies.Blockchain <> block_reward proj
+R18046:18046 Coq.Init.Datatypes <> S constr
+R18049:18060 Theroies.Blockchain <> chain_height proj
+R18062:18067 Theroies.BuildUtils <> bstate:100 var
+R18114:18116 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R18095:18106 Theroies.Blockchain <> current_slot proj
+R18108:18113 Theroies.BuildUtils <> bstate:100 var
+R18117:18125 Theroies.BuildUtils <> slot_incr:104 var
+R18164:18179 Theroies.Blockchain <> finalized_height proj
+R18181:18186 Theroies.BuildUtils <> bstate:100 var
+R18251:18256 Theroies.BuildUtils <> reward:101 var
+R18216:18222 Theroies.BuildUtils <> creator:102 var
+R18262:18267 Theroies.BuildUtils <> bstate:100 var
+R18433:18444 Theroies.Blockchain <> block_height proj
+R18433:18444 Theroies.Blockchain <> block_height proj
+R18433:18444 Theroies.Blockchain <> block_height proj
+R18481:18490 Theroies.Blockchain <> block_slot proj
+R18481:18490 Theroies.Blockchain <> block_slot proj
+R18535:18556 Theroies.Blockchain <> block_finalized_height proj
+R18535:18556 Theroies.Blockchain <> block_finalized_height proj
+R18593:18605 Theroies.Blockchain <> block_creator proj
+R18593:18605 Theroies.Blockchain <> block_creator proj
+R18626:18637 Theroies.Blockchain <> block_reward proj
+R18626:18637 Theroies.Blockchain <> block_reward proj
+R18449:18449 Coq.Init.Datatypes <> S constr
+R18452:18463 Theroies.Blockchain <> chain_height proj
+R18514:18516 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R18495:18506 Theroies.Blockchain <> current_slot proj
+R18561:18576 Theroies.Blockchain <> finalized_height proj
+R18433:18444 Theroies.Blockchain <> block_height proj
+R18433:18444 Theroies.Blockchain <> block_height proj
+R18433:18444 Theroies.Blockchain <> block_height proj
+R18481:18490 Theroies.Blockchain <> block_slot proj
+R18481:18490 Theroies.Blockchain <> block_slot proj
+R18535:18556 Theroies.Blockchain <> block_finalized_height proj
+R18535:18556 Theroies.Blockchain <> block_finalized_height proj
+R18593:18605 Theroies.Blockchain <> block_creator proj
+R18593:18605 Theroies.Blockchain <> block_creator proj
+R18626:18637 Theroies.Blockchain <> block_reward proj
+R18626:18637 Theroies.Blockchain <> block_reward proj
+R18449:18449 Coq.Init.Datatypes <> S constr
+R18452:18463 Theroies.Blockchain <> chain_height proj
+R18514:18516 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R18495:18506 Theroies.Blockchain <> current_slot proj
+R18561:18576 Theroies.Blockchain <> finalized_height proj
+R18719:18756 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18772:18775 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18810:18811 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18757:18771 Theroies.Blockchain <> chain_state_env proj
+R18776:18795 Theroies.Blockchain <> add_new_block_to_env def
+R18690:18691 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18709:18712 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18717:18718 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18692:18708 Theroies.Blockchain <> chain_state_queue proj
+R18719:18756 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18772:18775 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18810:18811 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18757:18771 Theroies.Blockchain <> chain_state_env proj
+R18776:18795 Theroies.Blockchain <> add_new_block_to_env def
+R18690:18691 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18709:18712 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18717:18718 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R18692:18708 Theroies.Blockchain <> chain_state_queue proj
+R18843:18851 Theroies.Blockchain <> ChainStep ind
+R18843:18851 Theroies.Blockchain <> ChainStep ind
+R18890:18899 Theroies.Blockchain <> step_block constr
+R18890:18899 Theroies.Blockchain <> step_block constr
+prf 19224:19241 <> forward_time_exact
+binder 19252:19257 <> bstate:106
+binder 19259:19264 <> reward:107
+binder 19266:19272 <> creator:108
+binder 19274:19277 <> slot:109
+R19298:19303 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19282:19290 Theroies.Blockchain <> reachable def
+R19292:19297 Theroies.BuildUtils <> bstate:106 var
+R19333:19338 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19328:19330 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19304:19320 Theroies.Blockchain <> chain_state_queue proj
+R19322:19327 Theroies.BuildUtils <> bstate:106 var
+R19331:19332 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R19374:19379 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19366:19368 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19339:19357 Theroies.Blockchain <> address_is_contract meth
+R19359:19365 Theroies.BuildUtils <> creator:108 var
+R19369:19373 Coq.Init.Datatypes <> false constr
+R19391:19396 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19386:19389 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R19380:19385 Theroies.BuildUtils <> reward:107 var
+R19429:19437 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19702:19702 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19417:19419 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
+R19398:19409 Theroies.Blockchain <> current_slot proj
+R19411:19416 Theroies.BuildUtils <> bstate:106 var
+R19420:19423 Theroies.BuildUtils <> slot:109 var
+R19438:19444 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R19459:19467 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 19445:19451 <> bstate':110
+binder 19453:19458 <> header:111
+R19500:19507 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R19468:19484 Theroies.BuildUtils <> reachable_through def
+R19486:19491 Theroies.BuildUtils <> bstate:106 var
+R19493:19499 Theroies.BuildUtils <> bstate':110 var
+R19538:19545 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R19508:19523 Theroies.Blockchain <> IsValidNextBlock rec
+R19525:19530 Theroies.BuildUtils <> header:111 var
+R19532:19537 Theroies.BuildUtils <> bstate:106 var
+R19579:19586 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R19551:19553 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19547:19550 Theroies.BuildUtils <> slot:109 var
+R19554:19565 Theroies.Blockchain <> current_slot proj
+R19567:19573 Theroies.BuildUtils <> bstate':110 var
+R19617:19624 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R19612:19614 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19587:19603 Theroies.Blockchain <> chain_state_queue proj
+R19605:19611 Theroies.BuildUtils <> bstate':110 var
+R19615:19616 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R19625:19640 Theroies.Blockchain <> EnvironmentEquiv rec
+R19650:19656 Theroies.BuildUtils <> bstate':110 var
+R19667:19686 Theroies.Blockchain <> add_new_block_to_env def
+R19688:19693 Theroies.BuildUtils <> header:111 var
+R19695:19700 Theroies.BuildUtils <> bstate:106 var
+R19858:19860 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R19861:19872 Theroies.Blockchain <> current_slot proj
+R19824:19832 Theroies.BuildUtils <> add_block thm
+R19858:19860 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R19861:19872 Theroies.Blockchain <> current_slot proj
+R19824:19832 Theroies.BuildUtils <> add_block thm
+prf 20300:20311 <> forward_time
+binder 20322:20327 <> bstate:112
+binder 20329:20334 <> reward:113
+binder 20336:20342 <> creator:114
+binder 20344:20347 <> slot:115
+R20368:20373 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20352:20360 Theroies.Blockchain <> reachable def
+R20362:20367 Theroies.BuildUtils <> bstate:112 var
+R20403:20408 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20398:20400 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20374:20390 Theroies.Blockchain <> chain_state_queue proj
+R20392:20397 Theroies.BuildUtils <> bstate:112 var
+R20401:20402 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R20444:20449 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20436:20438 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20409:20427 Theroies.Blockchain <> address_is_contract meth
+R20429:20435 Theroies.BuildUtils <> creator:114 var
+R20439:20443 Coq.Init.Datatypes <> false constr
+R20461:20469 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20735:20735 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20456:20459 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R20450:20455 Theroies.BuildUtils <> reward:113 var
+R20470:20476 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R20491:20499 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 20477:20483 <> bstate':116
+binder 20485:20490 <> header:117
+R20532:20539 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R20500:20516 Theroies.BuildUtils <> reachable_through def
+R20518:20523 Theroies.BuildUtils <> bstate:112 var
+R20525:20531 Theroies.BuildUtils <> bstate':116 var
+R20570:20577 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R20540:20555 Theroies.Blockchain <> IsValidNextBlock rec
+R20557:20562 Theroies.BuildUtils <> header:117 var
+R20564:20569 Theroies.BuildUtils <> bstate:112 var
+R20612:20619 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R20583:20586 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R20579:20582 Theroies.BuildUtils <> slot:115 var
+R20587:20598 Theroies.Blockchain <> current_slot proj
+R20600:20606 Theroies.BuildUtils <> bstate':116 var
+R20650:20657 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R20645:20647 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20620:20636 Theroies.Blockchain <> chain_state_queue proj
+R20638:20644 Theroies.BuildUtils <> bstate':116 var
+R20648:20649 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R20658:20673 Theroies.Blockchain <> EnvironmentEquiv rec
+R20683:20689 Theroies.BuildUtils <> bstate':116 var
+R20700:20719 Theroies.Blockchain <> add_new_block_to_env def
+R20721:20726 Theroies.BuildUtils <> header:117 var
+R20728:20733 Theroies.BuildUtils <> bstate:112 var
+R20822:20824 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R20825:20836 Theroies.Blockchain <> current_slot proj
+R20822:20824 Coq.Init.Peano <> ::nat_scope:x_'-'_x not
+R20825:20836 Theroies.Blockchain <> current_slot proj
+R20875:20883 Theroies.BuildUtils <> add_block thm
+R20875:20883 Theroies.BuildUtils <> add_block thm
+R21125:21143 Coq.Numbers.Natural.Peano.NPeano Nat sub_0_le thm
+R21125:21143 Coq.Numbers.Natural.Peano.NPeano Nat sub_0_le thm
+R21253:21270 Theroies.BuildUtils <> forward_time_exact thm
+R21253:21270 Theroies.BuildUtils <> forward_time_exact thm
+prf 21592:21606 <> evaluate_action
+binder 21618:21622 <> Setup:118
+binder 21624:21626 <> Msg:119
+binder 21628:21632 <> State:120
+binder 21634:21638 <> Error:121
+R21680:21691 Theroies.Serializable <> Serializable class
+R21693:21697 Theroies.BuildUtils <> Setup:118 var
+binder 21680:21697 <> H:122
+R21732:21743 Theroies.Serializable <> Serializable class
+R21745:21747 Theroies.BuildUtils <> Msg:119 var
+binder 21732:21747 <> H0:123
+R21782:21793 Theroies.Serializable <> Serializable class
+R21795:21799 Theroies.BuildUtils <> State:120 var
+binder 21782:21799 <> H1:124
+R21834:21845 Theroies.Serializable <> Serializable class
+R21847:21851 Theroies.BuildUtils <> Error:121 var
+binder 21834:21851 <> H2:125
+R21897:21904 Theroies.Blockchain <> Contract rec
+R21922:21926 Theroies.BuildUtils <> Error:121 var
+R21916:21920 Theroies.BuildUtils <> State:120 var
+R21912:21914 Theroies.BuildUtils <> Msg:119 var
+R21906:21910 Theroies.BuildUtils <> Setup:118 var
+binder 21886:21893 <> contract:126
+binder 21960:21965 <> bstate:127
+binder 21967:21972 <> origin:128
+binder 21974:21977 <> from:129
+binder 21979:21983 <> caddr:130
+binder 21985:21990 <> amount:131
+binder 21992:21994 <> msg:132
+binder 21996:21999 <> acts:133
+binder 22001:22008 <> new_acts:134
+binder 22041:22046 <> cstate:135
+binder 22048:22057 <> new_cstate:136
+R22078:22083 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22062:22070 Theroies.Blockchain <> reachable def
+R22072:22077 Theroies.BuildUtils <> bstate:127 var
+R22287:22292 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22108:22110 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22084:22100 Theroies.Blockchain <> chain_state_queue proj
+R22102:22107 Theroies.BuildUtils <> bstate:127 var
+R22111:22113 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R22276:22282 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R22114:22121 Theroies.Blockchain <> act_from proj
+R22114:22121 Theroies.Blockchain <> act_from proj
+R22114:22121 Theroies.Blockchain <> act_from proj
+R22164:22173 Theroies.Blockchain <> act_origin proj
+R22164:22173 Theroies.Blockchain <> act_origin proj
+R22218:22225 Theroies.Blockchain <> act_body proj
+R22218:22225 Theroies.Blockchain <> act_body proj
+R22178:22183 Theroies.BuildUtils <> origin:128 var
+R22126:22129 Theroies.BuildUtils <> from:129 var
+R22230:22237 Theroies.Blockchain <> act_call constr
+R22239:22243 Theroies.BuildUtils <> caddr:130 var
+R22245:22250 Theroies.BuildUtils <> amount:131 var
+R22255:22263 Theroies.Serializable <> serialize meth
+R22265:22267 Theroies.BuildUtils <> Msg:119 var
+R22272:22274 Theroies.BuildUtils <> msg:132 var
+R22283:22286 Theroies.BuildUtils <> acts:133 var
+R22304:22309 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22299:22302 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R22293:22298 Theroies.BuildUtils <> amount:131 var
+R22352:22357 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22342:22345 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R22310:22329 Theroies.Blockchain <> env_account_balances proj
+R22331:22336 Theroies.BuildUtils <> bstate:127 var
+R22338:22341 Theroies.BuildUtils <> from:129 var
+R22346:22351 Theroies.BuildUtils <> amount:131 var
+R22417:22422 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22384:22386 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22358:22370 Theroies.Blockchain <> env_contracts proj
+R22372:22377 Theroies.BuildUtils <> bstate:127 var
+R22379:22383 Theroies.BuildUtils <> caddr:130 var
+R22387:22390 Coq.Init.Datatypes <> Some constr
+R22404:22415 Theroies.Blockchain <> WeakContract ind
+R22393:22400 Theroies.BuildUtils <> contract:126 var
+R22492:22497 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22455:22457 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22423:22441 Theroies.Blockchain <> env_contract_states proj
+R22443:22448 Theroies.BuildUtils <> bstate:127 var
+R22450:22454 Theroies.BuildUtils <> caddr:130 var
+R22458:22461 Coq.Init.Datatypes <> Some constr
+R22466:22474 Theroies.Serializable <> serialize meth
+R22476:22480 Theroies.BuildUtils <> State:120 var
+R22485:22490 Theroies.BuildUtils <> cstate:135 var
+R22865:22873 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R23247:23247 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22837:22839 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22498:22515 Theroies.Blockchain <> receive proj
+R22828:22831 Coq.Init.Datatypes <> Some constr
+R22833:22835 Theroies.BuildUtils <> msg:132 var
+R22820:22825 Theroies.BuildUtils <> cstate:135 var
+R22592:22600 Theroies.Blockchain <> build_ctx constr
+R22602:22607 Theroies.BuildUtils <> origin:128 var
+R22609:22612 Theroies.BuildUtils <> from:129 var
+R22614:22618 Theroies.BuildUtils <> caddr:130 var
+R22625:22635 Theroies.Blockchain <> address_eqb meth
+R22642:22646 Theroies.BuildUtils <> caddr:130 var
+R22637:22640 Theroies.BuildUtils <> from:129 var
+R22745:22745 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R22779:22782 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R22746:22765 Theroies.Blockchain <> env_account_balances proj
+R22767:22772 Theroies.BuildUtils <> bstate:127 var
+R22774:22778 Theroies.BuildUtils <> caddr:130 var
+R22783:22788 Theroies.BuildUtils <> amount:131 var
+R22680:22699 Theroies.Blockchain <> env_account_balances proj
+R22701:22706 Theroies.BuildUtils <> bstate:127 var
+R22708:22712 Theroies.BuildUtils <> caddr:130 var
+R22791:22796 Theroies.BuildUtils <> amount:131 var
+R22527:22542 Theroies.Blockchain <> transfer_balance def
+R22544:22547 Theroies.BuildUtils <> from:129 var
+R22549:22553 Theroies.BuildUtils <> caddr:130 var
+R22555:22560 Theroies.BuildUtils <> amount:131 var
+R22562:22567 Theroies.BuildUtils <> bstate:127 var
+R22517:22524 Theroies.BuildUtils <> contract:126 var
+R22840:22841 Theroies.ResultMonad <> Ok constr
+R22843:22843 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R22854:22855 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R22864:22864 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R22844:22853 Theroies.BuildUtils <> new_cstate:136 var
+R22856:22863 Theroies.BuildUtils <> new_acts:134 var
+R22874:22880 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R22888:22896 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 22881:22887 <> bstate':137
+R22929:22936 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R22897:22913 Theroies.BuildUtils <> reachable_through def
+R22915:22920 Theroies.BuildUtils <> bstate:127 var
+R22922:22928 Theroies.BuildUtils <> bstate':137 var
+R23011:23018 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R22970:22972 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22937:22955 Theroies.Blockchain <> env_contract_states proj
+R22957:22963 Theroies.BuildUtils <> bstate':137 var
+R22965:22969 Theroies.BuildUtils <> caddr:130 var
+R22973:22976 Coq.Init.Datatypes <> Some constr
+R22981:22989 Theroies.Serializable <> serialize meth
+R22991:22995 Theroies.BuildUtils <> State:120 var
+R23000:23009 Theroies.BuildUtils <> new_cstate:136 var
+R23094:23101 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R23044:23046 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23019:23035 Theroies.Blockchain <> chain_state_queue proj
+R23037:23043 Theroies.BuildUtils <> bstate':137 var
+R23047:23047 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R23085:23089 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R23048:23050 Coq.Lists.List <> map def
+R23077:23084 Theroies.BuildUtils <> new_acts:134 var
+R23053:23061 Theroies.Blockchain <> build_act constr
+R23063:23068 Theroies.BuildUtils <> origin:128 var
+R23070:23074 Theroies.BuildUtils <> caddr:130 var
+R23090:23093 Theroies.BuildUtils <> acts:133 var
+R23102:23117 Theroies.Blockchain <> EnvironmentEquiv rec
+R23127:23133 Theroies.BuildUtils <> bstate':137 var
+R23144:23161 Theroies.Blockchain <> set_contract_state def
+R23163:23167 Theroies.BuildUtils <> caddr:130 var
+R23172:23180 Theroies.Serializable <> serialize meth
+R23182:23186 Theroies.BuildUtils <> State:120 var
+R23191:23200 Theroies.BuildUtils <> new_cstate:136 var
+R23204:23219 Theroies.Blockchain <> transfer_balance def
+R23221:23224 Theroies.BuildUtils <> from:129 var
+R23226:23230 Theroies.BuildUtils <> caddr:130 var
+R23232:23237 Theroies.BuildUtils <> amount:131 var
+R23239:23244 Theroies.BuildUtils <> bstate:127 var
+R23314:23320 Coq.ZArith.BinInt Z ge_le thm
+R23314:23320 Coq.ZArith.BinInt Z ge_le thm
+R23394:23404 Theroies.Blockchain <> address_eqb meth
+R23514:23514 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R23548:23551 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R23515:23534 Theroies.Blockchain <> env_account_balances proj
+R23449:23468 Theroies.Blockchain <> env_account_balances proj
+R23394:23404 Theroies.Blockchain <> address_eqb meth
+R23514:23514 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R23548:23551 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R23515:23534 Theroies.Blockchain <> env_account_balances proj
+R23449:23468 Theroies.Blockchain <> env_account_balances proj
+R23659:23687 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23703:23706 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23859:23860 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23688:23702 Theroies.Blockchain <> chain_state_env proj
+R23707:23724 Theroies.Blockchain <> set_contract_state def
+R23735:23743 Theroies.Serializable <> serialize meth
+R23817:23832 Theroies.Blockchain <> transfer_balance def
+R23587:23588 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23606:23609 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23657:23658 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23589:23605 Theroies.Blockchain <> chain_state_queue proj
+R23610:23610 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R23648:23652 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R23611:23613 Coq.Lists.List <> map def
+R23616:23624 Theroies.Blockchain <> build_act constr
+R23659:23687 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23703:23706 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23859:23860 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23688:23702 Theroies.Blockchain <> chain_state_env proj
+R23707:23724 Theroies.Blockchain <> set_contract_state def
+R23735:23743 Theroies.Serializable <> serialize meth
+R23817:23832 Theroies.Blockchain <> transfer_balance def
+R23587:23588 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23606:23609 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23657:23658 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R23589:23605 Theroies.Blockchain <> chain_state_queue proj
+R23610:23610 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R23648:23652 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R23611:23613 Coq.Lists.List <> map def
+R23616:23624 Theroies.Blockchain <> build_act constr
+R23929:23931 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23895:23914 Theroies.Blockchain <> env_account_balances proj
+R23929:23931 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23895:23914 Theroies.Blockchain <> env_account_balances proj
+R24039:24047 Theroies.Blockchain <> ChainStep ind
+R24039:24047 Theroies.Blockchain <> ChainStep ind
+R24077:24087 Theroies.Blockchain <> step_action constr
+R24077:24087 Theroies.Blockchain <> step_action constr
+R24131:24134 Coq.Init.Datatypes <> Some constr
+R24139:24147 Theroies.Serializable <> serialize meth
+R24108:24116 Theroies.Blockchain <> eval_call constr
+R24131:24134 Coq.Init.Datatypes <> Some constr
+R24139:24147 Theroies.Serializable <> serialize meth
+R24108:24116 Theroies.Blockchain <> eval_call constr
+R24216:24236 Theroies.BuildUtils <> wc_receive_to_receive thm
+R24216:24236 Theroies.BuildUtils <> wc_receive_to_receive thm
+prf 24507:24523 <> evaluate_transfer
+binder 24534:24539 <> bstate:138
+binder 24541:24546 <> origin:139
+binder 24548:24551 <> from:140
+binder 24553:24554 <> to:141
+binder 24556:24561 <> amount:142
+binder 24563:24566 <> acts:143
+R24587:24592 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24571:24579 Theroies.Blockchain <> reachable def
+R24581:24586 Theroies.BuildUtils <> bstate:138 var
+R24772:24777 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24617:24619 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24593:24609 Theroies.Blockchain <> chain_state_queue proj
+R24611:24616 Theroies.BuildUtils <> bstate:138 var
+R24620:24622 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R24761:24767 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R24623:24630 Theroies.Blockchain <> act_from proj
+R24623:24630 Theroies.Blockchain <> act_from proj
+R24623:24630 Theroies.Blockchain <> act_from proj
+R24673:24682 Theroies.Blockchain <> act_origin proj
+R24673:24682 Theroies.Blockchain <> act_origin proj
+R24727:24734 Theroies.Blockchain <> act_body proj
+R24727:24734 Theroies.Blockchain <> act_body proj
+R24687:24692 Theroies.BuildUtils <> origin:139 var
+R24635:24638 Theroies.BuildUtils <> from:140 var
+R24739:24750 Theroies.Blockchain <> act_transfer constr
+R24752:24753 Theroies.BuildUtils <> to:141 var
+R24755:24760 Theroies.BuildUtils <> amount:142 var
+R24768:24771 Theroies.BuildUtils <> acts:143 var
+R24789:24794 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24784:24787 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R24778:24783 Theroies.BuildUtils <> amount:142 var
+R24837:24842 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24827:24830 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R24795:24814 Theroies.Blockchain <> env_account_balances proj
+R24816:24821 Theroies.BuildUtils <> bstate:138 var
+R24823:24826 Theroies.BuildUtils <> from:140 var
+R24831:24836 Theroies.BuildUtils <> amount:142 var
+R24873:24881 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R25066:25066 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24865:24867 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24843:24861 Theroies.Blockchain <> address_is_contract meth
+R24863:24864 Theroies.BuildUtils <> to:141 var
+R24868:24872 Coq.Init.Datatypes <> false constr
+R24882:24888 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R24896:24904 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 24889:24895 <> bstate':144
+R24937:24944 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R24905:24921 Theroies.BuildUtils <> reachable_through def
+R24923:24928 Theroies.BuildUtils <> bstate:138 var
+R24930:24936 Theroies.BuildUtils <> bstate':144 var
+R24977:24984 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R24970:24972 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24945:24961 Theroies.Blockchain <> chain_state_queue proj
+R24963:24969 Theroies.BuildUtils <> bstate':144 var
+R24973:24976 Theroies.BuildUtils <> acts:143 var
+R24985:25000 Theroies.Blockchain <> EnvironmentEquiv rec
+R25010:25016 Theroies.BuildUtils <> bstate':144 var
+R25027:25042 Theroies.Blockchain <> transfer_balance def
+R25044:25047 Theroies.BuildUtils <> from:140 var
+R25049:25050 Theroies.BuildUtils <> to:141 var
+R25052:25057 Theroies.BuildUtils <> amount:142 var
+R25059:25064 Theroies.BuildUtils <> bstate:138 var
+R25133:25139 Coq.ZArith.BinInt Z ge_le thm
+R25133:25139 Coq.ZArith.BinInt Z ge_le thm
+R25213:25241 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25257:25261 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25300:25302 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25242:25256 Theroies.Blockchain <> chain_state_env proj
+R25262:25277 Theroies.Blockchain <> transfer_balance def
+R25184:25185 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25203:25206 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25211:25212 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25186:25202 Theroies.Blockchain <> chain_state_queue proj
+R25213:25241 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25257:25261 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25300:25302 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25242:25256 Theroies.Blockchain <> chain_state_env proj
+R25262:25277 Theroies.Blockchain <> transfer_balance def
+R25184:25185 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25203:25206 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25211:25212 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25186:25202 Theroies.Blockchain <> chain_state_queue proj
+R25324:25332 Theroies.Blockchain <> ChainStep ind
+R25324:25332 Theroies.Blockchain <> ChainStep ind
+R25392:25393 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R25362:25372 Theroies.Blockchain <> step_action constr
+R25392:25393 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R25362:25372 Theroies.Blockchain <> step_action constr
+R25415:25427 Theroies.Blockchain <> eval_transfer constr
+R25415:25427 Theroies.Blockchain <> eval_transfer constr
+prf 25640:25654 <> deploy_contract
+binder 25666:25670 <> Setup:145
+binder 25672:25674 <> Msg:146
+binder 25676:25680 <> State:147
+binder 25682:25686 <> Error:148
+R25728:25739 Theroies.Serializable <> Serializable class
+R25741:25745 Theroies.BuildUtils <> Setup:145 var
+binder 25728:25745 <> H:149
+R25780:25791 Theroies.Serializable <> Serializable class
+R25793:25795 Theroies.BuildUtils <> Msg:146 var
+binder 25780:25795 <> H0:150
+R25830:25841 Theroies.Serializable <> Serializable class
+R25843:25847 Theroies.BuildUtils <> State:147 var
+binder 25830:25847 <> H1:151
+R25882:25893 Theroies.Serializable <> Serializable class
+R25895:25899 Theroies.BuildUtils <> Error:148 var
+binder 25882:25899 <> H2:152
+R25945:25952 Theroies.Blockchain <> Contract rec
+R25970:25974 Theroies.BuildUtils <> Error:148 var
+R25964:25968 Theroies.BuildUtils <> State:147 var
+R25960:25962 Theroies.BuildUtils <> Msg:146 var
+R25954:25958 Theroies.BuildUtils <> Setup:145 var
+binder 25934:25941 <> contract:153
+binder 26008:26013 <> bstate:154
+binder 26015:26020 <> origin:155
+binder 26022:26025 <> from:156
+binder 26027:26031 <> caddr:157
+binder 26033:26038 <> amount:158
+binder 26040:26043 <> acts:159
+binder 26045:26049 <> setup:160
+binder 26051:26056 <> cstate:161
+R26077:26082 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R26061:26069 Theroies.Blockchain <> reachable def
+R26071:26076 Theroies.BuildUtils <> bstate:154 var
+R26295:26300 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R26107:26109 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R26083:26099 Theroies.Blockchain <> chain_state_queue proj
+R26101:26106 Theroies.BuildUtils <> bstate:154 var
+R26110:26112 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R26284:26290 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R26113:26120 Theroies.Blockchain <> act_from proj
+R26113:26120 Theroies.Blockchain <> act_from proj
+R26113:26120 Theroies.Blockchain <> act_from proj
+R26163:26172 Theroies.Blockchain <> act_origin proj
+R26163:26172 Theroies.Blockchain <> act_origin proj
+R26217:26224 Theroies.Blockchain <> act_body proj
+R26217:26224 Theroies.Blockchain <> act_body proj
+R26177:26182 Theroies.BuildUtils <> origin:155 var
+R26125:26128 Theroies.BuildUtils <> from:156 var
+R26229:26238 Theroies.Blockchain <> act_deploy constr
+R26240:26245 Theroies.BuildUtils <> amount:158 var
+R26247:26254 Theroies.BuildUtils <> contract:153 var
+R26259:26267 Theroies.Serializable <> serialize meth
+R26269:26273 Theroies.BuildUtils <> Setup:145 var
+R26278:26282 Theroies.BuildUtils <> setup:160 var
+R26291:26294 Theroies.BuildUtils <> acts:159 var
+R26312:26317 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R26307:26310 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R26301:26306 Theroies.BuildUtils <> amount:158 var
+R26360:26365 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R26350:26353 Coq.ZArith.BinInt <> ::Z_scope:x_'>='_x not
+R26318:26337 Theroies.Blockchain <> env_account_balances proj
+R26339:26344 Theroies.BuildUtils <> bstate:154 var
+R26346:26349 Theroies.BuildUtils <> from:156 var
+R26354:26359 Theroies.BuildUtils <> amount:158 var
+R26398:26403 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R26391:26393 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R26366:26384 Theroies.Blockchain <> address_is_contract meth
+R26386:26390 Theroies.BuildUtils <> caddr:157 var
+R26394:26397 Coq.Init.Datatypes <> true constr
+R26437:26442 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R26430:26432 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R26404:26416 Theroies.Blockchain <> env_contracts proj
+R26418:26423 Theroies.BuildUtils <> bstate:154 var
+R26425:26429 Theroies.BuildUtils <> caddr:157 var
+R26433:26436 Coq.Init.Datatypes <> None constr
+R26597:26605 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R27180:27180 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R26585:26587 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R26443:26457 Theroies.Blockchain <> init proj
+R26580:26584 Theroies.BuildUtils <> setup:160 var
+R26529:26537 Theroies.Blockchain <> build_ctx constr
+R26539:26544 Theroies.BuildUtils <> origin:155 var
+R26546:26549 Theroies.BuildUtils <> from:156 var
+R26551:26555 Theroies.BuildUtils <> caddr:157 var
+R26557:26562 Theroies.BuildUtils <> amount:158 var
+R26564:26569 Theroies.BuildUtils <> amount:158 var
+R26477:26492 Theroies.Blockchain <> transfer_balance def
+R26494:26497 Theroies.BuildUtils <> from:156 var
+R26499:26503 Theroies.BuildUtils <> caddr:157 var
+R26505:26510 Theroies.BuildUtils <> amount:158 var
+R26512:26517 Theroies.BuildUtils <> bstate:154 var
+R26459:26466 Theroies.BuildUtils <> contract:153 var
+R26588:26589 Theroies.ResultMonad <> Ok constr
+R26591:26596 Theroies.BuildUtils <> cstate:161 var
+R26606:26612 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R26660:26669 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 26613:26619 <> bstate':162
+R26630:26639 Theroies.Blockchain <> ChainTrace def
+R26641:26651 Theroies.Blockchain <> empty_state def
+R26653:26659 Theroies.BuildUtils <> bstate':162 var
+binder 26622:26626 <> trace:163
+R26702:26709 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R26670:26686 Theroies.BuildUtils <> reachable_through def
+R26688:26693 Theroies.BuildUtils <> bstate:154 var
+R26695:26701 Theroies.BuildUtils <> bstate':162 var
+R26770:26777 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R26737:26739 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R26710:26722 Theroies.Blockchain <> env_contracts proj
+R26724:26730 Theroies.BuildUtils <> bstate':162 var
+R26732:26736 Theroies.BuildUtils <> caddr:157 var
+R26740:26743 Coq.Init.Datatypes <> Some constr
+R26757:26768 Theroies.Blockchain <> WeakContract ind
+R26746:26753 Theroies.BuildUtils <> contract:153 var
+R26848:26855 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R26811:26813 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R26778:26796 Theroies.Blockchain <> env_contract_states proj
+R26798:26804 Theroies.BuildUtils <> bstate':162 var
+R26806:26810 Theroies.BuildUtils <> caddr:157 var
+R26814:26817 Coq.Init.Datatypes <> Some constr
+R26822:26830 Theroies.Serializable <> serialize meth
+R26832:26836 Theroies.BuildUtils <> State:147 var
+R26841:26846 Theroies.BuildUtils <> cstate:161 var
+R26945:26952 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R26889:26891 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R26856:26870 Theroies.Blockchain <> deployment_info def
+R26884:26888 Theroies.BuildUtils <> caddr:157 var
+R26878:26882 Theroies.BuildUtils <> trace:163 var
+R26872:26876 Theroies.BuildUtils <> Setup:145 var
+R26892:26895 Coq.Init.Datatypes <> Some constr
+R26898:26918 Theroies.Blockchain <> build_deployment_info constr
+R26939:26943 Theroies.BuildUtils <> setup:160 var
+R26932:26937 Theroies.BuildUtils <> amount:158 var
+R26927:26930 Theroies.BuildUtils <> from:156 var
+R26920:26925 Theroies.BuildUtils <> origin:155 var
+R26985:26992 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R26978:26980 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R26953:26969 Theroies.Blockchain <> chain_state_queue proj
+R26971:26977 Theroies.BuildUtils <> bstate':162 var
+R26981:26984 Theroies.BuildUtils <> acts:159 var
+R26993:27008 Theroies.Blockchain <> EnvironmentEquiv rec
+R27018:27024 Theroies.BuildUtils <> bstate':162 var
+R27035:27052 Theroies.Blockchain <> set_contract_state def
+R27054:27058 Theroies.BuildUtils <> caddr:157 var
+R27063:27071 Theroies.Serializable <> serialize meth
+R27073:27077 Theroies.BuildUtils <> State:147 var
+R27082:27087 Theroies.BuildUtils <> cstate:161 var
+R27099:27110 Theroies.Blockchain <> add_contract def
+R27112:27116 Theroies.BuildUtils <> caddr:157 var
+R27118:27125 Theroies.BuildUtils <> contract:153 var
+R27136:27151 Theroies.Blockchain <> transfer_balance def
+R27153:27156 Theroies.BuildUtils <> from:156 var
+R27158:27162 Theroies.BuildUtils <> caddr:157 var
+R27164:27169 Theroies.BuildUtils <> amount:158 var
+R27171:27176 Theroies.BuildUtils <> bstate:154 var
+R27247:27253 Coq.ZArith.BinInt Z ge_le thm
+R27247:27253 Coq.ZArith.BinInt Z ge_le thm
+R27356:27384 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27400:27432 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27617:27619 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27385:27399 Theroies.Blockchain <> chain_state_env proj
+R27433:27450 Theroies.Blockchain <> set_contract_state def
+R27461:27469 Theroies.Serializable <> serialize meth
+R27517:27528 Theroies.Blockchain <> add_contract def
+R27574:27589 Theroies.Blockchain <> transfer_balance def
+R27327:27328 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27346:27349 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27354:27355 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27329:27345 Theroies.Blockchain <> chain_state_queue proj
+R27356:27384 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27400:27432 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27617:27619 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27385:27399 Theroies.Blockchain <> chain_state_env proj
+R27433:27450 Theroies.Blockchain <> set_contract_state def
+R27461:27469 Theroies.Serializable <> serialize meth
+R27517:27528 Theroies.Blockchain <> add_contract def
+R27574:27589 Theroies.Blockchain <> transfer_balance def
+R27327:27328 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27346:27349 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27354:27355 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R27329:27345 Theroies.Blockchain <> chain_state_queue proj
+R27641:27649 Theroies.Blockchain <> ChainStep ind
+R27641:27649 Theroies.Blockchain <> ChainStep ind
+R27709:27710 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R27679:27689 Theroies.Blockchain <> step_action constr
+R27709:27710 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R27679:27689 Theroies.Blockchain <> step_action constr
+R27732:27742 Theroies.Blockchain <> eval_deploy constr
+R27732:27742 Theroies.Blockchain <> eval_deploy constr
+R27764:27778 Theroies.BuildUtils <> wc_init_to_init thm
+R27764:27778 Theroies.BuildUtils <> wc_init_to_init thm
+R27895:27910 Theroies.ChainedList <> snoc constr
+R27895:27910 Theroies.ChainedList <> snoc constr
+R28233:28253 Theroies.Serializable <> deserialize_serialize meth
+R28233:28253 Theroies.Serializable <> deserialize_serialize meth
+R28233:28253 Theroies.Serializable <> deserialize_serialize meth
+R28381:28395 Theroies.Blockchain <> address_eq_refl thm
+R28398:28410 Theroies.Blockchain <> address_eq_ne thm
+R28381:28395 Theroies.Blockchain <> address_eq_refl thm
+R28381:28395 Theroies.Blockchain <> address_eq_refl thm
+R28398:28410 Theroies.Blockchain <> address_eq_ne thm
+R28398:28410 Theroies.Blockchain <> address_eq_ne thm
+R28398:28410 Theroies.Blockchain <> address_eq_ne thm
+prf 28553:28581 <> step_reachable_through_exists
+binder 28592:28595 <> from:164
+binder 28597:28599 <> mid:165
+R28616:28619 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R28606:28615 Theroies.Blockchain <> ChainState rec
+binder 28602:28602 <> P:166
+R28655:28660 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R28629:28645 Theroies.BuildUtils <> reachable_through def
+R28647:28650 Theroies.BuildUtils <> from:164 var
+R28652:28654 Theroies.BuildUtils <> mid:165 var
+R28661:28661 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R28718:28725 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R28783:28783 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R28662:28668 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R28684:28685 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R28674:28683 Theroies.Blockchain <> ChainState rec
+binder 28669:28670 <> to:167
+R28710:28713 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R28686:28702 Theroies.BuildUtils <> reachable_through def
+R28704:28706 Theroies.BuildUtils <> mid:165 var
+R28708:28709 Theroies.BuildUtils <> to:167 var
+R28714:28714 Theroies.BuildUtils <> P:166 var
+R28716:28717 Theroies.BuildUtils <> to:167 var
+R28726:28732 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R28748:28749 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R28738:28747 Theroies.Blockchain <> ChainState rec
+binder 28733:28734 <> to:168
+R28775:28778 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R28750:28766 Theroies.BuildUtils <> reachable_through def
+R28768:28771 Theroies.BuildUtils <> from:164 var
+R28773:28774 Theroies.BuildUtils <> to:168 var
+R28779:28779 Theroies.BuildUtils <> P:166 var
+R28781:28782 Theroies.BuildUtils <> to:168 var
+R28859:28868 Theroies.BuildUtils BuildUtils <> sec
+R30353:30359 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R30367:30368 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 30360:30366 <> bstate':169
+R30402:30405 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R30369:30385 Theroies.BuildUtils <> reachable_through def
+R30395:30401 Theroies.BuildUtils <> bstate':169 var
+R30353:30359 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R30367:30368 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 30360:30366 <> bstate':170
+R30402:30405 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R30369:30385 Theroies.BuildUtils <> reachable_through def
+R30395:30401 Theroies.BuildUtils <> bstate':170 var
+R30515:30523 Theroies.Blockchain <> reachable def
+R30515:30523 Theroies.Blockchain <> reachable def
+R30582:30584 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R30557:30573 Theroies.Blockchain <> chain_state_queue proj
+R30582:30584 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R30557:30573 Theroies.Blockchain <> chain_state_queue proj
+R30611:30626 Theroies.Blockchain <> IsValidNextBlock rec
+R30657:30665 Theroies.Blockchain <> env_chain proj
+R30639:30653 Theroies.Blockchain <> chain_state_env proj
+R30611:30626 Theroies.Blockchain <> IsValidNextBlock rec
+R30657:30665 Theroies.Blockchain <> env_chain proj
+R30639:30653 Theroies.Blockchain <> chain_state_env proj
+R30692:30708 Theroies.BuildUtils <> reachable_through def
+R30692:30708 Theroies.BuildUtils <> reachable_through def
+R30821:30823 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R30780:30792 Theroies.Blockchain <> env_contracts proj
+R30803:30817 Theroies.Blockchain <> chain_state_env proj
+R30824:30827 Coq.Init.Datatypes <> Some constr
+R30821:30823 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R30780:30792 Theroies.Blockchain <> env_contracts proj
+R30803:30817 Theroies.Blockchain <> chain_state_env proj
+R30824:30827 Coq.Init.Datatypes <> Some constr
+R30968:30970 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R30921:30939 Theroies.Blockchain <> env_contract_states proj
+R30950:30964 Theroies.Blockchain <> chain_state_env proj
+R30971:30974 Coq.Init.Datatypes <> Some constr
+R30968:30970 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R30921:30939 Theroies.Blockchain <> env_contract_states proj
+R30950:30964 Theroies.Blockchain <> chain_state_env proj
+R30971:30974 Coq.Init.Datatypes <> Some constr
+R31127:31142 Theroies.Blockchain <> EnvironmentEquiv rec
+R31127:31142 Theroies.Blockchain <> EnvironmentEquiv rec
+R30748:30756 Theroies.Blockchain <> reachable def
+R31511:31527 Theroies.BuildUtils <> reachable_through def
+R31511:31527 Theroies.BuildUtils <> reachable_through def
+R31562:31577 Theroies.Blockchain <> EnvironmentEquiv rec
+R31589:31603 Theroies.Blockchain <> chain_state_env proj
+R31607:31626 Theroies.Blockchain <> add_new_block_to_env def
+R31646:31660 Theroies.Blockchain <> chain_state_env proj
+R31562:31577 Theroies.Blockchain <> EnvironmentEquiv rec
+R31589:31603 Theroies.Blockchain <> chain_state_env proj
+R31607:31626 Theroies.Blockchain <> add_new_block_to_env def
+R31646:31660 Theroies.Blockchain <> chain_state_env proj
+R31671:31677 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R31685:31686 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 31678:31684 <> bstate3:171
+R31721:31724 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R31687:31703 Theroies.BuildUtils <> reachable_through def
+R31714:31720 Theroies.BuildUtils <> bstate3:171 var
+R31671:31677 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R31685:31686 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 31678:31684 <> bstate3:172
+R31721:31724 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R31687:31703 Theroies.BuildUtils <> reachable_through def
+R31714:31720 Theroies.BuildUtils <> bstate3:172 var
+R31972:31988 Theroies.BuildUtils <> reachable_through def
+R31972:31988 Theroies.BuildUtils <> reachable_through def
+R32023:32038 Theroies.Blockchain <> EnvironmentEquiv rec
+R32050:32064 Theroies.Blockchain <> chain_state_env proj
+R32023:32038 Theroies.Blockchain <> EnvironmentEquiv rec
+R32050:32064 Theroies.Blockchain <> chain_state_env proj
+R32076:32082 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R32090:32091 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 32083:32089 <> bstate3:173
+R32126:32129 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R32092:32108 Theroies.BuildUtils <> reachable_through def
+R32119:32125 Theroies.BuildUtils <> bstate3:173 var
+R32076:32082 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R32090:32091 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 32083:32089 <> bstate3:174
+R32126:32129 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R32092:32108 Theroies.BuildUtils <> reachable_through def
+R32119:32125 Theroies.BuildUtils <> bstate3:174 var
+R32339:32355 Theroies.BuildUtils <> reachable_through def
+R32339:32355 Theroies.BuildUtils <> reachable_through def
+R32382:32388 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R32396:32397 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 32389:32395 <> bstate3:175
+R32432:32435 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R32398:32414 Theroies.BuildUtils <> reachable_through def
+R32425:32431 Theroies.BuildUtils <> bstate3:175 var
+R32382:32388 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R32396:32397 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 32389:32395 <> bstate3:176
+R32432:32435 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R32398:32414 Theroies.BuildUtils <> reachable_through def
+R32425:32431 Theroies.BuildUtils <> bstate3:176 var
+R32454:32482 Theroies.BuildUtils <> step_reachable_through_exists thm
+R32522:32530 Theroies.Blockchain <> reachable def
+R32148:32176 Theroies.BuildUtils <> step_reachable_through_exists thm
+R31743:31771 Theroies.BuildUtils <> step_reachable_through_exists thm
+R32947:32947 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R32973:32976 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R32948:32964 Theroies.Blockchain <> chain_state_queue proj
+R32977:32978 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R32947:32947 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R32973:32976 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R32948:32964 Theroies.Blockchain <> chain_state_queue proj
+R32977:32978 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R32994:33002 Theroies.Blockchain <> reachable def
+R32994:33002 Theroies.Blockchain <> reachable def
+R33019:33025 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R33033:33034 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 33026:33032 <> bstate':177
+R33068:33071 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R33035:33051 Theroies.BuildUtils <> reachable_through def
+R33061:33067 Theroies.BuildUtils <> bstate':177 var
+R33019:33025 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R33033:33034 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 33026:33032 <> bstate':178
+R33068:33071 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R33035:33051 Theroies.BuildUtils <> reachable_through def
+R33061:33067 Theroies.BuildUtils <> bstate':178 var
+R33095:33106 Theroies.BuildUtils <> forward_time thm
+R33593:33593 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R33619:33622 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R33594:33610 Theroies.Blockchain <> chain_state_queue proj
+R33623:33624 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R33593:33593 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R33619:33622 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R33594:33610 Theroies.Blockchain <> chain_state_queue proj
+R33623:33624 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R33640:33648 Theroies.Blockchain <> reachable def
+R33640:33648 Theroies.Blockchain <> reachable def
+R33665:33671 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R33679:33680 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 33672:33678 <> bstate':179
+R33714:33717 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R33681:33697 Theroies.BuildUtils <> reachable_through def
+R33707:33713 Theroies.BuildUtils <> bstate':179 var
+R33665:33671 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R33679:33680 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 33672:33678 <> bstate':180
+R33714:33717 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R33681:33697 Theroies.BuildUtils <> reachable_through def
+R33707:33713 Theroies.BuildUtils <> bstate':180 var
+R33741:33758 Theroies.BuildUtils <> forward_time_exact thm
+R34112:34112 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R34138:34141 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R34113:34129 Theroies.Blockchain <> chain_state_queue proj
+R34142:34143 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R34112:34112 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R34138:34141 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R34113:34129 Theroies.Blockchain <> chain_state_queue proj
+R34142:34143 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R34159:34167 Theroies.Blockchain <> reachable def
+R34159:34167 Theroies.Blockchain <> reachable def
+R34184:34190 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R34198:34199 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 34191:34197 <> bstate':181
+R34233:34236 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R34200:34216 Theroies.BuildUtils <> reachable_through def
+R34226:34232 Theroies.BuildUtils <> bstate':181 var
+R34184:34190 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R34198:34199 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 34191:34197 <> bstate':182
+R34233:34236 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R34200:34216 Theroies.BuildUtils <> reachable_through def
+R34226:34232 Theroies.BuildUtils <> bstate':182 var
+R34259:34267 Theroies.BuildUtils <> add_block thm
+R34693:34693 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R34719:34722 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R34694:34710 Theroies.Blockchain <> chain_state_queue proj
+R34693:34693 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R34719:34722 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R34694:34710 Theroies.Blockchain <> chain_state_queue proj
+R34739:34747 Theroies.Blockchain <> reachable def
+R34739:34747 Theroies.Blockchain <> reachable def
+R34764:34770 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R34778:34779 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 34771:34777 <> bstate':183
+R34813:34816 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R34780:34796 Theroies.BuildUtils <> reachable_through def
+R34806:34812 Theroies.BuildUtils <> bstate':183 var
+R34764:34770 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R34778:34779 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 34771:34777 <> bstate':184
+R34813:34816 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R34780:34796 Theroies.BuildUtils <> reachable_through def
+R34806:34812 Theroies.BuildUtils <> bstate':184 var
+R34840:34854 Theroies.BuildUtils <> evaluate_action thm
+R35212:35212 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R35238:35241 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R35213:35229 Theroies.Blockchain <> chain_state_queue proj
+R35212:35212 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R35238:35241 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R35213:35229 Theroies.Blockchain <> chain_state_queue proj
+R35258:35266 Theroies.Blockchain <> reachable def
+R35258:35266 Theroies.Blockchain <> reachable def
+R35283:35289 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R35297:35298 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 35290:35296 <> bstate':185
+R35332:35335 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R35299:35315 Theroies.BuildUtils <> reachable_through def
+R35325:35331 Theroies.BuildUtils <> bstate':185 var
+R35283:35289 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R35297:35298 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 35290:35296 <> bstate':186
+R35332:35335 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R35299:35315 Theroies.BuildUtils <> reachable_through def
+R35325:35331 Theroies.BuildUtils <> bstate':186 var
+R35358:35374 Theroies.BuildUtils <> evaluate_transfer thm
+R35975:35975 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R36001:36004 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R35976:35992 Theroies.Blockchain <> chain_state_queue proj
+R35975:35975 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R36001:36004 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R35976:35992 Theroies.Blockchain <> chain_state_queue proj
+R36023:36031 Theroies.Blockchain <> reachable def
+R36023:36031 Theroies.Blockchain <> reachable def
+R36085:36087 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R36059:36077 Theroies.Blockchain <> address_is_contract meth
+R36088:36091 Coq.Init.Datatypes <> true constr
+R36085:36087 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R36059:36077 Theroies.Blockchain <> address_is_contract meth
+R36088:36091 Coq.Init.Datatypes <> true constr
+R36158:36160 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R36112:36124 Theroies.Blockchain <> env_contracts proj
+R36135:36149 Theroies.Blockchain <> chain_state_env proj
+R36161:36164 Coq.Init.Datatypes <> None constr
+R36158:36160 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R36112:36124 Theroies.Blockchain <> env_contracts proj
+R36135:36149 Theroies.Blockchain <> chain_state_env proj
+R36161:36164 Coq.Init.Datatypes <> None constr
+R36175:36181 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R36189:36190 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 36182:36188 <> bstate':187
+R36224:36227 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R36191:36207 Theroies.BuildUtils <> reachable_through def
+R36217:36223 Theroies.BuildUtils <> bstate':187 var
+R36175:36181 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R36189:36190 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 36182:36188 <> bstate':188
+R36224:36227 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R36191:36207 Theroies.BuildUtils <> reachable_through def
+R36217:36223 Theroies.BuildUtils <> bstate':188 var
+R36253:36267 Theroies.BuildUtils <> deploy_contract thm
+R36630:36632 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R36607:36625 Theroies.Blockchain <> env_contract_states proj
+R36633:36636 Coq.Init.Datatypes <> Some constr
+R36641:36649 Theroies.Serializable <> serialize meth
+R36630:36632 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R36607:36625 Theroies.Blockchain <> env_contract_states proj
+R36633:36636 Coq.Init.Datatypes <> Some constr
+R36641:36649 Theroies.Serializable <> serialize meth

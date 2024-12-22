@@ -1,0 +1,334 @@
+DIGEST faffebe6b905115472f87e4b79ccb434
+FTheroies.ChainedList
+R260:269 Theroies.Automation <> <> lib
+R296:299 Coq.Lists.List <> <> lib
+R309:321 Coq.Lists.List ListNotations <> mod
+sec 332:342 <> ChainedList
+binder 379:383 <> Point:1
+R406:409 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R401:405 Theroies.ChainedList <> Point:1 var
+R415:418 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R410:414 Theroies.ChainedList <> Point:1 var
+binder 394:397 <> Link:2
+ind 437:447 <> ChainedList
+constr 481:485 <> clnil
+constr 521:524 <> snoc
+R456:459 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R451:455 Theroies.ChainedList <> ChainedList.Point var
+R465:468 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R460:464 Theroies.ChainedList <> ChainedList.Point var
+binder 497:497 <> p:5
+R501:511 Theroies.ChainedList <> ChainedList:3 ind
+R515:515 Theroies.ChainedList <> p:5 var
+R513:513 Theroies.ChainedList <> p:5 var
+binder 536:539 <> from:6
+binder 541:543 <> mid:7
+binder 545:546 <> to:8
+R576:579 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R556:566 Theroies.ChainedList <> ChainedList:3 ind
+R573:575 Theroies.ChainedList <> mid:7 var
+R568:571 Theroies.ChainedList <> from:6 var
+R591:594 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R580:583 Theroies.ChainedList <> ChainedList.Link var
+R585:587 Theroies.ChainedList <> mid:7 var
+R589:590 Theroies.ChainedList <> to:8 var
+R595:605 Theroies.ChainedList <> ChainedList:3 ind
+R612:613 Theroies.ChainedList <> to:8 var
+R607:610 Theroies.ChainedList <> from:6 var
+def 626:634 <> clist_app
+binder 648:651 <> from:9
+binder 653:655 <> mid:10
+binder 657:658 <> to:11
+R678:688 Theroies.ChainedList <> ChainedList ind
+R690:693 Theroies.ChainedList <> from:9 var
+R695:697 Theroies.ChainedList <> mid:10 var
+binder 673:674 <> xs:12
+R717:727 Theroies.ChainedList <> ChainedList ind
+R729:731 Theroies.ChainedList <> mid:10 var
+R733:734 Theroies.ChainedList <> to:11 var
+binder 712:713 <> ys:13
+R739:749 Theroies.ChainedList <> ChainedList ind
+R751:754 Theroies.ChainedList <> from:9 var
+R756:757 Theroies.ChainedList <> to:11 var
+R770:771 Theroies.ChainedList <> ys:13 var
+R782:786 Theroies.ChainedList <> clnil constr
+binder 795:796 <> xs:16
+R801:802 Theroies.ChainedList <> xs:16 var
+R808:811 Theroies.ChainedList <> snoc constr
+binder 826:827 <> xs:17
+R832:835 Theroies.ChainedList <> snoc constr
+R838:846 Theroies.ChainedList <> clist_app:14 def
+R848:849 Theroies.ChainedList <> xs:17 var
+R864:865 Theroies.ChainedList <> xs:12 var
+ind 881:891 <> prefixTrace
+constr 925:930 <> tclnil
+constr 966:970 <> tsnoc
+R900:903 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R895:899 Theroies.ChainedList <> ChainedList.Point var
+R909:912 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R904:908 Theroies.ChainedList <> ChainedList.Point var
+binder 942:942 <> p:20
+R946:956 Theroies.ChainedList <> prefixTrace:18 ind
+R960:960 Theroies.ChainedList <> p:20 var
+R958:958 Theroies.ChainedList <> p:20 var
+binder 982:985 <> from:21
+binder 987:989 <> mid:22
+binder 991:992 <> to:23
+R1013:1016 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1000:1003 Theroies.ChainedList <> ChainedList.Link var
+R1005:1008 Theroies.ChainedList <> from:21 var
+R1010:1012 Theroies.ChainedList <> mid:22 var
+R1035:1038 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1017:1027 Theroies.ChainedList <> prefixTrace:18 ind
+R1033:1034 Theroies.ChainedList <> to:23 var
+R1029:1031 Theroies.ChainedList <> mid:22 var
+R1039:1049 Theroies.ChainedList <> prefixTrace:18 ind
+R1056:1057 Theroies.ChainedList <> to:23 var
+R1051:1054 Theroies.ChainedList <> from:21 var
+def 1072:1081 <> prefix_app
+binder 1084:1087 <> from:24
+binder 1089:1091 <> mid:25
+binder 1093:1094 <> to:26
+R1125:1135 Theroies.ChainedList <> prefixTrace ind
+R1137:1140 Theroies.ChainedList <> from:24 var
+R1142:1144 Theroies.ChainedList <> mid:25 var
+binder 1120:1121 <> xs:27
+R1175:1185 Theroies.ChainedList <> prefixTrace ind
+R1187:1189 Theroies.ChainedList <> mid:25 var
+R1191:1192 Theroies.ChainedList <> to:26 var
+binder 1170:1171 <> ys:28
+R1197:1207 Theroies.ChainedList <> prefixTrace ind
+R1209:1212 Theroies.ChainedList <> from:24 var
+R1214:1215 Theroies.ChainedList <> to:26 var
+R1230:1231 Theroies.ChainedList <> xs:27 var
+R1244:1249 Theroies.ChainedList <> tclnil constr
+binder 1258:1259 <> ys:31
+R1264:1265 Theroies.ChainedList <> ys:31 var
+R1273:1277 Theroies.ChainedList <> tsnoc constr
+binder 1292:1293 <> ys:32
+R1298:1302 Theroies.ChainedList <> tsnoc constr
+R1307:1316 Theroies.ChainedList <> prefix_app:29 def
+R1322:1323 Theroies.ChainedList <> ys:32 var
+R1334:1335 Theroies.ChainedList <> ys:28 var
+def 1352:1359 <> cl_to_pt
+binder 1362:1365 <> from:33
+binder 1367:1368 <> to:34
+R1377:1387 Theroies.ChainedList <> ChainedList ind
+R1389:1392 Theroies.ChainedList <> from:33 var
+R1394:1395 Theroies.ChainedList <> to:34 var
+binder 1372:1373 <> st:35
+R1400:1410 Theroies.ChainedList <> prefixTrace ind
+R1412:1415 Theroies.ChainedList <> from:33 var
+R1417:1418 Theroies.ChainedList <> to:34 var
+R1433:1434 Theroies.ChainedList <> st:35 var
+R1447:1451 Theroies.ChainedList <> clnil constr
+R1456:1461 Theroies.ChainedList <> tclnil constr
+R1469:1472 Theroies.ChainedList <> snoc constr
+R1502:1509 Theroies.ChainedList <> cl_to_pt:36 def
+binder 1495:1497 <> pt1:38
+R1537:1541 Theroies.ChainedList <> tsnoc constr
+R1545:1550 Theroies.ChainedList <> tclnil constr
+binder 1530:1532 <> pt2:39
+R1563:1572 Theroies.ChainedList <> prefix_app def
+R1578:1580 Theroies.ChainedList <> pt2:39 var
+R1574:1576 Theroies.ChainedList <> pt1:38 var
+def 1603:1610 <> pt_to_cl
+binder 1613:1616 <> from:40
+binder 1618:1619 <> to:41
+R1628:1638 Theroies.ChainedList <> prefixTrace ind
+R1640:1643 Theroies.ChainedList <> from:40 var
+R1645:1646 Theroies.ChainedList <> to:41 var
+binder 1623:1624 <> pt:42
+R1651:1661 Theroies.ChainedList <> ChainedList ind
+R1663:1666 Theroies.ChainedList <> from:40 var
+R1668:1669 Theroies.ChainedList <> to:41 var
+R1684:1685 Theroies.ChainedList <> pt:42 var
+R1698:1703 Theroies.ChainedList <> tclnil constr
+R1708:1712 Theroies.ChainedList <> clnil constr
+R1720:1724 Theroies.ChainedList <> tsnoc constr
+R1754:1761 Theroies.ChainedList <> pt_to_cl:43 def
+binder 1747:1749 <> st':45
+R1836:1839 Theroies.ChainedList <> snoc constr
+R1841:1845 Theroies.ChainedList <> clnil constr
+binder 1828:1831 <> st'':46
+R1904:1912 Theroies.ChainedList <> clist_app def
+R1919:1921 Theroies.ChainedList <> st':45 var
+R1914:1917 Theroies.ChainedList <> st'':46 var
+prf 2002:2012 <> cl_to_pt_lm
+binder 2023:2026 <> from:47
+binder 2028:2029 <> to:48
+R2056:2059 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2037:2047 Theroies.ChainedList <> ChainedList ind
+R2049:2052 Theroies.ChainedList <> from:47 var
+R2054:2055 Theroies.ChainedList <> to:48 var
+R2060:2070 Theroies.ChainedList <> prefixTrace ind
+R2072:2075 Theroies.ChainedList <> from:47 var
+R2077:2078 Theroies.ChainedList <> to:48 var
+R2127:2134 Theroies.ChainedList <> cl_to_pt def
+R2127:2134 Theroies.ChainedList <> cl_to_pt def
+prf 2157:2167 <> pt_to_cl_lm
+binder 2178:2181 <> from:49
+binder 2183:2184 <> to:50
+R2211:2214 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2192:2202 Theroies.ChainedList <> prefixTrace ind
+R2204:2207 Theroies.ChainedList <> from:49 var
+R2209:2210 Theroies.ChainedList <> to:50 var
+R2215:2225 Theroies.ChainedList <> ChainedList ind
+R2227:2230 Theroies.ChainedList <> from:49 var
+R2232:2233 Theroies.ChainedList <> to:50 var
+R2282:2289 Theroies.ChainedList <> pt_to_cl def
+R2282:2289 Theroies.ChainedList <> pt_to_cl def
+R2318:2326 Theroies.ChainedList <> clist_app def
+not 2310:2310 ChainedList :::x_'++'_x
+def 2376:2387 <> clist_prefix
+binder 2401:2404 <> from:51
+binder 2406:2408 <> mid:52
+binder 2410:2411 <> to:53
+R2435:2445 Theroies.ChainedList <> ChainedList ind
+R2447:2450 Theroies.ChainedList <> from:51 var
+R2452:2454 Theroies.ChainedList <> mid:52 var
+binder 2426:2431 <> prefix:54
+R2476:2486 Theroies.ChainedList <> ChainedList ind
+R2488:2491 Theroies.ChainedList <> from:51 var
+R2493:2494 Theroies.ChainedList <> to:53 var
+binder 2469:2472 <> full:55
+R2509:2515 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R2522:2523 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 2516:2521 <> suffix:56
+R2528:2530 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2524:2527 Theroies.ChainedList <> full:55 var
+R2537:2540 Theroies.ChainedList ChainedList :::x_'++'_x not
+R2531:2536 Theroies.ChainedList <> prefix:54 var
+R2541:2546 Theroies.ChainedList <> suffix:56 var
+def 2561:2572 <> clist_suffix
+binder 2586:2589 <> from:57
+binder 2591:2593 <> mid:58
+binder 2595:2596 <> to:59
+R2620:2630 Theroies.ChainedList <> ChainedList ind
+R2632:2634 Theroies.ChainedList <> mid:58 var
+R2636:2637 Theroies.ChainedList <> to:59 var
+binder 2611:2616 <> suffix:60
+R2659:2669 Theroies.ChainedList <> ChainedList ind
+R2671:2674 Theroies.ChainedList <> from:57 var
+R2676:2677 Theroies.ChainedList <> to:59 var
+binder 2652:2655 <> full:61
+R2692:2698 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R2705:2706 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 2699:2704 <> prefix:62
+R2711:2713 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2707:2710 Theroies.ChainedList <> full:61 var
+R2720:2723 Theroies.ChainedList ChainedList :::x_'++'_x not
+R2714:2719 Theroies.ChainedList <> prefix:62 var
+R2724:2729 Theroies.ChainedList <> suffix:60 var
+R2756:2767 Theroies.ChainedList <> clist_prefix def
+not 2739:2739 ChainedList :::x_'`prefix_of`'_x
+R2807:2818 Theroies.ChainedList <> clist_suffix def
+not 2790:2790 ChainedList :::x_'`suffix_of`'_x
+def 2845:2858 <> extract_points
+R2871:2875 Theroies.ChainedList <> ChainedList.Point var
+binder 2861:2864 <> from:63
+binder 2866:2867 <> to:64
+R2885:2895 Theroies.ChainedList <> ChainedList ind
+R2897:2900 Theroies.ChainedList <> from:63 var
+R2902:2903 Theroies.ChainedList <> to:64 var
+binder 2879:2881 <> lst:65
+R2908:2911 Coq.Init.Datatypes <> list ind
+R2913:2917 Theroies.ChainedList <> ChainedList.Point var
+R2930:2932 Theroies.ChainedList <> lst:65 var
+R2943:2947 Theroies.ChainedList <> clnil constr
+R2952:2953 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R3000:3003 Theroies.ChainedList <> snoc constr
+R3050:3054 Theroies.ChainedList <> clnil constr
+R3059:3059 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R3062:3062 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R3060:3061 Theroies.ChainedList <> to:64 var
+R3165:3168 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R3143:3156 Theroies.ChainedList <> extract_points:66 def
+R3169:3169 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R3172:3172 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R3170:3171 Theroies.ChainedList <> to:64 var
+sec 3262:3269 ChainedList Theories
+prf 3278:3288 <> app_clnil_l
+binder 3291:3294 <> from:69
+binder 3296:3297 <> to:70
+R3306:3316 Theroies.ChainedList <> ChainedList ind
+R3318:3321 Theroies.ChainedList <> from:69 var
+R3323:3324 Theroies.ChainedList <> to:70 var
+binder 3301:3302 <> xs:71
+R3342:3344 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3336:3339 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3331:3335 Theroies.ChainedList <> clnil constr
+R3340:3341 Theroies.ChainedList <> xs:71 var
+R3345:3346 Theroies.ChainedList <> xs:71 var
+prf 3411:3425 <> clist_app_assoc
+binder 3434:3435 <> c1:72
+binder 3437:3438 <> c2:73
+binder 3440:3441 <> c3:74
+binder 3443:3444 <> c4:75
+R3459:3469 Theroies.ChainedList <> ChainedList ind
+R3471:3472 Theroies.ChainedList <> c1:72 var
+R3474:3475 Theroies.ChainedList <> c2:73 var
+binder 3454:3455 <> xs:76
+R3490:3500 Theroies.ChainedList <> ChainedList ind
+R3502:3503 Theroies.ChainedList <> c2:73 var
+R3505:3506 Theroies.ChainedList <> c3:74 var
+binder 3485:3486 <> ys:77
+R3521:3531 Theroies.ChainedList <> ChainedList ind
+R3533:3534 Theroies.ChainedList <> c3:74 var
+R3536:3537 Theroies.ChainedList <> c4:75 var
+binder 3516:3517 <> zs:78
+R3558:3560 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3546:3549 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3544:3545 Theroies.ChainedList <> xs:76 var
+R3552:3555 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3550:3551 Theroies.ChainedList <> ys:77 var
+R3556:3557 Theroies.ChainedList <> zs:78 var
+R3561:3561 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3570:3574 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3564:3567 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3562:3563 Theroies.ChainedList <> xs:76 var
+R3568:3569 Theroies.ChainedList <> ys:77 var
+R3575:3576 Theroies.ChainedList <> zs:78 var
+R3646:3653 Theroies.ChainedList ChainedList.Theories <> sec
+prf 3663:3675 <> prefix_of_app
+binder 3684:3687 <> from:79
+binder 3689:3691 <> mid:80
+binder 3693:3694 <> to:81
+binder 3696:3698 <> to':82
+R3717:3727 Theroies.ChainedList <> ChainedList ind
+R3729:3732 Theroies.ChainedList <> from:79 var
+R3734:3736 Theroies.ChainedList <> mid:80 var
+binder 3708:3713 <> prefix:83
+R3751:3761 Theroies.ChainedList <> ChainedList ind
+R3763:3766 Theroies.ChainedList <> from:79 var
+R3768:3769 Theroies.ChainedList <> to:81 var
+binder 3746:3747 <> xs:84
+R3788:3798 Theroies.ChainedList <> ChainedList ind
+R3800:3801 Theroies.ChainedList <> to:81 var
+R3803:3805 Theroies.ChainedList <> to':82 var
+binder 3779:3784 <> suffix:85
+R3833:3838 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3818:3830 Theroies.ChainedList ChainedList :::x_'`prefix_of`'_x not
+R3812:3817 Theroies.ChainedList <> prefix:83 var
+R3831:3832 Theroies.ChainedList <> xs:84 var
+R3845:3857 Theroies.ChainedList ChainedList :::x_'`prefix_of`'_x not
+R3839:3844 Theroies.ChainedList <> prefix:83 var
+R3860:3863 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3858:3859 Theroies.ChainedList <> xs:84 var
+R3864:3869 Theroies.ChainedList <> suffix:85 var
+R3937:3940 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3937:3940 Theroies.ChainedList ChainedList :::x_'++'_x not
+R3960:3974 Theroies.ChainedList <> clist_app_assoc thm
+R3960:3974 Theroies.ChainedList <> clist_app_assoc thm
+R3960:3974 Theroies.ChainedList <> clist_app_assoc thm
+R3998:4008 Theroies.ChainedList ChainedList <> sec
+R4132:4140 Theroies.ChainedList <> clist_app def
+not 4124:4124 <> ::clist_scope:x_'++'_x
+R4216:4227 Theroies.ChainedList <> clist_prefix def
+not 4199:4199 <> ::clist_scope:x_'`prefix_of`'_x
+R4281:4292 Theroies.ChainedList <> clist_suffix def
+not 4264:4264 <> ::clist_scope:x_'`suffix_of`'_x
+R4334:4344 Theroies.ChainedList <> ChainedList ind
+R4334:4344 Theroies.ChainedList <> ChainedList ind
+R4375:4385 Theroies.ChainedList <> prefixTrace ind
+R4375:4385 Theroies.ChainedList <> prefixTrace ind

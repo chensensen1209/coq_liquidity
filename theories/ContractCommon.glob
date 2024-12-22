@@ -1,0 +1,526 @@
+DIGEST 29d0ed3d33263e788c154b0b7e7143c1
+FTheroies.ContractCommon
+R63:72 Theroies.Automation <> <> lib
+R90:95 Theroies.Extras <> <> lib
+R113:122 Theroies.Blockchain <> <> lib
+R140:149 Theroies.Containers <> <> lib
+R167:172 Theroies.Monads <> <> lib
+R190:200 Theroies.ResultMonad <> <> lib
+R227:230 Coq.Lists.List <> <> lib
+R240:252 Coq.Lists.List ListNotations <> mod
+R279:289 Coq.ZArith.ZArith_base <> <> lib
+mod 484:493 <> AddressMap
+abbrev 508:514 AddressMap AddrMap
+R520:523 Theroies.Containers <> FMap abbrev
+R525:531 Theroies.Blockchain <> Address meth
+def 607:610 AddressMap find
+R614:622 Theroies.Blockchain <> ChainBase class
+binder 614:622 <> H:1
+binder 626:626 <> V:2
+R644:650 Theroies.Blockchain <> Address meth
+binder 637:640 <> addr:3
+R658:664 Theroies.ContractCommon AddressMap AddrMap abbrev
+R666:666 Theroies.ContractCommon <> V:2 var
+binder 654:654 <> m:4
+R671:676 Coq.Init.Datatypes <> option ind
+R678:678 Theroies.ContractCommon <> V:2 var
+R687:695 Theroies.Containers FMap find abbrev
+R702:702 Theroies.ContractCommon <> m:4 var
+R697:700 Theroies.ContractCommon <> addr:3 var
+def 719:721 AddressMap add
+R725:733 Theroies.Blockchain <> ChainBase class
+binder 725:733 <> H:5
+binder 737:737 <> V:6
+R755:761 Theroies.Blockchain <> Address meth
+binder 748:751 <> addr:7
+R771:771 Theroies.ContractCommon <> V:6 var
+binder 765:767 <> val:8
+R779:785 Theroies.ContractCommon AddressMap AddrMap abbrev
+R787:787 Theroies.ContractCommon <> V:6 var
+binder 775:775 <> m:9
+R792:798 Theroies.ContractCommon AddressMap AddrMap abbrev
+R800:800 Theroies.ContractCommon <> V:6 var
+R809:816 Theroies.Containers FMap add abbrev
+R827:827 Theroies.ContractCommon <> m:9 var
+R823:825 Theroies.ContractCommon <> val:8 var
+R818:821 Theroies.ContractCommon <> addr:7 var
+def 844:849 AddressMap values
+R853:861 Theroies.Blockchain <> ChainBase class
+binder 853:861 <> H:10
+binder 865:865 <> V:11
+R880:886 Theroies.ContractCommon AddressMap AddrMap abbrev
+R888:888 Theroies.ContractCommon <> V:11 var
+binder 876:876 <> m:12
+R893:896 Coq.Init.Datatypes <> list ind
+R898:898 Theroies.ContractCommon <> V:11 var
+R907:917 Theroies.Containers FMap values def
+R919:919 Theroies.ContractCommon <> m:12 var
+def 936:939 AddressMap keys
+R943:951 Theroies.Blockchain <> ChainBase class
+binder 943:951 <> H:13
+binder 955:955 <> V:14
+R970:976 Theroies.ContractCommon AddressMap AddrMap abbrev
+R978:978 Theroies.ContractCommon <> V:14 var
+binder 966:966 <> m:15
+R983:986 Coq.Init.Datatypes <> list ind
+R988:994 Theroies.Blockchain <> Address meth
+R1003:1011 Theroies.Containers FMap keys def
+R1013:1013 Theroies.ContractCommon <> m:15 var
+def 1030:1036 AddressMap of_list
+R1040:1048 Theroies.Blockchain <> ChainBase class
+binder 1040:1048 <> H:16
+binder 1052:1052 <> V:17
+R1067:1070 Coq.Init.Datatypes <> list ind
+R1080:1082 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1073:1079 Theroies.Blockchain <> Address meth
+R1083:1083 Theroies.ContractCommon <> V:17 var
+binder 1063:1063 <> l:18
+R1089:1095 Theroies.ContractCommon AddressMap AddrMap abbrev
+R1097:1097 Theroies.ContractCommon <> V:17 var
+R1106:1117 Theroies.Containers FMap of_list abbrev
+R1119:1119 Theroies.ContractCommon <> l:18 var
+def 1136:1140 AddressMap empty
+R1144:1152 Theroies.Blockchain <> ChainBase class
+binder 1144:1152 <> H:19
+binder 1156:1156 <> V:20
+R1168:1174 Theroies.ContractCommon AddressMap AddrMap abbrev
+R1176:1176 Theroies.ContractCommon <> V:20 var
+R1185:1194 Theroies.Containers FMap empty abbrev
+def 1211:1216 AddressMap update
+R1220:1228 Theroies.Blockchain <> ChainBase class
+binder 1220:1228 <> H:21
+binder 1232:1232 <> V:22
+R1250:1256 Theroies.Blockchain <> Address meth
+binder 1243:1246 <> addr:23
+R1266:1271 Coq.Init.Datatypes <> option ind
+R1273:1273 Theroies.ContractCommon <> V:22 var
+binder 1260:1262 <> val:24
+R1281:1287 Theroies.ContractCommon AddressMap AddrMap abbrev
+R1289:1289 Theroies.ContractCommon <> V:22 var
+binder 1277:1277 <> m:25
+R1294:1300 Theroies.ContractCommon AddressMap AddrMap abbrev
+R1302:1302 Theroies.ContractCommon <> V:22 var
+R1311:1321 Theroies.Containers FMap update def
+R1332:1332 Theroies.ContractCommon <> m:25 var
+R1328:1330 Theroies.ContractCommon <> val:24 var
+R1323:1326 Theroies.ContractCommon <> addr:23 var
+R1340:1349 Theroies.ContractCommon AddressMap <> mod
+prf 1450:1476 <> AddressMap_find_convertible
+R1480:1488 Theroies.Blockchain <> ChainBase class
+binder 1480:1488 <> H:26
+binder 1492:1492 <> V:27
+R1530:1532 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1506:1520 Theroies.ContractCommon <> find def
+R1528:1528 Theroies.ContractCommon <> V:27 var
+R1533:1541 Theroies.Containers FMap find abbrev
+prf 1576:1601 <> AddressMap_add_convertible
+R1605:1613 Theroies.Blockchain <> ChainBase class
+binder 1605:1613 <> H:28
+binder 1617:1617 <> V:29
+R1654:1656 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1631:1644 Theroies.ContractCommon <> add def
+R1652:1652 Theroies.ContractCommon <> V:29 var
+R1657:1664 Theroies.Containers FMap add abbrev
+sec 1701:1707 <> Utility
+def 1745:1749 <> maybe
+R1756:1756 Coq.Numbers.BinNums <> N ind
+binder 1752:1752 <> n:30
+R1761:1766 Coq.Init.Datatypes <> option ind
+R1768:1768 Coq.Numbers.BinNums <> N ind
+R1781:1784 Coq.NArith.BinNat <> ::N_scope:x_'=?'_x not
+R1780:1780 Theroies.ContractCommon <> n:30 var
+R1802:1805 Coq.Init.Datatypes <> Some constr
+R1807:1807 Theroies.ContractCommon <> n:30 var
+R1792:1795 Coq.Init.Datatypes <> None constr
+prf 1819:1829 <> maybe_cases
+binder 1840:1840 <> n:31
+R1847:1847 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R1871:1876 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R1902:1902 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R1862:1865 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R1855:1857 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1848:1852 Theroies.ContractCommon <> maybe def
+R1854:1854 Theroies.ContractCommon <> n:31 var
+R1858:1861 Coq.Init.Datatypes <> None constr
+R1867:1869 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1866:1866 Theroies.ContractCommon <> n:31 var
+R1893:1896 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R1884:1886 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1877:1881 Theroies.ContractCommon <> maybe def
+R1883:1883 Theroies.ContractCommon <> n:31 var
+R1887:1890 Coq.Init.Datatypes <> Some constr
+R1892:1892 Theroies.ContractCommon <> n:31 var
+R1898:1900 Coq.NArith.BinNat <> ::N_scope:x_'>'_x not
+R1897:1897 Theroies.ContractCommon <> n:31 var
+prf 1975:1987 <> maybe_sub_add
+binder 1998:1998 <> n:32
+binder 2000:2004 <> value:33
+R2021:2028 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2016:2019 Coq.NArith.BinNat <> ::N_scope:x_'<='_x not
+R2011:2015 Theroies.ContractCommon <> value:33 var
+R2020:2020 Theroies.ContractCommon <> n:32 var
+R2029:2029 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R2096:2104 Coq.Init.Logic <> ::type_scope:x_'\/'_x not
+R2087:2090 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R2080:2082 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2030:2034 Theroies.ContractCommon <> maybe def
+R2071:2073 Coq.NArith.BinNat <> ::N_scope:x_'+'_x not
+R2037:2048 Theroies.Extras <> with_default def
+R2053:2057 Theroies.ContractCommon <> maybe def
+R2061:2063 Coq.NArith.BinNat <> ::N_scope:x_'-'_x not
+R2060:2060 Theroies.ContractCommon <> n:32 var
+R2064:2068 Theroies.ContractCommon <> value:33 var
+R2074:2078 Theroies.ContractCommon <> value:33 var
+R2083:2086 Coq.Init.Datatypes <> None constr
+R2092:2094 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2091:2091 Theroies.ContractCommon <> n:32 var
+R2155:2157 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2105:2109 Theroies.ContractCommon <> maybe def
+R2146:2148 Coq.NArith.BinNat <> ::N_scope:x_'+'_x not
+R2112:2123 Theroies.Extras <> with_default def
+R2128:2132 Theroies.ContractCommon <> maybe def
+R2136:2138 Coq.NArith.BinNat <> ::N_scope:x_'-'_x not
+R2135:2135 Theroies.ContractCommon <> n:32 var
+R2139:2143 Theroies.ContractCommon <> value:33 var
+R2149:2153 Theroies.ContractCommon <> value:33 var
+R2158:2161 Coq.Init.Datatypes <> Some constr
+R2163:2163 Theroies.ContractCommon <> n:32 var
+R2203:2213 Theroies.ContractCommon <> maybe_cases thm
+R2217:2219 Coq.NArith.BinNat <> ::N_scope:x_'-'_x not
+R2203:2213 Theroies.ContractCommon <> maybe_cases thm
+R2217:2219 Coq.NArith.BinNat <> ::N_scope:x_'-'_x not
+R2278:2287 Coq.NArith.BinNat N sub_0_le thm
+R2278:2287 Coq.NArith.BinNat N sub_0_le thm
+R2278:2287 Coq.NArith.BinNat N sub_0_le thm
+R2320:2332 Coq.NArith.BinNat N le_antisymm thm
+R2320:2332 Coq.NArith.BinNat N le_antisymm thm
+R2320:2332 Coq.NArith.BinNat N le_antisymm thm
+R2381:2391 Theroies.ContractCommon <> maybe_cases thm
+R2381:2391 Theroies.ContractCommon <> maybe_cases thm
+R2442:2450 Coq.NArith.BinNat N sub_add thm
+R2442:2450 Coq.NArith.BinNat N sub_add thm
+R2442:2450 Coq.NArith.BinNat N sub_add thm
+R2487:2497 Theroies.ContractCommon <> maybe_cases thm
+R2487:2497 Theroies.ContractCommon <> maybe_cases thm
+def 2579:2585 <> throwIf
+binder 2588:2588 <> E:34
+R2626:2629 Coq.Init.Datatypes <> bool ind
+binder 2619:2622 <> cond:35
+R2659:2659 Theroies.ContractCommon <> E:34 var
+binder 2653:2655 <> err:36
+R2684:2689 Theroies.ResultMonad <> result ind
+R2691:2694 Coq.Init.Datatypes <> unit ind
+R2696:2696 Theroies.ContractCommon <> E:34 var
+R2708:2711 Theroies.ContractCommon <> cond:35 var
+R2731:2732 Theroies.ResultMonad <> Ok constr
+R2734:2735 Coq.Init.Datatypes <> tt constr
+R2718:2720 Theroies.ResultMonad <> Err constr
+R2722:2724 Theroies.ContractCommon <> err:36 var
+R2758:2766 Theroies.Blockchain <> ChainBase class
+binder 2751:2754 <> Base:37
+def 2783:2797 <> without_actions
+binder 2800:2800 <> T:38
+binder 2802:2802 <> E:39
+R2846:2851 Theroies.ResultMonad <> result ind
+R2853:2853 Theroies.ContractCommon <> T:38 var
+R2855:2855 Theroies.ContractCommon <> E:39 var
+binder 2842:2842 <> x:40
+R2889:2894 Theroies.ResultMonad <> result ind
+R2898:2900 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R2897:2897 Theroies.ContractCommon <> T:38 var
+R2901:2904 Coq.Init.Datatypes <> list ind
+R2906:2915 Theroies.Blockchain <> ActionBody ind
+R2918:2918 Theroies.ContractCommon <> E:39 var
+R2928:2933 Theroies.Monads <> :::x_'>>='_x not
+R2969:2969 Theroies.Monads <> :::x_'>>='_x not
+R2927:2927 Theroies.ContractCommon <> x:40 var
+binder 2938:2946 <> new_state:41
+R2951:2952 Theroies.ResultMonad <> Ok constr
+R2954:2954 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2964:2965 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2968:2968 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2955:2963 Theroies.ContractCommon <> new_state:41 var
+R2966:2967 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+def 2986:2996 <> not_payable
+binder 2999:2999 <> T:42
+binder 3001:3001 <> E:43
+R3043:3061 Theroies.Blockchain <> ContractCallContext rec
+binder 3037:3039 <> ctx:44
+R3094:3099 Theroies.ResultMonad <> result ind
+R3101:3101 Theroies.ContractCommon <> T:42 var
+R3103:3103 Theroies.ContractCommon <> E:43 var
+binder 3090:3090 <> x:45
+R3138:3138 Theroies.ContractCommon <> E:43 var
+binder 3132:3134 <> err:46
+R3168:3173 Theroies.ResultMonad <> result ind
+R3175:3175 Theroies.ContractCommon <> T:42 var
+R3177:3177 Theroies.ContractCommon <> E:43 var
+R3186:3188 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3190:3193 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3231:3232 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3194:3200 Theroies.ContractCommon <> throwIf def
+R3228:3230 Theroies.ContractCommon <> err:46 var
+R3219:3222 Coq.ZArith.BinInt <> ::Z_scope:x_'>?'_x not
+R3208:3217 Theroies.Blockchain <> ctx_amount proj
+R3203:3205 Theroies.ContractCommon <> ctx:44 var
+R3233:3233 Theroies.ContractCommon <> x:45 var
+R3241:3247 Theroies.ContractCommon Utility <> sec
+R3317:3319 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3306:3312 Theroies.ContractCommon <> throwIf def
+R3321:3323 Theroies.ResultMonad <> Err constr
+R3317:3319 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3306:3312 Theroies.ContractCommon <> throwIf def
+R3321:3323 Theroies.ResultMonad <> Err constr
+R3488:3490 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3477:3483 Theroies.ContractCommon <> throwIf def
+R3492:3493 Theroies.ResultMonad <> Ok constr
+R3488:3490 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3477:3483 Theroies.ContractCommon <> throwIf def
+R3492:3493 Theroies.ResultMonad <> Ok constr
+R3544:3550 Theroies.ContractCommon <> throwIf def
+R3373:3379 Theroies.ContractCommon <> throwIf def
+R4201:4218 Theroies.Blockchain <> receive proj
+R4201:4218 Theroies.Blockchain <> receive proj
+R4285:4302 Theroies.Blockchain <> receive proj
+R4285:4302 Theroies.Blockchain <> receive proj
+R4355:4369 Theroies.Blockchain <> init proj
+R4355:4369 Theroies.Blockchain <> init proj
+R4433:4447 Theroies.Blockchain <> init proj
+R4433:4447 Theroies.Blockchain <> init proj
+R4491:4493 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R4494:4497 Coq.Init.Datatypes <> list ind
+R4499:4508 Theroies.Blockchain <> ActionBody ind
+R4491:4493 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
+R4494:4497 Coq.Init.Datatypes <> list ind
+R4499:4508 Theroies.Blockchain <> ActionBody ind
+R4549:4551 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4538:4544 Theroies.ContractCommon <> throwIf def
+R4553:4555 Theroies.ResultMonad <> Err constr
+R4549:4551 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4538:4544 Theroies.ContractCommon <> throwIf def
+R4553:4555 Theroies.ResultMonad <> Err constr
+R4610:4612 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4599:4605 Theroies.ContractCommon <> throwIf def
+R4614:4615 Theroies.ResultMonad <> Ok constr
+R4610:4612 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4599:4605 Theroies.ContractCommon <> throwIf def
+R4614:4615 Theroies.ResultMonad <> Ok constr
+R4669:4671 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4661:4662 Theroies.ResultMonad <> Ok constr
+R4673:4674 Theroies.ResultMonad <> Ok constr
+R4669:4671 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4661:4662 Theroies.ResultMonad <> Ok constr
+R4673:4674 Theroies.ResultMonad <> Ok constr
+R4785:4787 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4777:4780 Coq.Init.Datatypes <> Some constr
+R4789:4792 Coq.Init.Datatypes <> Some constr
+R4785:4787 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4777:4780 Coq.Init.Datatypes <> Some constr
+R4789:4792 Coq.Init.Datatypes <> Some constr
+R4956:4958 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4912:4913 Theroies.ResultMonad <> Ok constr
+R4929:4931 Theroies.ResultMonad <> Err constr
+R4943:4945 Theroies.ResultMonad <> Err constr
+R4960:4961 Theroies.ResultMonad <> Ok constr
+R4956:4958 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4912:4913 Theroies.ResultMonad <> Ok constr
+R4929:4931 Theroies.ResultMonad <> Err constr
+R4943:4945 Theroies.ResultMonad <> Err constr
+R4960:4961 Theroies.ResultMonad <> Ok constr
+R5079:5081 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5035:5036 Theroies.ResultMonad <> Ok constr
+R5052:5054 Theroies.ResultMonad <> Err constr
+R5066:5068 Theroies.ResultMonad <> Err constr
+R5083:5084 Theroies.ResultMonad <> Ok constr
+R5079:5081 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5035:5036 Theroies.ResultMonad <> Ok constr
+R5052:5054 Theroies.ResultMonad <> Err constr
+R5066:5068 Theroies.ResultMonad <> Err constr
+R5083:5084 Theroies.ResultMonad <> Ok constr
+R5173:5175 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5156:5158 Theroies.ResultMonad <> Err constr
+R5177:5178 Theroies.ResultMonad <> Ok constr
+R5173:5175 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5156:5158 Theroies.ResultMonad <> Err constr
+R5177:5178 Theroies.ResultMonad <> Ok constr
+R5267:5269 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5257:5259 Theroies.ResultMonad <> Err constr
+R5271:5272 Theroies.ResultMonad <> Ok constr
+R5267:5269 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5257:5259 Theroies.ResultMonad <> Err constr
+R5271:5272 Theroies.ResultMonad <> Ok constr
+R5329:5329 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5358:5361 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5342:5344 Theroies.ResultMonad <> Err constr
+R5363:5364 Theroies.ResultMonad <> Ok constr
+R5329:5329 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5358:5361 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5342:5344 Theroies.ResultMonad <> Err constr
+R5363:5364 Theroies.ResultMonad <> Ok constr
+R5421:5421 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5450:5453 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5441:5443 Theroies.ResultMonad <> Err constr
+R5455:5456 Theroies.ResultMonad <> Ok constr
+R5421:5421 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5450:5453 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5441:5443 Theroies.ResultMonad <> Err constr
+R5455:5456 Theroies.ResultMonad <> Ok constr
+R5575:5577 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5539:5540 Theroies.ResultMonad <> Ok constr
+R5556:5558 Theroies.ResultMonad <> Err constr
+R5579:5580 Theroies.ResultMonad <> Ok constr
+R5575:5577 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5539:5540 Theroies.ResultMonad <> Ok constr
+R5556:5558 Theroies.ResultMonad <> Err constr
+R5579:5580 Theroies.ResultMonad <> Ok constr
+R5682:5684 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5647:5648 Theroies.ResultMonad <> Ok constr
+R5664:5666 Theroies.ResultMonad <> Err constr
+R5686:5687 Theroies.ResultMonad <> Ok constr
+R5682:5684 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5647:5648 Theroies.ResultMonad <> Ok constr
+R5664:5666 Theroies.ResultMonad <> Err constr
+R5686:5687 Theroies.ResultMonad <> Ok constr
+R5780:5782 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5750:5753 Coq.Init.Datatypes <> Some constr
+R5764:5767 Coq.Init.Datatypes <> None constr
+R5772:5775 Coq.Init.Datatypes <> None constr
+R5783:5786 Coq.Init.Datatypes <> Some constr
+R5780:5782 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5750:5753 Coq.Init.Datatypes <> Some constr
+R5764:5767 Coq.Init.Datatypes <> None constr
+R5772:5775 Coq.Init.Datatypes <> None constr
+R5783:5786 Coq.Init.Datatypes <> Some constr
+R5885:5887 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5855:5858 Coq.Init.Datatypes <> Some constr
+R5869:5872 Coq.Init.Datatypes <> None constr
+R5877:5880 Coq.Init.Datatypes <> None constr
+R5888:5891 Coq.Init.Datatypes <> Some constr
+R5885:5887 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5855:5858 Coq.Init.Datatypes <> Some constr
+R5869:5872 Coq.Init.Datatypes <> None constr
+R5877:5880 Coq.Init.Datatypes <> None constr
+R5888:5891 Coq.Init.Datatypes <> Some constr
+R5970:5972 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5958:5961 Coq.Init.Datatypes <> None constr
+R5973:5976 Coq.Init.Datatypes <> Some constr
+R5970:5972 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5958:5961 Coq.Init.Datatypes <> None constr
+R5973:5976 Coq.Init.Datatypes <> Some constr
+R6055:6057 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6050:6053 Coq.Init.Datatypes <> None constr
+R6058:6061 Coq.Init.Datatypes <> Some constr
+R6055:6057 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6050:6053 Coq.Init.Datatypes <> None constr
+R6058:6061 Coq.Init.Datatypes <> Some constr
+R6114:6114 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6137:6140 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6126:6129 Coq.Init.Datatypes <> None constr
+R6141:6144 Coq.Init.Datatypes <> Some constr
+R6114:6114 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6137:6140 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6126:6129 Coq.Init.Datatypes <> None constr
+R6141:6144 Coq.Init.Datatypes <> Some constr
+R6197:6197 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6220:6223 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6216:6219 Coq.Init.Datatypes <> None constr
+R6224:6227 Coq.Init.Datatypes <> Some constr
+R6197:6197 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6220:6223 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6216:6219 Coq.Init.Datatypes <> None constr
+R6224:6227 Coq.Init.Datatypes <> Some constr
+R6333:6335 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6305:6308 Coq.Init.Datatypes <> Some constr
+R6319:6322 Coq.Init.Datatypes <> None constr
+R6336:6339 Coq.Init.Datatypes <> Some constr
+R6333:6335 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6305:6308 Coq.Init.Datatypes <> Some constr
+R6319:6322 Coq.Init.Datatypes <> None constr
+R6336:6339 Coq.Init.Datatypes <> Some constr
+R6428:6430 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6401:6404 Coq.Init.Datatypes <> Some constr
+R6415:6418 Coq.Init.Datatypes <> None constr
+R6431:6434 Coq.Init.Datatypes <> Some constr
+R6428:6430 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6401:6404 Coq.Init.Datatypes <> Some constr
+R6415:6418 Coq.Init.Datatypes <> None constr
+R6431:6434 Coq.Init.Datatypes <> Some constr
+R4460:4474 Theroies.Blockchain <> init proj
+R4387:4401 Theroies.Blockchain <> init proj
+R4315:4332 Theroies.Blockchain <> receive proj
+R4236:4253 Theroies.Blockchain <> receive proj
+R4174:4177 Theroies.Blockchain <> init proj
+R4117:4120 Theroies.Blockchain <> init proj
+R4061:4067 Theroies.Blockchain <> receive proj
+R3998:4004 Theroies.Blockchain <> receive proj
+R6634:6636 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6614:6629 Theroies.ResultMonad <> result_of_option def
+R6638:6639 Theroies.ResultMonad <> Ok constr
+R6634:6636 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6614:6629 Theroies.ResultMonad <> result_of_option def
+R6638:6639 Theroies.ResultMonad <> Ok constr
+R6741:6743 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6721:6736 Theroies.ResultMonad <> result_of_option def
+R6745:6747 Theroies.ResultMonad <> Err constr
+R6741:6743 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6721:6736 Theroies.ResultMonad <> result_of_option def
+R6745:6747 Theroies.ResultMonad <> Err constr
+R6769:6792 Theroies.ResultMonad <> result_of_option_eq_none thm
+R6661:6684 Theroies.ResultMonad <> result_of_option_eq_some thm
+R6893:6896 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6890:6892 Coq.Init.Datatypes <> nat ind
+R6900:6903 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6897:6899 Coq.Init.Datatypes <> nat ind
+R6907:6910 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6904:6906 Coq.Init.Datatypes <> nat ind
+R6914:6917 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6911:6913 Coq.Init.Datatypes <> nat ind
+R6921:6924 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6918:6920 Coq.Init.Datatypes <> nat ind
+R6928:6931 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6925:6927 Coq.Init.Datatypes <> nat ind
+R6893:6896 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6890:6892 Coq.Init.Datatypes <> nat ind
+R6900:6903 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6897:6899 Coq.Init.Datatypes <> nat ind
+R6907:6910 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6904:6906 Coq.Init.Datatypes <> nat ind
+R6914:6917 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6911:6913 Coq.Init.Datatypes <> nat ind
+R6921:6924 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6918:6920 Coq.Init.Datatypes <> nat ind
+R6928:6931 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6925:6927 Coq.Init.Datatypes <> nat ind
+R7030:7033 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7053:7056 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7034:7052 Theroies.Blockchain <> ContractCallContext rec
+R7030:7033 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7053:7056 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7034:7052 Theroies.Blockchain <> ContractCallContext rec
+R7151:7154 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7146:7150 Theroies.Blockchain <> Chain rec
+R7174:7177 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7155:7173 Theroies.Blockchain <> ContractCallContext rec
+R7179:7186 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7202:7205 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7187:7190 Coq.Init.Datatypes <> list ind
+R7192:7201 Theroies.Blockchain <> ActionBody ind
+R7240:7243 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7206:7211 Coq.Init.Datatypes <> option ind
+R7214:7217 Coq.Init.Datatypes <> list ind
+R7220:7235 Theroies.Blockchain <> ContractCallInfo rec
+R7151:7154 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7146:7150 Theroies.Blockchain <> Chain rec
+R7174:7177 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7155:7173 Theroies.Blockchain <> ContractCallContext rec
+R7179:7186 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7202:7205 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7187:7190 Coq.Init.Datatypes <> list ind
+R7192:7201 Theroies.Blockchain <> ActionBody ind
+R7240:7243 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7206:7211 Coq.Init.Datatypes <> option ind
+R7214:7217 Coq.Init.Datatypes <> list ind
+R7220:7235 Theroies.Blockchain <> ContractCallInfo rec
+R7311:7320 Coq.Init.Logic <> True ind
+R7118:7127 Coq.Init.Logic <> True ind
+R7001:7010 Coq.Init.Logic <> True ind

@@ -1,0 +1,288 @@
+DIGEST 6f94a6c2aa63c713ffbd05f1208ed79d
+FTheroies.Monads
+R99:102 Coq.Lists.List <> <> lib
+R129:134 Coq.Program.Basics <> <> lib
+rec 144:148 <> Monad
+proj 195:197 <> ret
+proj 225:228 <> bind
+R159:162 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 151:151 <> m:1
+binder 209:209 <> t:3
+R214:217 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R213:213 Theroies.Monads <> t:3 var
+R218:218 Theroies.Monads <> m:1 var
+R220:220 Theroies.Monads <> t:3 var
+binder 240:240 <> t:5
+binder 242:242 <> u:6
+R249:252 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R246:246 Theroies.Monads <> m:1 var
+R248:248 Theroies.Monads <> t:5 var
+R253:253 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R262:266 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R255:258 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R254:254 Theroies.Monads <> t:5 var
+R259:259 Theroies.Monads <> m:1 var
+R261:261 Theroies.Monads <> u:6 var
+R267:267 Theroies.Monads <> m:1 var
+R269:269 Theroies.Monads <> u:6 var
+R298:301 Theroies.Monads <> bind meth
+not 284:284 <> :::x_'>>='_x
+R366:369 Theroies.Monads <> bind meth
+not 352:352 <> :::x_'=<<'_x
+R448:451 Theroies.Monads <> bind meth
+binder 461:461 <> x:8
+not 422:422 <> :::'do'_x_'<-'_x_';'_x
+R569:572 Theroies.Monads <> bind meth
+binder 582:582 <> x:9
+R593:593 Theroies.Monads <> x:9 var
+not 539:539 <> :::'do'_''''_x_'<-'_x_';'_x
+R716:718 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R720:723 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R726:728 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+not 697:697 <> :::'do'_x_';'_x
+rec 778:786 <> MonadLaws
+proj 847:860 <> bind_of_return
+proj 950:963 <> return_of_bind
+proj 1034:1043 <> bind_assoc
+R797:800 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 789:789 <> m:11
+R814:818 Theroies.Monads <> Monad class
+R820:820 Theroies.Monads <> m:11 var
+binder 808:810 <> mon:12
+binder 876:876 <> T:14
+R891:891 Theroies.Monads <> T:14 var
+binder 887:887 <> t:15
+binder 895:895 <> U:16
+R911:914 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R910:910 Theroies.Monads <> T:14 var
+R915:915 Theroies.Monads <> m:11 var
+R917:917 Theroies.Monads <> U:16 var
+binder 906:906 <> f:17
+R927:927 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R939:942 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R933:937 Theroies.Monads <> :::x_'>>='_x not
+R928:930 Theroies.Monads <> ret meth
+R932:932 Theroies.Monads <> t:15 var
+R938:938 Theroies.Monads <> f:17 var
+R943:943 Theroies.Monads <> f:17 var
+R945:945 Theroies.Monads <> t:15 var
+binder 979:979 <> T:19
+R994:994 Theroies.Monads <> m:11 var
+R996:996 Theroies.Monads <> T:19 var
+binder 990:990 <> t:20
+R1006:1006 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1025:1028 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1008:1012 Theroies.Monads <> :::x_'>>='_x not
+R1007:1007 Theroies.Monads <> t:20 var
+R1014:1016 Theroies.Monads <> ret meth
+R1018:1018 Theroies.Monads <> m:11 var
+R1020:1022 Theroies.Monads <> mon:12 var
+R1024:1024 Theroies.Monads <> T:19 var
+R1029:1029 Theroies.Monads <> t:20 var
+binder 1059:1059 <> T:22
+binder 1061:1061 <> U:23
+binder 1063:1063 <> V:24
+R1078:1078 Theroies.Monads <> m:11 var
+R1080:1080 Theroies.Monads <> T:22 var
+binder 1074:1074 <> t:25
+R1089:1092 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1088:1088 Theroies.Monads <> T:22 var
+R1093:1093 Theroies.Monads <> m:11 var
+R1095:1095 Theroies.Monads <> U:23 var
+binder 1084:1084 <> f:26
+R1104:1107 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1103:1103 Theroies.Monads <> U:23 var
+R1108:1108 Theroies.Monads <> m:11 var
+R1110:1110 Theroies.Monads <> V:24 var
+binder 1099:1099 <> g:27
+R1135:1137 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1120:1120 Theroies.Monads <> :::x_'>>='_x not
+R1128:1133 Theroies.Monads <> :::x_'>>='_x not
+R1122:1126 Theroies.Monads <> :::x_'>>='_x not
+R1121:1121 Theroies.Monads <> t:25 var
+R1127:1127 Theroies.Monads <> f:26 var
+R1134:1134 Theroies.Monads <> g:27 var
+R1139:1144 Theroies.Monads <> :::x_'>>='_x not
+R1163:1163 Theroies.Monads <> :::x_'>>='_x not
+R1138:1138 Theroies.Monads <> t:25 var
+binder 1149:1149 <> t:28
+R1157:1161 Theroies.Monads <> :::x_'>>='_x not
+R1154:1154 Theroies.Monads <> f:26 var
+R1156:1156 Theroies.Monads <> t:28 var
+R1162:1162 Theroies.Monads <> g:27 var
+rec 1177:1186 <> MonadTrans
+proj 1241:1244 <> lift
+R1197:1200 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 1189:1189 <> m:30
+R1217:1220 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 1208:1209 <> mt:31
+binder 1256:1256 <> t:33
+R1264:1267 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1260:1261 Theroies.Monads <> mt:31 var
+R1263:1263 Theroies.Monads <> t:33 var
+R1268:1268 Theroies.Monads <> m:30 var
+R1270:1270 Theroies.Monads <> t:33 var
+inst 1294:1305 <> Monad_option
+R1309:1313 Theroies.Monads <> Monad class
+R1315:1320 Coq.Init.Datatypes <> option ind
+R1330:1332 Theroies.Monads <> ret meth
+R1330:1332 Theroies.Monads <> ret meth
+R1330:1332 Theroies.Monads <> ret meth
+R1354:1357 Theroies.Monads <> bind meth
+R1354:1357 Theroies.Monads <> bind meth
+binder 1336:1336 <> t:35
+R1341:1344 Coq.Init.Datatypes <> Some constr
+R1346:1346 Theroies.Monads <> t:35 var
+binder 1363:1363 <> v:36
+binder 1365:1365 <> f:37
+R1376:1376 Theroies.Monads <> v:36 var
+R1402:1405 Coq.Init.Datatypes <> Some constr
+R1414:1414 Theroies.Monads <> f:37 var
+R1439:1442 Coq.Init.Datatypes <> None constr
+R1447:1450 Coq.Init.Datatypes <> None constr
+inst 1511:1532 <> MonadLaws_Monad_option
+R1536:1544 Theroies.Monads <> MonadLaws class
+R1546:1557 Theroies.Monads <> Monad_option inst
+def 1685:1693 <> monad_map
+binder 1696:1696 <> A:39
+binder 1698:1698 <> B:40
+R1710:1713 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 1702:1702 <> m:41
+R1740:1744 Theroies.Monads <> Monad class
+R1746:1746 Theroies.Monads <> m:41 var
+binder 1740:1746 <> H:42
+R1755:1758 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1754:1754 Theroies.Monads <> A:39 var
+R1759:1759 Theroies.Monads <> m:41 var
+R1761:1761 Theroies.Monads <> B:40 var
+binder 1750:1750 <> f:43
+R1789:1792 Coq.Init.Datatypes <> list ind
+R1794:1794 Theroies.Monads <> A:39 var
+binder 1784:1785 <> xs:44
+R1799:1799 Theroies.Monads <> m:41 var
+R1802:1805 Coq.Init.Datatypes <> list ind
+R1807:1807 Theroies.Monads <> B:40 var
+R1821:1822 Theroies.Monads <> xs:44 var
+R1833:1835 Coq.Init.Datatypes <> nil constr
+R1840:1842 Theroies.Monads <> ret meth
+R1844:1846 Coq.Init.Datatypes <> nil constr
+R1852:1855 Coq.Init.Datatypes <> cons constr
+R1872:1874 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R1876:1879 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R1883:1890 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R1880:1880 Theroies.Monads <> f:43 var
+binder 1875:1875 <> v:47
+R1891:1893 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R1896:1899 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R1915:1922 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R1900:1908 Theroies.Monads <> monad_map:45 def
+R1910:1910 Theroies.Monads <> f:43 var
+binder 1894:1895 <> vs:48
+R1923:1925 Theroies.Monads <> ret meth
+R1928:1931 Coq.Init.Datatypes <> cons constr
+R1935:1936 Theroies.Monads <> vs:48 var
+R1933:1933 Theroies.Monads <> v:47 var
+prf 1953:1965 <> monad_map_map
+binder 1968:1968 <> A:49
+binder 1970:1970 <> B:50
+binder 1972:1972 <> Z:51
+R1984:1987 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 1976:1976 <> m:52
+R1996:2000 Theroies.Monads <> Monad class
+R2002:2002 Theroies.Monads <> m:52 var
+binder 1996:2002 <> H:53
+R2017:2020 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2016:2016 Theroies.Monads <> A:49 var
+R2021:2021 Theroies.Monads <> m:52 var
+R2023:2023 Theroies.Monads <> B:50 var
+binder 2012:2012 <> f:54
+R2032:2035 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2031:2031 Theroies.Monads <> Z:51 var
+R2036:2036 Theroies.Monads <> A:49 var
+binder 2027:2027 <> g:55
+R2045:2048 Coq.Init.Datatypes <> list ind
+R2050:2050 Theroies.Monads <> Z:51 var
+binder 2040:2041 <> xs:56
+R2079:2081 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2057:2065 Theroies.Monads <> monad_map def
+R2070:2072 Coq.Lists.List <> map def
+R2076:2077 Theroies.Monads <> xs:56 var
+R2074:2074 Theroies.Monads <> g:55 var
+R2067:2067 Theroies.Monads <> f:54 var
+R2082:2090 Theroies.Monads <> monad_map def
+R2106:2107 Theroies.Monads <> xs:56 var
+R2093:2099 Coq.Program.Basics <> compose def
+R2103:2103 Theroies.Monads <> g:55 var
+R2101:2101 Theroies.Monads <> f:54 var
+def 2185:2195 <> monad_foldr
+binder 2198:2198 <> A:57
+binder 2200:2200 <> B:58
+R2212:2215 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 2204:2204 <> m:59
+R2244:2248 Theroies.Monads <> Monad class
+R2250:2250 Theroies.Monads <> m:59 var
+binder 2244:2250 <> H:60
+R2259:2262 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2258:2258 Theroies.Monads <> A:57 var
+R2264:2267 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2263:2263 Theroies.Monads <> B:58 var
+R2268:2268 Theroies.Monads <> m:59 var
+R2270:2270 Theroies.Monads <> A:57 var
+binder 2254:2254 <> f:61
+R2299:2299 Theroies.Monads <> A:57 var
+binder 2295:2295 <> a:62
+R2308:2311 Coq.Init.Datatypes <> list ind
+R2313:2313 Theroies.Monads <> B:58 var
+binder 2303:2304 <> xs:63
+R2318:2318 Theroies.Monads <> m:59 var
+R2320:2320 Theroies.Monads <> A:57 var
+R2333:2334 Theroies.Monads <> xs:63 var
+R2345:2347 Coq.Init.Datatypes <> nil constr
+R2352:2354 Theroies.Monads <> ret meth
+R2356:2356 Theroies.Monads <> a:62 var
+R2362:2365 Coq.Init.Datatypes <> cons constr
+R2376:2378 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R2380:2383 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R2403:2422 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R2384:2394 Theroies.Monads <> monad_foldr:64 def
+R2398:2398 Theroies.Monads <> a:62 var
+R2396:2396 Theroies.Monads <> f:61 var
+binder 2379:2379 <> v:66
+R2423:2423 Theroies.Monads <> f:61 var
+R2425:2425 Theroies.Monads <> v:66 var
+def 2446:2456 <> monad_foldl
+binder 2459:2459 <> A:67
+binder 2461:2461 <> B:68
+R2473:2476 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 2465:2465 <> m:69
+R2505:2509 Theroies.Monads <> Monad class
+R2511:2511 Theroies.Monads <> m:69 var
+binder 2505:2511 <> H:70
+R2520:2523 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2519:2519 Theroies.Monads <> A:67 var
+R2525:2528 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2524:2524 Theroies.Monads <> B:68 var
+R2529:2529 Theroies.Monads <> m:69 var
+R2531:2531 Theroies.Monads <> A:67 var
+binder 2515:2515 <> f:71
+R2560:2560 Theroies.Monads <> A:67 var
+binder 2556:2556 <> a:72
+R2569:2572 Coq.Init.Datatypes <> list ind
+R2574:2574 Theroies.Monads <> B:68 var
+binder 2564:2565 <> xs:73
+R2579:2579 Theroies.Monads <> m:69 var
+R2581:2581 Theroies.Monads <> A:67 var
+R2594:2595 Theroies.Monads <> xs:73 var
+R2606:2608 Coq.Init.Datatypes <> nil constr
+R2613:2615 Theroies.Monads <> ret meth
+R2617:2617 Theroies.Monads <> a:72 var
+R2623:2626 Coq.Init.Datatypes <> cons constr
+R2637:2639 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R2641:2644 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R2650:2669 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R2645:2645 Theroies.Monads <> f:71 var
+R2647:2647 Theroies.Monads <> a:72 var
+binder 2640:2640 <> v:76
+R2670:2680 Theroies.Monads <> monad_foldl:74 def
+R2684:2684 Theroies.Monads <> v:76 var
+R2682:2682 Theroies.Monads <> f:71 var

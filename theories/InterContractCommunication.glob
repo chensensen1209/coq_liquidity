@@ -1,0 +1,574 @@
+DIGEST b296e0bda198038c7a5ecc1953d0c79a
+FTheroies.InterContractCommunication
+R85:94 Theroies.Automation <> <> lib
+R112:121 Theroies.Blockchain <> <> lib
+R139:150 Theroies.Serializable <> <> lib
+R177:180 Coq.Lists.List <> <> lib
+R190:202 Coq.Lists.List ListNotations <> mod
+R260:269 Theroies.Blockchain <> ChainTrace def
+R271:281 Theroies.Blockchain <> empty_state def
+R260:269 Theroies.Blockchain <> ChainTrace def
+R271:281 Theroies.Blockchain <> empty_state def
+R321:331 Theroies.Blockchain <> empty_state def
+R404:406 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R407:417 Theroies.Blockchain <> empty_state def
+R404:406 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R407:417 Theroies.Blockchain <> empty_state def
+R554:569 Theroies.Blockchain <> EnvironmentEquiv rec
+R554:569 Theroies.Blockchain <> EnvironmentEquiv rec
+sec 707:732 <> InterContractCommunication
+R758:766 Theroies.Blockchain <> ChainBase class
+binder 746:754 <> BaseTypes:1
+def 784:791 <> txCallTo
+R801:807 Theroies.Blockchain <> Address meth
+binder 794:797 <> addr:2
+R816:817 Theroies.Blockchain <> Tx rec
+binder 811:812 <> tx:3
+R822:825 Coq.Init.Datatypes <> bool ind
+R844:850 Theroies.Blockchain <> tx_body proj
+R840:841 Theroies.InterContractCommunication <> tx:3 var
+R864:870 Theroies.Blockchain <> tx_call constr
+R888:891 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R882:886 Theroies.Blockchain <> tx_to proj
+R878:879 Theroies.InterContractCommunication <> tx:3 var
+R892:895 Theroies.InterContractCommunication <> addr:2 var
+R917:921 Coq.Init.Datatypes <> false constr
+def 946:950 <> actTo
+R960:966 Theroies.Blockchain <> Address meth
+binder 953:956 <> addr:4
+R976:985 Theroies.Blockchain <> ActionBody ind
+binder 970:972 <> act:5
+R990:993 Coq.Init.Datatypes <> bool ind
+R1008:1010 Theroies.InterContractCommunication <> act:5 var
+R1023:1034 Theroies.Blockchain <> act_transfer constr
+R1047:1050 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R1051:1054 Theroies.InterContractCommunication <> addr:4 var
+R1071:1078 Theroies.Blockchain <> act_call constr
+R1093:1096 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R1097:1100 Theroies.InterContractCommunication <> addr:4 var
+R1122:1126 Coq.Init.Datatypes <> false constr
+def 1151:1158 <> callFrom
+binder 1161:1163 <> Msg:7
+R1181:1187 Theroies.Blockchain <> Address meth
+binder 1174:1177 <> addr:8
+R1203:1218 Theroies.Blockchain <> ContractCallInfo rec
+R1220:1222 Theroies.InterContractCommunication <> Msg:7 var
+binder 1191:1199 <> call_info:9
+R1227:1230 Coq.Init.Datatypes <> bool ind
+R1261:1264 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R1251:1259 Theroies.Blockchain <> call_from proj
+R1240:1248 Theroies.InterContractCommunication <> call_info:9 var
+R1265:1268 Theroies.InterContractCommunication <> addr:8 var
+prf 1289:1317 <> deployed_incoming_calls_typed
+binder 1328:1333 <> bstate:10
+binder 1335:1339 <> caddr:11
+binder 1354:1358 <> Setup:12
+binder 1360:1362 <> Msg:13
+binder 1364:1368 <> State:14
+binder 1370:1374 <> Error:15
+R1396:1407 Theroies.Serializable <> Serializable class
+R1409:1413 Theroies.InterContractCommunication <> Setup:12 var
+binder 1396:1413 <> H:16
+R1428:1439 Theroies.Serializable <> Serializable class
+R1441:1443 Theroies.InterContractCommunication <> Msg:13 var
+binder 1428:1443 <> H0:17
+R1458:1469 Theroies.Serializable <> Serializable class
+R1471:1475 Theroies.InterContractCommunication <> State:14 var
+binder 1458:1475 <> H1:18
+R1490:1501 Theroies.Serializable <> Serializable class
+R1503:1507 Theroies.InterContractCommunication <> Error:15 var
+binder 1490:1507 <> H2:19
+R1534:1541 Theroies.Blockchain <> Contract rec
+R1559:1563 Theroies.InterContractCommunication <> Error:15 var
+R1553:1557 Theroies.InterContractCommunication <> State:14 var
+R1549:1551 Theroies.InterContractCommunication <> Msg:13 var
+R1543:1547 Theroies.InterContractCommunication <> Setup:12 var
+binder 1523:1530 <> contract:20
+R1587:1596 Theroies.Blockchain <> ChainTrace def
+R1598:1608 Theroies.Blockchain <> empty_state def
+R1610:1615 Theroies.InterContractCommunication <> bstate:10 var
+binder 1579:1583 <> trace:21
+R1682:1689 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R1649:1651 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1623:1635 Theroies.Blockchain <> env_contracts proj
+R1637:1642 Theroies.InterContractCommunication <> bstate:10 var
+R1644:1648 Theroies.InterContractCommunication <> caddr:11 var
+R1652:1655 Coq.Init.Datatypes <> Some constr
+R1669:1680 Theroies.Blockchain <> WeakContract ind
+R1658:1665 Theroies.InterContractCommunication <> contract:20 var
+R1690:1696 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R1706:1713 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 1697:1705 <> inc_calls:22
+R1744:1746 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1714:1727 Theroies.Blockchain <> incoming_calls def
+R1739:1743 Theroies.InterContractCommunication <> caddr:11 var
+R1733:1737 Theroies.InterContractCommunication <> trace:21 var
+R1729:1731 Theroies.InterContractCommunication <> Msg:13 var
+R1747:1750 Coq.Init.Datatypes <> Some constr
+R1752:1760 Theroies.InterContractCommunication <> inc_calls:22 var
+R1906:1936 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R1906:1936 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R1906:1936 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R1906:1936 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R2087:2102 Theroies.Blockchain <> address_eqb_spec meth
+R2150:2164 Theroies.Blockchain <> address_eq_refl thm
+R2168:2180 Theroies.Blockchain <> address_eq_ne thm
+R2087:2102 Theroies.Blockchain <> address_eqb_spec meth
+R2150:2164 Theroies.Blockchain <> address_eq_refl thm
+R2150:2164 Theroies.Blockchain <> address_eq_refl thm
+R2150:2164 Theroies.Blockchain <> address_eq_refl thm
+R2168:2180 Theroies.Blockchain <> address_eq_ne thm
+R2168:2180 Theroies.Blockchain <> address_eq_ne thm
+R2150:2164 Theroies.Blockchain <> address_eq_refl thm
+R2150:2164 Theroies.Blockchain <> address_eq_refl thm
+R2168:2180 Theroies.Blockchain <> address_eq_ne thm
+R2168:2180 Theroies.Blockchain <> address_eq_ne thm
+R2168:2180 Theroies.Blockchain <> address_eq_ne thm
+R2168:2180 Theroies.Blockchain <> address_eq_ne thm
+R2309:2325 Theroies.Blockchain <> wc_receive_strong thm
+R2309:2325 Theroies.Blockchain <> wc_receive_strong thm
+prf 2642:2669 <> undeployed_contract_no_state
+binder 2680:2685 <> bstate:23
+binder 2687:2691 <> caddr:24
+R2702:2711 Theroies.Blockchain <> ChainTrace def
+R2713:2723 Theroies.Blockchain <> empty_state def
+R2725:2730 Theroies.InterContractCommunication <> bstate:23 var
+binder 2694:2698 <> trace:25
+R2771:2778 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2764:2766 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2738:2750 Theroies.Blockchain <> env_contracts proj
+R2752:2757 Theroies.InterContractCommunication <> bstate:23 var
+R2759:2763 Theroies.InterContractCommunication <> caddr:24 var
+R2767:2770 Coq.Init.Datatypes <> None constr
+R2811:2813 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2779:2797 Theroies.Blockchain <> env_contract_states proj
+R2799:2804 Theroies.InterContractCommunication <> bstate:23 var
+R2806:2810 Theroies.InterContractCommunication <> caddr:24 var
+R2814:2817 Coq.Init.Datatypes <> None constr
+prf 2983:3020 <> no_outgoing_txs_to_undeployed_contract
+binder 3031:3036 <> bstate:26
+binder 3038:3043 <> caddrA:27
+binder 3045:3050 <> caddrB:28
+R3073:3082 Theroies.Blockchain <> ChainTrace def
+R3084:3094 Theroies.Blockchain <> empty_state def
+R3096:3101 Theroies.InterContractCommunication <> bstate:26 var
+binder 3065:3069 <> trace:29
+binder 3117:3121 <> Setup:30
+binder 3123:3125 <> Msg:31
+binder 3127:3131 <> State:32
+binder 3133:3137 <> Error:33
+R3159:3170 Theroies.Serializable <> Serializable class
+R3172:3176 Theroies.InterContractCommunication <> Setup:30 var
+binder 3159:3176 <> H:34
+R3191:3202 Theroies.Serializable <> Serializable class
+R3204:3206 Theroies.InterContractCommunication <> Msg:31 var
+binder 3191:3206 <> H0:35
+R3221:3232 Theroies.Serializable <> Serializable class
+R3234:3238 Theroies.InterContractCommunication <> State:32 var
+binder 3221:3238 <> H1:36
+R3253:3264 Theroies.Serializable <> Serializable class
+R3266:3270 Theroies.InterContractCommunication <> Error:33 var
+binder 3253:3270 <> H2:37
+R3297:3304 Theroies.Blockchain <> Contract rec
+R3322:3326 Theroies.InterContractCommunication <> Error:33 var
+R3316:3320 Theroies.InterContractCommunication <> State:32 var
+R3312:3314 Theroies.InterContractCommunication <> Msg:31 var
+R3306:3310 Theroies.InterContractCommunication <> Setup:30 var
+binder 3286:3293 <> contract:38
+R3394:3401 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3361:3363 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3334:3346 Theroies.Blockchain <> env_contracts proj
+R3348:3353 Theroies.InterContractCommunication <> bstate:26 var
+R3355:3360 Theroies.InterContractCommunication <> caddrA:27 var
+R3364:3367 Coq.Init.Datatypes <> Some constr
+R3381:3392 Theroies.Blockchain <> WeakContract ind
+R3370:3377 Theroies.InterContractCommunication <> contract:38 var
+R3436:3445 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3429:3431 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3402:3414 Theroies.Blockchain <> env_contracts proj
+R3416:3421 Theroies.InterContractCommunication <> bstate:26 var
+R3423:3428 Theroies.InterContractCommunication <> caddrB:28 var
+R3432:3435 Coq.Init.Datatypes <> None constr
+R3498:3500 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3446:3451 Coq.Lists.List <> filter def
+R3472:3483 Theroies.Blockchain <> outgoing_txs def
+R3491:3496 Theroies.InterContractCommunication <> caddrA:27 var
+R3485:3489 Theroies.InterContractCommunication <> trace:29 var
+R3454:3461 Theroies.InterContractCommunication <> txCallTo def
+R3463:3468 Theroies.InterContractCommunication <> caddrB:28 var
+R3501:3502 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R3645:3674 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R3714:3725 Theroies.Blockchain <> outgoing_txs def
+R3645:3674 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R3645:3674 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R3645:3674 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R3645:3674 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+prf 3930:3971 <> no_incoming_calls_from_undeployed_contract
+binder 3982:3987 <> bstate:39
+binder 3989:3994 <> caddrA:40
+binder 3996:4001 <> caddrB:41
+R4024:4033 Theroies.Blockchain <> ChainTrace def
+R4035:4045 Theroies.Blockchain <> empty_state def
+R4047:4052 Theroies.InterContractCommunication <> bstate:39 var
+binder 4016:4020 <> trace:42
+binder 4068:4072 <> Setup:43
+binder 4074:4076 <> Msg:44
+binder 4078:4082 <> State:45
+binder 4084:4088 <> Error:46
+R4110:4121 Theroies.Serializable <> Serializable class
+R4123:4127 Theroies.InterContractCommunication <> Setup:43 var
+binder 4110:4127 <> H:47
+R4142:4153 Theroies.Serializable <> Serializable class
+R4155:4157 Theroies.InterContractCommunication <> Msg:44 var
+binder 4142:4157 <> H0:48
+R4172:4183 Theroies.Serializable <> Serializable class
+R4185:4189 Theroies.InterContractCommunication <> State:45 var
+binder 4172:4189 <> H1:49
+R4204:4215 Theroies.Serializable <> Serializable class
+R4217:4221 Theroies.InterContractCommunication <> Error:46 var
+binder 4204:4221 <> H2:50
+R4248:4255 Theroies.Blockchain <> Contract rec
+R4273:4277 Theroies.InterContractCommunication <> Error:46 var
+R4267:4271 Theroies.InterContractCommunication <> State:45 var
+R4263:4265 Theroies.InterContractCommunication <> Msg:44 var
+R4257:4261 Theroies.InterContractCommunication <> Setup:43 var
+binder 4237:4244 <> contract:51
+R4319:4326 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4312:4314 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4285:4297 Theroies.Blockchain <> env_contracts proj
+R4299:4304 Theroies.InterContractCommunication <> bstate:39 var
+R4306:4311 Theroies.InterContractCommunication <> caddrA:40 var
+R4315:4318 Coq.Init.Datatypes <> None constr
+R4360:4367 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4353:4355 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4327:4345 Theroies.Blockchain <> address_is_contract meth
+R4347:4352 Theroies.InterContractCommunication <> caddrA:40 var
+R4356:4359 Coq.Init.Datatypes <> true constr
+R4428:4435 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4395:4397 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4368:4380 Theroies.Blockchain <> env_contracts proj
+R4382:4387 Theroies.InterContractCommunication <> bstate:39 var
+R4389:4394 Theroies.InterContractCommunication <> caddrB:41 var
+R4398:4401 Coq.Init.Datatypes <> Some constr
+R4415:4426 Theroies.Blockchain <> WeakContract ind
+R4404:4411 Theroies.InterContractCommunication <> contract:51 var
+R4436:4442 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R4452:4459 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 4443:4451 <> inc_calls:52
+R4508:4517 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R4491:4493 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4460:4473 Theroies.Blockchain <> incoming_calls def
+R4485:4490 Theroies.InterContractCommunication <> caddrB:41 var
+R4479:4483 Theroies.InterContractCommunication <> trace:42 var
+R4475:4477 Theroies.InterContractCommunication <> Msg:44 var
+R4494:4497 Coq.Init.Datatypes <> Some constr
+R4499:4507 Theroies.InterContractCommunication <> inc_calls:52 var
+R4552:4554 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4518:4523 Coq.Lists.List <> filter def
+R4543:4551 Theroies.InterContractCommunication <> inc_calls:52 var
+R4526:4533 Theroies.InterContractCommunication <> callFrom def
+R4535:4540 Theroies.InterContractCommunication <> caddrA:40 var
+R4555:4556 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R4715:4745 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R4715:4745 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R4715:4745 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R4868:4884 Theroies.Blockchain <> wc_receive_strong thm
+R4868:4884 Theroies.Blockchain <> wc_receive_strong thm
+R5095:5126 Theroies.Blockchain <> undeployed_contract_no_out_queue thm
+R5095:5126 Theroies.Blockchain <> undeployed_contract_no_out_queue thm
+R5380:5387 Theroies.InterContractCommunication <> callFrom def
+R5459:5468 Coq.Lists.List <> Forall_inv thm
+R5508:5522 Theroies.Blockchain <> address_eq_refl thm
+R5459:5468 Coq.Lists.List <> Forall_inv thm
+R5459:5468 Coq.Lists.List <> Forall_inv thm
+R5508:5522 Theroies.Blockchain <> address_eq_refl thm
+R5508:5522 Theroies.Blockchain <> address_eq_refl thm
+R5508:5522 Theroies.Blockchain <> address_eq_refl thm
+R5508:5522 Theroies.Blockchain <> address_eq_refl thm
+def 5563:5586 <> contract_call_info_to_tx
+binder 5602:5602 <> X:53
+R5626:5637 Theroies.Serializable <> Serializable class
+R5639:5639 Theroies.InterContractCommunication <> X:53 var
+binder 5626:5639 <> H:54
+R5663:5669 Theroies.Blockchain <> Address meth
+binder 5655:5659 <> caddr:55
+R5697:5712 Theroies.Blockchain <> ContractCallInfo rec
+R5714:5714 Theroies.InterContractCommunication <> X:53 var
+binder 5685:5693 <> call_info:56
+R5731:5732 Theroies.Blockchain <> Tx rec
+R5776:5783 Theroies.Blockchain <> call_msg proj
+R5765:5773 Theroies.InterContractCommunication <> call_info:56 var
+R5799:5802 Coq.Init.Datatypes <> Some constr
+R5813:5819 Theroies.Blockchain <> tx_call constr
+R5822:5825 Coq.Init.Datatypes <> Some constr
+R5828:5836 Theroies.Serializable <> serialize meth
+R5852:5855 Coq.Init.Datatypes <> None constr
+R5860:5866 Theroies.Blockchain <> tx_call constr
+R5868:5871 Coq.Init.Datatypes <> None constr
+binder 5745:5748 <> body:57
+R5899:5907 Theroies.Blockchain <> tx_origin proj
+R5899:5907 Theroies.Blockchain <> tx_origin proj
+R5899:5907 Theroies.Blockchain <> tx_origin proj
+R5943:5949 Theroies.Blockchain <> tx_from proj
+R5943:5949 Theroies.Blockchain <> tx_from proj
+R5983:5987 Theroies.Blockchain <> tx_to proj
+R5983:5987 Theroies.Blockchain <> tx_to proj
+R6005:6013 Theroies.Blockchain <> tx_amount proj
+R6005:6013 Theroies.Blockchain <> tx_amount proj
+R6049:6055 Theroies.Blockchain <> tx_body proj
+R6049:6055 Theroies.Blockchain <> tx_body proj
+R5923:5933 Theroies.Blockchain <> call_origin proj
+R5912:5920 Theroies.InterContractCommunication <> call_info:56 var
+R5965:5973 Theroies.Blockchain <> call_from proj
+R5954:5962 Theroies.InterContractCommunication <> call_info:56 var
+R5992:5996 Theroies.InterContractCommunication <> caddr:55 var
+R6029:6039 Theroies.Blockchain <> call_amount proj
+R6018:6026 Theroies.InterContractCommunication <> call_info:56 var
+R6060:6063 Theroies.InterContractCommunication <> body:57 var
+def 6087:6110 <> tx_to_contract_call_info
+binder 6126:6126 <> X:58
+R6150:6161 Theroies.Serializable <> Serializable class
+R6163:6163 Theroies.InterContractCommunication <> X:58 var
+binder 6150:6163 <> H:59
+R6184:6185 Theroies.Blockchain <> Tx rec
+binder 6179:6180 <> tx:60
+R6202:6207 Coq.Init.Datatypes <> option ind
+R6210:6225 Theroies.Blockchain <> ContractCallInfo rec
+R6227:6227 Theroies.InterContractCommunication <> X:58 var
+R6247:6253 Theroies.Blockchain <> tx_body proj
+R6243:6244 Theroies.InterContractCommunication <> tx:60 var
+R6267:6273 Theroies.Blockchain <> tx_call constr
+R6275:6278 Coq.Init.Datatypes <> None constr
+R6283:6286 Coq.Init.Datatypes <> Some constr
+R6305:6315 Theroies.Blockchain <> call_origin proj
+R6305:6315 Theroies.Blockchain <> call_origin proj
+R6305:6315 Theroies.Blockchain <> call_origin proj
+R6344:6352 Theroies.Blockchain <> call_from proj
+R6344:6352 Theroies.Blockchain <> call_from proj
+R6379:6389 Theroies.Blockchain <> call_amount proj
+R6379:6389 Theroies.Blockchain <> call_amount proj
+R6418:6425 Theroies.Blockchain <> call_msg proj
+R6418:6425 Theroies.Blockchain <> call_msg proj
+R6324:6332 Theroies.Blockchain <> tx_origin proj
+R6320:6321 Theroies.InterContractCommunication <> tx:60 var
+R6361:6367 Theroies.Blockchain <> tx_from proj
+R6357:6358 Theroies.InterContractCommunication <> tx:60 var
+R6398:6406 Theroies.Blockchain <> tx_amount proj
+R6394:6395 Theroies.InterContractCommunication <> tx:60 var
+R6430:6433 Coq.Init.Datatypes <> None constr
+R6450:6456 Theroies.Blockchain <> tx_call constr
+R6459:6462 Coq.Init.Datatypes <> Some constr
+R6470:6473 Coq.Init.Datatypes <> Some constr
+R6492:6502 Theroies.Blockchain <> call_origin proj
+R6492:6502 Theroies.Blockchain <> call_origin proj
+R6492:6502 Theroies.Blockchain <> call_origin proj
+R6531:6539 Theroies.Blockchain <> call_from proj
+R6531:6539 Theroies.Blockchain <> call_from proj
+R6566:6576 Theroies.Blockchain <> call_amount proj
+R6566:6576 Theroies.Blockchain <> call_amount proj
+R6605:6612 Theroies.Blockchain <> call_msg proj
+R6605:6612 Theroies.Blockchain <> call_msg proj
+R6511:6519 Theroies.Blockchain <> tx_origin proj
+R6507:6508 Theroies.InterContractCommunication <> tx:60 var
+R6548:6554 Theroies.Blockchain <> tx_from proj
+R6544:6545 Theroies.InterContractCommunication <> tx:60 var
+R6585:6593 Theroies.Blockchain <> tx_amount proj
+R6581:6582 Theroies.InterContractCommunication <> tx:60 var
+R6618:6628 Theroies.Serializable <> deserialize meth
+R6630:6630 Theroies.InterContractCommunication <> X:58 var
+R6656:6659 Coq.Init.Datatypes <> None constr
+prf 6677:6684 <> some_inj
+binder 6687:6687 <> A:61
+R6697:6697 Theroies.InterContractCommunication <> A:61 var
+binder 6691:6691 <> x:62
+binder 6693:6693 <> y:63
+R6717:6720 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6708:6710 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6702:6705 Coq.Init.Datatypes <> Some constr
+R6707:6707 Theroies.InterContractCommunication <> x:62 var
+R6711:6714 Coq.Init.Datatypes <> Some constr
+R6716:6716 Theroies.InterContractCommunication <> y:63 var
+R6722:6724 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6721:6721 Theroies.InterContractCommunication <> x:62 var
+R6725:6725 Theroies.InterContractCommunication <> y:63 var
+prf 6768:6788 <> incomming_eq_outgoing
+binder 6799:6804 <> bstate:64
+binder 6806:6811 <> caddrA:65
+binder 6813:6818 <> caddrB:66
+R6841:6850 Theroies.Blockchain <> ChainTrace def
+R6852:6862 Theroies.Blockchain <> empty_state def
+R6864:6869 Theroies.InterContractCommunication <> bstate:64 var
+binder 6833:6837 <> trace:67
+binder 6885:6890 <> SetupA:68
+binder 6892:6895 <> MsgA:69
+binder 6897:6902 <> StateA:70
+binder 6904:6909 <> ErrorA:71
+binder 6932:6937 <> SetupB:72
+binder 6939:6942 <> MsgB:73
+binder 6944:6949 <> StateB:74
+binder 6951:6956 <> ErrorB:75
+R6980:6991 Theroies.Serializable <> Serializable class
+R6993:6998 Theroies.InterContractCommunication <> SetupA:68 var
+binder 6980:6998 <> H:76
+R7003:7014 Theroies.Serializable <> Serializable class
+R7016:7021 Theroies.InterContractCommunication <> SetupB:72 var
+binder 7003:7021 <> H0:77
+R7038:7049 Theroies.Serializable <> Serializable class
+R7051:7054 Theroies.InterContractCommunication <> MsgA:69 var
+binder 7038:7054 <> H1:78
+R7059:7070 Theroies.Serializable <> Serializable class
+R7072:7075 Theroies.InterContractCommunication <> MsgB:73 var
+binder 7059:7075 <> H2:79
+R7092:7103 Theroies.Serializable <> Serializable class
+R7105:7110 Theroies.InterContractCommunication <> StateA:70 var
+binder 7092:7110 <> H3:80
+R7115:7126 Theroies.Serializable <> Serializable class
+R7128:7133 Theroies.InterContractCommunication <> StateB:74 var
+binder 7115:7133 <> H4:81
+R7150:7161 Theroies.Serializable <> Serializable class
+R7163:7168 Theroies.InterContractCommunication <> ErrorA:71 var
+binder 7150:7168 <> H5:82
+R7173:7184 Theroies.Serializable <> Serializable class
+R7186:7191 Theroies.InterContractCommunication <> ErrorB:75 var
+binder 7173:7191 <> H6:83
+R7219:7226 Theroies.Blockchain <> Contract rec
+R7247:7252 Theroies.InterContractCommunication <> ErrorA:71 var
+R7240:7245 Theroies.InterContractCommunication <> StateA:70 var
+R7235:7238 Theroies.InterContractCommunication <> MsgA:69 var
+R7228:7233 Theroies.InterContractCommunication <> SetupA:68 var
+binder 7207:7215 <> contractA:84
+R7280:7287 Theroies.Blockchain <> Contract rec
+R7308:7313 Theroies.InterContractCommunication <> ErrorB:75 var
+R7301:7306 Theroies.InterContractCommunication <> StateB:74 var
+R7296:7299 Theroies.InterContractCommunication <> MsgB:73 var
+R7289:7294 Theroies.InterContractCommunication <> SetupB:72 var
+binder 7268:7276 <> contractB:85
+R7321:7321 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7384:7392 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 7329:7329 <> x:86
+R7336:7339 Theroies.InterContractCommunication <> MsgB:73 var
+binder 7332:7332 <> y:87
+R7365:7368 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7356:7358 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7343:7353 Theroies.Serializable <> deserialize meth
+R7355:7355 Theroies.InterContractCommunication <> x:86 var
+R7359:7362 Coq.Init.Datatypes <> Some constr
+R7364:7364 Theroies.InterContractCommunication <> y:87 var
+R7370:7372 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7369:7369 Theroies.InterContractCommunication <> x:86 var
+R7373:7381 Theroies.Serializable <> serialize meth
+R7383:7383 Theroies.InterContractCommunication <> y:87 var
+R7454:7461 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7420:7422 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7393:7405 Theroies.Blockchain <> env_contracts proj
+R7407:7412 Theroies.InterContractCommunication <> bstate:64 var
+R7414:7419 Theroies.InterContractCommunication <> caddrA:65 var
+R7423:7426 Coq.Init.Datatypes <> Some constr
+R7441:7452 Theroies.Blockchain <> WeakContract ind
+R7429:7437 Theroies.InterContractCommunication <> contractA:84 var
+R7523:7530 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7489:7491 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7462:7474 Theroies.Blockchain <> env_contracts proj
+R7476:7481 Theroies.InterContractCommunication <> bstate:64 var
+R7483:7488 Theroies.InterContractCommunication <> caddrB:66 var
+R7492:7495 Coq.Init.Datatypes <> Some constr
+R7510:7521 Theroies.Blockchain <> WeakContract ind
+R7498:7506 Theroies.InterContractCommunication <> contractB:85 var
+R7531:7537 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R7547:7554 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 7538:7546 <> inc_calls:88
+R7604:7613 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R7587:7589 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7555:7568 Theroies.Blockchain <> incoming_calls def
+R7581:7586 Theroies.InterContractCommunication <> caddrB:66 var
+R7575:7579 Theroies.InterContractCommunication <> trace:67 var
+R7570:7573 Theroies.InterContractCommunication <> MsgB:73 var
+R7590:7593 Coq.Init.Datatypes <> Some constr
+R7595:7603 Theroies.InterContractCommunication <> inc_calls:88 var
+R7614:7614 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7667:7676 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7615:7620 Coq.Lists.List <> filter def
+R7641:7652 Theroies.Blockchain <> outgoing_txs def
+R7660:7665 Theroies.InterContractCommunication <> caddrA:65 var
+R7654:7658 Theroies.InterContractCommunication <> trace:67 var
+R7623:7630 Theroies.InterContractCommunication <> txCallTo def
+R7632:7637 Theroies.InterContractCommunication <> caddrB:66 var
+R7677:7679 Coq.Lists.List <> map def
+R7716:7721 Coq.Lists.List <> filter def
+R7741:7749 Theroies.InterContractCommunication <> inc_calls:88 var
+R7724:7731 Theroies.InterContractCommunication <> callFrom def
+R7733:7738 Theroies.InterContractCommunication <> caddrA:65 var
+R7682:7705 Theroies.InterContractCommunication <> contract_call_info_to_tx def
+R7707:7712 Theroies.InterContractCommunication <> caddrB:66 var
+R7945:7952 Theroies.InterContractCommunication <> some_inj thm
+R7995:8002 Theroies.InterContractCommunication <> some_inj thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8143:8172 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R8229:8240 Theroies.Blockchain <> outgoing_txs def
+R8295:8332 Theroies.InterContractCommunication <> no_outgoing_txs_to_undeployed_contract thm
+R8399:8410 Theroies.Blockchain <> outgoing_txs def
+R8460:8501 Theroies.InterContractCommunication <> no_incoming_calls_from_undeployed_contract thm
+R8681:8682 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R7945:7952 Theroies.InterContractCommunication <> some_inj thm
+R7945:7952 Theroies.InterContractCommunication <> some_inj thm
+R7945:7952 Theroies.InterContractCommunication <> some_inj thm
+R7945:7952 Theroies.InterContractCommunication <> some_inj thm
+R7945:7952 Theroies.InterContractCommunication <> some_inj thm
+R7945:7952 Theroies.InterContractCommunication <> some_inj thm
+R7995:8002 Theroies.InterContractCommunication <> some_inj thm
+R7995:8002 Theroies.InterContractCommunication <> some_inj thm
+R7995:8002 Theroies.InterContractCommunication <> some_inj thm
+R7995:8002 Theroies.InterContractCommunication <> some_inj thm
+R7995:8002 Theroies.InterContractCommunication <> some_inj thm
+R7995:8002 Theroies.InterContractCommunication <> some_inj thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8081:8111 Theroies.Blockchain <> undeployed_contract_no_in_calls thm
+R8143:8172 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R8143:8172 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R8143:8172 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R8143:8172 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R8143:8172 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R8143:8172 Theroies.Blockchain <> undeployed_contract_no_out_txs thm
+R8295:8332 Theroies.InterContractCommunication <> no_outgoing_txs_to_undeployed_contract thm
+R8295:8332 Theroies.InterContractCommunication <> no_outgoing_txs_to_undeployed_contract thm
+R8295:8332 Theroies.InterContractCommunication <> no_outgoing_txs_to_undeployed_contract thm
+R8295:8332 Theroies.InterContractCommunication <> no_outgoing_txs_to_undeployed_contract thm
+R8295:8332 Theroies.InterContractCommunication <> no_outgoing_txs_to_undeployed_contract thm
+R8295:8332 Theroies.InterContractCommunication <> no_outgoing_txs_to_undeployed_contract thm
+R8460:8501 Theroies.InterContractCommunication <> no_incoming_calls_from_undeployed_contract thm
+R8460:8501 Theroies.InterContractCommunication <> no_incoming_calls_from_undeployed_contract thm
+R8460:8501 Theroies.InterContractCommunication <> no_incoming_calls_from_undeployed_contract thm
+R8460:8501 Theroies.InterContractCommunication <> no_incoming_calls_from_undeployed_contract thm
+R8681:8682 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R8681:8682 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R8837:8853 Theroies.Blockchain <> wc_receive_strong thm
+R8837:8853 Theroies.Blockchain <> wc_receive_strong thm
+R9254:9261 Theroies.InterContractCommunication <> callFrom def
+R9293:9307 Theroies.Blockchain <> address_eq_refl thm
+R9293:9307 Theroies.Blockchain <> address_eq_refl thm
+R9293:9307 Theroies.Blockchain <> address_eq_refl thm
+R9293:9307 Theroies.Blockchain <> address_eq_refl thm
+R9293:9307 Theroies.Blockchain <> address_eq_refl thm
+R9367:9390 Theroies.InterContractCommunication <> contract_call_info_to_tx def
+R9486:9493 Theroies.InterContractCommunication <> callFrom def
+R9525:9539 Theroies.Blockchain <> address_eq_refl thm
+R9525:9539 Theroies.Blockchain <> address_eq_refl thm
+R9525:9539 Theroies.Blockchain <> address_eq_refl thm
+R9525:9539 Theroies.Blockchain <> address_eq_refl thm
+R9525:9539 Theroies.Blockchain <> address_eq_refl thm
+R9698:9714 Theroies.Blockchain <> wc_receive_strong thm
+R9698:9714 Theroies.Blockchain <> wc_receive_strong thm
+R10114:10121 Theroies.InterContractCommunication <> callFrom def
+R10197:10209 Theroies.Blockchain <> address_eq_ne thm
+R10197:10209 Theroies.Blockchain <> address_eq_ne thm
+R10197:10209 Theroies.Blockchain <> address_eq_ne thm
+R10197:10209 Theroies.Blockchain <> address_eq_ne thm
+R10223:10248 Theroies.InterContractCommunication InterContractCommunication <> sec

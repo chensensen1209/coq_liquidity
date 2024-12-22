@@ -1,0 +1,24 @@
+DIGEST b85d433afe97933f336d8eae691e0f3f
+FTheroies.Finite
+R88:91 Coq.Lists.List <> <> lib
+R101:113 Coq.Lists.List ListNotations <> mod
+rec 123:128 <> Finite
+proj 165:172 <> elements
+proj 188:199 <> elements_set
+proj 223:234 <> elements_all
+binder 131:131 <> T:1
+R176:179 Coq.Init.Datatypes <> list ind
+R181:181 Theroies.Finite <> T:1 var
+R203:207 Coq.Lists.List <> NoDup ind
+R209:216 Theroies.Finite <> elements:3 meth
+R250:250 Theroies.Finite <> T:1 var
+binder 246:246 <> t:5
+R254:255 Coq.Lists.List <> In def
+R259:266 Theroies.Finite <> elements:3 meth
+R257:257 Theroies.Finite <> t:5 var
+R285:292 Theroies.Finite <> elements meth
+R285:292 Theroies.Finite <> elements meth
+R311:322 Theroies.Finite <> elements_set meth
+R311:322 Theroies.Finite <> elements_set meth
+R341:352 Theroies.Finite <> elements_all meth
+R341:352 Theroies.Finite <> elements_all meth

@@ -1,0 +1,1731 @@
+DIGEST 696346bcf744b2f70095379af64ce5ec
+FTheroies.Serializable
+R274:279 Theroies.Monads <> <> lib
+R297:307 Theroies.OptionMonad <> <> lib
+R325:334 Theroies.Containers <> <> lib
+R352:359 Theroies.BoundedN <> <> lib
+R386:390 Coq.Strings.Ascii <> <> lib
+R417:420 Coq.Lists.List <> <> lib
+R447:451 Coq.micromega.Psatz <> <> lib
+R478:483 Coq.Strings.String <> <> lib
+R510:515 Coq.ZArith.ZArith <> <> lib
+R526:538 Coq.Lists.List ListNotations <> mod
+ind 552:565 <> SerializedType
+constr 574:581 <> ser_unit
+constr 604:610 <> ser_int
+constr 633:640 <> ser_bool
+constr 663:670 <> ser_pair
+constr 729:736 <> ser_list
+R585:598 Theroies.Serializable <> SerializedType:1 ind
+R614:627 Theroies.Serializable <> SerializedType:1 ind
+R644:657 Theroies.Serializable <> SerializedType:1 ind
+R688:691 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R674:687 Theroies.Serializable <> SerializedType:1 ind
+R706:709 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R692:705 Theroies.Serializable <> SerializedType:1 ind
+R710:723 Theroies.Serializable <> SerializedType:1 ind
+R754:757 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R740:753 Theroies.Serializable <> SerializedType:1 ind
+R758:771 Theroies.Serializable <> SerializedType:1 ind
+mod 782:795 <> SerializedType
+R820:833 Theroies.Serializable <> SerializedType ind
+def 849:851 SerializedType eqb
+R856:873 Theroies.Serializable SerializedType SerializedType_beq scheme
+def 889:894 SerializedType eq_dec
+R899:919 Theroies.Serializable SerializedType SerializedType_eq_dec scheme
+def 934:941 SerializedType eqb_spec
+R950:963 Theroies.Serializable <> SerializedType ind
+binder 944:944 <> a:3
+binder 946:946 <> b:4
+R972:983 Coq.Bool.Bool <> reflect ind
+R987:989 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R986:986 Theroies.Serializable <> a:3 var
+R990:990 Theroies.Serializable <> b:4 var
+R994:996 Theroies.Serializable SerializedType eqb def
+R998:998 Theroies.Serializable <> a:3 var
+R1000:1000 Theroies.Serializable <> b:4 var
+R1290:1303 Theroies.Serializable SerializedType <> mod
+def 1316:1326 <> interp_type
+R1333:1346 Theroies.Serializable <> SerializedType ind
+binder 1329:1329 <> t:6
+R1367:1367 Theroies.Serializable <> t:6 var
+R1378:1385 Theroies.Serializable <> ser_unit constr
+R1390:1393 Coq.Init.Datatypes <> unit ind
+R1399:1405 Theroies.Serializable <> ser_int constr
+R1410:1410 Coq.Numbers.BinNums <> Z ind
+R1416:1423 Theroies.Serializable <> ser_bool constr
+R1428:1431 Coq.Init.Datatypes <> bool ind
+R1437:1444 Theroies.Serializable <> ser_pair constr
+R1466:1468 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1453:1463 Theroies.Serializable <> interp_type:7 def
+R1469:1479 Theroies.Serializable <> interp_type:7 def
+R1487:1494 Theroies.Serializable <> ser_list constr
+R1501:1504 Coq.Init.Datatypes <> list ind
+R1507:1517 Theroies.Serializable <> interp_type:7 def
+rec 1564:1578 <> SerializedValue
+proj 1607:1620 <> ser_value_type
+proj 1644:1652 <> ser_value
+R1624:1637 Theroies.Serializable <> SerializedType ind
+R1656:1666 Theroies.Serializable <> interp_type def
+R1668:1681 Theroies.Serializable <> ser_value_type:10 meth
+def 1730:1746 <> extract_ser_value
+R1753:1766 Theroies.Serializable <> SerializedType ind
+binder 1749:1749 <> t:12
+R1778:1792 Theroies.Serializable <> SerializedValue rec
+binder 1770:1774 <> value:13
+R1797:1802 Coq.Init.Datatypes <> option ind
+R1805:1815 Theroies.Serializable <> interp_type def
+R1817:1817 Theroies.Serializable <> t:12 var
+R1870:1890 Theroies.Serializable <> eq_dec def
+R1870:1890 Theroies.Serializable <> eq_dec def
+R1917:1920 Coq.Init.Datatypes <> Some constr
+R1917:1920 Coq.Init.Datatypes <> Some constr
+R1938:1941 Coq.Init.Datatypes <> None constr
+R1938:1941 Coq.Init.Datatypes <> None constr
+rec 2111:2122 <> Serializable
+proj 2166:2174 <> serialize
+proj 2205:2215 <> deserialize
+proj 2253:2273 <> deserialize_serialize
+binder 2125:2126 <> ty:14
+R2180:2183 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2178:2179 Theroies.Serializable <> ty:14 var
+R2184:2198 Theroies.Serializable <> SerializedValue rec
+R2234:2237 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2219:2233 Theroies.Serializable <> SerializedValue rec
+R2238:2243 Coq.Init.Datatypes <> option ind
+R2245:2246 Theroies.Serializable <> ty:14 var
+binder 2275:2275 <> x:18
+R2304:2306 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2279:2289 Theroies.Serializable <> deserialize:17 meth
+R2292:2300 Theroies.Serializable <> serialize:16 meth
+R2302:2302 Theroies.Serializable <> x:18 var
+R2307:2310 Coq.Init.Datatypes <> Some constr
+R2312:2312 Theroies.Serializable <> x:18 var
+R2334:2342 Theroies.Serializable <> serialize meth
+R2344:2354 Theroies.Serializable <> deserialize meth
+R2356:2376 Theroies.Serializable <> deserialize_serialize meth
+prf 2387:2405 <> serialize_injective
+binder 2408:2408 <> T:20
+R2420:2431 Theroies.Serializable <> Serializable class
+R2433:2433 Theroies.Serializable <> T:20 var
+binder 2420:2433 <> H:21
+binder 2436:2436 <> x:22
+binder 2438:2438 <> y:23
+R2469:2474 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2455:2457 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2444:2452 Theroies.Serializable <> serialize meth
+R2454:2454 Theroies.Serializable <> x:22 var
+R2458:2466 Theroies.Serializable <> serialize meth
+R2468:2468 Theroies.Serializable <> y:23 var
+R2476:2478 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2475:2475 Theroies.Serializable <> x:22 var
+R2479:2479 Theroies.Serializable <> y:23 var
+R2518:2520 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2512:2515 Coq.Init.Datatypes <> Some constr
+R2521:2524 Coq.Init.Datatypes <> Some constr
+R2518:2520 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2512:2515 Coq.Init.Datatypes <> Some constr
+R2521:2524 Coq.Init.Datatypes <> Some constr
+R2559:2579 Theroies.Serializable <> deserialize_serialize meth
+R2559:2579 Theroies.Serializable <> deserialize_serialize meth
+R2559:2579 Theroies.Serializable <> deserialize_serialize meth
+R2559:2579 Theroies.Serializable <> deserialize_serialize meth
+inst 2636:2652 <> unit_serializable
+R2656:2667 Theroies.Serializable <> Serializable class
+R2669:2672 Coq.Init.Datatypes <> unit ind
+R2682:2690 Theroies.Serializable <> serialize meth
+R2682:2690 Theroies.Serializable <> serialize meth
+R2682:2690 Theroies.Serializable <> serialize meth
+R2730:2740 Theroies.Serializable <> deserialize meth
+R2730:2740 Theroies.Serializable <> deserialize meth
+binder 2692:2692 <> u:24
+R2697:2711 Theroies.Serializable <> build_ser_value constr
+R2713:2720 Theroies.Serializable <> ser_unit constr
+R2722:2722 Theroies.Serializable <> u:24 var
+R2745:2761 Theroies.Serializable <> extract_ser_value def
+R2763:2770 Theroies.Serializable <> ser_unit constr
+inst 2841:2856 <> int_serializable
+R2860:2871 Theroies.Serializable <> Serializable class
+R2873:2873 Coq.Numbers.BinNums <> Z ind
+R2883:2891 Theroies.Serializable <> serialize meth
+R2883:2891 Theroies.Serializable <> serialize meth
+R2883:2891 Theroies.Serializable <> serialize meth
+R2930:2940 Theroies.Serializable <> deserialize meth
+R2930:2940 Theroies.Serializable <> deserialize meth
+binder 2893:2893 <> i:25
+R2898:2912 Theroies.Serializable <> build_ser_value constr
+R2914:2920 Theroies.Serializable <> ser_int constr
+R2922:2922 Theroies.Serializable <> i:25 var
+R2945:2961 Theroies.Serializable <> extract_ser_value def
+R2963:2969 Theroies.Serializable <> ser_int constr
+inst 3040:3056 <> bool_serializable
+R3060:3071 Theroies.Serializable <> Serializable class
+R3073:3076 Coq.Init.Datatypes <> bool ind
+R3086:3094 Theroies.Serializable <> serialize meth
+R3086:3094 Theroies.Serializable <> serialize meth
+R3086:3094 Theroies.Serializable <> serialize meth
+R3134:3144 Theroies.Serializable <> deserialize meth
+R3134:3144 Theroies.Serializable <> deserialize meth
+binder 3096:3096 <> b:26
+R3101:3115 Theroies.Serializable <> build_ser_value constr
+R3117:3124 Theroies.Serializable <> ser_bool constr
+R3126:3126 Theroies.Serializable <> b:26 var
+R3149:3165 Theroies.Serializable <> extract_ser_value def
+R3167:3174 Theroies.Serializable <> ser_bool constr
+inst 3245:3260 <> nat_serializable
+R3264:3275 Theroies.Serializable <> Serializable class
+R3277:3279 Coq.Init.Datatypes <> nat ind
+R3289:3297 Theroies.Serializable <> serialize meth
+R3289:3297 Theroies.Serializable <> serialize meth
+R3289:3297 Theroies.Serializable <> serialize meth
+R3333:3343 Theroies.Serializable <> deserialize meth
+R3333:3343 Theroies.Serializable <> deserialize meth
+binder 3299:3299 <> n:27
+R3304:3312 Theroies.Serializable <> serialize meth
+R3315:3322 Coq.ZArith.BinInt Z of_nat def
+R3324:3324 Theroies.Serializable <> n:27 var
+binder 3345:3345 <> z:28
+R3350:3352 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3355:3358 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3372:3373 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3359:3369 Theroies.Serializable <> deserialize meth
+R3371:3371 Theroies.Serializable <> z:28 var
+binder 3353:3354 <> z':29
+R3380:3383 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R3378:3379 Theroies.Serializable <> z':29 var
+R3404:3407 Coq.Init.Datatypes <> Some constr
+R3410:3417 Coq.ZArith.BinInt Z to_nat def
+R3419:3420 Theroies.Serializable <> z':29 var
+R3394:3397 Coq.Init.Datatypes <> None constr
+R3474:3494 Theroies.Serializable <> deserialize_serialize meth
+R3474:3494 Theroies.Serializable <> deserialize_serialize meth
+R3474:3494 Theroies.Serializable <> deserialize_serialize meth
+R3514:3521 Coq.ZArith.Znat Nat2Z id thm
+R3514:3521 Coq.ZArith.Znat Nat2Z id thm
+R3514:3521 Coq.ZArith.Znat Nat2Z id thm
+R3538:3552 Coq.ZArith.Znat Nat2Z is_nonneg thm
+R3538:3552 Coq.ZArith.Znat Nat2Z is_nonneg thm
+R3571:3578 Coq.ZArith.BinInt Z ltb_ge thm
+R3571:3578 Coq.ZArith.BinInt Z ltb_ge thm
+inst 3647:3660 <> N_serializable
+R3664:3675 Theroies.Serializable <> Serializable class
+R3677:3677 Coq.Numbers.BinNums <> N ind
+R3687:3695 Theroies.Serializable <> serialize meth
+R3687:3695 Theroies.Serializable <> serialize meth
+R3687:3695 Theroies.Serializable <> serialize meth
+R3729:3739 Theroies.Serializable <> deserialize meth
+R3729:3739 Theroies.Serializable <> deserialize meth
+binder 3697:3697 <> n:30
+R3702:3710 Theroies.Serializable <> serialize meth
+R3713:3718 Coq.ZArith.BinInt Z of_N def
+R3720:3720 Theroies.Serializable <> n:30 var
+binder 3741:3741 <> z:31
+R3746:3748 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3751:3754 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3768:3769 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R3755:3765 Theroies.Serializable <> deserialize meth
+R3767:3767 Theroies.Serializable <> z:31 var
+binder 3749:3750 <> z':32
+R3776:3779 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R3774:3775 Theroies.Serializable <> z':32 var
+R3800:3803 Coq.Init.Datatypes <> Some constr
+R3806:3811 Coq.ZArith.BinInt Z to_N def
+R3813:3814 Theroies.Serializable <> z':32 var
+R3790:3793 Coq.Init.Datatypes <> None constr
+R3868:3888 Theroies.Serializable <> deserialize_serialize meth
+R3868:3888 Theroies.Serializable <> deserialize_serialize meth
+R3868:3888 Theroies.Serializable <> deserialize_serialize meth
+R3908:3913 Coq.ZArith.Znat N2Z id thm
+R3908:3913 Coq.ZArith.Znat N2Z id thm
+R3908:3913 Coq.ZArith.Znat N2Z id thm
+R3930:3942 Coq.ZArith.Znat N2Z is_nonneg thm
+R3930:3942 Coq.ZArith.Znat N2Z is_nonneg thm
+R3961:3968 Coq.ZArith.BinInt Z ltb_ge thm
+R3961:3968 Coq.ZArith.BinInt Z ltb_ge thm
+inst 4037:4060 <> ser_positive_equivalence
+R4064:4075 Theroies.Serializable <> Serializable class
+R4077:4084 Coq.Numbers.BinNums <> positive ind
+R4094:4102 Theroies.Serializable <> serialize meth
+R4094:4102 Theroies.Serializable <> serialize meth
+R4094:4102 Theroies.Serializable <> serialize meth
+R4134:4144 Theroies.Serializable <> deserialize meth
+R4134:4144 Theroies.Serializable <> deserialize meth
+binder 4104:4104 <> p:33
+R4109:4117 Theroies.Serializable <> serialize meth
+R4120:4123 Coq.Numbers.BinNums <> Zpos constr
+R4125:4125 Theroies.Serializable <> p:33 var
+binder 4146:4146 <> z:34
+R4151:4153 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R4156:4159 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R4173:4174 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R4160:4170 Theroies.Serializable <> deserialize meth
+R4172:4172 Theroies.Serializable <> z:34 var
+binder 4154:4155 <> z':35
+R4180:4183 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R4184:4185 Theroies.Serializable <> z':35 var
+R4219:4222 Coq.Init.Datatypes <> None constr
+R4195:4198 Coq.Init.Datatypes <> Some constr
+R4201:4208 Coq.ZArith.BinInt Z to_pos def
+R4210:4211 Theroies.Serializable <> z':35 var
+inst 4286:4306 <> ser_value_equivalence
+R4310:4321 Theroies.Serializable <> Serializable class
+R4323:4337 Theroies.Serializable <> SerializedValue rec
+R4347:4355 Theroies.Serializable <> serialize meth
+R4347:4355 Theroies.Serializable <> serialize meth
+R4347:4355 Theroies.Serializable <> serialize meth
+R4370:4380 Theroies.Serializable <> deserialize meth
+R4370:4380 Theroies.Serializable <> deserialize meth
+binder 4357:4357 <> v:36
+R4362:4362 Theroies.Serializable <> v:36 var
+binder 4382:4382 <> v:37
+R4387:4390 Coq.Init.Datatypes <> Some constr
+R4392:4392 Theroies.Serializable <> v:37 var
+inst 4463:4482 <> BoundedN_equivalence
+R4493:4493 Coq.Numbers.BinNums <> N ind
+binder 4485:4489 <> bound:38
+R4498:4509 Theroies.Serializable <> Serializable class
+R4512:4519 Theroies.BoundedN <> BoundedN ind
+R4521:4525 Theroies.Serializable <> bound:38 var
+R4536:4544 Theroies.Serializable <> serialize meth
+R4536:4544 Theroies.Serializable <> serialize meth
+R4536:4544 Theroies.Serializable <> serialize meth
+R4589:4599 Theroies.Serializable <> deserialize meth
+R4589:4599 Theroies.Serializable <> deserialize meth
+binder 4546:4547 <> bn:39
+R4552:4560 Theroies.Serializable <> serialize meth
+R4563:4578 stdpp.countable <> encode meth
+R4580:4581 Theroies.Serializable <> bn:39 var
+binder 4601:4601 <> v:40
+R4612:4614 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R4616:4620 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R4652:4660 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R4637:4642 Coq.Init.Datatypes <> option ind
+R4644:4651 Coq.Numbers.BinNums <> positive ind
+R4621:4631 Theroies.Serializable <> deserialize meth
+R4633:4633 Theroies.Serializable <> v:40 var
+binder 4615:4615 <> p:41
+R4661:4676 stdpp.countable <> decode meth
+R4678:4678 Theroies.Serializable <> p:41 var
+R4736:4756 Theroies.Serializable <> deserialize_serialize meth
+R4736:4756 Theroies.Serializable <> deserialize_serialize meth
+R4736:4756 Theroies.Serializable <> deserialize_serialize meth
+R4780:4802 stdpp.countable <> decode_encode meth
+R4780:4802 stdpp.countable <> decode_encode meth
+R4780:4802 stdpp.countable <> decode_encode meth
+sec 4927:4929 <> Sum
+R4944:4955 Theroies.Serializable <> Serializable class
+binder 4957:4957 <> A:42
+binder 4944:4957 <> H:43
+R4962:4973 Theroies.Serializable <> Serializable class
+binder 4975:4975 <> B:44
+binder 4962:4975 <> H0:45
+def 4993:5005 <> serialize_sum
+R5013:5015 Coq.Init.Datatypes <> ::type_scope:x_'+'_x not
+R5012:5012 Theroies.Serializable <> Sum.A var
+R5016:5016 Theroies.Serializable <> Sum.B var
+binder 5008:5008 <> v:46
+R5062:5062 Theroies.Serializable <> v:46 var
+R5079:5081 Coq.Init.Datatypes <> inl constr
+R5088:5088 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5093:5094 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5106:5106 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5089:5092 Coq.Init.Datatypes <> true constr
+R5095:5103 Theroies.Serializable <> serialize meth
+R5118:5120 Coq.Init.Datatypes <> inr constr
+R5127:5127 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5133:5134 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5146:5146 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5128:5132 Coq.Init.Datatypes <> false constr
+R5135:5143 Theroies.Serializable <> serialize meth
+binder 5031:5037 <> is_left:48
+binder 5040:5042 <> ser:49
+R5167:5181 Theroies.Serializable <> build_ser_value constr
+R5184:5191 Theroies.Serializable <> ser_pair constr
+R5193:5200 Theroies.Serializable <> ser_bool constr
+R5207:5220 Theroies.Serializable <> ser_value_type proj
+R5202:5204 Theroies.Serializable <> ser:49 var
+R5224:5224 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5232:5233 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5249:5249 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5225:5231 Theroies.Serializable <> is_left:48 var
+R5239:5247 Theroies.Serializable <> ser_value proj
+R5234:5236 Theroies.Serializable <> ser:49 var
+def 5266:5280 <> deserialize_sum
+R5289:5303 Theroies.Serializable <> SerializedValue rec
+binder 5283:5285 <> val:50
+R5308:5313 Coq.Init.Datatypes <> option ind
+R5317:5319 Coq.Init.Datatypes <> ::type_scope:x_'+'_x not
+R5316:5316 Theroies.Serializable <> Sum.A var
+R5320:5320 Theroies.Serializable <> Sum.B var
+R5336:5338 Theroies.Serializable <> val:50 var
+R5351:5365 Theroies.Serializable <> build_ser_value constr
+R5389:5389 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5397:5398 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5402:5402 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5368:5375 Theroies.Serializable <> ser_pair constr
+R5377:5384 Theroies.Serializable <> ser_bool constr
+R5533:5535 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R5537:5540 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R5587:5596 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R5579:5584 Coq.Init.Datatypes <> option ind
+R5586:5586 Theroies.Serializable <> Sum.B var
+R5541:5551 Theroies.Serializable <> deserialize meth
+R5554:5568 Theroies.Serializable <> build_ser_value constr
+R5572:5574 Theroies.Serializable <> val:50 var
+binder 5536:5536 <> b:52
+R5597:5600 Coq.Init.Datatypes <> Some constr
+R5603:5605 Coq.Init.Datatypes <> inr constr
+R5607:5607 Theroies.Serializable <> b:52 var
+R5437:5439 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R5441:5444 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R5491:5500 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R5483:5488 Coq.Init.Datatypes <> option ind
+R5490:5490 Theroies.Serializable <> Sum.A var
+R5445:5455 Theroies.Serializable <> deserialize meth
+R5458:5472 Theroies.Serializable <> build_ser_value constr
+R5476:5478 Theroies.Serializable <> val:50 var
+binder 5440:5440 <> a:53
+R5501:5504 Coq.Init.Datatypes <> Some constr
+R5507:5509 Coq.Init.Datatypes <> inl constr
+R5511:5511 Theroies.Serializable <> a:53 var
+R5621:5624 Coq.Init.Datatypes <> None constr
+prf 5644:5668 <> deserialize_serialize_sum
+R5676:5678 Coq.Init.Datatypes <> ::type_scope:x_'+'_x not
+R5675:5675 Theroies.Serializable <> Sum.A var
+R5679:5679 Theroies.Serializable <> Sum.B var
+binder 5671:5671 <> s:54
+R5721:5723 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5688:5702 Theroies.Serializable <> deserialize_sum def
+R5705:5717 Theroies.Serializable <> serialize_sum def
+R5719:5719 Theroies.Serializable <> s:54 var
+R5724:5727 Coq.Init.Datatypes <> Some constr
+R5729:5729 Theroies.Serializable <> s:54 var
+R5752:5764 Theroies.Serializable <> serialize_sum def
+R5767:5781 Theroies.Serializable <> deserialize_sum def
+R5824:5844 Theroies.Serializable <> deserialize_serialize meth
+R5824:5844 Theroies.Serializable <> deserialize_serialize meth
+R5824:5844 Theroies.Serializable <> deserialize_serialize meth
+R5824:5844 Theroies.Serializable <> deserialize_serialize meth
+R5824:5844 Theroies.Serializable <> deserialize_serialize meth
+inst 5886:5901 <> sum_serializable
+R5905:5916 Theroies.Serializable <> Serializable class
+R5920:5922 Coq.Init.Datatypes <> ::type_scope:x_'+'_x not
+R5919:5919 Theroies.Serializable <> Sum.A var
+R5923:5923 Theroies.Serializable <> Sum.B var
+R5936:5944 Theroies.Serializable <> serialize meth
+R5936:5944 Theroies.Serializable <> serialize meth
+R5936:5944 Theroies.Serializable <> serialize meth
+R5971:5981 Theroies.Serializable <> deserialize meth
+R5971:5981 Theroies.Serializable <> deserialize meth
+R6010:6030 Theroies.Serializable <> deserialize_serialize meth
+R6010:6030 Theroies.Serializable <> deserialize_serialize meth
+R5949:5961 Theroies.Serializable <> serialize_sum def
+R5986:6000 Theroies.Serializable <> deserialize_sum def
+R6035:6059 Theroies.Serializable <> deserialize_serialize_sum thm
+R6070:6072 Theroies.Serializable Sum <> sec
+sec 6084:6090 <> Product
+R6105:6116 Theroies.Serializable <> Serializable class
+binder 6118:6118 <> A:55
+binder 6105:6118 <> H:56
+R6123:6134 Theroies.Serializable <> Serializable class
+binder 6136:6136 <> B:57
+binder 6123:6136 <> H0:58
+def 6154:6170 <> serialize_product
+R6181:6183 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R6180:6180 Theroies.Serializable <> Product.A var
+R6184:6184 Theroies.Serializable <> Product.B var
+binder 6173:6176 <> pair:59
+R6189:6203 Theroies.Serializable <> SerializedValue rec
+R6226:6229 Theroies.Serializable <> pair:59 var
+binder 6217:6217 <> a:60
+binder 6220:6220 <> b:61
+R6259:6267 Theroies.Serializable <> serialize meth
+R6269:6269 Theroies.Serializable <> a:60 var
+binder 6243:6246 <> a_ty:62
+binder 6249:6253 <> a_val:63
+R6299:6307 Theroies.Serializable <> serialize meth
+R6309:6309 Theroies.Serializable <> b:61 var
+binder 6283:6286 <> b_ty:64
+binder 6289:6293 <> b_val:65
+R6318:6332 Theroies.Serializable <> build_ser_value constr
+R6335:6342 Theroies.Serializable <> ser_pair constr
+R6344:6347 Theroies.Serializable <> a_ty:62 var
+R6349:6352 Theroies.Serializable <> b_ty:64 var
+R6355:6355 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6361:6362 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6368:6368 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6356:6360 Theroies.Serializable <> a_val:63 var
+R6363:6367 Theroies.Serializable <> b_val:65 var
+def 6385:6403 <> deserialize_product
+R6412:6426 Theroies.Serializable <> SerializedValue rec
+binder 6406:6408 <> val:66
+R6431:6436 Coq.Init.Datatypes <> option ind
+R6440:6442 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R6439:6439 Theroies.Serializable <> Product.A var
+R6443:6443 Theroies.Serializable <> Product.B var
+R6459:6461 Theroies.Serializable <> val:66 var
+R6474:6488 Theroies.Serializable <> build_ser_value constr
+R6511:6511 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6517:6518 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6524:6524 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6491:6498 Theroies.Serializable <> ser_pair constr
+R6535:6537 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R6539:6542 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R6594:6601 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R6586:6591 Coq.Init.Datatypes <> option ind
+R6593:6593 Theroies.Serializable <> Product.A var
+R6543:6553 Theroies.Serializable <> deserialize meth
+R6556:6570 Theroies.Serializable <> build_ser_value constr
+binder 6538:6538 <> a:68
+R6602:6604 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R6606:6609 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R6661:6668 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R6653:6658 Coq.Init.Datatypes <> option ind
+R6660:6660 Theroies.Serializable <> Product.B var
+R6610:6620 Theroies.Serializable <> deserialize meth
+R6623:6637 Theroies.Serializable <> build_ser_value constr
+binder 6605:6605 <> b:69
+R6669:6672 Coq.Init.Datatypes <> Some constr
+R6674:6674 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6676:6677 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6679:6679 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6675:6675 Theroies.Serializable <> a:68 var
+R6678:6678 Theroies.Serializable <> b:69 var
+R6692:6695 Coq.Init.Datatypes <> None constr
+prf 6715:6743 <> deserialize_serialize_product
+R6751:6753 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R6750:6750 Theroies.Serializable <> Product.A var
+R6754:6754 Theroies.Serializable <> Product.B var
+binder 6746:6746 <> p:70
+R6808:6810 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6767:6785 Theroies.Serializable <> deserialize_product def
+R6788:6804 Theroies.Serializable <> serialize_product def
+R6806:6806 Theroies.Serializable <> p:70 var
+R6811:6814 Coq.Init.Datatypes <> Some constr
+R6816:6816 Theroies.Serializable <> p:70 var
+R6839:6855 Theroies.Serializable <> serialize_product def
+R6858:6876 Theroies.Serializable <> deserialize_product def
+R6914:6934 Theroies.Serializable <> deserialize_serialize meth
+R6914:6934 Theroies.Serializable <> deserialize_serialize meth
+R6914:6934 Theroies.Serializable <> deserialize_serialize meth
+R6914:6934 Theroies.Serializable <> deserialize_serialize meth
+R6914:6934 Theroies.Serializable <> deserialize_serialize meth
+R6914:6934 Theroies.Serializable <> deserialize_serialize meth
+inst 6980:6999 <> product_serializable
+R7003:7014 Theroies.Serializable <> Serializable class
+R7018:7020 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R7017:7017 Theroies.Serializable <> Product.A var
+R7021:7021 Theroies.Serializable <> Product.B var
+R7034:7042 Theroies.Serializable <> serialize meth
+R7034:7042 Theroies.Serializable <> serialize meth
+R7034:7042 Theroies.Serializable <> serialize meth
+R7073:7083 Theroies.Serializable <> deserialize meth
+R7073:7083 Theroies.Serializable <> deserialize meth
+R7116:7136 Theroies.Serializable <> deserialize_serialize meth
+R7116:7136 Theroies.Serializable <> deserialize_serialize meth
+R7047:7063 Theroies.Serializable <> serialize_product def
+R7088:7106 Theroies.Serializable <> deserialize_product def
+R7141:7169 Theroies.Serializable <> deserialize_serialize_product thm
+R7180:7186 Theroies.Serializable Product <> sec
+sec 7198:7201 <> List
+R7216:7227 Theroies.Serializable <> Serializable class
+binder 7229:7229 <> A:71
+binder 7216:7229 <> H:72
+def 7247:7260 <> serialize_list
+R7267:7270 Coq.Init.Datatypes <> list ind
+R7272:7272 Theroies.Serializable <> List.A var
+binder 7263:7263 <> l:73
+R7277:7291 Theroies.Serializable <> SerializedValue rec
+binder 7307:7307 <> a:74
+R7316:7330 Theroies.Serializable <> SerializedValue rec
+binder 7310:7312 <> acc:75
+R7365:7373 Theroies.Serializable <> serialize meth
+R7375:7375 Theroies.Serializable <> a:74 var
+binder 7349:7352 <> a_ty:76
+binder 7355:7359 <> a_val:77
+R7413:7415 Theroies.Serializable <> acc:75 var
+binder 7393:7398 <> acc_ty:78
+binder 7401:7407 <> acc_val:79
+R7428:7442 Theroies.Serializable <> build_ser_value constr
+R7445:7452 Theroies.Serializable <> ser_pair constr
+R7454:7457 Theroies.Serializable <> a_ty:76 var
+R7459:7464 Theroies.Serializable <> acc_ty:78 var
+R7467:7467 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7473:7474 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7482:7482 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7468:7472 Theroies.Serializable <> a_val:77 var
+R7475:7481 Theroies.Serializable <> acc_val:79 var
+binder 7304:7305 <> go:80
+R7491:7500 Coq.Lists.List <> fold_right def
+R7535:7535 Theroies.Serializable <> l:73 var
+R7506:7520 Theroies.Serializable <> build_ser_value constr
+R7522:7529 Theroies.Serializable <> ser_unit constr
+R7531:7532 Coq.Init.Datatypes <> tt constr
+R7502:7503 Theroies.Serializable <> go:80 var
+def 7552:7567 <> deserialize_list
+R7576:7590 Theroies.Serializable <> SerializedValue rec
+binder 7570:7572 <> val:81
+R7595:7600 Coq.Init.Datatypes <> option ind
+R7603:7606 Coq.Init.Datatypes <> list ind
+R7608:7608 Theroies.Serializable <> List.A var
+R7636:7649 Theroies.Serializable <> SerializedType ind
+binder 7631:7632 <> ty:82
+R7659:7669 Theroies.Serializable <> interp_type def
+R7671:7672 Theroies.Serializable <> ty:82 var
+binder 7653:7655 <> val:83
+R7677:7682 Coq.Init.Datatypes <> option ind
+R7685:7688 Coq.Init.Datatypes <> list ind
+R7690:7690 Theroies.Serializable <> List.A var
+R7714:7716 Theroies.Serializable <> val:83 var
+R7710:7711 Theroies.Serializable <> ty:82 var
+R7733:7740 Theroies.Serializable <> ser_pair constr
+R7755:7755 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7762:7763 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7770:7770 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R7785:7787 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R7790:7793 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R7836:7847 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R7794:7804 Theroies.Serializable <> deserialize meth
+R7807:7821 Theroies.Serializable <> build_ser_value constr
+binder 7788:7789 <> hd:87
+R7848:7850 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R7853:7856 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R7873:7884 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R7857:7859 Theroies.Serializable <> aux:84 var
+binder 7851:7852 <> tl:88
+R7885:7888 Coq.Init.Datatypes <> Some constr
+R7893:7896 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R7891:7892 Theroies.Serializable <> hd:87 var
+R7897:7898 Theroies.Serializable <> tl:88 var
+R7911:7918 Theroies.Serializable <> ser_unit constr
+R7926:7929 Coq.Init.Datatypes <> Some constr
+R7931:7932 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R7952:7955 Coq.Init.Datatypes <> None constr
+binder 7626:7628 <> aux:89
+R7994:7996 Theroies.Serializable <> val:81 var
+binder 7981:7982 <> ty:90
+binder 7985:7988 <> uval:91
+R8005:8007 Theroies.Serializable <> aux:89 var
+R8012:8015 Theroies.Serializable <> uval:91 var
+R8009:8010 Theroies.Serializable <> ty:90 var
+prf 8027:8052 <> deserialize_serialize_list
+R8059:8062 Coq.Init.Datatypes <> list ind
+R8064:8064 Theroies.Serializable <> List.A var
+binder 8055:8055 <> l:92
+R8112:8114 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8077:8092 Theroies.Serializable <> deserialize_list def
+R8095:8108 Theroies.Serializable <> serialize_list def
+R8110:8110 Theroies.Serializable <> l:92 var
+R8115:8118 Coq.Init.Datatypes <> Some constr
+R8120:8120 Theroies.Serializable <> l:92 var
+R8143:8156 Theroies.Serializable <> serialize_list def
+R8159:8174 Theroies.Serializable <> deserialize_list def
+R8290:8310 Theroies.Serializable <> deserialize_serialize meth
+R8290:8310 Theroies.Serializable <> deserialize_serialize meth
+R8290:8310 Theroies.Serializable <> deserialize_serialize meth
+inst 8358:8374 <> list_serializable
+R8378:8389 Theroies.Serializable <> Serializable class
+R8392:8395 Coq.Init.Datatypes <> list ind
+R8397:8397 Theroies.Serializable <> List.A var
+R8410:8418 Theroies.Serializable <> serialize meth
+R8410:8418 Theroies.Serializable <> serialize meth
+R8410:8418 Theroies.Serializable <> serialize meth
+R8446:8456 Theroies.Serializable <> deserialize meth
+R8446:8456 Theroies.Serializable <> deserialize meth
+R8486:8506 Theroies.Serializable <> deserialize_serialize meth
+R8486:8506 Theroies.Serializable <> deserialize_serialize meth
+R8423:8436 Theroies.Serializable <> serialize_list def
+R8461:8476 Theroies.Serializable <> deserialize_list def
+R8511:8536 Theroies.Serializable <> deserialize_serialize_list thm
+R8547:8550 Theroies.Serializable List <> sec
+inst 8581:8596 <> map_serializable
+R8608:8619 Theroies.Serializable <> Serializable class
+binder 8621:8621 <> A:93
+binder 8608:8621 <> H:94
+R8634:8652 stdpp.countable <> Countable class
+R8654:8654 Theroies.Serializable <> A:93 var
+binder 8634:8654 <> H0:96
+R8667:8678 Theroies.Serializable <> Serializable class
+binder 8680:8680 <> B:97
+binder 8667:8680 <> H1:98
+R8687:8698 Theroies.Serializable <> Serializable class
+R8701:8704 Theroies.Containers <> FMap abbrev
+R8708:8708 Theroies.Serializable <> B:97 var
+R8706:8706 Theroies.Serializable <> A:93 var
+R8719:8727 Theroies.Serializable <> serialize meth
+R8719:8727 Theroies.Serializable <> serialize meth
+R8719:8727 Theroies.Serializable <> serialize meth
+R8777:8787 Theroies.Serializable <> deserialize meth
+R8777:8787 Theroies.Serializable <> deserialize meth
+binder 8729:8729 <> m:99
+R8734:8742 Theroies.Serializable <> serialize meth
+R8746:8758 Theroies.Containers FMap elements abbrev
+R8768:8768 Theroies.Serializable <> m:99 var
+binder 8789:8791 <> val:100
+R8803:8805 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R8811:8814 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R8854:8862 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R8833:8838 Coq.Init.Datatypes <> option ind
+R8841:8844 Coq.Init.Datatypes <> list ind
+R8848:8850 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R8815:8825 Theroies.Serializable <> deserialize meth
+R8827:8829 Theroies.Serializable <> val:100 var
+binder 8806:8810 <> elems:101
+R8863:8866 Coq.Init.Datatypes <> Some constr
+R8869:8880 Theroies.Containers FMap of_list abbrev
+R8882:8886 Theroies.Serializable <> elems:101 var
+R8938:8958 Theroies.Serializable <> deserialize_serialize meth
+R8938:8958 Theroies.Serializable <> deserialize_serialize meth
+R8938:8958 Theroies.Serializable <> deserialize_serialize meth
+R8978:8996 Theroies.Containers FMap of_elements_eq thm
+R8978:8996 Theroies.Containers FMap of_elements_eq thm
+R8978:8996 Theroies.Containers FMap of_elements_eq thm
+inst 9047:9062 <> set_serializable
+R9074:9085 Theroies.Serializable <> Serializable class
+binder 9087:9087 <> A:102
+binder 9074:9087 <> H:103
+R9100:9118 stdpp.countable <> Countable class
+R9120:9120 Theroies.Serializable <> A:102 var
+binder 9100:9120 <> H0:105
+R9127:9138 Theroies.Serializable <> Serializable class
+R9141:9144 Theroies.Containers <> FMap abbrev
+R9148:9151 Coq.Init.Datatypes <> unit ind
+R9146:9146 Theroies.Serializable <> A:102 var
+R9162:9170 Theroies.Serializable <> serialize meth
+R9162:9170 Theroies.Serializable <> serialize meth
+R9162:9170 Theroies.Serializable <> serialize meth
+R9223:9233 Theroies.Serializable <> deserialize meth
+R9223:9233 Theroies.Serializable <> deserialize meth
+binder 9172:9172 <> s:106
+R9177:9185 Theroies.Serializable <> serialize meth
+R9189:9201 Theroies.Containers FMap elements abbrev
+R9205:9208 Coq.Init.Datatypes <> unit ind
+R9214:9214 Theroies.Serializable <> s:106 var
+binder 9235:9237 <> val:107
+R9249:9251 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R9257:9260 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R9303:9311 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R9279:9284 Coq.Init.Datatypes <> option ind
+R9287:9290 Coq.Init.Datatypes <> list ind
+R9294:9296 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R9297:9300 Coq.Init.Datatypes <> unit ind
+R9261:9271 Theroies.Serializable <> deserialize meth
+R9273:9275 Theroies.Serializable <> val:107 var
+binder 9252:9256 <> elems:108
+R9312:9315 Coq.Init.Datatypes <> Some constr
+R9318:9329 Theroies.Containers FMap of_list abbrev
+R9331:9335 Theroies.Serializable <> elems:108 var
+R9387:9407 Theroies.Serializable <> deserialize_serialize meth
+R9387:9407 Theroies.Serializable <> deserialize_serialize meth
+R9387:9407 Theroies.Serializable <> deserialize_serialize meth
+R9427:9445 Theroies.Containers FMap of_elements_eq thm
+R9427:9445 Theroies.Containers FMap of_elements_eq thm
+R9427:9445 Theroies.Containers FMap of_elements_eq thm
+inst 9496:9514 <> option_serializable
+R9518:9529 Theroies.Serializable <> Serializable class
+binder 9531:9531 <> A:109
+binder 9518:9531 <> H:110
+R9536:9547 Theroies.Serializable <> Serializable class
+R9550:9555 Coq.Init.Datatypes <> option ind
+R9557:9557 Theroies.Serializable <> A:109 var
+R9568:9576 Theroies.Serializable <> serialize meth
+R9568:9576 Theroies.Serializable <> serialize meth
+R9568:9576 Theroies.Serializable <> serialize meth
+R9739:9749 Theroies.Serializable <> deserialize meth
+R9739:9749 Theroies.Serializable <> deserialize meth
+binder 9578:9578 <> s:111
+R9583:9591 Theroies.Serializable <> serialize meth
+R9621:9621 Theroies.Serializable <> s:111 var
+R9652:9655 Coq.Init.Datatypes <> None constr
+R9660:9662 Coq.Init.Datatypes <> inl constr
+R9664:9665 Coq.Init.Datatypes <> tt constr
+R9691:9694 Coq.Init.Datatypes <> Some constr
+R9701:9703 Coq.Init.Datatypes <> inr constr
+R9705:9705 Theroies.Serializable <> s:111 var
+binder 9751:9751 <> s:113
+R9756:9758 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R9760:9763 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R9777:9800 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R9764:9774 Theroies.Serializable <> deserialize meth
+R9776:9776 Theroies.Serializable <> s:113 var
+binder 9759:9759 <> s:114
+R9815:9817 Coq.Init.Datatypes <> ::type_scope:x_'+'_x not
+R9811:9814 Coq.Init.Datatypes <> unit ind
+R9807:9807 Theroies.Serializable <> s:114 var
+R9849:9851 Coq.Init.Datatypes <> inl constr
+R9858:9861 Coq.Init.Datatypes <> Some constr
+R9863:9866 Coq.Init.Datatypes <> None constr
+R9892:9894 Coq.Init.Datatypes <> inr constr
+R9901:9904 Coq.Init.Datatypes <> Some constr
+R9907:9910 Coq.Init.Datatypes <> Some constr
+R9912:9912 Theroies.Serializable <> s:114 var
+R9990:10010 Theroies.Serializable <> deserialize_serialize meth
+R9990:10010 Theroies.Serializable <> deserialize_serialize meth
+R9990:10010 Theroies.Serializable <> deserialize_serialize meth
+inst 10073:10090 <> ascii_serializable
+R10094:10105 Theroies.Serializable <> Serializable class
+R10107:10111 Coq.Strings.Ascii <> ascii ind
+R10121:10129 Theroies.Serializable <> serialize meth
+R10121:10129 Theroies.Serializable <> serialize meth
+R10121:10129 Theroies.Serializable <> serialize meth
+R10173:10183 Theroies.Serializable <> deserialize meth
+R10173:10183 Theroies.Serializable <> deserialize meth
+binder 10131:10131 <> a:115
+R10136:10144 Theroies.Serializable <> serialize meth
+R10147:10162 Coq.Strings.Ascii <> N_of_ascii def
+R10164:10164 Theroies.Serializable <> a:115 var
+binder 10185:10185 <> p:116
+R10190:10192 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R10194:10197 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R10211:10234 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R10198:10208 Theroies.Serializable <> deserialize meth
+R10210:10210 Theroies.Serializable <> p:116 var
+binder 10193:10193 <> p:117
+R10240:10243 Coq.NArith.BinNat <> ::N_scope:x_'<?'_x not
+R10239:10239 Theroies.Serializable <> p:117 var
+R10309:10312 Coq.Init.Datatypes <> None constr
+R10256:10259 Coq.Init.Datatypes <> Some constr
+R10262:10277 Coq.Strings.Ascii <> ascii_of_N def
+R10279:10279 Theroies.Serializable <> p:117 var
+R10363:10383 Theroies.Serializable <> deserialize_serialize meth
+R10363:10383 Theroies.Serializable <> deserialize_serialize meth
+R10363:10383 Theroies.Serializable <> deserialize_serialize meth
+R10400:10414 Coq.Strings.Ascii <> N_ascii_bounded thm
+R10400:10414 Coq.Strings.Ascii <> N_ascii_bounded thm
+R10433:10440 Coq.NArith.BinNat N ltb_lt thm
+R10433:10440 Coq.NArith.BinNat N ltb_lt thm
+R10469:10475 Coq.Init.Logic <> f_equal thm
+R10469:10475 Coq.Init.Logic <> f_equal thm
+R10486:10502 Coq.Strings.Ascii <> ascii_N_embedding thm
+R10486:10502 Coq.Strings.Ascii <> ascii_N_embedding thm
+inst 10538:10556 <> string_serializable
+R10560:10571 Theroies.Serializable <> Serializable class
+R10573:10578 Coq.Strings.String <> string ind
+R10588:10596 Theroies.Serializable <> serialize meth
+R10588:10596 Theroies.Serializable <> serialize meth
+R10588:10596 Theroies.Serializable <> serialize meth
+R10644:10654 Theroies.Serializable <> deserialize meth
+R10644:10654 Theroies.Serializable <> deserialize meth
+binder 10598:10598 <> s:118
+R10603:10611 Theroies.Serializable <> serialize meth
+R10614:10633 Coq.Strings.String <> list_ascii_of_string def
+R10635:10635 Theroies.Serializable <> s:118 var
+binder 10656:10656 <> p:119
+R10661:10663 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R10666:10669 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R10683:10706 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R10670:10680 Theroies.Serializable <> deserialize meth
+R10682:10682 Theroies.Serializable <> p:119 var
+binder 10664:10665 <> la:120
+R10707:10710 Coq.Init.Datatypes <> Some constr
+R10713:10732 Coq.Strings.String <> string_of_list_ascii def
+R10734:10735 Theroies.Serializable <> la:120 var
+R10787:10807 Theroies.Serializable <> deserialize_serialize meth
+R10787:10807 Theroies.Serializable <> deserialize_serialize meth
+R10787:10807 Theroies.Serializable <> deserialize_serialize meth
+R10818:10824 Coq.Init.Logic <> f_equal thm
+R10818:10824 Coq.Init.Logic <> f_equal thm
+R10835:10864 Coq.Strings.String <> string_of_list_ascii_of_string thm
+R10835:10864 Coq.Strings.String <> string_of_list_ascii_of_string thm
+R10928:10931 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10928:10931 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11131:11145 Theroies.Serializable <> SerializedValue rec
+R11131:11145 Theroies.Serializable <> SerializedValue rec
+R11186:11189 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11171:11185 Theroies.Serializable <> SerializedValue rec
+R11190:11204 Theroies.Serializable <> SerializedValue rec
+binder 11167:11167 <> f:121
+R11210:11210 Theroies.Serializable <> f:121 var
+R11213:11221 Theroies.Serializable <> serialize meth
+R11223:11224 Coq.Init.Datatypes <> tt constr
+R11018:11021 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11003:11017 Theroies.Serializable <> SerializedValue rec
+R11022:11036 Theroies.Serializable <> SerializedValue rec
+binder 10999:10999 <> f:122
+binder 11040:11040 <> v:123
+R11082:11096 Theroies.Serializable <> SerializedValue rec
+binder 11076:11078 <> cur:124
+R11102:11102 Theroies.Serializable <> f:122 var
+R11105:11113 Theroies.Serializable <> serialize meth
+R11115:11115 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11117:11118 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11122:11122 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11116:11116 Theroies.Serializable <> v:123 var
+R11119:11121 Theroies.Serializable <> cur:124 var
+R11306:11310 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11321:11321 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11314:11317 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11306:11310 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11321:11321 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11314:11317 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11512:11515 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11516:11530 Theroies.Serializable <> SerializedValue rec
+R11512:11515 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11516:11530 Theroies.Serializable <> SerializedValue rec
+binder 11397:11397 <> x:125
+R11402:11410 Theroies.Serializable <> serialize meth
+R11412:11412 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11416:11417 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11419:11419 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11418:11418 Theroies.Serializable <> x:125 var
+R11499:11499 Coq.Init.Datatypes <> S constr
+R11636:11650 Theroies.Serializable <> SerializedValue rec
+R11792:11795 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11792:11795 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 12015:12019 <> value:126
+R12032:12046 Theroies.Serializable <> SerializedValue rec
+binder 12027:12028 <> sv:127
+R12066:12068 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R12070:12074 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R12103:12119 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R12092:12097 Coq.Init.Datatypes <> option ind
+R12099:12102 Coq.Init.Datatypes <> unit ind
+R12075:12085 Theroies.Serializable <> deserialize meth
+R12087:12088 Theroies.Serializable <> sv:127 var
+R12120:12123 Coq.Init.Datatypes <> Some constr
+R12125:12129 Theroies.Serializable <> value:126 var
+binder 11864:11870 <> builder:128
+binder 11872:11873 <> sv:129
+R11892:11895 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R11903:11907 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R11954:11970 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R11925:11930 Coq.Init.Datatypes <> option ind
+R11935:11937 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R11938:11952 Theroies.Serializable <> SerializedValue rec
+R11908:11918 Theroies.Serializable <> deserialize meth
+R11920:11921 Theroies.Serializable <> sv:129 var
+R11896:11896 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11898:11899 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11902:11902 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 11900:11901 <> sv:130
+binder 11897:11897 <> a:131
+binder 11896:11902 <> pat:132
+R11977:11983 Theroies.Serializable <> builder:128 var
+R11985:11985 Theroies.Serializable <> a:131 var
+R11988:11989 Theroies.Serializable <> sv:130 var
+R12203:12203 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12209:12210 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12214:12214 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12203:12203 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12209:12210 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12214:12214 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12470:12471 Coq.Init.Datatypes <> tt constr
+R12470:12471 Coq.Init.Datatypes <> tt constr
+R12495:12497 Coq.Init.Datatypes <> nat ind
+binder 12489:12491 <> tag:133
+R12506:12520 Theroies.Serializable <> SerializedValue rec
+binder 12501:12502 <> sv:134
+R12527:12530 Coq.Init.Datatypes <> None constr
+binder 12363:12365 <> tag:135
+binder 12367:12368 <> sv:136
+R12387:12389 Theroies.Serializable <> tag:135 var
+R12419:12420 Theroies.Serializable <> sv:136 var
+R12432:12432 Coq.Init.Datatypes <> S constr
+R12446:12448 Theroies.Serializable <> tag:135 var
+R12450:12451 Theroies.Serializable <> sv:136 var
+R12594:12597 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12594:12597 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 12756:12757 <> sv:138
+R12762:12765 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R12775:12778 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R12793:12794 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R12779:12789 Theroies.Serializable <> deserialize meth
+R12791:12792 Theroies.Serializable <> sv:138 var
+R12766:12766 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12770:12771 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12774:12774 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 12772:12773 <> sv:139
+binder 12767:12769 <> tag:140
+binder 12766:12774 <> pat:141
+R12801:12803 Theroies.Serializable <> tag:140 var
+R12805:12806 Theroies.Serializable <> sv:139 var
+R12899:12902 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12899:12902 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R13153:13161 Theroies.Serializable <> serialize meth
+R13153:13161 Theroies.Serializable <> serialize meth
+R13153:13161 Theroies.Serializable <> serialize meth
+R13178:13188 Theroies.Serializable <> deserialize meth
+R13178:13188 Theroies.Serializable <> deserialize meth
+R13207:13227 Theroies.Serializable <> deserialize_serialize meth
+R13207:13227 Theroies.Serializable <> deserialize_serialize meth
+R13288:13308 Theroies.Serializable <> deserialize_serialize meth
+not 13332:13332 <> :::'Derive'_'Serializable'_x
+R13524:13527 Coq.Init.Datatypes <> pair constr
+R13536:13539 Coq.Init.Datatypes <> pair constr
+R13544:13545 Coq.Init.Datatypes <> tt constr
+binder 13515:13519 <> pairs:142
+not 13457:13457 <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>'
+sec 13793:13801 <> Countable
+inst 13815:13846 <> SerializedType_interp_EqDecision
+R13864:13877 Theroies.Serializable <> SerializedType ind
+binder 13860:13860 <> t:143
+R13882:13902 stdpp.base <> EqDecision abbrev
+R13905:13915 Theroies.Serializable <> interp_type def
+R13917:13917 Theroies.Serializable <> t:143 var
+inst 13982:14012 <> SerializedType_interp_Countable
+R14030:14043 Theroies.Serializable <> SerializedType ind
+binder 14026:14026 <> t:144
+R14048:14066 stdpp.countable <> Countable class
+R14069:14079 Theroies.Serializable <> interp_type def
+R14081:14081 Theroies.Serializable <> t:144 var
+inst 14154:14179 <> SerializedValue_EqDecision
+R14183:14203 stdpp.base <> EqDecision abbrev
+R14205:14219 Theroies.Serializable <> SerializedValue rec
+R14302:14322 Theroies.Serializable <> eq_dec def
+R14302:14322 Theroies.Serializable <> eq_dec def
+R14378:14394 stdpp.base <> decide def
+R14399:14401 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14378:14394 stdpp.base <> decide def
+R14399:14401 Coq.Init.Logic <> ::type_scope:x_'='_x not
+inst 14529:14553 <> SerializedType_EqDecision
+R14557:14577 stdpp.base <> EqDecision abbrev
+R14579:14592 Theroies.Serializable <> SerializedType ind
+R14634:14654 Theroies.Serializable <> eq_dec def
+R14634:14654 Theroies.Serializable <> eq_dec def
+def 14714:14718 <> depth
+binder 14720:14721 <> st:145
+R14725:14727 Coq.Init.Datatypes <> nat ind
+R14742:14743 Theroies.Serializable <> st:145 var
+R14756:14763 Theroies.Serializable <> ser_unit constr
+R14776:14782 Theroies.Serializable <> ser_int constr
+R14795:14802 Theroies.Serializable <> ser_bool constr
+R14815:14822 Theroies.Serializable <> ser_pair constr
+R14831:14831 Coq.Init.Datatypes <> S constr
+R14834:14836 Coq.Init.Peano <> max abbrev
+R14839:14843 Theroies.Serializable <> depth:146 def
+R14849:14853 Theroies.Serializable <> depth:146 def
+R14865:14872 Theroies.Serializable <> ser_list constr
+R14879:14879 Coq.Init.Datatypes <> S constr
+R14882:14886 Theroies.Serializable <> depth:146 def
+def 14940:14953 <> encode_st_body
+R14961:14974 Theroies.Serializable <> SerializedType ind
+binder 14956:14957 <> st:148
+R14979:14986 Coq.Numbers.BinNums <> positive ind
+R15001:15002 Theroies.Serializable <> st:148 var
+R15015:15022 Theroies.Serializable <> ser_unit constr
+R15027:15042 stdpp.countable <> encode meth
+R15044:15044 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15046:15047 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15049:15049 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15057:15063 Theroies.Serializable <> ser_int constr
+R15068:15083 stdpp.countable <> encode meth
+R15085:15085 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15087:15088 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15090:15090 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15098:15105 Theroies.Serializable <> ser_bool constr
+R15110:15125 stdpp.countable <> encode meth
+R15127:15127 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15129:15130 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15132:15132 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15140:15147 Theroies.Serializable <> ser_pair constr
+R15156:15171 stdpp.countable <> encode meth
+R15173:15173 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15175:15176 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15230:15230 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15177:15192 stdpp.countable <> encode meth
+R15194:15194 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15211:15212 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15229:15229 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15195:15208 Theroies.Serializable <> encode_st_body:149 def
+R15213:15226 Theroies.Serializable <> encode_st_body:149 def
+R15238:15245 Theroies.Serializable <> ser_list constr
+R15252:15267 stdpp.countable <> encode meth
+R15269:15269 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15271:15272 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15289:15289 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15273:15286 Theroies.Serializable <> encode_st_body:149 def
+def 15313:15321 <> encode_st
+R15329:15342 Theroies.Serializable <> SerializedType ind
+binder 15324:15325 <> st:151
+R15347:15354 Coq.Numbers.BinNums <> positive ind
+R15363:15378 stdpp.countable <> encode meth
+R15380:15380 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15389:15390 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15408:15408 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15381:15385 Theroies.Serializable <> depth def
+R15387:15388 Theroies.Serializable <> st:151 var
+R15391:15404 Theroies.Serializable <> encode_st_body def
+R15406:15407 Theroies.Serializable <> st:151 var
+def 15423:15436 <> decode_st_body
+R15447:15449 Coq.Init.Datatypes <> nat ind
+binder 15439:15443 <> depth:152
+R15457:15464 Coq.Numbers.BinNums <> positive ind
+binder 15453:15453 <> p:153
+R15469:15474 Coq.Init.Datatypes <> option ind
+R15476:15489 Theroies.Serializable <> SerializedType ind
+R15504:15508 Theroies.Serializable <> depth:152 var
+R15530:15533 Coq.Init.Datatypes <> None constr
+R15541:15541 Coq.Init.Datatypes <> S constr
+R15543:15547 Theroies.Serializable <> depth def
+R15558:15561 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R15573:15576 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R15595:15602 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R15577:15592 stdpp.countable <> decode meth
+R15594:15594 Theroies.Serializable <> p:153 var
+R15562:15562 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15566:15567 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15572:15572 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 15568:15571 <> body:156
+binder 15563:15565 <> tag:157
+binder 15562:15572 <> pat:158
+R15609:15611 Theroies.Serializable <> tag:157 var
+R15631:15633 Theroies.Monads <> ret meth
+R15635:15642 Theroies.Serializable <> ser_unit constr
+R15657:15659 Theroies.Monads <> ret meth
+R15661:15667 Theroies.Serializable <> ser_int constr
+R15682:15684 Theroies.Monads <> ret meth
+R15686:15693 Theroies.Serializable <> ser_bool constr
+R15708:15711 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R15718:15721 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R15743:15757 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R15722:15737 stdpp.countable <> decode meth
+R15739:15742 Theroies.Serializable <> body:156 var
+R15712:15712 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15714:15715 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15717:15717 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 15716:15716 <> y:160
+binder 15713:15713 <> x:161
+binder 15712:15717 <> pat:162
+R15758:15760 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15762:15765 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15788:15802 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15766:15779 Theroies.Serializable <> decode_st_body:154 def
+R15787:15787 Theroies.Serializable <> x:161 var
+R15781:15785 Theroies.Serializable <> depth:152 var
+binder 15761:15761 <> x:163
+R15803:15805 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15807:15810 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15833:15847 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15811:15824 Theroies.Serializable <> decode_st_body:154 def
+R15832:15832 Theroies.Serializable <> y:160 var
+R15826:15830 Theroies.Serializable <> depth:152 var
+binder 15806:15806 <> y:164
+R15848:15850 Theroies.Monads <> ret meth
+R15853:15860 Theroies.Serializable <> ser_pair constr
+R15862:15862 Theroies.Serializable <> x:163 var
+R15864:15864 Theroies.Serializable <> y:164 var
+R15880:15882 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15884:15887 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15913:15927 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R15888:15901 Theroies.Serializable <> decode_st_body:154 def
+R15909:15912 Theroies.Serializable <> body:156 var
+R15903:15907 Theroies.Serializable <> depth:152 var
+binder 15883:15883 <> x:165
+R15928:15930 Theroies.Monads <> ret meth
+R15933:15940 Theroies.Serializable <> ser_list constr
+R15942:15942 Theroies.Serializable <> x:165 var
+R15958:15961 Coq.Init.Datatypes <> None constr
+def 15995:16003 <> decode_st
+R16010:16017 Coq.Numbers.BinNums <> positive ind
+binder 16006:16006 <> p:166
+R16022:16027 Coq.Init.Datatypes <> option ind
+R16029:16042 Theroies.Serializable <> SerializedType ind
+R16051:16054 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R16068:16071 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R16090:16095 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R16072:16087 stdpp.countable <> decode meth
+R16089:16089 Theroies.Serializable <> p:166 var
+R16055:16055 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R16061:16062 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R16067:16067 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R16056:16060 Theroies.Serializable <> depth def
+binder 16063:16066 <> body:167
+binder 16056:16060 <> depth:168
+binder 16055:16067 <> pat:169
+R16096:16109 Theroies.Serializable <> decode_st_body def
+R16111:16115 Theroies.Serializable <> depth:168 var
+R16117:16120 Theroies.Serializable <> body:167 var
+prf 16156:16184 <> decode_st_body_encode_st_body
+R16191:16193 Coq.Init.Datatypes <> nat ind
+binder 16187:16187 <> d:170
+R16202:16215 Theroies.Serializable <> SerializedType ind
+binder 16197:16198 <> st:171
+R16237:16244 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R16232:16235 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R16224:16228 Theroies.Serializable <> depth def
+R16230:16231 Theroies.Serializable <> st:171 var
+R16236:16236 Theroies.Serializable <> d:170 var
+R16281:16283 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R16245:16258 Theroies.Serializable <> decode_st_body def
+R16260:16260 Theroies.Serializable <> d:170 var
+R16263:16276 Theroies.Serializable <> encode_st_body def
+R16278:16279 Theroies.Serializable <> st:171 var
+R16284:16287 Coq.Init.Datatypes <> Some constr
+R16289:16290 Theroies.Serializable <> st:171 var
+R16465:16487 stdpp.countable <> decode_encode meth
+R16465:16487 stdpp.countable <> decode_encode meth
+R16465:16487 stdpp.countable <> decode_encode meth
+R16465:16487 stdpp.countable <> decode_encode meth
+R16465:16487 stdpp.countable <> decode_encode meth
+R16524:16546 stdpp.countable <> decode_encode meth
+R16524:16546 stdpp.countable <> decode_encode meth
+R16524:16546 stdpp.countable <> decode_encode meth
+R16524:16546 stdpp.countable <> decode_encode meth
+prf 16578:16596 <> decode_st_encode_st
+R16604:16617 Theroies.Serializable <> SerializedType ind
+binder 16599:16600 <> st:172
+R16650:16652 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R16626:16634 Theroies.Serializable <> decode_st def
+R16637:16645 Theroies.Serializable <> encode_st def
+R16647:16648 Theroies.Serializable <> st:172 var
+R16653:16656 Coq.Init.Datatypes <> Some constr
+R16658:16659 Theroies.Serializable <> st:172 var
+R16682:16690 Theroies.Serializable <> decode_st def
+R16693:16701 Theroies.Serializable <> encode_st def
+R16716:16738 stdpp.countable <> decode_encode meth
+R16716:16738 stdpp.countable <> decode_encode meth
+R16716:16738 stdpp.countable <> decode_encode meth
+R16760:16788 Theroies.Serializable <> decode_st_body_encode_st_body thm
+R16760:16788 Theroies.Serializable <> decode_st_body_encode_st_body thm
+inst 16839:16862 <> SerializedType_Countable
+R16866:16884 stdpp.countable <> Countable class
+R16886:16899 Theroies.Serializable <> SerializedType ind
+R16911:16926 stdpp.countable <> encode meth
+R16911:16926 stdpp.countable <> encode meth
+R16911:16926 stdpp.countable <> encode meth
+R16949:16964 stdpp.countable <> decode meth
+R16949:16964 stdpp.countable <> decode meth
+R16987:17009 stdpp.countable <> decode_encode meth
+R16987:17009 stdpp.countable <> decode_encode meth
+R16931:16939 Theroies.Serializable <> encode_st def
+R16969:16977 Theroies.Serializable <> decode_st def
+R17014:17032 Theroies.Serializable <> decode_st_encode_st thm
+def 17052:17060 <> encode_sv
+R17068:17082 Theroies.Serializable <> SerializedValue rec
+binder 17063:17064 <> sv:173
+R17087:17094 Coq.Numbers.BinNums <> positive ind
+R17103:17118 stdpp.countable <> encode meth
+R17120:17120 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R17138:17139 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R17171:17171 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R17121:17134 Theroies.Serializable <> ser_value_type proj
+R17136:17137 Theroies.Serializable <> sv:173 var
+R17140:17155 stdpp.countable <> encode meth
+R17158:17166 Theroies.Serializable <> ser_value proj
+R17168:17169 Theroies.Serializable <> sv:173 var
+def 17188:17196 <> decode_sv
+R17203:17210 Coq.Numbers.BinNums <> positive ind
+binder 17199:17199 <> p:174
+R17215:17220 Coq.Init.Datatypes <> option ind
+R17222:17236 Theroies.Serializable <> SerializedValue rec
+R17245:17248 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R17256:17259 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R17278:17283 Theroies.Monads <> :::'do'_''''_x_'<-'_x_';'_x not
+R17260:17275 stdpp.countable <> decode meth
+R17277:17277 Theroies.Serializable <> p:174 var
+R17249:17249 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R17252:17253 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R17255:17255 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 17254:17254 <> p:175
+binder 17250:17251 <> ty:176
+binder 17249:17255 <> pat:177
+R17284:17286 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R17288:17291 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R17310:17315 Theroies.Monads <> :::'do'_x_'<-'_x_';'_x not
+R17292:17307 stdpp.countable <> decode meth
+R17309:17309 Theroies.Serializable <> p:175 var
+binder 17287:17287 <> v:178
+R17316:17318 Theroies.Monads <> ret meth
+R17323:17336 Theroies.Serializable <> ser_value_type proj
+R17323:17336 Theroies.Serializable <> ser_value_type proj
+R17323:17336 Theroies.Serializable <> ser_value_type proj
+R17345:17353 Theroies.Serializable <> ser_value proj
+R17345:17353 Theroies.Serializable <> ser_value proj
+R17341:17342 Theroies.Serializable <> ty:176 var
+R17358:17358 Theroies.Serializable <> v:178 var
+prf 17373:17391 <> decode_sv_encode_sv
+R17399:17413 Theroies.Serializable <> SerializedValue rec
+binder 17394:17395 <> sv:179
+R17446:17448 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R17422:17430 Theroies.Serializable <> decode_sv def
+R17433:17441 Theroies.Serializable <> encode_sv def
+R17443:17444 Theroies.Serializable <> sv:179 var
+R17449:17452 Coq.Init.Datatypes <> Some constr
+R17454:17455 Theroies.Serializable <> sv:179 var
+R17478:17486 Theroies.Serializable <> decode_sv def
+R17489:17497 Theroies.Serializable <> encode_sv def
+R17512:17534 stdpp.countable <> decode_encode meth
+R17512:17534 stdpp.countable <> decode_encode meth
+R17512:17534 stdpp.countable <> decode_encode meth
+R17554:17576 stdpp.countable <> decode_encode meth
+R17554:17576 stdpp.countable <> decode_encode meth
+R17554:17576 stdpp.countable <> decode_encode meth
+inst 17627:17651 <> SerializedValue_Countable
+R17655:17673 stdpp.countable <> Countable class
+R17675:17689 Theroies.Serializable <> SerializedValue rec
+R17701:17716 stdpp.countable <> encode meth
+R17701:17716 stdpp.countable <> encode meth
+R17701:17716 stdpp.countable <> encode meth
+R17739:17754 stdpp.countable <> decode meth
+R17739:17754 stdpp.countable <> decode meth
+R17777:17799 stdpp.countable <> decode_encode meth
+R17777:17799 stdpp.countable <> decode_encode meth
+R17721:17729 Theroies.Serializable <> encode_sv def
+R17759:17767 Theroies.Serializable <> decode_sv def
+R17804:17822 Theroies.Serializable <> decode_sv_encode_sv thm
+inst 17919:17945 <> SerializableType_EqDecision
+binder 17957:17957 <> A:180
+R17969:17980 Theroies.Serializable <> Serializable class
+R17982:17982 Theroies.Serializable <> A:180 var
+binder 17969:17982 <> H:181
+R17987:18007 stdpp.base <> EqDecision abbrev
+R18009:18009 Theroies.Serializable <> A:180 var
+R18059:18075 stdpp.base <> decide def
+R18089:18091 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R18078:18086 Theroies.Serializable <> serialize meth
+R18092:18100 Theroies.Serializable <> serialize meth
+R18059:18075 stdpp.base <> decide def
+R18089:18091 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R18078:18086 Theroies.Serializable <> serialize meth
+R18092:18100 Theroies.Serializable <> serialize meth
+R18148:18166 Theroies.Serializable <> serialize_injective thm
+R18148:18166 Theroies.Serializable <> serialize_injective thm
+def 18242:18265 <> encode_serializable_type
+binder 18268:18268 <> A:182
+R18280:18291 Theroies.Serializable <> Serializable class
+R18293:18293 Theroies.Serializable <> A:182 var
+binder 18280:18293 <> H:183
+R18301:18301 Theroies.Serializable <> A:182 var
+binder 18297:18297 <> a:184
+R18306:18313 Coq.Numbers.BinNums <> positive ind
+R18322:18337 stdpp.countable <> encode meth
+R18340:18348 Theroies.Serializable <> serialize meth
+R18350:18350 Theroies.Serializable <> a:184 var
+def 18368:18391 <> decode_serializable_type
+binder 18394:18394 <> A:185
+R18406:18417 Theroies.Serializable <> Serializable class
+R18419:18419 Theroies.Serializable <> A:185 var
+binder 18406:18419 <> H:186
+R18427:18434 Coq.Numbers.BinNums <> positive ind
+binder 18423:18423 <> p:187
+R18439:18444 Coq.Init.Datatypes <> option ind
+R18446:18446 Theroies.Serializable <> A:185 var
+R18473:18477 Theroies.Monads <> :::x_'>>='_x not
+R18455:18470 stdpp.countable <> decode meth
+R18472:18472 Theroies.Serializable <> p:187 var
+R18478:18488 Theroies.Serializable <> deserialize meth
+prf 18500:18548 <> decode_serializable_type_encode_serializable_type
+binder 18559:18559 <> A:188
+R18571:18582 Theroies.Serializable <> Serializable class
+R18584:18584 Theroies.Serializable <> A:188 var
+binder 18571:18584 <> H:189
+R18600:18600 Theroies.Serializable <> A:188 var
+binder 18596:18596 <> a:190
+R18662:18664 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R18609:18632 Theroies.Serializable <> decode_serializable_type def
+R18635:18658 Theroies.Serializable <> encode_serializable_type def
+R18660:18660 Theroies.Serializable <> a:190 var
+R18665:18668 Coq.Init.Datatypes <> Some constr
+R18670:18670 Theroies.Serializable <> a:190 var
+R18693:18716 Theroies.Serializable <> decode_serializable_type def
+R18719:18742 Theroies.Serializable <> encode_serializable_type def
+R18757:18779 stdpp.countable <> decode_encode meth
+R18757:18779 stdpp.countable <> decode_encode meth
+R18757:18779 stdpp.countable <> decode_encode meth
+R18807:18827 Theroies.Serializable <> deserialize_serialize meth
+R18807:18827 Theroies.Serializable <> deserialize_serialize meth
+R18807:18827 Theroies.Serializable <> deserialize_serialize meth
+inst 18927:18952 <> SerializableType_Countable
+binder 18955:18955 <> A:191
+R18967:18978 Theroies.Serializable <> Serializable class
+R18980:18980 Theroies.Serializable <> A:191 var
+binder 18967:18980 <> H:192
+R18989:19007 stdpp.countable <> Countable class
+R19009:19009 Theroies.Serializable <> A:191 var
+R19028:19043 stdpp.countable <> encode meth
+R19028:19043 stdpp.countable <> encode meth
+R19028:19043 stdpp.countable <> encode meth
+R19081:19096 stdpp.countable <> decode meth
+R19081:19096 stdpp.countable <> decode meth
+R19134:19156 stdpp.countable <> decode_encode meth
+R19134:19156 stdpp.countable <> decode_encode meth
+R19048:19071 Theroies.Serializable <> encode_serializable_type def
+R19101:19124 Theroies.Serializable <> decode_serializable_type def
+R19161:19209 Theroies.Serializable <> decode_serializable_type_encode_serializable_type thm
+R19220:19228 Theroies.Serializable Countable <> sec
+sec 19240:19251 <> RightInverse
+R19272:19282 Theroies.Serializable <> deserialize meth
+R19284:19292 Theroies.Serializable <> serialize meth
+prf 19302:19331 <> deserialize_unit_right_inverse
+binder 19342:19342 <> x:193
+R19349:19352 Coq.Init.Datatypes <> unit ind
+binder 19345:19345 <> y:194
+R19380:19385 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19371:19373 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19358:19368 Theroies.Serializable <> deserialize meth
+R19370:19370 Theroies.Serializable <> x:193 var
+R19374:19377 Coq.Init.Datatypes <> Some constr
+R19379:19379 Theroies.Serializable <> y:194 var
+R19387:19389 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19386:19386 Theroies.Serializable <> x:193 var
+R19390:19398 Theroies.Serializable <> serialize meth
+R19400:19400 Theroies.Serializable <> y:194 var
+prf 19522:19550 <> deserialize_int_right_inverse
+binder 19561:19561 <> x:195
+R19568:19568 Coq.Numbers.BinNums <> Z ind
+binder 19564:19564 <> y:196
+R19596:19601 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19587:19589 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19574:19584 Theroies.Serializable <> deserialize meth
+R19586:19586 Theroies.Serializable <> x:195 var
+R19590:19593 Coq.Init.Datatypes <> Some constr
+R19595:19595 Theroies.Serializable <> y:196 var
+R19603:19605 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19602:19602 Theroies.Serializable <> x:195 var
+R19606:19614 Theroies.Serializable <> serialize meth
+R19616:19616 Theroies.Serializable <> y:196 var
+prf 19738:19767 <> deserialize_bool_right_inverse
+binder 19778:19778 <> x:197
+R19785:19788 Coq.Init.Datatypes <> bool ind
+binder 19781:19781 <> y:198
+R19816:19821 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R19807:19809 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19794:19804 Theroies.Serializable <> deserialize meth
+R19806:19806 Theroies.Serializable <> x:197 var
+R19810:19813 Coq.Init.Datatypes <> Some constr
+R19815:19815 Theroies.Serializable <> y:198 var
+R19823:19825 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R19822:19822 Theroies.Serializable <> x:197 var
+R19826:19834 Theroies.Serializable <> serialize meth
+R19836:19836 Theroies.Serializable <> y:198 var
+prf 19958:19986 <> deserialize_nat_right_inverse
+binder 19997:19997 <> x:199
+R20004:20006 Coq.Init.Datatypes <> nat ind
+binder 20000:20000 <> y:200
+R20034:20039 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20025:20027 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20012:20022 Theroies.Serializable <> deserialize meth
+R20024:20024 Theroies.Serializable <> x:199 var
+R20028:20031 Coq.Init.Datatypes <> Some constr
+R20033:20033 Theroies.Serializable <> y:200 var
+R20041:20043 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20040:20040 Theroies.Serializable <> x:199 var
+R20044:20052 Theroies.Serializable <> serialize meth
+R20054:20054 Theroies.Serializable <> y:200 var
+R20095:20123 Theroies.Serializable <> deserialize_int_right_inverse thm
+R20095:20123 Theroies.Serializable <> deserialize_int_right_inverse thm
+R20149:20165 Theroies.Serializable <> extract_ser_value def
+R20203:20206 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R20203:20206 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R20249:20256 Coq.ZArith.BinInt Z ltb_ge thm
+R20249:20256 Coq.ZArith.BinInt Z ltb_ge thm
+R20304:20311 Coq.ZArith.Znat Z2Nat id thm
+R20304:20311 Coq.ZArith.Znat Z2Nat id thm
+R20304:20311 Coq.ZArith.Znat Z2Nat id thm
+prf 20355:20381 <> deserialize_N_right_inverse
+binder 20392:20392 <> x:201
+R20399:20399 Coq.Numbers.BinNums <> N ind
+binder 20395:20395 <> y:202
+R20427:20432 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20418:20420 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20405:20415 Theroies.Serializable <> deserialize meth
+R20417:20417 Theroies.Serializable <> x:201 var
+R20421:20424 Coq.Init.Datatypes <> Some constr
+R20426:20426 Theroies.Serializable <> y:202 var
+R20434:20436 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20433:20433 Theroies.Serializable <> x:201 var
+R20437:20445 Theroies.Serializable <> serialize meth
+R20447:20447 Theroies.Serializable <> y:202 var
+R20488:20516 Theroies.Serializable <> deserialize_int_right_inverse thm
+R20488:20516 Theroies.Serializable <> deserialize_int_right_inverse thm
+R20542:20558 Theroies.Serializable <> extract_ser_value def
+R20596:20599 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R20596:20599 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R20642:20649 Coq.ZArith.BinInt Z ltb_ge thm
+R20642:20649 Coq.ZArith.BinInt Z ltb_ge thm
+R20697:20702 Coq.ZArith.Znat Z2N id thm
+R20697:20702 Coq.ZArith.Znat Z2N id thm
+R20697:20702 Coq.ZArith.Znat Z2N id thm
+prf 20746:20779 <> deserialize_positive_right_inverse
+binder 20790:20790 <> x:203
+R20797:20804 Coq.Numbers.BinNums <> positive ind
+binder 20793:20793 <> y:204
+R20832:20837 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R20823:20825 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20810:20820 Theroies.Serializable <> deserialize meth
+R20822:20822 Theroies.Serializable <> x:203 var
+R20826:20829 Coq.Init.Datatypes <> Some constr
+R20831:20831 Theroies.Serializable <> y:204 var
+R20839:20841 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R20838:20838 Theroies.Serializable <> x:203 var
+R20842:20850 Theroies.Serializable <> serialize meth
+R20852:20852 Theroies.Serializable <> y:204 var
+R20893:20921 Theroies.Serializable <> deserialize_int_right_inverse thm
+R20893:20921 Theroies.Serializable <> deserialize_int_right_inverse thm
+R20947:20963 Theroies.Serializable <> extract_ser_value def
+R21001:21004 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R21001:21004 Coq.ZArith.BinInt <> ::Z_scope:x_'<?'_x not
+R21047:21054 Coq.ZArith.BinInt Z ltb_lt thm
+R21047:21054 Coq.ZArith.BinInt Z ltb_lt thm
+R21102:21109 Coq.ZArith.BinInt Z2Pos id thm
+R21102:21109 Coq.ZArith.BinInt Z2Pos id thm
+R21102:21109 Coq.ZArith.BinInt Z2Pos id thm
+prf 21153:21194 <> deserialize_serialized_value_right_inverse
+binder 21205:21205 <> x:205
+R21212:21226 Theroies.Serializable <> SerializedValue rec
+binder 21208:21208 <> y:206
+R21254:21259 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21245:21247 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21232:21242 Theroies.Serializable <> deserialize meth
+R21244:21244 Theroies.Serializable <> x:205 var
+R21248:21251 Coq.Init.Datatypes <> Some constr
+R21253:21253 Theroies.Serializable <> y:206 var
+R21261:21263 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21260:21260 Theroies.Serializable <> x:205 var
+R21264:21272 Theroies.Serializable <> serialize meth
+R21274:21274 Theroies.Serializable <> y:206 var
+prf 21347:21375 <> deserialize_sum_right_inverse
+binder 21387:21387 <> A:207
+binder 21389:21389 <> B:208
+R21401:21412 Theroies.Serializable <> Serializable class
+R21414:21414 Theroies.Serializable <> A:207 var
+binder 21401:21414 <> H:209
+R21419:21430 Theroies.Serializable <> Serializable class
+R21432:21432 Theroies.Serializable <> B:208 var
+binder 21419:21432 <> H0:210
+binder 21481:21481 <> x:211
+R21489:21491 Coq.Init.Datatypes <> ::type_scope:x_'+'_x not
+R21488:21488 Theroies.Serializable <> A:207 var
+R21492:21492 Theroies.Serializable <> B:208 var
+binder 21484:21484 <> y:212
+R21498:21498 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21564:21570 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 21506:21507 <> x':213
+R21515:21515 Theroies.Serializable <> A:207 var
+binder 21510:21511 <> y':214
+R21543:21546 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21533:21535 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21519:21529 Theroies.Serializable <> deserialize meth
+R21531:21532 Theroies.Serializable <> x':213 var
+R21536:21539 Coq.Init.Datatypes <> Some constr
+R21541:21542 Theroies.Serializable <> y':214 var
+R21549:21551 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21547:21548 Theroies.Serializable <> x':213 var
+R21552:21560 Theroies.Serializable <> serialize meth
+R21562:21563 Theroies.Serializable <> y':214 var
+R21571:21571 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21637:21643 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 21579:21580 <> x':215
+R21588:21588 Theroies.Serializable <> B:208 var
+binder 21583:21584 <> y':216
+R21616:21619 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21606:21608 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21592:21602 Theroies.Serializable <> deserialize meth
+R21604:21605 Theroies.Serializable <> x':215 var
+R21609:21612 Coq.Init.Datatypes <> Some constr
+R21614:21615 Theroies.Serializable <> y':216 var
+R21622:21624 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21620:21621 Theroies.Serializable <> x':215 var
+R21625:21633 Theroies.Serializable <> serialize meth
+R21635:21636 Theroies.Serializable <> y':216 var
+R21666:21671 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R21657:21659 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21644:21654 Theroies.Serializable <> deserialize meth
+R21656:21656 Theroies.Serializable <> x:211 var
+R21660:21663 Coq.Init.Datatypes <> Some constr
+R21665:21665 Theroies.Serializable <> y:212 var
+R21673:21675 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R21672:21672 Theroies.Serializable <> x:211 var
+R21676:21684 Theroies.Serializable <> serialize meth
+R21686:21686 Theroies.Serializable <> y:212 var
+R21712:21724 Theroies.Serializable <> serialize_sum def
+R21727:21741 Theroies.Serializable <> deserialize_sum def
+R21932:21942 Theroies.Serializable <> deserialize meth
+R21932:21942 Theroies.Serializable <> deserialize meth
+prf 22134:22166 <> deserialize_product_right_inverse
+binder 22178:22178 <> A:217
+binder 22180:22180 <> B:218
+R22192:22203 Theroies.Serializable <> Serializable class
+R22205:22205 Theroies.Serializable <> A:217 var
+binder 22192:22205 <> H:219
+R22210:22221 Theroies.Serializable <> Serializable class
+R22223:22223 Theroies.Serializable <> B:218 var
+binder 22210:22223 <> H0:220
+binder 22272:22272 <> x:221
+R22280:22282 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R22279:22279 Theroies.Serializable <> A:217 var
+R22283:22283 Theroies.Serializable <> B:218 var
+binder 22275:22275 <> y:222
+R22289:22289 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22355:22361 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 22297:22298 <> x':223
+R22306:22306 Theroies.Serializable <> A:217 var
+binder 22301:22302 <> y':224
+R22334:22337 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22324:22326 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22310:22320 Theroies.Serializable <> deserialize meth
+R22322:22323 Theroies.Serializable <> x':223 var
+R22327:22330 Coq.Init.Datatypes <> Some constr
+R22332:22333 Theroies.Serializable <> y':224 var
+R22340:22342 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22338:22339 Theroies.Serializable <> x':223 var
+R22343:22351 Theroies.Serializable <> serialize meth
+R22353:22354 Theroies.Serializable <> y':224 var
+R22362:22362 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22428:22434 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 22370:22371 <> x':225
+R22379:22379 Theroies.Serializable <> B:218 var
+binder 22374:22375 <> y':226
+R22407:22410 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22397:22399 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22383:22393 Theroies.Serializable <> deserialize meth
+R22395:22396 Theroies.Serializable <> x':225 var
+R22400:22403 Coq.Init.Datatypes <> Some constr
+R22405:22406 Theroies.Serializable <> y':226 var
+R22413:22415 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22411:22412 Theroies.Serializable <> x':225 var
+R22416:22424 Theroies.Serializable <> serialize meth
+R22426:22427 Theroies.Serializable <> y':226 var
+R22457:22462 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R22448:22450 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22435:22445 Theroies.Serializable <> deserialize meth
+R22447:22447 Theroies.Serializable <> x:221 var
+R22451:22454 Coq.Init.Datatypes <> Some constr
+R22456:22456 Theroies.Serializable <> y:222 var
+R22464:22466 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R22463:22463 Theroies.Serializable <> x:221 var
+R22467:22475 Theroies.Serializable <> serialize meth
+R22477:22477 Theroies.Serializable <> y:222 var
+R22503:22519 Theroies.Serializable <> serialize_product def
+R22522:22540 Theroies.Serializable <> deserialize_product def
+R22674:22684 Theroies.Serializable <> deserialize meth
+R22751:22761 Theroies.Serializable <> deserialize meth
+prf 22942:22971 <> deserialize_list_right_inverse
+binder 22983:22983 <> A:227
+R22995:23006 Theroies.Serializable <> Serializable class
+R23008:23008 Theroies.Serializable <> A:227 var
+binder 22995:23008 <> H:228
+R23016:23019 Coq.Init.Datatypes <> list ind
+R23021:23021 Theroies.Serializable <> A:227 var
+binder 23012:23012 <> l:229
+binder 23024:23024 <> x:230
+R23029:23029 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R23095:23101 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 23037:23038 <> x':231
+R23046:23046 Theroies.Serializable <> A:227 var
+binder 23041:23042 <> l':232
+R23074:23077 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R23064:23066 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23050:23060 Theroies.Serializable <> deserialize meth
+R23062:23063 Theroies.Serializable <> x':231 var
+R23067:23070 Coq.Init.Datatypes <> Some constr
+R23072:23073 Theroies.Serializable <> l':232 var
+R23080:23082 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23078:23079 Theroies.Serializable <> x':231 var
+R23083:23091 Theroies.Serializable <> serialize meth
+R23093:23094 Theroies.Serializable <> l':232 var
+R23124:23129 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R23115:23117 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23102:23112 Theroies.Serializable <> deserialize meth
+R23114:23114 Theroies.Serializable <> x:230 var
+R23118:23121 Coq.Init.Datatypes <> Some constr
+R23123:23123 Theroies.Serializable <> l:229 var
+R23131:23133 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23130:23130 Theroies.Serializable <> x:230 var
+R23134:23142 Theroies.Serializable <> serialize meth
+R23144:23144 Theroies.Serializable <> l:229 var
+R23494:23496 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23467:23470 Coq.Init.Datatypes <> Some constr
+R23481:23484 Coq.Init.Datatypes <> None constr
+R23494:23496 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23467:23470 Coq.Init.Datatypes <> Some constr
+R23481:23484 Coq.Init.Datatypes <> None constr
+R23617:23627 Theroies.Serializable <> deserialize meth
+R23759:23761 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23732:23735 Coq.Init.Datatypes <> Some constr
+R23746:23749 Coq.Init.Datatypes <> None constr
+R23759:23761 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R23732:23735 Coq.Init.Datatypes <> Some constr
+R23746:23749 Coq.Init.Datatypes <> None constr
+R23929:23942 Theroies.Serializable <> serialize_list def
+prf 24000:24031 <> deserialize_option_right_inverse
+binder 24043:24043 <> A:233
+R24055:24066 Theroies.Serializable <> Serializable class
+R24068:24068 Theroies.Serializable <> A:233 var
+binder 24055:24068 <> H:234
+binder 24071:24071 <> x:235
+R24078:24083 Coq.Init.Datatypes <> option ind
+R24085:24085 Theroies.Serializable <> A:233 var
+binder 24074:24074 <> y:236
+R24091:24091 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24157:24163 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 24099:24100 <> x':237
+R24108:24108 Theroies.Serializable <> A:233 var
+binder 24103:24104 <> y':238
+R24136:24139 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24126:24128 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24112:24122 Theroies.Serializable <> deserialize meth
+R24124:24125 Theroies.Serializable <> x':237 var
+R24129:24132 Coq.Init.Datatypes <> Some constr
+R24134:24135 Theroies.Serializable <> y':238 var
+R24142:24144 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24140:24141 Theroies.Serializable <> x':237 var
+R24145:24153 Theroies.Serializable <> serialize meth
+R24155:24156 Theroies.Serializable <> y':238 var
+R24186:24191 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24177:24179 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24164:24174 Theroies.Serializable <> deserialize meth
+R24176:24176 Theroies.Serializable <> x:235 var
+R24180:24183 Coq.Init.Datatypes <> Some constr
+R24185:24185 Theroies.Serializable <> y:236 var
+R24193:24195 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24192:24192 Theroies.Serializable <> x:235 var
+R24196:24204 Theroies.Serializable <> serialize meth
+R24206:24206 Theroies.Serializable <> y:236 var
+R24254:24283 Theroies.Serializable <> deserialize_unit_right_inverse thm
+R24254:24283 Theroies.Serializable <> deserialize_unit_right_inverse thm
+R24300:24328 Theroies.Serializable <> deserialize_sum_right_inverse thm
+R24300:24328 Theroies.Serializable <> deserialize_sum_right_inverse thm
+R24374:24388 Theroies.Serializable <> deserialize_sum def
+prf 24499:24529 <> deserialize_ascii_right_inverse
+binder 24540:24540 <> x:239
+R24547:24551 Coq.Strings.Ascii <> ascii ind
+binder 24543:24543 <> y:240
+R24579:24584 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24570:24572 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24557:24567 Theroies.Serializable <> deserialize meth
+R24569:24569 Theroies.Serializable <> x:239 var
+R24573:24576 Coq.Init.Datatypes <> Some constr
+R24578:24578 Theroies.Serializable <> y:240 var
+R24586:24588 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24585:24585 Theroies.Serializable <> x:239 var
+R24589:24597 Theroies.Serializable <> serialize meth
+R24599:24599 Theroies.Serializable <> y:240 var
+R24640:24666 Theroies.Serializable <> deserialize_N_right_inverse thm
+R24640:24666 Theroies.Serializable <> deserialize_N_right_inverse thm
+R24678:24688 Theroies.Serializable <> deserialize meth
+R24691:24708 Theroies.Serializable <> ascii_serializable inst
+R24736:24746 Theroies.Serializable <> deserialize meth
+R24796:24799 Coq.NArith.BinNat <> ::N_scope:x_'<?'_x not
+R24796:24799 Coq.NArith.BinNat <> ::N_scope:x_'<?'_x not
+R24854:24861 Coq.NArith.BinNat N ltb_lt thm
+R24854:24861 Coq.NArith.BinNat N ltb_lt thm
+R24883:24899 Coq.Strings.Ascii <> N_ascii_embedding thm
+R24883:24899 Coq.Strings.Ascii <> N_ascii_embedding thm
+R24883:24899 Coq.Strings.Ascii <> N_ascii_embedding thm
+R24883:24899 Coq.Strings.Ascii <> N_ascii_embedding thm
+prf 24914:24945 <> deserialize_string_right_inverse
+binder 24956:24956 <> x:241
+R24963:24968 Coq.Strings.String <> string ind
+binder 24959:24959 <> y:242
+R24996:25001 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R24987:24989 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R24974:24984 Theroies.Serializable <> deserialize meth
+R24986:24986 Theroies.Serializable <> x:241 var
+R24990:24993 Coq.Init.Datatypes <> Some constr
+R24995:24995 Theroies.Serializable <> y:242 var
+R25003:25005 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R25002:25002 Theroies.Serializable <> x:241 var
+R25006:25014 Theroies.Serializable <> serialize meth
+R25016:25016 Theroies.Serializable <> y:242 var
+R25062:25092 Theroies.Serializable <> deserialize_ascii_right_inverse thm
+R25062:25092 Theroies.Serializable <> deserialize_ascii_right_inverse thm
+R25108:25137 Theroies.Serializable <> deserialize_list_right_inverse thm
+R25108:25137 Theroies.Serializable <> deserialize_list_right_inverse thm
+R25180:25195 Theroies.Serializable <> deserialize_list def
+R25260:25293 Coq.Strings.String <> list_ascii_of_string_of_list_ascii thm
+R25260:25293 Coq.Strings.String <> list_ascii_of_string_of_list_ascii thm
+R25260:25293 Coq.Strings.String <> list_ascii_of_string_of_list_ascii thm
+R25330:25340 Theroies.Serializable <> deserialize meth
+R25342:25350 Theroies.Serializable <> serialize meth
+R25357:25368 Theroies.Serializable RightInverse <> sec

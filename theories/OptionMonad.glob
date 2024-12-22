@@ -1,0 +1,24 @@
+DIGEST 409ac4e51e9f49206fbaf4e76c8a74c9
+FTheroies.OptionMonad
+R15:20 Theroies.Monads <> <> lib
+inst 40:51 <> Monad_option
+R55:59 Theroies.Monads <> Monad class
+R61:66 Coq.Init.Datatypes <> option ind
+R76:78 Theroies.Monads <> ret meth
+R76:78 Theroies.Monads <> ret meth
+R76:78 Theroies.Monads <> ret meth
+R100:103 Theroies.Monads <> bind meth
+R100:103 Theroies.Monads <> bind meth
+binder 82:82 <> t:1
+R87:90 Coq.Init.Datatypes <> Some constr
+R92:92 Theroies.OptionMonad <> t:1 var
+binder 109:109 <> v:2
+binder 111:111 <> f:3
+R122:122 Theroies.OptionMonad <> v:2 var
+R148:151 Coq.Init.Datatypes <> Some constr
+R160:160 Theroies.OptionMonad <> f:3 var
+R185:188 Coq.Init.Datatypes <> None constr
+R193:196 Coq.Init.Datatypes <> None constr
+inst 240:261 <> MonadLaws_Monad_option
+R265:273 Theroies.Monads <> MonadLaws class
+R275:286 Theroies.OptionMonad <> Monad_option inst
