@@ -1,0 +1,1745 @@
+DIGEST e7d3c7d409bc7e54995cc82afe44fa13
+FExample.safeRemotePurchase.Purchase
+R884:889 Theroies.Monads <> <> lib
+R907:916 Theroies.Blockchain <> <> lib
+R934:943 Theroies.Containers <> <> lib
+R961:972 Theroies.Serializable <> <> lib
+R990:995 Coq.PArith.PArith <> <> lib
+R1013:1018 Theroies.Extras <> <> lib
+R1036:1043 Theroies.BoundedN <> <> lib
+R1061:1070 Theroies.BuildUtils <> <> lib
+R1088:1095 Coq.FSets.FMapList <> <> lib
+R1113:1124 RecordUpdate.RecordUpdate <> <> lib
+R1142:1151 Theroies.Automation <> <> lib
+R1169:1182 Theroies.ContractCommon <> <> lib
+R1200:1210 Theroies.ResultMonad <> <> lib
+R1228:1253 Theroies.InterContractCommunication <> <> lib
+R1271:1281 Theroies.ChainedList <> <> lib
+R1299:1303 Theroies.Strat <> <> lib
+R1330:1333 Coq.Lists.List <> <> lib
+R1360:1363 Coq.Bool.Bool <> <> lib
+R1390:1395 Coq.ZArith.ZArith <> <> lib
+R1422:1426 Coq.Arith.Arith <> <> lib
+R1453:1458 Coq.Strings.String <> <> lib
+R1468:1480 Coq.Lists.List ListNotations <> mod
+R1498:1500 Coq.micromega.Lia <> <> lib
+R1510:1527 RecordUpdate.RecordSet RecordSetNotations <> mod
+R1554:1564 Coq.Sorting.Permutation <> <> lib
+R1582:1599 Coq.Program.Basics <> <> lib
+R1617:1636 Coq.NArith.BinNatDef <> <> lib
+def 1651:1663 <> required_true
+R1669:1672 Coq.Init.Datatypes <> bool ind
+binder 1666:1666 <> b:1
+R1681:1681 Example.safeRemotePurchase.Purchase <> b:1 var
+R1701:1704 Coq.Init.Datatypes <> None constr
+R1688:1691 Coq.Init.Datatypes <> Some constr
+R1693:1694 Coq.Init.Datatypes <> tt constr
+def 1718:1731 <> required_false
+R1737:1740 Coq.Init.Datatypes <> bool ind
+binder 1734:1734 <> b:2
+R1749:1749 Example.safeRemotePurchase.Purchase <> b:2 var
+R1766:1769 Coq.Init.Datatypes <> Some constr
+R1771:1772 Coq.Init.Datatypes <> tt constr
+R1756:1759 Coq.Init.Datatypes <> None constr
+sec 1784:1797 <> EcommerceFixed
+R1836:1844 Theroies.Blockchain <> ChainBase class
+binder 1824:1832 <> BaseTypes:3
+R1933:1933 Coq.Numbers.BinNums <> N ind
+binder 1922:1929 <> AddrSize:4
+R1959:1962 Coq.Init.Datatypes <> bool ind
+binder 1946:1955 <> DepthFirst:5
+def 1978:1982 <> Error
+R1994:1996 Coq.Init.Datatypes <> nat ind
+def 2010:2022 <> default_error
+R2026:2030 Example.safeRemotePurchase.Purchase <> Error def
+ind 2078:2090 <> PurchaseState
+constr 2099:2107 <> requested
+constr 2147:2154 <> accepted
+constr 2194:2201 <> rejected
+constr 2241:2249 <> delivered
+constr 2283:2291 <> completed
+constr 2337:2343 <> dispute
+constr 2386:2392 <> counter
+constr 2432:2437 <> failed
+def 2556:2572 <> purchase_state_eq
+R2583:2595 Example.safeRemotePurchase.Purchase <> PurchaseState ind
+binder 2575:2576 <> s1:8
+binder 2578:2579 <> s2:9
+R2600:2603 Coq.Init.Datatypes <> bool ind
+R2620:2621 Example.safeRemotePurchase.Purchase <> s2:9 var
+R2616:2617 Example.safeRemotePurchase.Purchase <> s1:8 var
+R2632:2640 Example.safeRemotePurchase.Purchase <> requested constr
+R2643:2651 Example.safeRemotePurchase.Purchase <> requested constr
+R2657:2664 Example.safeRemotePurchase.Purchase <> accepted constr
+R2667:2674 Example.safeRemotePurchase.Purchase <> accepted constr
+R2680:2687 Example.safeRemotePurchase.Purchase <> rejected constr
+R2690:2697 Example.safeRemotePurchase.Purchase <> rejected constr
+R2703:2711 Example.safeRemotePurchase.Purchase <> delivered constr
+R2714:2722 Example.safeRemotePurchase.Purchase <> delivered constr
+R2728:2736 Example.safeRemotePurchase.Purchase <> completed constr
+R2739:2747 Example.safeRemotePurchase.Purchase <> completed constr
+R2753:2759 Example.safeRemotePurchase.Purchase <> dispute constr
+R2762:2768 Example.safeRemotePurchase.Purchase <> dispute constr
+R2774:2780 Example.safeRemotePurchase.Purchase <> counter constr
+R2783:2789 Example.safeRemotePurchase.Purchase <> counter constr
+R2795:2800 Example.safeRemotePurchase.Purchase <> failed constr
+R2802:2807 Example.safeRemotePurchase.Purchase <> failed constr
+R2812:2815 Coq.Init.Datatypes <> true constr
+R2812:2815 Coq.Init.Datatypes <> true constr
+R2812:2815 Coq.Init.Datatypes <> true constr
+R2812:2815 Coq.Init.Datatypes <> true constr
+R2812:2815 Coq.Init.Datatypes <> true constr
+R2812:2815 Coq.Init.Datatypes <> true constr
+R2812:2815 Coq.Init.Datatypes <> true constr
+R2812:2815 Coq.Init.Datatypes <> true constr
+R2829:2833 Coq.Init.Datatypes <> false constr
+rec 2875:2878 <> Item
+proj 2902:2911 <> item_value
+proj 2961:2976 <> item_description
+R2915:2920 Theroies.Blockchain <> Amount def
+R2980:2985 Coq.Strings.String <> string ind
+rec 3048:3055 <> Purchase
+proj 3083:3088 <> commit
+proj 3156:3165 <> last_block
+proj 3215:3220 <> itemId
+proj 3258:3267 <> seller_bit
+proj 3339:3343 <> notes
+proj 3393:3406 <> purchase_state
+proj 3457:3461 <> buyer
+proj 3500:3503 <> pool
+proj 3574:3588 <> discarded_money
+R3092:3092 Coq.Numbers.BinNums <> N ind
+R3169:3171 Coq.Init.Datatypes <> nat ind
+R3224:3226 Coq.Init.Datatypes <> nat ind
+R3271:3274 Coq.Init.Datatypes <> bool ind
+R3347:3352 Coq.Strings.String <> string ind
+R3410:3422 Example.safeRemotePurchase.Purchase <> PurchaseState ind
+R3465:3471 Theroies.Blockchain <> Address meth
+R3507:3512 Theroies.Blockchain <> Amount def
+R3592:3597 Theroies.Blockchain <> Amount def
+def 3732:3748 <> listings_key_type
+R3753:3755 Coq.Init.Datatypes <> nat ind
+def 3850:3862 <> listings_type
+R3867:3870 Theroies.Containers <> FMap abbrev
+R3890:3893 Example.safeRemotePurchase.Purchase <> Item rec
+R3872:3888 Example.safeRemotePurchase.Purchase <> listings_key_type def
+def 3945:3961 <> purchase_key_type
+R3966:3966 Coq.Numbers.BinNums <> N ind
+def 4061:4074 <> purchases_type
+R4079:4082 Theroies.Containers <> FMap abbrev
+R4102:4109 Example.safeRemotePurchase.Purchase <> Purchase rec
+R4084:4100 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+rec 4145:4149 <> State
+proj 4174:4179 <> seller
+proj 4218:4225 <> listings
+proj 4303:4311 <> purchases
+proj 4394:4400 <> timeout
+R4183:4189 Theroies.Blockchain <> Address meth
+R4229:4241 Example.safeRemotePurchase.Purchase <> listings_type def
+R4315:4328 Example.safeRemotePurchase.Purchase <> purchases_type def
+R4404:4406 Coq.Init.Datatypes <> nat ind
+rec 4514:4518 <> Setup
+proj 4543:4556 <> setup_listings
+proj 4640:4652 <> setup_timeout
+R4560:4563 Theroies.Containers <> FMap abbrev
+R4569:4572 Example.safeRemotePurchase.Purchase <> Item rec
+R4565:4567 Coq.Init.Datatypes <> nat ind
+R4656:4658 Coq.Init.Datatypes <> nat ind
+ind 4747:4749 <> Msg
+constr 4758:4779 <> buyer_request_purchase
+constr 4848:4858 <> buyer_abort
+constr 4904:4925 <> buyer_confirm_delivery
+constr 4974:4995 <> buyer_dispute_delivery
+constr 5061:5078 <> buyer_call_timeout
+constr 5130:5150 <> buyer_open_commitment
+constr 5239:5257 <> seller_call_timeout
+constr 5309:5330 <> seller_reject_contract
+constr 5376:5397 <> seller_accept_contract
+constr 5443:5467 <> seller_item_was_delivered
+constr 5516:5537 <> seller_forfeit_dispute
+constr 5577:5598 <> seller_counter_dispute
+constr 5658:5679 <> seller_update_listings
+R4791:4793 Coq.Init.Datatypes <> nat ind
+binder 4782:4787 <> itemId:35
+R4805:4810 Coq.Strings.String <> string ind
+binder 4797:4801 <> notes:36
+R4866:4866 Coq.Numbers.BinNums <> N ind
+binder 4861:4862 <> id:37
+R4933:4933 Coq.Numbers.BinNums <> N ind
+binder 4928:4929 <> id:38
+R5003:5003 Coq.Numbers.BinNums <> N ind
+binder 4998:4999 <> id:39
+R5020:5020 Coq.Numbers.BinNums <> N ind
+binder 5007:5016 <> commitment:40
+R5086:5086 Coq.Numbers.BinNums <> N ind
+binder 5081:5082 <> id:41
+R5158:5158 Coq.Numbers.BinNums <> N ind
+binder 5153:5154 <> id:42
+R5174:5177 Coq.Init.Datatypes <> bool ind
+binder 5162:5170 <> buyer_bit:43
+R5189:5189 Coq.Numbers.BinNums <> N ind
+binder 5181:5185 <> nonce:44
+R5265:5265 Coq.Numbers.BinNums <> N ind
+binder 5260:5261 <> id:45
+R5338:5338 Coq.Numbers.BinNums <> N ind
+binder 5333:5334 <> id:46
+R5405:5405 Coq.Numbers.BinNums <> N ind
+binder 5400:5401 <> id:47
+R5475:5475 Coq.Numbers.BinNums <> N ind
+binder 5470:5471 <> id:48
+R5545:5545 Coq.Numbers.BinNums <> N ind
+binder 5540:5541 <> id:49
+R5606:5606 Coq.Numbers.BinNums <> N ind
+binder 5601:5602 <> id:50
+R5623:5626 Coq.Init.Datatypes <> bool ind
+binder 5610:5619 <> random_bit:51
+R5691:5693 Coq.Init.Datatypes <> nat ind
+binder 5682:5687 <> itemId:52
+R5711:5716 Coq.Strings.String <> string ind
+binder 5697:5707 <> description:53
+R5728:5733 Theroies.Blockchain <> Amount def
+binder 5720:5724 <> value:54
+sec 5794:5806 EcommerceFixed Serialization
+inst 5826:5838 <> item_settable
+R5842:5849 RecordUpdate.RecordSet <> Settable class
+R5851:5854 Example.safeRemotePurchase.Purchase <> Item rec
+R5859:5868 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R5879:5880 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R5891:5891 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R5908:5908 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R5869:5878 Example.safeRemotePurchase.Purchase <> build_item constr
+R5881:5890 Example.safeRemotePurchase.Purchase <> item_value proj
+R5892:5907 Example.safeRemotePurchase.Purchase <> item_description proj
+R5869:5878 Example.safeRemotePurchase.Purchase <> build_item constr
+inst 5928:5944 <> purchase_settable
+R5948:5955 RecordUpdate.RecordSet <> Settable class
+R5957:5964 Example.safeRemotePurchase.Purchase <> Purchase rec
+R5969:5978 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R5993:5994 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6001:6002 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6013:6014 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6021:6022 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6033:6034 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6040:6040 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6055:6055 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6061:6061 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6066:6066 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6082:6082 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R5979:5992 Example.safeRemotePurchase.Purchase <> build_purchase constr
+R5995:6000 Example.safeRemotePurchase.Purchase <> commit proj
+R6003:6012 Example.safeRemotePurchase.Purchase <> last_block proj
+R6015:6020 Example.safeRemotePurchase.Purchase <> itemId proj
+R6023:6032 Example.safeRemotePurchase.Purchase <> seller_bit proj
+R6035:6039 Example.safeRemotePurchase.Purchase <> notes proj
+R6041:6054 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R6056:6060 Example.safeRemotePurchase.Purchase <> buyer proj
+R6062:6065 Example.safeRemotePurchase.Purchase <> pool proj
+R6067:6081 Example.safeRemotePurchase.Purchase <> discarded_money proj
+R5979:5992 Example.safeRemotePurchase.Purchase <> build_purchase constr
+inst 6102:6115 <> state_settable
+R6119:6126 RecordUpdate.RecordSet <> Settable class
+R6128:6132 Example.safeRemotePurchase.Purchase <> State rec
+R6137:6146 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6158:6159 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6166:6167 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6176:6177 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6187:6187 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6195:6195 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6147:6157 Example.safeRemotePurchase.Purchase <> build_state constr
+R6160:6165 Example.safeRemotePurchase.Purchase <> seller proj
+R6168:6175 Example.safeRemotePurchase.Purchase <> listings proj
+R6178:6186 Example.safeRemotePurchase.Purchase <> purchases proj
+R6188:6194 Example.safeRemotePurchase.Purchase <> timeout proj
+R6147:6157 Example.safeRemotePurchase.Purchase <> build_state constr
+inst 6215:6228 <> setup_settable
+R6232:6239 RecordUpdate.RecordSet <> Settable class
+R6241:6245 Example.safeRemotePurchase.Purchase <> Setup rec
+R6250:6259 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6271:6272 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6287:6288 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6302:6302 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R6260:6270 Example.safeRemotePurchase.Purchase <> build_setup constr
+R6273:6286 Example.safeRemotePurchase.Purchase <> setup_listings proj
+R6289:6301 Example.safeRemotePurchase.Purchase <> setup_timeout proj
+R6260:6270 Example.safeRemotePurchase.Purchase <> build_setup constr
+inst 6324:6339 <> Msg_serializable
+R6343:6354 Theroies.Serializable <> Serializable class
+R6356:6358 Example.safeRemotePurchase.Purchase <> Msg ind
+R6367:6386 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6395:6402 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6425:6432 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6444:6451 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6474:6481 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6504:6511 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6530:6537 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6559:6566 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6586:6593 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6616:6623 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6646:6653 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6679:6686 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6709:6716 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6739:6746 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6769:6774 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6387:6394 Example.safeRemotePurchase.Purchase <> Msg_rect scheme
+R6403:6424 Example.safeRemotePurchase.Purchase <> buyer_request_purchase constr
+R6433:6443 Example.safeRemotePurchase.Purchase <> buyer_abort constr
+R6452:6473 Example.safeRemotePurchase.Purchase <> buyer_confirm_delivery constr
+R6482:6503 Example.safeRemotePurchase.Purchase <> buyer_dispute_delivery constr
+R6512:6529 Example.safeRemotePurchase.Purchase <> buyer_call_timeout constr
+R6538:6558 Example.safeRemotePurchase.Purchase <> buyer_open_commitment constr
+R6567:6585 Example.safeRemotePurchase.Purchase <> seller_call_timeout constr
+R6594:6615 Example.safeRemotePurchase.Purchase <> seller_reject_contract constr
+R6624:6645 Example.safeRemotePurchase.Purchase <> seller_accept_contract constr
+R6654:6678 Example.safeRemotePurchase.Purchase <> seller_item_was_delivered constr
+R6687:6708 Example.safeRemotePurchase.Purchase <> seller_forfeit_dispute constr
+R6717:6738 Example.safeRemotePurchase.Purchase <> seller_counter_dispute constr
+R6747:6768 Example.safeRemotePurchase.Purchase <> seller_update_listings constr
+inst 6796:6812 <> Item_serializable
+R6816:6827 Theroies.Serializable <> Serializable class
+R6829:6832 Example.safeRemotePurchase.Purchase <> Item rec
+R6841:6860 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6870:6870 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6881:6881 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6861:6869 Example.safeRemotePurchase.Purchase <> Item_rect scheme
+R6871:6880 Example.safeRemotePurchase.Purchase <> build_item constr
+inst 6903:6920 <> Setup_serializable
+R6924:6935 Theroies.Serializable <> Serializable class
+R6937:6941 Example.safeRemotePurchase.Purchase <> Setup rec
+R6950:6969 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6980:6980 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6992:6992 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R6970:6979 Example.safeRemotePurchase.Purchase <> Setup_rect scheme
+R6981:6991 Example.safeRemotePurchase.Purchase <> build_setup constr
+inst 7014:7039 <> PurchaseState_serializable
+R7043:7054 Theroies.Serializable <> Serializable class
+R7056:7068 Example.safeRemotePurchase.Purchase <> PurchaseState ind
+R7077:7096 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7115:7122 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7132:7133 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7142:7143 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7152:7153 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7163:7170 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7180:7181 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7189:7190 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7198:7199 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7206:7211 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7097:7114 Example.safeRemotePurchase.Purchase <> PurchaseState_rect scheme
+R7123:7131 Example.safeRemotePurchase.Purchase <> requested constr
+R7134:7141 Example.safeRemotePurchase.Purchase <> accepted constr
+R7144:7151 Example.safeRemotePurchase.Purchase <> rejected constr
+R7154:7162 Example.safeRemotePurchase.Purchase <> delivered constr
+R7171:7179 Example.safeRemotePurchase.Purchase <> completed constr
+R7182:7188 Example.safeRemotePurchase.Purchase <> dispute constr
+R7191:7197 Example.safeRemotePurchase.Purchase <> counter constr
+R7200:7205 Example.safeRemotePurchase.Purchase <> failed constr
+inst 7235:7255 <> Purchase_serializable
+R7259:7270 Theroies.Serializable <> Serializable class
+R7272:7279 Example.safeRemotePurchase.Purchase <> Purchase rec
+R7288:7307 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7321:7321 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7336:7336 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7308:7320 Example.safeRemotePurchase.Purchase <> Purchase_rect scheme
+R7322:7335 Example.safeRemotePurchase.Purchase <> build_purchase constr
+inst 7358:7375 <> State_serializable
+R7379:7390 Theroies.Serializable <> Serializable class
+R7392:7396 Example.safeRemotePurchase.Purchase <> State rec
+R7405:7424 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7435:7435 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7447:7447 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R7425:7434 Example.safeRemotePurchase.Purchase <> State_rect scheme
+R7436:7446 Example.safeRemotePurchase.Purchase <> build_state constr
+R7455:7467 Example.safeRemotePurchase.Purchase EcommerceFixed.Serialization <> sec
+def 7523:7534 <> serializeMsg
+binder 7536:7538 <> msg:55
+R7545:7553 Theroies.Serializable <> serialize meth
+R7555:7557 Example.safeRemotePurchase.Purchase <> Msg ind
+R7562:7564 Example.safeRemotePurchase.Purchase <> msg:55 var
+def 7585:7598 <> serializeState
+binder 7600:7604 <> state:56
+R7611:7619 Theroies.Serializable <> serialize meth
+R7621:7625 Example.safeRemotePurchase.Purchase <> State rec
+R7630:7634 Example.safeRemotePurchase.Purchase <> state:56 var
+def 7655:7668 <> serializeSetup
+binder 7670:7674 <> setup:57
+R7681:7689 Theroies.Serializable <> serialize meth
+R7691:7695 Example.safeRemotePurchase.Purchase <> Setup rec
+R7700:7704 Example.safeRemotePurchase.Purchase <> setup:57 var
+def 7725:7737 <> serializeItem
+binder 7739:7742 <> item:58
+R7749:7757 Theroies.Serializable <> serialize meth
+R7759:7762 Example.safeRemotePurchase.Purchase <> Item rec
+R7767:7770 Example.safeRemotePurchase.Purchase <> item:58 var
+def 7791:7807 <> serializePurchase
+binder 7809:7816 <> purchase:59
+R7823:7831 Theroies.Serializable <> serialize meth
+R7833:7840 Example.safeRemotePurchase.Purchase <> Purchase rec
+R7845:7852 Example.safeRemotePurchase.Purchase <> purchase:59 var
+def 7873:7894 <> serializePurchaseState
+binder 7896:7908 <> purchaseState:60
+R7915:7923 Theroies.Serializable <> serialize meth
+R7925:7937 Example.safeRemotePurchase.Purchase <> PurchaseState ind
+R7942:7954 Example.safeRemotePurchase.Purchase <> purchaseState:60 var
+R8015:8061 Example.safeRemotePurchase.Purchase <> serializeMsg def
+R8071:8121 Example.safeRemotePurchase.Purchase <> serializeState def
+R8131:8181 Example.safeRemotePurchase.Purchase <> serializeSetup def
+R8191:8239 Example.safeRemotePurchase.Purchase <> serializeItem def
+R8249:8305 Example.safeRemotePurchase.Purchase <> serializePurchase def
+R8315:8381 Example.safeRemotePurchase.Purchase <> serializePurchaseState def
+def 8660:8668 <> find_item
+binder 8670:8675 <> itemId:61
+R8689:8701 Example.safeRemotePurchase.Purchase <> listings_type def
+binder 8678:8685 <> listings:62
+R8707:8715 Theroies.Containers FMap find abbrev
+R8724:8731 Example.safeRemotePurchase.Purchase <> listings:62 var
+R8717:8722 Example.safeRemotePurchase.Purchase <> itemId:61 var
+def 9026:9038 <> find_purchase
+binder 9040:9049 <> purchaseId:63
+R9064:9077 Example.safeRemotePurchase.Purchase <> purchases_type def
+binder 9052:9060 <> purchases:64
+R9083:9091 Theroies.Containers FMap find abbrev
+R9104:9112 Example.safeRemotePurchase.Purchase <> purchases:64 var
+R9093:9102 Example.safeRemotePurchase.Purchase <> purchaseId:63 var
+def 9176:9195 <> required_amount_zero
+binder 9197:9199 <> ctx:65
+R9204:9216 Example.safeRemotePurchase.Purchase <> required_true def
+R9235:9238 Coq.ZArith.BinInt <> ::Z_scope:x_'=?'_x not
+R9224:9233 Theroies.Blockchain <> ctx_amount proj
+R9219:9221 Example.safeRemotePurchase.Purchase <> ctx:65 var
+def 9372:9392 <> required_no_self_call
+binder 9394:9396 <> ctx:66
+R9401:9414 Example.safeRemotePurchase.Purchase <> required_false def
+R9431:9434 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R9422:9429 Theroies.Blockchain <> ctx_from proj
+R9417:9419 Example.safeRemotePurchase.Purchase <> ctx:66 var
+R9440:9459 Theroies.Blockchain <> ctx_contract_address proj
+R9435:9437 Example.safeRemotePurchase.Purchase <> ctx:66 var
+def 9757:9771 <> purchase_exists
+binder 9773:9782 <> purchaseId:67
+binder 9784:9792 <> purchases:68
+R9807:9819 Example.safeRemotePurchase.Purchase <> find_purchase def
+R9821:9830 Example.safeRemotePurchase.Purchase <> purchaseId:67 var
+R9832:9840 Example.safeRemotePurchase.Purchase <> purchases:68 var
+R9853:9856 Coq.Init.Datatypes <> Some constr
+R9863:9866 Coq.Init.Datatypes <> true constr
+R9874:9877 Coq.Init.Datatypes <> None constr
+R9882:9886 Coq.Init.Datatypes <> false constr
+def 10026:10040 <> hash_purchaseId
+R10047:10049 Coq.Init.Datatypes <> nat ind
+binder 10043:10043 <> n:69
+R10060:10066 Theroies.Blockchain <> Address meth
+binder 10053:10056 <> addr:70
+R10071:10071 Coq.Numbers.BinNums <> N ind
+R10080:10083 Coq.Numbers.BinNums <> Npos constr
+R10086:10101 stdpp.countable <> encode meth
+R10103:10103 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10105:10106 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10111:10111 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10104:10104 Example.safeRemotePurchase.Purchase <> n:69 var
+R10107:10110 Example.safeRemotePurchase.Purchase <> addr:70 var
+def 10232:10239 <> hash_bid
+R10247:10247 Coq.Numbers.BinNums <> N ind
+binder 10242:10243 <> id:71
+R10263:10266 Coq.Init.Datatypes <> bool ind
+binder 10251:10259 <> buyer_bit:72
+R10278:10278 Coq.Numbers.BinNums <> N ind
+binder 10270:10274 <> nonce:73
+R10283:10283 Coq.Numbers.BinNums <> N ind
+R10292:10295 Coq.Numbers.BinNums <> Npos constr
+R10298:10313 stdpp.countable <> encode meth
+R10315:10315 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10318:10319 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10329:10330 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10336:10336 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10316:10317 Example.safeRemotePurchase.Purchase <> id:71 var
+R10320:10328 Example.safeRemotePurchase.Purchase <> buyer_bit:72 var
+R10331:10335 Example.safeRemotePurchase.Purchase <> nonce:73 var
+def 10352:10355 <> init
+R10366:10370 Theroies.Blockchain <> Chain rec
+binder 10358:10362 <> chain:74
+R10396:10414 Theroies.Blockchain <> ContractCallContext rec
+binder 10390:10392 <> ctx:75
+R10442:10446 Example.safeRemotePurchase.Purchase <> Setup rec
+binder 10434:10438 <> setup:76
+R10453:10458 Theroies.ResultMonad <> result ind
+R10460:10464 Example.safeRemotePurchase.Purchase <> State rec
+R10466:10470 Example.safeRemotePurchase.Purchase <> Error def
+R10513:10533 Example.safeRemotePurchase.Purchase <> required_no_self_call def
+R10535:10537 Example.safeRemotePurchase.Purchase <> ctx:75 var
+R11147:11149 Theroies.ResultMonad <> Err constr
+R11151:11163 Example.safeRemotePurchase.Purchase <> default_error def
+R10562:10569 Theroies.Blockchain <> ctx_from proj
+R10571:10573 Example.safeRemotePurchase.Purchase <> ctx:75 var
+binder 10552:10557 <> seller:77
+R10598:10611 Example.safeRemotePurchase.Purchase <> setup_listings proj
+R10613:10617 Example.safeRemotePurchase.Purchase <> setup:76 var
+binder 10586:10593 <> listings:78
+R10641:10653 Example.safeRemotePurchase.Purchase <> setup_timeout proj
+R10655:10659 Example.safeRemotePurchase.Purchase <> setup:76 var
+binder 10630:10636 <> timeout:79
+R10713:10716 Coq.Arith.PeanoNat <> ::nat_scope:x_'<?'_x not
+R10717:10723 Example.safeRemotePurchase.Purchase <> timeout:79 var
+R11085:11087 Theroies.ResultMonad <> Err constr
+R11089:11101 Example.safeRemotePurchase.Purchase <> default_error def
+R10790:10809 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R10811:10813 Example.safeRemotePurchase.Purchase <> ctx:75 var
+R11012:11014 Theroies.ResultMonad <> Err constr
+R11016:11028 Example.safeRemotePurchase.Purchase <> default_error def
+R10828:10829 Theroies.ResultMonad <> Ok constr
+R10844:10849 Example.safeRemotePurchase.Purchase <> seller proj
+R10844:10849 Example.safeRemotePurchase.Purchase <> seller proj
+R10844:10849 Example.safeRemotePurchase.Purchase <> seller proj
+R10872:10879 Example.safeRemotePurchase.Purchase <> listings proj
+R10872:10879 Example.safeRemotePurchase.Purchase <> listings proj
+R10904:10912 Example.safeRemotePurchase.Purchase <> purchases proj
+R10904:10912 Example.safeRemotePurchase.Purchase <> purchases proj
+R10939:10945 Example.safeRemotePurchase.Purchase <> timeout proj
+R10939:10945 Example.safeRemotePurchase.Purchase <> timeout proj
+R10854:10859 Example.safeRemotePurchase.Purchase <> seller:77 var
+R10884:10891 Example.safeRemotePurchase.Purchase <> listings:78 var
+R10917:10926 Theroies.Containers FMap empty abbrev
+R10970:10972 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R10957:10968 Theroies.Blockchain <> current_slot proj
+R10950:10954 Example.safeRemotePurchase.Purchase <> chain:74 var
+R10973:10979 Example.safeRemotePurchase.Purchase <> timeout:79 var
+def 11329:11357 <> buyer_request_purchase_action
+R11368:11372 Theroies.Blockchain <> Chain rec
+binder 11360:11364 <> chain:80
+R11423:11441 Theroies.Blockchain <> ContractCallContext rec
+binder 11417:11419 <> ctx:81
+R11494:11498 Example.safeRemotePurchase.Purchase <> State rec
+binder 11486:11490 <> state:82
+R11552:11554 Coq.Init.Datatypes <> nat ind
+binder 11542:11548 <> _itemId:83
+R11607:11612 Coq.Strings.String <> string ind
+binder 11599:11603 <> notes:84
+R11657:11662 Theroies.ResultMonad <> result ind
+R11670:11672 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R11665:11669 Example.safeRemotePurchase.Purchase <> State rec
+R11673:11676 Coq.Init.Datatypes <> list ind
+R11678:11687 Theroies.Blockchain <> ActionBody ind
+R11690:11694 Example.safeRemotePurchase.Purchase <> Error def
+R11773:11793 Example.safeRemotePurchase.Purchase <> required_no_self_call def
+R11795:11797 Example.safeRemotePurchase.Purchase <> ctx:81 var
+R14282:14284 Theroies.ResultMonad <> Err constr
+R14286:14298 Example.safeRemotePurchase.Purchase <> default_error def
+R11878:11885 Theroies.Blockchain <> ctx_from proj
+R11887:11889 Example.safeRemotePurchase.Purchase <> ctx:81 var
+binder 11868:11873 <> _buyer:85
+R11960:11967 Example.safeRemotePurchase.Purchase <> listings proj
+R11969:11973 Example.safeRemotePurchase.Purchase <> state:82 var
+binder 11940:11955 <> current_listings:86
+R12034:12042 Example.safeRemotePurchase.Purchase <> find_item def
+R12044:12050 Example.safeRemotePurchase.Purchase <> _itemId:83 var
+R12052:12067 Example.safeRemotePurchase.Purchase <> current_listings:86 var
+R12080:12083 Coq.Init.Datatypes <> Some constr
+R12189:12189 Coq.ZArith.BinInt <> ::Z_scope:x_'=?'_x not
+R12215:12219 Coq.ZArith.BinInt <> ::Z_scope:x_'=?'_x not
+R12190:12199 Example.safeRemotePurchase.Purchase <> item_value proj
+R12225:12234 Theroies.Blockchain <> ctx_amount proj
+R12220:12222 Example.safeRemotePurchase.Purchase <> ctx:81 var
+R14055:14057 Theroies.ResultMonad <> Err constr
+R14059:14071 Example.safeRemotePurchase.Purchase <> default_error def
+R12318:12329 Theroies.Blockchain <> current_slot proj
+R12311:12315 Example.safeRemotePurchase.Purchase <> chain:80 var
+binder 12294:12306 <> _current_slot:87
+R12443:12457 Example.safeRemotePurchase.Purchase <> hash_purchaseId def
+R12459:12471 Example.safeRemotePurchase.Purchase <> _current_slot:87 var
+R12473:12478 Example.safeRemotePurchase.Purchase <> _buyer:85 var
+binder 12429:12438 <> purchaseId:88
+R12574:12577 Coq.Init.Datatypes <> negb def
+R12580:12594 Example.safeRemotePurchase.Purchase <> purchase_exists def
+R12596:12605 Example.safeRemotePurchase.Purchase <> purchaseId:88 var
+R12608:12616 Example.safeRemotePurchase.Purchase <> purchases proj
+R12618:12622 Example.safeRemotePurchase.Purchase <> state:82 var
+R13949:13951 Theroies.ResultMonad <> Err constr
+R13953:13965 Example.safeRemotePurchase.Purchase <> default_error def
+R12741:12746 Example.safeRemotePurchase.Purchase <> commit proj
+R12741:12746 Example.safeRemotePurchase.Purchase <> commit proj
+R12741:12746 Example.safeRemotePurchase.Purchase <> commit proj
+R12809:12818 Example.safeRemotePurchase.Purchase <> last_block proj
+R12809:12818 Example.safeRemotePurchase.Purchase <> last_block proj
+R12882:12887 Example.safeRemotePurchase.Purchase <> itemId proj
+R12882:12887 Example.safeRemotePurchase.Purchase <> itemId proj
+R12939:12948 Example.safeRemotePurchase.Purchase <> seller_bit proj
+R12939:12948 Example.safeRemotePurchase.Purchase <> seller_bit proj
+R13019:13023 Example.safeRemotePurchase.Purchase <> notes proj
+R13019:13023 Example.safeRemotePurchase.Purchase <> notes proj
+R13085:13098 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R13085:13098 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R13168:13172 Example.safeRemotePurchase.Purchase <> buyer proj
+R13168:13172 Example.safeRemotePurchase.Purchase <> buyer proj
+R13229:13232 Example.safeRemotePurchase.Purchase <> pool proj
+R13229:13232 Example.safeRemotePurchase.Purchase <> pool proj
+R13332:13346 Example.safeRemotePurchase.Purchase <> discarded_money proj
+R13332:13346 Example.safeRemotePurchase.Purchase <> discarded_money proj
+R12823:12835 Example.safeRemotePurchase.Purchase <> _current_slot:87 var
+R12892:12898 Example.safeRemotePurchase.Purchase <> _itemId:83 var
+R12953:12957 Coq.Init.Datatypes <> false constr
+R13028:13032 Example.safeRemotePurchase.Purchase <> notes:84 var
+R13103:13111 Example.safeRemotePurchase.Purchase <> requested constr
+R13177:13182 Example.safeRemotePurchase.Purchase <> _buyer:85 var
+R13242:13251 Theroies.Blockchain <> ctx_amount proj
+R13237:13239 Example.safeRemotePurchase.Purchase <> ctx:81 var
+binder 12696:12703 <> purchase:89
+R13514:13521 Theroies.Containers FMap add abbrev
+R13544:13552 Example.safeRemotePurchase.Purchase <> purchases proj
+R13554:13558 Example.safeRemotePurchase.Purchase <> state:82 var
+R13534:13541 Example.safeRemotePurchase.Purchase <> purchase:89 var
+R13523:13532 Example.safeRemotePurchase.Purchase <> purchaseId:88 var
+binder 13493:13509 <> updated_purchases:90
+R13669:13672 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R13682:13685 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R13703:13705 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R13673:13681 Example.safeRemotePurchase.Purchase <> purchases proj
+R13686:13702 Example.safeRemotePurchase.Purchase <> updated_purchases:90 var
+R13664:13668 Example.safeRemotePurchase.Purchase <> state:82 var
+binder 13647:13659 <> updated_state:91
+R13828:13829 Theroies.ResultMonad <> Ok constr
+R13831:13831 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R13845:13846 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R13849:13849 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R13832:13844 Example.safeRemotePurchase.Purchase <> updated_state:91 var
+R13847:13848 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R14079:14082 Coq.Init.Datatypes <> None constr
+R14171:14173 Theroies.ResultMonad <> Err constr
+R14175:14187 Example.safeRemotePurchase.Purchase <> default_error def
+def 14403:14420 <> buyer_abort_action
+R14429:14447 Theroies.Blockchain <> ContractCallContext rec
+binder 14423:14425 <> ctx:92
+R14490:14494 Example.safeRemotePurchase.Purchase <> State rec
+binder 14482:14486 <> state:93
+R14542:14558 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 14529:14538 <> purchaseId:94
+R14565:14570 Theroies.ResultMonad <> result ind
+R14578:14580 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R14573:14577 Example.safeRemotePurchase.Purchase <> State rec
+R14581:14584 Coq.Init.Datatypes <> list ind
+R14586:14595 Theroies.Blockchain <> ActionBody ind
+R14598:14602 Example.safeRemotePurchase.Purchase <> Error def
+R14654:14673 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R14675:14677 Example.safeRemotePurchase.Purchase <> ctx:92 var
+R16334:16336 Theroies.ResultMonad <> Err constr
+R16338:16350 Example.safeRemotePurchase.Purchase <> default_error def
+R14757:14765 Example.safeRemotePurchase.Purchase <> purchases proj
+R14767:14771 Example.safeRemotePurchase.Purchase <> state:93 var
+binder 14736:14752 <> current_purchases:95
+R14842:14854 Example.safeRemotePurchase.Purchase <> find_purchase def
+R14856:14865 Example.safeRemotePurchase.Purchase <> purchaseId:94 var
+R14867:14883 Example.safeRemotePurchase.Purchase <> current_purchases:95 var
+R14896:14899 Coq.Init.Datatypes <> Some constr
+R14978:14994 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R15006:15019 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R15022:15030 Example.safeRemotePurchase.Purchase <> requested constr
+R16159:16161 Theroies.ResultMonad <> Err constr
+R16163:16175 Example.safeRemotePurchase.Purchase <> default_error def
+R15110:15110 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R15123:15127 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R15111:15118 Theroies.Blockchain <> ctx_from proj
+R15120:15122 Example.safeRemotePurchase.Purchase <> ctx:92 var
+R15138:15142 Example.safeRemotePurchase.Purchase <> buyer proj
+R16062:16064 Theroies.ResultMonad <> Err constr
+R16066:16078 Example.safeRemotePurchase.Purchase <> default_error def
+R15325:15373 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15378:15381 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15383:15385 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15374:15377 Example.safeRemotePurchase.Purchase <> pool proj
+R15294:15297 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15312:15315 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15322:15324 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15298:15311 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R15316:15321 Example.safeRemotePurchase.Purchase <> failed constr
+binder 15266:15281 <> updated_purchase:96
+R15503:15510 Theroies.Containers FMap add abbrev
+R15540:15556 Example.safeRemotePurchase.Purchase <> current_purchases:95 var
+R15523:15538 Example.safeRemotePurchase.Purchase <> updated_purchase:96 var
+R15512:15521 Example.safeRemotePurchase.Purchase <> purchaseId:94 var
+binder 15482:15498 <> updated_purchases:97
+R15669:15672 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15682:15685 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15703:15705 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R15673:15681 Example.safeRemotePurchase.Purchase <> purchases proj
+R15686:15702 Example.safeRemotePurchase.Purchase <> updated_purchases:97 var
+R15664:15668 Example.safeRemotePurchase.Purchase <> state:93 var
+binder 15647:15659 <> updated_state:98
+R15822:15822 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R15868:15868 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R15823:15834 Theroies.Blockchain <> act_transfer constr
+R15846:15850 Example.safeRemotePurchase.Purchase <> buyer proj
+R15863:15866 Example.safeRemotePurchase.Purchase <> pool proj
+binder 15811:15817 <> actions:99
+R15958:15959 Theroies.ResultMonad <> Ok constr
+R15961:15961 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15975:15976 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15984:15984 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R15962:15974 Example.safeRemotePurchase.Purchase <> updated_state:98 var
+R15977:15983 Example.safeRemotePurchase.Purchase <> actions:99 var
+R16183:16186 Coq.Init.Datatypes <> None constr
+R16253:16255 Theroies.ResultMonad <> Err constr
+R16257:16269 Example.safeRemotePurchase.Purchase <> default_error def
+def 16559:16587 <> buyer_confirm_delivery_action
+R16596:16614 Theroies.Blockchain <> ContractCallContext rec
+binder 16590:16592 <> ctx:100
+R16668:16672 Example.safeRemotePurchase.Purchase <> State rec
+binder 16660:16664 <> state:101
+R16731:16747 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 16718:16727 <> purchaseId:102
+R16754:16759 Theroies.ResultMonad <> result ind
+R16767:16769 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R16762:16766 Example.safeRemotePurchase.Purchase <> State rec
+R16770:16773 Coq.Init.Datatypes <> list ind
+R16775:16784 Theroies.Blockchain <> ActionBody ind
+R16787:16791 Example.safeRemotePurchase.Purchase <> Error def
+R16843:16862 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R16864:16866 Example.safeRemotePurchase.Purchase <> ctx:100 var
+R18521:18523 Theroies.ResultMonad <> Err constr
+R18525:18537 Example.safeRemotePurchase.Purchase <> default_error def
+R16946:16954 Example.safeRemotePurchase.Purchase <> purchases proj
+R16956:16960 Example.safeRemotePurchase.Purchase <> state:101 var
+binder 16925:16941 <> current_purchases:103
+R17031:17043 Example.safeRemotePurchase.Purchase <> find_purchase def
+R17045:17054 Example.safeRemotePurchase.Purchase <> purchaseId:102 var
+R17056:17072 Example.safeRemotePurchase.Purchase <> current_purchases:103 var
+R17085:17088 Coq.Init.Datatypes <> Some constr
+R17167:17183 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R17195:17208 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R17211:17219 Example.safeRemotePurchase.Purchase <> delivered constr
+R18346:18348 Theroies.ResultMonad <> Err constr
+R18350:18362 Example.safeRemotePurchase.Purchase <> default_error def
+R17287:17287 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R17300:17304 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R17288:17295 Theroies.Blockchain <> ctx_from proj
+R17297:17299 Example.safeRemotePurchase.Purchase <> ctx:100 var
+R17315:17319 Example.safeRemotePurchase.Purchase <> buyer proj
+R18249:18251 Theroies.ResultMonad <> Err constr
+R18253:18265 Example.safeRemotePurchase.Purchase <> default_error def
+R17508:17556 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17561:17564 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17566:17568 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17557:17560 Example.safeRemotePurchase.Purchase <> pool proj
+R17474:17477 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17492:17495 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17505:17507 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17478:17491 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R17496:17504 Example.safeRemotePurchase.Purchase <> completed constr
+binder 17446:17461 <> updated_purchase:104
+R17686:17693 Theroies.Containers FMap add abbrev
+R17723:17739 Example.safeRemotePurchase.Purchase <> current_purchases:103 var
+R17706:17721 Example.safeRemotePurchase.Purchase <> updated_purchase:104 var
+R17695:17704 Example.safeRemotePurchase.Purchase <> purchaseId:102 var
+binder 17665:17681 <> updated_purchases:105
+R17852:17855 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17865:17868 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17886:17888 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R17856:17864 Example.safeRemotePurchase.Purchase <> purchases proj
+R17869:17885 Example.safeRemotePurchase.Purchase <> updated_purchases:105 var
+R17847:17851 Example.safeRemotePurchase.Purchase <> state:101 var
+binder 17830:17842 <> updated_state:106
+R18005:18005 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R18049:18049 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R18006:18017 Theroies.Blockchain <> act_transfer constr
+R18026:18031 Example.safeRemotePurchase.Purchase <> seller proj
+R18019:18023 Example.safeRemotePurchase.Purchase <> state:101 var
+R18044:18047 Example.safeRemotePurchase.Purchase <> pool proj
+binder 17994:18000 <> actions:107
+R18145:18146 Theroies.ResultMonad <> Ok constr
+R18148:18148 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R18162:18163 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R18171:18171 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R18149:18161 Example.safeRemotePurchase.Purchase <> updated_state:106 var
+R18164:18170 Example.safeRemotePurchase.Purchase <> actions:107 var
+R18370:18373 Coq.Init.Datatypes <> None constr
+R18440:18442 Theroies.ResultMonad <> Err constr
+R18444:18456 Example.safeRemotePurchase.Purchase <> default_error def
+def 18716:18744 <> buyer_dispute_delivery_action
+R18753:18771 Theroies.Blockchain <> ContractCallContext rec
+binder 18747:18749 <> ctx:108
+R18825:18829 Example.safeRemotePurchase.Purchase <> State rec
+binder 18817:18821 <> state:109
+R18883:18887 Theroies.Blockchain <> Chain rec
+binder 18875:18879 <> chain:110
+R18946:18962 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 18933:18942 <> purchaseId:111
+R19021:19021 Coq.Numbers.BinNums <> N ind
+binder 19008:19017 <> commitment:112
+R19032:19037 Theroies.ResultMonad <> result ind
+R19045:19047 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R19040:19044 Example.safeRemotePurchase.Purchase <> State rec
+R19048:19051 Coq.Init.Datatypes <> list ind
+R19053:19062 Theroies.Blockchain <> ActionBody ind
+R19065:19069 Example.safeRemotePurchase.Purchase <> Error def
+R19101:19109 Example.safeRemotePurchase.Purchase <> purchases proj
+R19111:19115 Example.safeRemotePurchase.Purchase <> state:109 var
+binder 19080:19096 <> current_purchases:113
+R19155:19167 Example.safeRemotePurchase.Purchase <> find_purchase def
+R19169:19178 Example.safeRemotePurchase.Purchase <> purchaseId:111 var
+R19180:19196 Example.safeRemotePurchase.Purchase <> current_purchases:113 var
+R19207:19210 Coq.Init.Datatypes <> Some constr
+R19270:19278 Example.safeRemotePurchase.Purchase <> find_item def
+R19290:19295 Example.safeRemotePurchase.Purchase <> itemId proj
+R19299:19306 Example.safeRemotePurchase.Purchase <> listings proj
+R19308:19312 Example.safeRemotePurchase.Purchase <> state:109 var
+R19328:19331 Coq.Init.Datatypes <> Some constr
+R19436:19439 Coq.ZArith.BinInt <> ::Z_scope:x_'=?'_x not
+R19425:19434 Theroies.Blockchain <> ctx_amount proj
+R19420:19422 Example.safeRemotePurchase.Purchase <> ctx:108 var
+R19446:19455 Example.safeRemotePurchase.Purchase <> item_value proj
+R20869:20871 Theroies.ResultMonad <> Err constr
+R20873:20885 Example.safeRemotePurchase.Purchase <> default_error def
+R19535:19551 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R19563:19576 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R19579:19587 Example.safeRemotePurchase.Purchase <> delivered constr
+R20780:20782 Theroies.ResultMonad <> Err constr
+R20784:20796 Example.safeRemotePurchase.Purchase <> default_error def
+R19663:19663 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R19676:19680 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R19664:19671 Theroies.Blockchain <> ctx_from proj
+R19673:19675 Example.safeRemotePurchase.Purchase <> ctx:108 var
+R19691:19695 Example.safeRemotePurchase.Purchase <> buyer proj
+R20694:20696 Theroies.ResultMonad <> Err constr
+R20698:20710 Example.safeRemotePurchase.Purchase <> default_error def
+R20071:20123 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20128:20131 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20167:20169 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20124:20127 Example.safeRemotePurchase.Purchase <> pool proj
+R20147:20149 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R20142:20145 Example.safeRemotePurchase.Purchase <> pool proj
+R20156:20165 Example.safeRemotePurchase.Purchase <> item_value proj
+R19983:20035 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20046:20049 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20068:20070 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20036:20045 Example.safeRemotePurchase.Purchase <> last_block proj
+R20050:20061 Theroies.Blockchain <> current_slot proj
+R20063:20067 Example.safeRemotePurchase.Purchase <> chain:110 var
+R19907:19959 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R19966:19969 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R19980:19982 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R19960:19965 Example.safeRemotePurchase.Purchase <> commit proj
+R19970:19979 Example.safeRemotePurchase.Purchase <> commitment:112 var
+R19875:19878 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R19893:19896 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R19904:19906 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R19879:19892 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R19897:19903 Example.safeRemotePurchase.Purchase <> dispute constr
+binder 19847:19862 <> updated_purchase:114
+R20295:20302 Theroies.Containers FMap add abbrev
+R20332:20348 Example.safeRemotePurchase.Purchase <> current_purchases:113 var
+R20315:20330 Example.safeRemotePurchase.Purchase <> updated_purchase:114 var
+R20304:20313 Example.safeRemotePurchase.Purchase <> purchaseId:111 var
+binder 20274:20290 <> updated_purchases:115
+R20469:20472 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20482:20485 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20503:20505 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R20473:20481 Example.safeRemotePurchase.Purchase <> purchases proj
+R20486:20502 Example.safeRemotePurchase.Purchase <> updated_purchases:115 var
+R20464:20468 Example.safeRemotePurchase.Purchase <> state:109 var
+binder 20447:20459 <> updated_state:116
+R20636:20637 Theroies.ResultMonad <> Ok constr
+R20639:20639 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R20653:20654 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R20657:20657 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R20640:20652 Example.safeRemotePurchase.Purchase <> updated_state:116 var
+R20655:20656 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R20947:20950 Coq.Init.Datatypes <> None constr
+R20965:20967 Theroies.ResultMonad <> Err constr
+R20969:20981 Example.safeRemotePurchase.Purchase <> default_error def
+R21037:21040 Coq.Init.Datatypes <> None constr
+R21051:21053 Theroies.ResultMonad <> Err constr
+R21055:21067 Example.safeRemotePurchase.Purchase <> default_error def
+def 21346:21370 <> buyer_call_timeout_action
+R21379:21397 Theroies.Blockchain <> ContractCallContext rec
+binder 21373:21375 <> ctx:117
+R21446:21450 Example.safeRemotePurchase.Purchase <> State rec
+binder 21438:21442 <> state:118
+R21499:21503 Theroies.Blockchain <> Chain rec
+binder 21491:21495 <> chain:119
+R21557:21573 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 21544:21553 <> purchaseId:120
+R21584:21589 Theroies.ResultMonad <> result ind
+R21597:21599 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R21592:21596 Example.safeRemotePurchase.Purchase <> State rec
+R21600:21603 Coq.Init.Datatypes <> list ind
+R21605:21614 Theroies.Blockchain <> ActionBody ind
+R21617:21621 Example.safeRemotePurchase.Purchase <> Error def
+R21673:21692 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R21694:21696 Example.safeRemotePurchase.Purchase <> ctx:117 var
+R23575:23577 Theroies.ResultMonad <> Err constr
+R23579:23591 Example.safeRemotePurchase.Purchase <> default_error def
+R21776:21784 Example.safeRemotePurchase.Purchase <> purchases proj
+R21786:21790 Example.safeRemotePurchase.Purchase <> state:118 var
+binder 21755:21771 <> current_purchases:121
+R21861:21873 Example.safeRemotePurchase.Purchase <> find_purchase def
+R21875:21884 Example.safeRemotePurchase.Purchase <> purchaseId:120 var
+R21886:21902 Example.safeRemotePurchase.Purchase <> current_purchases:121 var
+R21915:21918 Coq.Init.Datatypes <> Some constr
+R22057:22060 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R22006:22022 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R22034:22047 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R22050:22056 Example.safeRemotePurchase.Purchase <> dispute constr
+R22061:22077 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R22089:22102 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R22105:22112 Example.safeRemotePurchase.Purchase <> accepted constr
+R23397:23399 Theroies.ResultMonad <> Err constr
+R23401:23413 Example.safeRemotePurchase.Purchase <> default_error def
+R22180:22180 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R22193:22197 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R22181:22188 Theroies.Blockchain <> ctx_from proj
+R22190:22192 Example.safeRemotePurchase.Purchase <> ctx:117 var
+R22208:22212 Example.safeRemotePurchase.Purchase <> buyer proj
+R23319:23321 Theroies.ResultMonad <> Err constr
+R23323:23335 Example.safeRemotePurchase.Purchase <> default_error def
+R22327:22330 Coq.Arith.PeanoNat <> ::nat_scope:x_'<?'_x not
+R22309:22311 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R22298:22307 Example.safeRemotePurchase.Purchase <> last_block proj
+R22319:22325 Example.safeRemotePurchase.Purchase <> timeout proj
+R22312:22316 Example.safeRemotePurchase.Purchase <> state:118 var
+R22338:22349 Theroies.Blockchain <> current_slot proj
+R22331:22335 Example.safeRemotePurchase.Purchase <> chain:119 var
+R23234:23236 Theroies.ResultMonad <> Err constr
+R23238:23250 Example.safeRemotePurchase.Purchase <> default_error def
+R22515:22565 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22570:22573 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22575:22577 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22566:22569 Example.safeRemotePurchase.Purchase <> pool proj
+R22484:22487 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22502:22505 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22512:22514 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22488:22501 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R22506:22511 Example.safeRemotePurchase.Purchase <> failed constr
+binder 22456:22471 <> updated_purchase:122
+R22699:22706 Theroies.Containers FMap add abbrev
+R22736:22752 Example.safeRemotePurchase.Purchase <> current_purchases:121 var
+R22719:22734 Example.safeRemotePurchase.Purchase <> updated_purchase:122 var
+R22708:22717 Example.safeRemotePurchase.Purchase <> purchaseId:120 var
+binder 22678:22694 <> updated_purchases:123
+R22869:22872 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22882:22885 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22903:22905 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R22873:22881 Example.safeRemotePurchase.Purchase <> purchases proj
+R22886:22902 Example.safeRemotePurchase.Purchase <> updated_purchases:123 var
+R22864:22868 Example.safeRemotePurchase.Purchase <> state:118 var
+binder 22847:22859 <> updated_state:124
+R23029:23029 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R23075:23075 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R23030:23041 Theroies.Blockchain <> act_transfer constr
+R23053:23057 Example.safeRemotePurchase.Purchase <> buyer proj
+R23070:23073 Example.safeRemotePurchase.Purchase <> pool proj
+binder 23018:23024 <> actions:125
+R23175:23176 Theroies.ResultMonad <> Ok constr
+R23178:23178 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R23192:23193 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R23201:23201 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R23179:23191 Example.safeRemotePurchase.Purchase <> updated_state:124 var
+R23194:23200 Example.safeRemotePurchase.Purchase <> actions:125 var
+R23476:23479 Coq.Init.Datatypes <> None constr
+R23492:23494 Theroies.ResultMonad <> Err constr
+R23496:23508 Example.safeRemotePurchase.Purchase <> default_error def
+def 23713:23740 <> buyer_open_commitment_action
+R23749:23767 Theroies.Blockchain <> ContractCallContext rec
+binder 23743:23745 <> ctx:126
+R23820:23824 Example.safeRemotePurchase.Purchase <> State rec
+binder 23812:23816 <> state:127
+R23882:23898 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 23869:23878 <> purchaseId:128
+R23955:23958 Coq.Init.Datatypes <> bool ind
+binder 23943:23951 <> buyer_bit:129
+R24011:24011 Coq.Numbers.BinNums <> N ind
+binder 24003:24007 <> nonce:130
+R24022:24027 Theroies.ResultMonad <> result ind
+R24035:24037 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R24030:24034 Example.safeRemotePurchase.Purchase <> State rec
+R24038:24041 Coq.Init.Datatypes <> list ind
+R24043:24052 Theroies.Blockchain <> ActionBody ind
+R24055:24059 Example.safeRemotePurchase.Purchase <> Error def
+R24120:24139 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R24141:24143 Example.safeRemotePurchase.Purchase <> ctx:126 var
+R27285:27287 Theroies.ResultMonad <> Err constr
+R27289:27301 Example.safeRemotePurchase.Purchase <> default_error def
+R24217:24225 Example.safeRemotePurchase.Purchase <> purchases proj
+R24227:24231 Example.safeRemotePurchase.Purchase <> state:127 var
+binder 24196:24212 <> current_purchases:131
+R24302:24314 Example.safeRemotePurchase.Purchase <> find_purchase def
+R24316:24325 Example.safeRemotePurchase.Purchase <> purchaseId:128 var
+R24327:24343 Example.safeRemotePurchase.Purchase <> current_purchases:131 var
+R24356:24359 Coq.Init.Datatypes <> Some constr
+R24455:24463 Example.safeRemotePurchase.Purchase <> find_item def
+R24475:24480 Example.safeRemotePurchase.Purchase <> itemId proj
+R24484:24491 Example.safeRemotePurchase.Purchase <> listings proj
+R24493:24497 Example.safeRemotePurchase.Purchase <> state:127 var
+R24515:24518 Coq.Init.Datatypes <> Some constr
+R24605:24605 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R24618:24622 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R24606:24613 Theroies.Blockchain <> ctx_from proj
+R24615:24617 Example.safeRemotePurchase.Purchase <> ctx:126 var
+R24633:24637 Example.safeRemotePurchase.Purchase <> buyer proj
+R26905:26907 Theroies.ResultMonad <> Err constr
+R26909:26921 Example.safeRemotePurchase.Purchase <> default_error def
+R24754:24770 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R24782:24795 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R24798:24804 Example.safeRemotePurchase.Purchase <> counter constr
+R26784:26786 Theroies.ResultMonad <> Err constr
+R26788:26800 Example.safeRemotePurchase.Purchase <> default_error def
+R24951:24954 Coq.NArith.BinNat <> ::N_scope:x_'=?'_x not
+R24916:24923 Example.safeRemotePurchase.Purchase <> hash_bid def
+R24925:24934 Example.safeRemotePurchase.Purchase <> purchaseId:128 var
+R24936:24944 Example.safeRemotePurchase.Purchase <> buyer_bit:129 var
+R24946:24950 Example.safeRemotePurchase.Purchase <> nonce:130 var
+R24965:24970 Example.safeRemotePurchase.Purchase <> commit proj
+R26646:26648 Theroies.ResultMonad <> Err constr
+R26650:26662 Example.safeRemotePurchase.Purchase <> default_error def
+R25135:25137 Coq.ZArith.BinInt <> ::Z_scope:x_'-'_x not
+R25130:25133 Example.safeRemotePurchase.Purchase <> pool proj
+R25144:25153 Example.safeRemotePurchase.Purchase <> item_value proj
+binder 25109:25115 <> to_send:132
+R25417:25471 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25487:25490 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25508:25510 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25472:25486 Example.safeRemotePurchase.Purchase <> discarded_money proj
+R25497:25506 Example.safeRemotePurchase.Purchase <> item_value proj
+R25350:25404 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25409:25412 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25414:25416 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25405:25408 Example.safeRemotePurchase.Purchase <> pool proj
+R25319:25322 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25337:25340 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25347:25349 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R25323:25336 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R25341:25346 Example.safeRemotePurchase.Purchase <> failed constr
+binder 25291:25306 <> updated_purchase:133
+R25640:25647 Theroies.Containers FMap add abbrev
+R25677:25693 Example.safeRemotePurchase.Purchase <> current_purchases:131 var
+R25660:25675 Example.safeRemotePurchase.Purchase <> updated_purchase:133 var
+R25649:25658 Example.safeRemotePurchase.Purchase <> purchaseId:128 var
+binder 25619:25635 <> updated_purchases:134
+R25860:25867 Coq.Bool.Bool <> eqb def
+R25879:25888 Example.safeRemotePurchase.Purchase <> seller_bit proj
+R25891:25899 Example.safeRemotePurchase.Purchase <> buyer_bit:129 var
+R26026:26031 Example.safeRemotePurchase.Purchase <> seller proj
+R26019:26023 Example.safeRemotePurchase.Purchase <> state:127 var
+R25962:25966 Example.safeRemotePurchase.Purchase <> buyer proj
+binder 25834:25851 <> target_transaction:135
+R26151:26154 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R26164:26167 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R26185:26187 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R26155:26163 Example.safeRemotePurchase.Purchase <> purchases proj
+R26168:26184 Example.safeRemotePurchase.Purchase <> updated_purchases:134 var
+R26146:26150 Example.safeRemotePurchase.Purchase <> state:127 var
+binder 26129:26141 <> updated_state:136
+R26337:26337 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R26377:26377 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R26338:26349 Theroies.Blockchain <> act_transfer constr
+R26351:26368 Example.safeRemotePurchase.Purchase <> target_transaction:135 var
+R26370:26376 Example.safeRemotePurchase.Purchase <> to_send:132 var
+binder 26326:26332 <> actions:137
+R26485:26486 Theroies.ResultMonad <> Ok constr
+R26488:26488 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R26502:26503 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R26511:26511 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R26489:26501 Example.safeRemotePurchase.Purchase <> updated_state:136 var
+R26504:26510 Example.safeRemotePurchase.Purchase <> actions:137 var
+R26933:26936 Coq.Init.Datatypes <> None constr
+R27033:27035 Theroies.ResultMonad <> Err constr
+R27037:27049 Example.safeRemotePurchase.Purchase <> default_error def
+R27069:27072 Coq.Init.Datatypes <> None constr
+R27171:27173 Theroies.ResultMonad <> Err constr
+R27175:27187 Example.safeRemotePurchase.Purchase <> default_error def
+def 27450:27475 <> seller_call_timeout_action
+R27484:27502 Theroies.Blockchain <> ContractCallContext rec
+binder 27478:27480 <> ctx:138
+R27553:27557 Example.safeRemotePurchase.Purchase <> State rec
+binder 27545:27549 <> state:139
+R27608:27612 Theroies.Blockchain <> Chain rec
+binder 27600:27604 <> chain:140
+R27668:27684 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 27655:27664 <> purchaseId:141
+R27695:27700 Theroies.ResultMonad <> result ind
+R27708:27710 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R27703:27707 Example.safeRemotePurchase.Purchase <> State rec
+R27711:27714 Coq.Init.Datatypes <> list ind
+R27716:27725 Theroies.Blockchain <> ActionBody ind
+R27728:27732 Example.safeRemotePurchase.Purchase <> Error def
+R27793:27812 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R27814:27816 Example.safeRemotePurchase.Purchase <> ctx:138 var
+R29968:29970 Theroies.ResultMonad <> Err constr
+R29972:29984 Example.safeRemotePurchase.Purchase <> default_error def
+R27890:27898 Example.safeRemotePurchase.Purchase <> purchases proj
+R27900:27904 Example.safeRemotePurchase.Purchase <> state:139 var
+binder 27869:27885 <> current_purchases:142
+R27975:27987 Example.safeRemotePurchase.Purchase <> find_purchase def
+R27989:27998 Example.safeRemotePurchase.Purchase <> purchaseId:141 var
+R28000:28016 Example.safeRemotePurchase.Purchase <> current_purchases:142 var
+R28029:28032 Coq.Init.Datatypes <> Some constr
+R28178:28193 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R28125:28141 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R28153:28166 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R28169:28177 Example.safeRemotePurchase.Purchase <> delivered constr
+R28194:28210 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R28222:28235 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R28238:28244 Example.safeRemotePurchase.Purchase <> counter constr
+R29728:29730 Theroies.ResultMonad <> Err constr
+R29732:29744 Example.safeRemotePurchase.Purchase <> default_error def
+R28312:28312 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R28325:28329 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R28313:28320 Theroies.Blockchain <> ctx_from proj
+R28322:28324 Example.safeRemotePurchase.Purchase <> ctx:138 var
+R28337:28342 Example.safeRemotePurchase.Purchase <> seller proj
+R28330:28334 Example.safeRemotePurchase.Purchase <> state:139 var
+R29590:29592 Theroies.ResultMonad <> Err constr
+R29594:29606 Example.safeRemotePurchase.Purchase <> default_error def
+R28469:28472 Coq.Arith.PeanoNat <> ::nat_scope:x_'<?'_x not
+R28451:28453 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R28440:28449 Example.safeRemotePurchase.Purchase <> last_block proj
+R28461:28467 Example.safeRemotePurchase.Purchase <> timeout proj
+R28454:28458 Example.safeRemotePurchase.Purchase <> state:139 var
+R28480:28491 Theroies.Blockchain <> current_slot proj
+R28473:28477 Example.safeRemotePurchase.Purchase <> chain:140 var
+R29469:29471 Theroies.ResultMonad <> Err constr
+R29473:29485 Example.safeRemotePurchase.Purchase <> default_error def
+R28674:28724 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R28729:28732 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R28734:28736 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R28725:28728 Example.safeRemotePurchase.Purchase <> pool proj
+R28640:28643 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R28658:28661 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R28671:28673 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R28644:28657 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R28662:28670 Example.safeRemotePurchase.Purchase <> completed constr
+binder 28612:28627 <> updated_purchase:143
+R28858:28865 Theroies.Containers FMap add abbrev
+R28895:28911 Example.safeRemotePurchase.Purchase <> current_purchases:142 var
+R28878:28893 Example.safeRemotePurchase.Purchase <> updated_purchase:143 var
+R28867:28876 Example.safeRemotePurchase.Purchase <> purchaseId:141 var
+binder 28837:28853 <> updated_purchases:144
+R29028:29031 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R29041:29044 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R29062:29064 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R29032:29040 Example.safeRemotePurchase.Purchase <> purchases proj
+R29045:29061 Example.safeRemotePurchase.Purchase <> updated_purchases:144 var
+R29023:29027 Example.safeRemotePurchase.Purchase <> state:139 var
+binder 29006:29018 <> updated_state:145
+R29185:29185 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R29229:29229 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R29186:29197 Theroies.Blockchain <> act_transfer constr
+R29206:29211 Example.safeRemotePurchase.Purchase <> seller proj
+R29199:29203 Example.safeRemotePurchase.Purchase <> state:139 var
+R29224:29227 Example.safeRemotePurchase.Purchase <> pool proj
+binder 29174:29180 <> actions:146
+R29329:29330 Theroies.ResultMonad <> Ok constr
+R29332:29332 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R29346:29347 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R29355:29355 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R29333:29345 Example.safeRemotePurchase.Purchase <> updated_state:145 var
+R29348:29354 Example.safeRemotePurchase.Purchase <> actions:146 var
+R29752:29755 Coq.Init.Datatypes <> None constr
+R29854:29856 Theroies.ResultMonad <> Err constr
+R29858:29870 Example.safeRemotePurchase.Purchase <> default_error def
+def 30086:30114 <> seller_reject_contract_action
+R30123:30141 Theroies.Blockchain <> ContractCallContext rec
+binder 30117:30119 <> ctx:147
+R30194:30198 Example.safeRemotePurchase.Purchase <> State rec
+binder 30186:30190 <> state:148
+R30256:30272 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 30243:30252 <> purchaseId:149
+R30283:30288 Theroies.ResultMonad <> result ind
+R30296:30298 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R30291:30295 Example.safeRemotePurchase.Purchase <> State rec
+R30299:30302 Coq.Init.Datatypes <> list ind
+R30304:30313 Theroies.Blockchain <> ActionBody ind
+R30316:30320 Example.safeRemotePurchase.Purchase <> Error def
+R30381:30400 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R30402:30404 Example.safeRemotePurchase.Purchase <> ctx:147 var
+R32149:32151 Theroies.ResultMonad <> Err constr
+R32153:32165 Example.safeRemotePurchase.Purchase <> default_error def
+R30484:30492 Example.safeRemotePurchase.Purchase <> purchases proj
+R30494:30498 Example.safeRemotePurchase.Purchase <> state:148 var
+binder 30463:30479 <> current_purchases:150
+R30569:30581 Example.safeRemotePurchase.Purchase <> find_purchase def
+R30583:30592 Example.safeRemotePurchase.Purchase <> purchaseId:149 var
+R30594:30610 Example.safeRemotePurchase.Purchase <> current_purchases:150 var
+R30623:30626 Coq.Init.Datatypes <> Some constr
+R30720:30736 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R30748:30761 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R30764:30772 Example.safeRemotePurchase.Purchase <> requested constr
+R31909:31911 Theroies.ResultMonad <> Err constr
+R31913:31925 Example.safeRemotePurchase.Purchase <> default_error def
+R30840:30840 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R30853:30857 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R30841:30848 Theroies.Blockchain <> ctx_from proj
+R30850:30852 Example.safeRemotePurchase.Purchase <> ctx:147 var
+R30865:30870 Example.safeRemotePurchase.Purchase <> seller proj
+R30858:30862 Example.safeRemotePurchase.Purchase <> state:148 var
+R31791:31793 Theroies.ResultMonad <> Err constr
+R31795:31807 Example.safeRemotePurchase.Purchase <> default_error def
+R31045:31093 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31098:31101 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31103:31105 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31094:31097 Example.safeRemotePurchase.Purchase <> pool proj
+R31012:31015 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31030:31033 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31042:31044 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31016:31029 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R31034:31041 Example.safeRemotePurchase.Purchase <> rejected constr
+binder 30984:30999 <> updated_purchase:151
+R31223:31230 Theroies.Containers FMap add abbrev
+R31260:31276 Example.safeRemotePurchase.Purchase <> current_purchases:150 var
+R31243:31258 Example.safeRemotePurchase.Purchase <> updated_purchase:151 var
+R31232:31241 Example.safeRemotePurchase.Purchase <> purchaseId:149 var
+binder 31202:31218 <> updated_purchases:152
+R31389:31392 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31402:31405 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31423:31425 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R31393:31401 Example.safeRemotePurchase.Purchase <> purchases proj
+R31406:31422 Example.safeRemotePurchase.Purchase <> updated_purchases:152 var
+R31384:31388 Example.safeRemotePurchase.Purchase <> state:148 var
+binder 31367:31379 <> updated_state:153
+R31545:31545 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R31591:31591 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R31546:31557 Theroies.Blockchain <> act_transfer constr
+R31569:31573 Example.safeRemotePurchase.Purchase <> buyer proj
+R31586:31589 Example.safeRemotePurchase.Purchase <> pool proj
+binder 31534:31540 <> actions:154
+R31687:31688 Theroies.ResultMonad <> Ok constr
+R31690:31690 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R31704:31705 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R31713:31713 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R31691:31703 Example.safeRemotePurchase.Purchase <> updated_state:153 var
+R31706:31712 Example.safeRemotePurchase.Purchase <> actions:154 var
+R31933:31936 Coq.Init.Datatypes <> None constr
+R32035:32037 Theroies.ResultMonad <> Err constr
+R32039:32051 Example.safeRemotePurchase.Purchase <> default_error def
+def 32277:32305 <> seller_accept_contract_action
+R32314:32332 Theroies.Blockchain <> ContractCallContext rec
+binder 32308:32310 <> ctx:155
+R32385:32389 Example.safeRemotePurchase.Purchase <> State rec
+binder 32377:32381 <> state:156
+R32442:32446 Theroies.Blockchain <> Chain rec
+binder 32434:32438 <> chain:157
+R32504:32520 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 32491:32500 <> purchaseId:158
+R32531:32536 Theroies.ResultMonad <> result ind
+R32544:32546 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R32539:32543 Example.safeRemotePurchase.Purchase <> State rec
+R32547:32550 Coq.Init.Datatypes <> list ind
+R32552:32561 Theroies.Blockchain <> ActionBody ind
+R32564:32568 Example.safeRemotePurchase.Purchase <> Error def
+R32629:32648 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R32650:32652 Example.safeRemotePurchase.Purchase <> ctx:155 var
+R34266:34268 Theroies.ResultMonad <> Err constr
+R34270:34282 Example.safeRemotePurchase.Purchase <> default_error def
+R32732:32740 Example.safeRemotePurchase.Purchase <> purchases proj
+R32742:32746 Example.safeRemotePurchase.Purchase <> state:156 var
+binder 32711:32727 <> current_purchases:159
+R32817:32829 Example.safeRemotePurchase.Purchase <> find_purchase def
+R32831:32840 Example.safeRemotePurchase.Purchase <> purchaseId:158 var
+R32842:32858 Example.safeRemotePurchase.Purchase <> current_purchases:159 var
+R32871:32874 Coq.Init.Datatypes <> Some constr
+R32968:32984 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R32996:33009 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R33012:33020 Example.safeRemotePurchase.Purchase <> requested constr
+R34026:34028 Theroies.ResultMonad <> Err constr
+R34030:34042 Example.safeRemotePurchase.Purchase <> default_error def
+R33088:33088 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R33101:33105 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R33089:33096 Theroies.Blockchain <> ctx_from proj
+R33098:33100 Example.safeRemotePurchase.Purchase <> ctx:155 var
+R33113:33118 Example.safeRemotePurchase.Purchase <> seller proj
+R33106:33110 Example.safeRemotePurchase.Purchase <> state:156 var
+R33908:33910 Theroies.ResultMonad <> Err constr
+R33912:33924 Example.safeRemotePurchase.Purchase <> default_error def
+R33299:33347 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33358:33361 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33382:33384 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33348:33357 Example.safeRemotePurchase.Purchase <> last_block proj
+R33369:33380 Theroies.Blockchain <> current_slot proj
+R33362:33366 Example.safeRemotePurchase.Purchase <> chain:157 var
+R33266:33269 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33284:33287 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33296:33298 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33270:33283 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R33288:33295 Example.safeRemotePurchase.Purchase <> accepted constr
+binder 33238:33253 <> updated_purchase:160
+R33502:33509 Theroies.Containers FMap add abbrev
+R33539:33555 Example.safeRemotePurchase.Purchase <> current_purchases:159 var
+R33522:33537 Example.safeRemotePurchase.Purchase <> updated_purchase:160 var
+R33511:33520 Example.safeRemotePurchase.Purchase <> purchaseId:158 var
+binder 33481:33497 <> updated_purchases:161
+R33668:33671 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33681:33684 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33702:33704 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R33672:33680 Example.safeRemotePurchase.Purchase <> purchases proj
+R33685:33701 Example.safeRemotePurchase.Purchase <> updated_purchases:161 var
+R33663:33667 Example.safeRemotePurchase.Purchase <> state:156 var
+binder 33646:33658 <> updated_state:162
+R33809:33810 Theroies.ResultMonad <> Ok constr
+R33812:33812 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R33826:33827 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R33830:33830 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R33813:33825 Example.safeRemotePurchase.Purchase <> updated_state:162 var
+R33828:33829 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R34050:34053 Coq.Init.Datatypes <> None constr
+R34152:34154 Theroies.ResultMonad <> Err constr
+R34156:34168 Example.safeRemotePurchase.Purchase <> default_error def
+def 34391:34422 <> seller_item_was_delivered_action
+R34431:34449 Theroies.Blockchain <> ContractCallContext rec
+binder 34425:34427 <> ctx:163
+R34506:34510 Example.safeRemotePurchase.Purchase <> State rec
+binder 34498:34502 <> state:164
+R34567:34571 Theroies.Blockchain <> Chain rec
+binder 34559:34563 <> chain:165
+R34633:34649 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 34620:34629 <> purchaseId:166
+R34664:34669 Theroies.ResultMonad <> result ind
+R34677:34679 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R34672:34676 Example.safeRemotePurchase.Purchase <> State rec
+R34680:34683 Coq.Init.Datatypes <> list ind
+R34685:34694 Theroies.Blockchain <> ActionBody ind
+R34697:34701 Example.safeRemotePurchase.Purchase <> Error def
+R34770:34789 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R34791:34793 Example.safeRemotePurchase.Purchase <> ctx:163 var
+R36560:36562 Theroies.ResultMonad <> Err constr
+R36564:36576 Example.safeRemotePurchase.Purchase <> default_error def
+R34881:34889 Example.safeRemotePurchase.Purchase <> purchases proj
+R34891:34895 Example.safeRemotePurchase.Purchase <> state:164 var
+binder 34860:34876 <> current_purchases:167
+R34974:34986 Example.safeRemotePurchase.Purchase <> find_purchase def
+R34988:34997 Example.safeRemotePurchase.Purchase <> purchaseId:166 var
+R34999:35015 Example.safeRemotePurchase.Purchase <> current_purchases:167 var
+R35032:35035 Coq.Init.Datatypes <> Some constr
+R35136:35152 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R35164:35177 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R35180:35187 Example.safeRemotePurchase.Purchase <> accepted constr
+R36292:36294 Theroies.ResultMonad <> Err constr
+R36296:36308 Example.safeRemotePurchase.Purchase <> default_error def
+R35263:35263 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R35276:35280 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R35264:35271 Theroies.Blockchain <> ctx_from proj
+R35273:35275 Example.safeRemotePurchase.Purchase <> ctx:163 var
+R35288:35293 Example.safeRemotePurchase.Purchase <> seller proj
+R35281:35285 Example.safeRemotePurchase.Purchase <> state:164 var
+R36157:36159 Theroies.ResultMonad <> Err constr
+R36161:36173 Example.safeRemotePurchase.Purchase <> default_error def
+R35484:35536 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35547:35550 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35571:35573 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35537:35546 Example.safeRemotePurchase.Purchase <> last_block proj
+R35558:35569 Theroies.Blockchain <> current_slot proj
+R35551:35555 Example.safeRemotePurchase.Purchase <> chain:165 var
+R35450:35453 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35468:35471 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35481:35483 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35454:35467 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R35472:35480 Example.safeRemotePurchase.Purchase <> delivered constr
+binder 35422:35437 <> updated_purchase:168
+R35699:35706 Theroies.Containers FMap add abbrev
+R35736:35752 Example.safeRemotePurchase.Purchase <> current_purchases:167 var
+R35719:35734 Example.safeRemotePurchase.Purchase <> updated_purchase:168 var
+R35708:35717 Example.safeRemotePurchase.Purchase <> purchaseId:166 var
+binder 35678:35694 <> updated_purchases:169
+R35873:35876 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35886:35889 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35907:35909 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R35877:35885 Example.safeRemotePurchase.Purchase <> purchases proj
+R35890:35906 Example.safeRemotePurchase.Purchase <> updated_purchases:169 var
+R35868:35872 Example.safeRemotePurchase.Purchase <> state:164 var
+binder 35851:35863 <> updated_state:170
+R36046:36047 Theroies.ResultMonad <> Ok constr
+R36049:36049 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R36063:36064 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R36067:36067 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R36050:36062 Example.safeRemotePurchase.Purchase <> updated_state:170 var
+R36065:36066 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R36320:36323 Coq.Init.Datatypes <> None constr
+R36430:36432 Theroies.ResultMonad <> Err constr
+R36434:36446 Example.safeRemotePurchase.Purchase <> default_error def
+def 36692:36720 <> seller_forfeit_dispute_action
+R36729:36747 Theroies.Blockchain <> ContractCallContext rec
+binder 36723:36725 <> ctx:171
+R36804:36808 Example.safeRemotePurchase.Purchase <> State rec
+binder 36796:36800 <> state:172
+R36870:36886 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 36857:36866 <> purchaseId:173
+R36901:36906 Theroies.ResultMonad <> result ind
+R36914:36916 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R36909:36913 Example.safeRemotePurchase.Purchase <> State rec
+R36917:36920 Coq.Init.Datatypes <> list ind
+R36922:36931 Theroies.Blockchain <> ActionBody ind
+R36934:36938 Example.safeRemotePurchase.Purchase <> Error def
+R37007:37026 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R37028:37030 Example.safeRemotePurchase.Purchase <> ctx:171 var
+R38897:38899 Theroies.ResultMonad <> Err constr
+R38901:38913 Example.safeRemotePurchase.Purchase <> default_error def
+R37118:37126 Example.safeRemotePurchase.Purchase <> purchases proj
+R37128:37132 Example.safeRemotePurchase.Purchase <> state:172 var
+binder 37097:37113 <> current_purchases:174
+R37211:37223 Example.safeRemotePurchase.Purchase <> find_purchase def
+R37225:37234 Example.safeRemotePurchase.Purchase <> purchaseId:173 var
+R37236:37252 Example.safeRemotePurchase.Purchase <> current_purchases:174 var
+R37269:37272 Coq.Init.Datatypes <> Some constr
+R37372:37388 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R37400:37413 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R37416:37422 Example.safeRemotePurchase.Purchase <> dispute constr
+R38629:38631 Theroies.ResultMonad <> Err constr
+R38633:38645 Example.safeRemotePurchase.Purchase <> default_error def
+R37498:37498 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R37511:37515 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R37499:37506 Theroies.Blockchain <> ctx_from proj
+R37508:37510 Example.safeRemotePurchase.Purchase <> ctx:171 var
+R37523:37528 Example.safeRemotePurchase.Purchase <> seller proj
+R37516:37520 Example.safeRemotePurchase.Purchase <> state:172 var
+R38501:38503 Theroies.ResultMonad <> Err constr
+R38505:38517 Example.safeRemotePurchase.Purchase <> default_error def
+R37707:37759 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R37764:37767 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R37769:37771 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R37760:37763 Example.safeRemotePurchase.Purchase <> pool proj
+R37676:37679 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R37694:37697 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R37704:37706 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R37680:37693 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R37698:37703 Example.safeRemotePurchase.Purchase <> failed constr
+binder 37648:37663 <> updated_purchase:175
+R37897:37904 Theroies.Containers FMap add abbrev
+R37934:37950 Example.safeRemotePurchase.Purchase <> current_purchases:174 var
+R37917:37932 Example.safeRemotePurchase.Purchase <> updated_purchase:175 var
+R37906:37915 Example.safeRemotePurchase.Purchase <> purchaseId:173 var
+binder 37876:37892 <> updated_purchases:176
+R38071:38074 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R38084:38087 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R38105:38107 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R38075:38083 Example.safeRemotePurchase.Purchase <> purchases proj
+R38088:38104 Example.safeRemotePurchase.Purchase <> updated_purchases:176 var
+R38066:38070 Example.safeRemotePurchase.Purchase <> state:172 var
+binder 38049:38061 <> updated_state:177
+R38235:38235 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R38281:38281 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R38236:38247 Theroies.Blockchain <> act_transfer constr
+R38259:38263 Example.safeRemotePurchase.Purchase <> buyer proj
+R38276:38279 Example.safeRemotePurchase.Purchase <> pool proj
+binder 38224:38230 <> actions:178
+R38385:38386 Theroies.ResultMonad <> Ok constr
+R38388:38388 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R38402:38403 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R38411:38411 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R38389:38401 Example.safeRemotePurchase.Purchase <> updated_state:177 var
+R38404:38410 Example.safeRemotePurchase.Purchase <> actions:178 var
+R38657:38660 Coq.Init.Datatypes <> None constr
+R38767:38769 Theroies.ResultMonad <> Err constr
+R38771:38783 Example.safeRemotePurchase.Purchase <> default_error def
+def 39048:39076 <> seller_counter_dispute_action
+R39085:39103 Theroies.Blockchain <> ContractCallContext rec
+binder 39079:39081 <> ctx:179
+R39157:39161 Example.safeRemotePurchase.Purchase <> State rec
+binder 39149:39153 <> state:180
+R39215:39219 Theroies.Blockchain <> Chain rec
+binder 39207:39211 <> chain:181
+R39278:39294 Example.safeRemotePurchase.Purchase <> purchase_key_type def
+binder 39265:39274 <> purchaseId:182
+R39353:39356 Coq.Init.Datatypes <> bool ind
+binder 39340:39349 <> random_bit:183
+R39367:39372 Theroies.ResultMonad <> result ind
+R39380:39382 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R39375:39379 Example.safeRemotePurchase.Purchase <> State rec
+R39383:39386 Coq.Init.Datatypes <> list ind
+R39388:39397 Theroies.Blockchain <> ActionBody ind
+R39400:39404 Example.safeRemotePurchase.Purchase <> Error def
+R39436:39444 Example.safeRemotePurchase.Purchase <> purchases proj
+R39446:39450 Example.safeRemotePurchase.Purchase <> state:180 var
+binder 39415:39431 <> current_purchases:184
+R39490:39502 Example.safeRemotePurchase.Purchase <> find_purchase def
+R39504:39513 Example.safeRemotePurchase.Purchase <> purchaseId:182 var
+R39515:39531 Example.safeRemotePurchase.Purchase <> current_purchases:184 var
+R39542:39545 Coq.Init.Datatypes <> Some constr
+R39618:39634 Example.safeRemotePurchase.Purchase <> purchase_state_eq def
+R39646:39659 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R39662:39668 Example.safeRemotePurchase.Purchase <> dispute constr
+R42089:42091 Theroies.ResultMonad <> Err constr
+R42093:42105 Example.safeRemotePurchase.Purchase <> default_error def
+R39732:39732 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R39745:39749 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R39733:39740 Theroies.Blockchain <> ctx_from proj
+R39742:39744 Example.safeRemotePurchase.Purchase <> ctx:179 var
+R39757:39762 Example.safeRemotePurchase.Purchase <> seller proj
+R39750:39754 Example.safeRemotePurchase.Purchase <> state:180 var
+R42015:42017 Theroies.ResultMonad <> Err constr
+R42019:42031 Example.safeRemotePurchase.Purchase <> default_error def
+R39812:39821 Theroies.Blockchain <> ctx_amount proj
+R39807:39809 Example.safeRemotePurchase.Purchase <> ctx:179 var
+binder 39793:39802 <> money_sent:185
+R39881:39889 Example.safeRemotePurchase.Purchase <> find_item def
+R39901:39906 Example.safeRemotePurchase.Purchase <> itemId proj
+R39910:39917 Example.safeRemotePurchase.Purchase <> listings proj
+R39919:39923 Example.safeRemotePurchase.Purchase <> state:180 var
+R39943:39946 Coq.Init.Datatypes <> Some constr
+R40062:40065 Coq.ZArith.BinInt <> ::Z_scope:x_'=?'_x not
+R40052:40061 Example.safeRemotePurchase.Purchase <> money_sent:185 var
+R40081:40090 Example.safeRemotePurchase.Purchase <> item_value proj
+R41816:41818 Theroies.ResultMonad <> Err constr
+R41820:41832 Example.safeRemotePurchase.Purchase <> default_error def
+R40608:40660 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40665:40668 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40697:40699 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40661:40664 Example.safeRemotePurchase.Purchase <> pool proj
+R40684:40686 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R40679:40682 Example.safeRemotePurchase.Purchase <> pool proj
+R40687:40696 Example.safeRemotePurchase.Purchase <> money_sent:185 var
+R40528:40580 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40591:40594 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40605:40607 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40581:40590 Example.safeRemotePurchase.Purchase <> seller_bit proj
+R40595:40604 Example.safeRemotePurchase.Purchase <> random_bit:183 var
+R40438:40490 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40501:40504 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40525:40527 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40491:40500 Example.safeRemotePurchase.Purchase <> last_block proj
+R40512:40523 Theroies.Blockchain <> current_slot proj
+R40505:40509 Example.safeRemotePurchase.Purchase <> chain:181 var
+R40406:40409 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40424:40427 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40435:40437 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R40410:40423 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R40428:40434 Example.safeRemotePurchase.Purchase <> counter constr
+binder 40378:40393 <> updated_purchase:186
+R40825:40832 Theroies.Containers FMap add abbrev
+R40862:40878 Example.safeRemotePurchase.Purchase <> current_purchases:184 var
+R40845:40860 Example.safeRemotePurchase.Purchase <> updated_purchase:186 var
+R40834:40843 Example.safeRemotePurchase.Purchase <> purchaseId:182 var
+binder 40804:40820 <> updated_purchases:187
+R41133:41140 Coq.Bool.Bool <> eqb def
+R41152:41161 Example.safeRemotePurchase.Purchase <> seller_bit proj
+R41164:41173 Example.safeRemotePurchase.Purchase <> random_bit:183 var
+R41295:41300 Example.safeRemotePurchase.Purchase <> seller proj
+R41288:41292 Example.safeRemotePurchase.Purchase <> state:180 var
+R41233:41237 Example.safeRemotePurchase.Purchase <> buyer proj
+binder 41108:41125 <> target_transaction:188
+R41416:41419 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R41429:41432 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R41450:41452 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R41420:41428 Example.safeRemotePurchase.Purchase <> purchases proj
+R41433:41449 Example.safeRemotePurchase.Purchase <> updated_purchases:187 var
+R41411:41415 Example.safeRemotePurchase.Purchase <> state:180 var
+binder 41394:41406 <> updated_state:189
+R41586:41586 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R41649:41649 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R41587:41598 Theroies.Blockchain <> act_transfer constr
+R41600:41617 Example.safeRemotePurchase.Purchase <> target_transaction:188 var
+R41635:41637 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R41630:41633 Example.safeRemotePurchase.Purchase <> pool proj
+R41638:41647 Example.safeRemotePurchase.Purchase <> money_sent:185 var
+binder 41575:41581 <> actions:190
+R41753:41754 Theroies.ResultMonad <> Ok constr
+R41756:41756 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R41770:41771 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R41779:41779 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R41757:41769 Example.safeRemotePurchase.Purchase <> updated_state:189 var
+R41772:41778 Example.safeRemotePurchase.Purchase <> actions:190 var
+R41898:41901 Coq.Init.Datatypes <> None constr
+R41920:41922 Theroies.ResultMonad <> Err constr
+R41924:41936 Example.safeRemotePurchase.Purchase <> default_error def
+R42155:42158 Coq.Init.Datatypes <> None constr
+R42169:42171 Theroies.ResultMonad <> Err constr
+R42173:42185 Example.safeRemotePurchase.Purchase <> default_error def
+def 42328:42356 <> no_active_purchase_for_itemId
+binder 42358:42362 <> state:191
+binder 42364:42370 <> _itemId:192
+R42435:42447 Theroies.Containers FMap elements abbrev
+R42456:42464 Example.safeRemotePurchase.Purchase <> purchases proj
+R42449:42453 Example.safeRemotePurchase.Purchase <> state:191 var
+binder 42414:42430 <> all_key_purchases:193
+R42505:42510 Coq.Lists.List <> filter def
+R42630:42646 Example.safeRemotePurchase.Purchase <> all_key_purchases:193 var
+R42518:42518 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R42520:42521 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R42530:42530 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 42522:42529 <> purchase:194
+binder 42518:42530 <> pat:195
+R42611:42614 Coq.Arith.PeanoNat <> ::nat_scope:x_'=?'_x not
+R42604:42609 Example.safeRemotePurchase.Purchase <> itemId proj
+R42594:42601 Example.safeRemotePurchase.Purchase <> purchase:194 var
+R42615:42621 Example.safeRemotePurchase.Purchase <> _itemId:192 var
+binder 42477:42500 <> key_purchases_for_itemId:196
+R42654:42660 Coq.Lists.List <> forallb def
+R42936:42959 Example.safeRemotePurchase.Purchase <> key_purchases_for_itemId:196 var
+R42672:42672 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R42674:42675 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R42684:42684 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 42676:42683 <> purchase:197
+binder 42672:42684 <> pat:198
+R42711:42724 Example.safeRemotePurchase.Purchase <> purchase_state proj
+R42701:42708 Example.safeRemotePurchase.Purchase <> purchase:197 var
+R42816:42824 Example.safeRemotePurchase.Purchase <> completed constr
+R42828:42835 Example.safeRemotePurchase.Purchase <> rejected constr
+R42839:42844 Example.safeRemotePurchase.Purchase <> failed constr
+R42849:42852 Coq.Init.Datatypes <> true constr
+R42849:42852 Coq.Init.Datatypes <> true constr
+R42849:42852 Coq.Init.Datatypes <> true constr
+R42914:42918 Coq.Init.Datatypes <> false constr
+def 43141:43169 <> seller_update_listings_action
+R43178:43196 Theroies.Blockchain <> ContractCallContext rec
+binder 43172:43174 <> ctx:199
+R43250:43254 Example.safeRemotePurchase.Purchase <> State rec
+binder 43242:43246 <> state:200
+R43309:43311 Coq.Init.Datatypes <> nat ind
+binder 43300:43305 <> itemId:201
+R43365:43370 Coq.Strings.String <> string ind
+binder 43357:43361 <> descr:202
+R43424:43429 Theroies.Blockchain <> Amount def
+binder 43416:43420 <> value:203
+R43436:43441 Theroies.ResultMonad <> result ind
+R43449:43451 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R43444:43448 Example.safeRemotePurchase.Purchase <> State rec
+R43452:43455 Coq.Init.Datatypes <> list ind
+R43457:43466 Theroies.Blockchain <> ActionBody ind
+R43469:43473 Example.safeRemotePurchase.Purchase <> Error def
+R43534:43553 Example.safeRemotePurchase.Purchase <> required_amount_zero def
+R43555:43557 Example.safeRemotePurchase.Purchase <> ctx:199 var
+R44875:44877 Theroies.ResultMonad <> Err constr
+R44879:44891 Example.safeRemotePurchase.Purchase <> default_error def
+R43609:43613 Coq.ZArith.BinInt <> ::Z_scope:x_'<=?'_x not
+R43614:43618 Example.safeRemotePurchase.Purchase <> value:203 var
+R44769:44771 Theroies.ResultMonad <> Err constr
+R44773:44785 Example.safeRemotePurchase.Purchase <> default_error def
+R43693:43696 Theroies.Blockchain <> ::address_scope:x_'=?'_x not
+R43684:43691 Theroies.Blockchain <> ctx_from proj
+R43679:43681 Example.safeRemotePurchase.Purchase <> ctx:199 var
+R43704:43709 Example.safeRemotePurchase.Purchase <> seller proj
+R43697:43701 Example.safeRemotePurchase.Purchase <> state:200 var
+R44681:44683 Theroies.ResultMonad <> Err constr
+R44685:44697 Example.safeRemotePurchase.Purchase <> default_error def
+R43785:43813 Example.safeRemotePurchase.Purchase <> no_active_purchase_for_itemId def
+R43815:43819 Example.safeRemotePurchase.Purchase <> state:200 var
+R43821:43826 Example.safeRemotePurchase.Purchase <> itemId:201 var
+R44572:44574 Theroies.ResultMonad <> Err constr
+R44576:44588 Example.safeRemotePurchase.Purchase <> default_error def
+R43911:43918 Example.safeRemotePurchase.Purchase <> listings proj
+R43920:43924 Example.safeRemotePurchase.Purchase <> state:200 var
+binder 43891:43906 <> current_listings:204
+R44011:44020 Example.safeRemotePurchase.Purchase <> item_value proj
+R44011:44020 Example.safeRemotePurchase.Purchase <> item_value proj
+R44011:44020 Example.safeRemotePurchase.Purchase <> item_value proj
+R44044:44059 Example.safeRemotePurchase.Purchase <> item_description proj
+R44044:44059 Example.safeRemotePurchase.Purchase <> item_description proj
+R44025:44029 Example.safeRemotePurchase.Purchase <> value:203 var
+R44064:44068 Example.safeRemotePurchase.Purchase <> descr:202 var
+binder 43984:43991 <> new_item:205
+R44177:44184 Theroies.Containers FMap add abbrev
+R44202:44217 Example.safeRemotePurchase.Purchase <> current_listings:204 var
+R44193:44200 Example.safeRemotePurchase.Purchase <> new_item:205 var
+R44186:44191 Example.safeRemotePurchase.Purchase <> itemId:201 var
+binder 44157:44172 <> updated_listings:206
+R44320:44323 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R44332:44335 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R44352:44354 RecordUpdate.RecordSet RecordSetNotations ::record_set:x_'<|'_x_':='_x_'|>' not
+R44324:44331 Example.safeRemotePurchase.Purchase <> listings proj
+R44336:44351 Example.safeRemotePurchase.Purchase <> updated_listings:206 var
+R44315:44319 Example.safeRemotePurchase.Purchase <> state:200 var
+binder 44298:44310 <> updated_state:207
+R44452:44453 Theroies.ResultMonad <> Ok constr
+R44455:44455 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R44469:44470 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R44473:44473 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R44456:44468 Example.safeRemotePurchase.Purchase <> updated_state:207 var
+R44471:44472 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+def 44907:44913 <> receive
+R44924:44928 Theroies.Blockchain <> Chain rec
+binder 44916:44920 <> chain:208
+R44958:44976 Theroies.Blockchain <> ContractCallContext rec
+binder 44952:44954 <> ctx:209
+R45007:45011 Example.safeRemotePurchase.Purchase <> State rec
+binder 44999:45003 <> state:210
+R45041:45046 Coq.Init.Datatypes <> option ind
+R45048:45050 Example.safeRemotePurchase.Purchase <> Msg ind
+binder 45035:45037 <> msg:211
+R45074:45079 Theroies.ResultMonad <> result ind
+R45087:45089 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R45082:45086 Example.safeRemotePurchase.Purchase <> State rec
+R45090:45093 Coq.Init.Datatypes <> list ind
+R45095:45104 Theroies.Blockchain <> ActionBody ind
+R45107:45111 Example.safeRemotePurchase.Purchase <> Error def
+R45124:45126 Example.safeRemotePurchase.Purchase <> msg:211 var
+R45137:45140 Coq.Init.Datatypes <> Some constr
+R45194:45215 Example.safeRemotePurchase.Purchase <> buyer_request_purchase constr
+R45224:45228 Example.safeRemotePurchase.Purchase <> notes proj
+R45217:45222 Example.safeRemotePurchase.Purchase <> itemId proj
+R45340:45368 Example.safeRemotePurchase.Purchase <> buyer_request_purchase_action def
+R45370:45374 Example.safeRemotePurchase.Purchase <> chain:208 var
+R45376:45378 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R45380:45384 Example.safeRemotePurchase.Purchase <> state:210 var
+R45408:45418 Example.safeRemotePurchase.Purchase <> buyer_abort constr
+R45420:45421 Coq.Init.Datatypes <> id def
+R45535:45552 Example.safeRemotePurchase.Purchase <> buyer_abort_action def
+R45554:45556 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R45558:45562 Example.safeRemotePurchase.Purchase <> state:210 var
+R45576:45597 Example.safeRemotePurchase.Purchase <> buyer_confirm_delivery constr
+R45599:45600 Coq.Init.Datatypes <> id def
+R45711:45739 Example.safeRemotePurchase.Purchase <> buyer_confirm_delivery_action def
+R45741:45743 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R45745:45749 Example.safeRemotePurchase.Purchase <> state:210 var
+R45763:45784 Example.safeRemotePurchase.Purchase <> buyer_dispute_delivery constr
+R45786:45787 Coq.Init.Datatypes <> id def
+R45916:45944 Example.safeRemotePurchase.Purchase <> buyer_dispute_delivery_action def
+R45946:45948 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R45950:45954 Example.safeRemotePurchase.Purchase <> state:210 var
+R45956:45960 Example.safeRemotePurchase.Purchase <> chain:208 var
+R45985:46002 Example.safeRemotePurchase.Purchase <> buyer_call_timeout constr
+R46004:46005 Coq.Init.Datatypes <> id def
+R46145:46169 Example.safeRemotePurchase.Purchase <> buyer_call_timeout_action def
+R46171:46173 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R46175:46179 Example.safeRemotePurchase.Purchase <> state:210 var
+R46181:46185 Example.safeRemotePurchase.Purchase <> chain:208 var
+R46199:46219 Example.safeRemotePurchase.Purchase <> buyer_open_commitment constr
+R46221:46222 Coq.Init.Datatypes <> id def
+R46359:46386 Example.safeRemotePurchase.Purchase <> buyer_open_commitment_action def
+R46388:46390 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R46392:46396 Example.safeRemotePurchase.Purchase <> state:210 var
+R46426:46444 Example.safeRemotePurchase.Purchase <> seller_call_timeout constr
+R46446:46447 Coq.Init.Datatypes <> id def
+R46591:46616 Example.safeRemotePurchase.Purchase <> seller_call_timeout_action def
+R46618:46620 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R46622:46626 Example.safeRemotePurchase.Purchase <> state:210 var
+R46628:46632 Example.safeRemotePurchase.Purchase <> chain:208 var
+R46646:46667 Example.safeRemotePurchase.Purchase <> seller_reject_contract constr
+R46669:46670 Coq.Init.Datatypes <> id def
+R46786:46814 Example.safeRemotePurchase.Purchase <> seller_reject_contract_action def
+R46816:46818 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R46820:46824 Example.safeRemotePurchase.Purchase <> state:210 var
+R46838:46859 Example.safeRemotePurchase.Purchase <> seller_accept_contract constr
+R46861:46862 Coq.Init.Datatypes <> id def
+R46978:47006 Example.safeRemotePurchase.Purchase <> seller_accept_contract_action def
+R47008:47010 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R47012:47016 Example.safeRemotePurchase.Purchase <> state:210 var
+R47018:47022 Example.safeRemotePurchase.Purchase <> chain:208 var
+R47036:47060 Example.safeRemotePurchase.Purchase <> seller_item_was_delivered constr
+R47062:47063 Coq.Init.Datatypes <> id def
+R47185:47216 Example.safeRemotePurchase.Purchase <> seller_item_was_delivered_action def
+R47218:47220 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R47222:47226 Example.safeRemotePurchase.Purchase <> state:210 var
+R47228:47232 Example.safeRemotePurchase.Purchase <> chain:208 var
+R47246:47267 Example.safeRemotePurchase.Purchase <> seller_forfeit_dispute constr
+R47269:47270 Coq.Init.Datatypes <> id def
+R47376:47404 Example.safeRemotePurchase.Purchase <> seller_forfeit_dispute_action def
+R47406:47408 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R47410:47414 Example.safeRemotePurchase.Purchase <> state:210 var
+R47428:47449 Example.safeRemotePurchase.Purchase <> seller_counter_dispute constr
+R47451:47452 Coq.Init.Datatypes <> id def
+R47570:47598 Example.safeRemotePurchase.Purchase <> seller_counter_dispute_action def
+R47600:47602 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R47604:47608 Example.safeRemotePurchase.Purchase <> state:210 var
+R47610:47614 Example.safeRemotePurchase.Purchase <> chain:208 var
+R47639:47660 Example.safeRemotePurchase.Purchase <> seller_update_listings constr
+R47681:47685 Coq.Init.Specif <> value def
+R47662:47667 Example.safeRemotePurchase.Purchase <> itemId proj
+R47782:47810 Example.safeRemotePurchase.Purchase <> seller_update_listings_action def
+R47812:47814 Example.safeRemotePurchase.Purchase <> ctx:209 var
+R47816:47820 Example.safeRemotePurchase.Purchase <> state:210 var
+R47861:47864 Coq.Init.Datatypes <> None constr
+R47915:47917 Theroies.ResultMonad <> Err constr
+R47919:47931 Example.safeRemotePurchase.Purchase <> default_error def
+def 47954:47961 <> contract
+R47965:47972 Theroies.Blockchain <> Contract rec
+R47990:47994 Example.safeRemotePurchase.Purchase <> Error def
+R47984:47988 Example.safeRemotePurchase.Purchase <> State rec
+R47980:47982 Example.safeRemotePurchase.Purchase <> Msg ind
+R47974:47978 Example.safeRemotePurchase.Purchase <> Setup rec
+R48004:48017 Theroies.Blockchain <> build_contract constr
+R48024:48030 Example.safeRemotePurchase.Purchase <> receive def
+R48019:48022 Example.safeRemotePurchase.Purchase <> init def
+R48038:48051 Example.safeRemotePurchase.Purchase EcommerceFixed <> sec

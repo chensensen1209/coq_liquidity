@@ -26,6 +26,7 @@ record-update/RecordUpdate.v
 
 -R examples Example
 examples/payChannel/uniPayChannel.v
+examples/safeRemotePurchase/Purchase.v
 
 
 
