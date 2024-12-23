@@ -1033,9 +1033,3 @@ Definition contract : Contract Setup Msg State Error :=
     build_contract init receive.
 
 End EcommerceFixed.
-
-
-
-
-
-
