@@ -1189,8 +1189,6 @@ Section envExec.
   Definition incl {A : Type} (l1 l2 : list A) : Prop :=
     forall x, In x l1 -> In x l2.
 
-
-
   Definition stratDrive (s0 : ChainState)
                         (delta : strat)
                         (addrs : list Address)
@@ -1263,7 +1261,7 @@ Section envExec.
 
 
   
-    Inductive interleavedExecution (delta_usr : strat)
+  Inductive interleavedExecution (delta_usr : strat)
                                 (addrs_usr : list Address)
                                 (delta_env : strat)
                                 (addrs_env : list Address)
@@ -1350,7 +1348,7 @@ Section envExec.
     | EPM_Time : forall s' s'' tr' tr'',
       (time_remaining >= time_speed)%nat ->
       delta_usr s0 s tr addrs_usr = [] ->
-      delta_usr s0 s tr addrs_env = [] ->
+      delta_env s0 s tr addrs_env = [] ->
       timeDrive s0 s tr s' tr' ->
       envProgress_Mutual delta_usr addrs_usr delta_env addrs_env caddr s0 s' tr' (time_remaining - time_speed) s'' tr'' ->
       envProgress_Mutual delta_usr addrs_usr delta_env addrs_env caddr  s0 s tr time_remaining s'' tr'' 
@@ -2295,6 +2293,7 @@ Section envExec.
       induction H_interaction;eauto.
       - eapply readyToStepState_timeDrive_readyToStepState in H5;eauto.
       - eapply readyToStepState_multiStratDrive_readyToStepState in H4;eauto.
+      (* - eapply readyToStepState_multiStratDrive_readyToStepState in H3;eauto.  *)
       - eapply readyToStepState_stratDrive_readyToStepState in H3;eauto.
     Qed.
 
@@ -3889,74 +3888,134 @@ Section envExec.
               lia.
   Qed.
 
-  (* Section Monotonicity.
+  Section Monotonicity.
+
+  Definition addrs_subset (addrs1: list Address) (addrs2 : list Address) :=
+    incl addrs1 addrs2.
+
+  (* 我们的模型“时间流逝”依赖于空集存在，若为单纯的子集包含关系，
+      如果新的策略在同一状态下不再是空，就会使原本的“等待/时间流逝”执行分支失效，*)
+  Definition acts_subset_strict (acts1 acts2 : list Action) : Prop :=
+    match acts1 with
+    | [] => acts2 = []                     (* 如果 acts1 空，则 acts2 必须空 *)
+    | _  => incl acts1 acts2              (* 如果 acts1 非空，则 acts2 至少包含 acts1 *)
+    end.
 
 
+  (* 必须手动包含策略地址关系，因为wellStrat仅保证动作的来源来自地址，但可能会出现策略包含的地址不产生任何动作的问题，并且不产生动作其实是合理的 *)
+  Definition strat_subset_strict 
+    (delta1 : strat) (addrs1 : list Address)
+    (delta2 : strat) (addrs2 : list Address) : Prop :=
+      forall s0 s tr,
+        acts_subset_strict
+          (delta1 s0 s tr addrs1)
+          (delta2 s0 s tr addrs2).
 
-    Definition addrs_subset (addrs1: list Address) (addrs2 : list Address) :=
-      incl addrs1 addrs2.
+  Lemma in_empty_false : forall (A : Type) (x : A), ~ In x [].
+  Proof.
+    intros A x H4.
+    inversion H4. (* 空列表中不可能有元素，因此直接矛盾。 *)
+  Qed.
 
-    Definition acts_subset (acts1: list Action) (acts2 : list Action) :=
-      incl acts1 acts2.
+  Lemma in_nonempty_to_empty_contradiction : forall (A : Type) (a : A) (l : list A),
+    (forall x, In x (a :: l) -> In x []) -> False.
+  Proof.
+    intros A a l H4.
+    (* 选择一个具体的元素 a，它在 a :: l 中。 *)
+    specialize (H4 a).
+    simpl in H4.
+    destruct H4.
+    eauto.
+  Qed.
 
-    (* 必须手动包含策略地址关系，因为wellStrat仅保证动作的来源来自地址，但可能会出现策略包含的地址不产生任何动作的问题，并且不产生动作其实是合理的 *)
-    Definition strat_subset (delta1 : strat) (addrs1: list Address) (delta2 : strat) (addrs2: list Address) : Prop :=
-      forall s0 s tr ,
-        acts_subset (delta1 s0 s tr addrs1) (delta2 s0 s tr addrs2).
+
+  Lemma  strat_subset_strict_no_empty:
+    forall (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) s s' tr',
+      strat_subset_strict (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) ->
+      delta1 s s' tr' addrs1 <> [] ->
+      delta2 s s' tr' addrs2 <> [].
+  Proof.
+    intros * Hsbt_delta H_delta.
+    unfold strat_subset_strict in Hsbt_delta.
+    specialize(Hsbt_delta s s' tr').
+    unfold acts_subset_strict in Hsbt_delta.
+    destruct (delta1 s s' tr' addrs1) ;try congruence.
+    unfold incl in Hsbt_delta.
+    intuition.
+    rewrite H3 in Hsbt_delta.
+    eapply in_nonempty_to_empty_contradiction;eauto.
+  Qed.
+
+  Lemma strat_subset_strict_no_empty_re:
+    forall (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) s s' tr',
+      strat_subset_strict (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) ->
+      delta2 s s' tr' addrs2 <> [] ->
+      delta1 s s' tr' addrs1 <> [].
+  Proof.
+    intros * Hsbt_delta H_delta.
+    unfold strat_subset_strict in Hsbt_delta.
+    specialize(Hsbt_delta s s' tr').
+    unfold acts_subset_strict in Hsbt_delta.
+    destruct (delta1 s s' tr' addrs1) ;try congruence.
+  Qed.
+
+  Lemma  strat_subset_strict_empty:
+    forall (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) s s' tr',
+      strat_subset_strict (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) ->
+      delta1 s s' tr' addrs1 = [] ->
+      delta2 s s' tr' addrs2 = [].
+  Proof.
+    intros * Hsbt_delta H_delta.
+    unfold strat_subset_strict in Hsbt_delta.
+    specialize(Hsbt_delta s s' tr').
+    unfold acts_subset_strict in Hsbt_delta.
+    destruct (delta1 s s' tr' addrs1) ;try congruence.
+  Qed.
+
+  Lemma  strat_subset_strict_empty_re:
+    forall (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) s s' tr',
+      strat_subset_strict (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) ->
+      delta2 s s' tr' addrs2 = [] ->
+      delta1 s s' tr' addrs1 = [].
+  Proof.
+    intros * Hsbt_delta H_delta.
+    unfold strat_subset_strict in Hsbt_delta.
+    specialize(Hsbt_delta s s' tr').
+    unfold acts_subset_strict in Hsbt_delta.
+    destruct (delta1 s s' tr' addrs1) ;try congruence.
+    rewrite H_delta in Hsbt_delta.
+    unfold incl in *.
+    eapply in_nonempty_to_empty_contradiction in Hsbt_delta.
+    inversion Hsbt_delta.
+  Qed.
 
 
-
-
-    (* 少的能到，多的也能到 *)
-    Lemma interleavedExecution_incl_env_unchanging (delta_usr1 : strat) (addrs_usr1: list Address) (delta_usr2 : strat) (addrs_usr2: list Address) (delta_env : strat) (addrs_env: list Address) :
-      forall s0 s' c flag tr tr',
-        wellDefinedSystem delta_usr2 addrs_usr2 delta_env addrs_env caddr c s0 ->
-        wellDefinedSystem delta_usr1 addrs_usr1 delta_env addrs_env caddr c s0 ->
-        strat_subset delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 ->
-        interleavedExecution delta_usr2 addrs_usr2 delta_env addrs_env s0 s0 tr flag s' tr' ->
-        interleavedExecution delta_usr1 addrs_usr1 delta_env addrs_env s0 s0 tr flag s' tr'.
-    Proof.
-      intros * Hwell_sys2 Hwell_sys1 Hsbt_delta Hrc_itv2.
-      induction Hrc_itv2;eauto;try intuition.
-      - eapply IS_Refl. 
-      - eapply ISE_Step;eauto.
-      - eapply ISU_Step;eauto.
-        unfold strat_subset in Hsbt_delta.
-        specialize(Hsbt_delta s0 s' tr').
-        unfold acts_subset in Hsbt_delta.
-        unfold incl in Hsbt_delta.
-        unfold stratDrive in *.
-        decompose_exists.
-        destruct_and_split.
-        exists x, x0.
-        split.
-        specialize(Hsbt_delta x).
-        eapply Hsbt_delta;eauto.
-        intuition.
-    Qed.
-    
     Lemma stratDrive_subset:
       forall s0 s s' tr tr' delta_usr1 addrs_usr1 delta_usr2 addrs_usr2,
-        strat_subset delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 ->
+        strat_subset_strict delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 ->
         stratDrive s0 delta_usr2 addrs_usr2 s tr s' tr' ->
         stratDrive s0 delta_usr1 addrs_usr1 s tr s' tr'.
     Proof.
       unfold stratDrive.
-      unfold strat_subset.
-      unfold acts_subset.
+      unfold strat_subset_strict.
+      unfold acts_subset_strict.
       intros.
       decompose_exists.
-      destruct_and_split.
+      destruct_and_split. 
       specialize(H3 s0 s tr).
-      exists x, x0.
+      exists x, x0 , x1.
       split.
+      eauto.
+      split.
+      destruct (delta_usr2 s0 s tr addrs_usr2).
+      inversion H5.
       eauto.
       eauto.
     Qed.
 
     Lemma multiStratDrive_subset:
       forall s0 s s' tr tr' delta_usr1 addrs_usr1 delta_usr2 addrs_usr2 n,
-        strat_subset delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 ->
+        strat_subset_strict delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 ->
         multiStratDrive delta_usr2 addrs_usr2 s0 s tr s' tr' n ->
         multiStratDrive delta_usr1 addrs_usr1 s0 s tr s' tr' n.
     Proof.
@@ -3967,164 +4026,114 @@ Section envExec.
         eapply MS_Step;eauto.
     Qed.
 
-    Lemma userLiquidatesNSteps_incl_env_unchanging (delta_usr1 : strat) (addrs_usr1: list Address) (delta_usr2 : strat) (addrs_usr2: list Address) (delta_env : strat) (addrs_env: list Address) :
-      forall s0 s s' c caddr tr tr' n,
-      wellDefinedSystem delta_usr2 addrs_usr2 delta_env addrs_env caddr c s0 ->
-      wellDefinedSystem delta_usr1 addrs_usr1 delta_env addrs_env caddr c s0 ->
-      strat_subset delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 ->
-      UserLiquidatesNSteps delta_usr2 addrs_usr2 delta_env addrs_env caddr s0 s tr n s' tr'->
-      UserLiquidatesNSteps delta_usr1 addrs_usr1 delta_env addrs_env caddr s0 s tr n s' tr'.
+    (* 少的能到，多的也能到 *)
+    Lemma interleavedExecution_mono_incl_usr_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
+      forall s0 s' c flag tr tr',
+        wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
+        wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
+        strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 ->
+        interleavedExecution delta_usr addrs_usr delta_env1 addrs_env1 s0 s0 tr flag s' tr' ->
+        interleavedExecution delta_usr addrs_usr delta_env2 addrs_env2 s0 s0 tr flag s' tr'.
     Proof.
-      intros * Hwell_sys2 Hwell_sys1 Hsbt_delta Hrc_itv2.
+      intros * Hwell_sys1 Hwell_sys2 Hsbt_delta Hrc_itv.
+      induction Hrc_itv;eauto;try intuition.
+      - eapply IS_Refl.
+      - eapply IS_Wait_Step_Once;eauto.
+        unfold strat_subset_strict in Hsbt_delta.
+        specialize(Hsbt_delta s0 s' tr').
+        unfold acts_subset_strict in Hsbt_delta.
+        rewrite H4 in Hsbt_delta.
+        unfold incl in Hsbt_delta.
+        destruct (delta_env2 s0 s' tr' addrs_env2).
+        eauto.
+        eauto.
+      - eapply ISE_Step;eauto.
+        unfold strat_subset_strict in Hsbt_delta.
+        specialize(Hsbt_delta s0 s' tr').
+        unfold acts_subset_strict in Hsbt_delta.
+        destruct (delta_env1 s0 s' tr' addrs_env1) eqn : He;try congruence.
+        intuition.
+        rewrite H5 in Hsbt_delta.
+        unfold incl in Hsbt_delta.
+        eapply in_nonempty_to_empty_contradiction;eauto.
+        eapply multiStratDrive_subset;eauto.
+      - eapply ISE_Turn_Step;eauto.
+        unfold strat_subset_strict in Hsbt_delta.
+        specialize(Hsbt_delta s0 s' tr').
+        unfold acts_subset_strict in Hsbt_delta.
+        rewrite H3 in Hsbt_delta.
+        eauto.
+      - eapply ISU_Step;eauto.
+      - eapply ISU_Turn_Step;eauto.
+    Qed.
+
+    Lemma userLiquidatesNSteps_incl_env_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
+      forall s0 s s' c tr tr' n,
+        wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
+        wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
+        strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 ->
+        UserLiquidatesNSteps delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 s tr n s' tr'->
+        UserLiquidatesNSteps delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr n s' tr'.
+    Proof.
+      intros * Hwell_sys1 Hwell_sys2 Hsbt_delta Hrc_itv.
       decompose_wellDefinedSystem Hwell_sys1.
-      eapply (env_mut delta_usr2 addrs_usr2 delta_env addrs_env caddr s0 
-      (fun s tr n  s' tr' (_ : envProgress_Mutual delta_usr2 addrs_usr2 delta_env addrs_env caddr s0 s tr n s' tr') =>  
-      envProgress_Mutual delta_usr1 addrs_usr1 delta_env addrs_env caddr s0 s tr n s' tr')
-      (fun  s tr n s' tr' (_ : UserLiquidatesNSteps delta_usr2 addrs_usr2 delta_env addrs_env caddr  s0 s tr n s' tr') => 
-      UserLiquidatesNSteps delta_usr1 addrs_usr1 delta_env addrs_env caddr s0 s tr n s' tr')
+      decompose_wellDefinedSystem Hwell_sys2.
+      clear H_usr_strat0 H_env_strat0 H_init0.
+      rename H_finite0 into H_finite2.
+      rename H_finite into H_finite1.
+      eapply (env_mut delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 
+      (fun s tr n  s' tr' (_ : envProgress_Mutual delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 s tr n s' tr') =>  
+      envProgress_Mutual delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr n s' tr')
+      (fun  s tr n s' tr' (_ : UserLiquidatesNSteps delta_usr addrs_usr delta_env2 addrs_env2 caddr  s0 s tr n s' tr') => 
+      UserLiquidatesNSteps delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr n s' tr')
       );intros;subst;eauto.
       - apply EPM_Base. assumption.
-      -  eapply EPM_Step; eauto.
-      -  apply ULM_Base. assumption.
-      -  eapply ULM_Step;eauto.
-        eapply stratDrive_subset;eauto.
+      - eapply EPM_Step; eauto.
+        intros.
+        eapply strat_subset_strict_no_empty_re;eauto.
+        intros.
+        assert (multiStratDrive delta_env2 addrs_env2 s0 s1 tr0 s'0 tr'0 n1).
+        {
+          eapply multiStratDrive_subset;eauto.
+        }
+        specialize (H3 s'0 tr'0 n1).
+        eapply H3;eauto.
+      - eapply EPM_Time; eauto.
+        eapply strat_subset_strict_empty_re;eauto.
+      - eapply EPM_Turn; eauto.
+        eapply strat_subset_strict_empty_re;eauto.
+      - eapply ULM_Base;eauto.
+      - eapply ULM_Step;eauto.
+      - eapply ULM_Time;eauto.
+        eapply strat_subset_strict_empty_re;eauto.
+      - eapply ULM_Turn;eauto.
     Qed.
-
-    Definition strat_refines (delta_usr2 delta_usr1 : strat)
-                          (addrs_usr2 addrs_usr1 : list Address) : Prop :=
-    forall s0 s tr a s' tr',
-      (* If delta_usr2 takes action a at state s to reach s' and tr' *)
-      (exists Htrans : transition s a = Ok s',
-        In a (delta_usr2 s0 s tr addrs_usr2) /\
-        tr' = snoc tr (step_trans s s' a Htrans))
-      ->
-      (* Then delta_usr1 must also take the same action a at s to reach s' and tr' *)
-      exists Htrans' : transition s a = Ok s',
-        In a (delta_usr1 s0 s tr addrs_usr1) /\
-        tr' = snoc tr (step_trans s s' a Htrans').
-
-    Lemma stratDrive_refines:
-      forall s0 s s' tr tr' delta_usr2 addrs_usr2 delta_usr1 addrs_usr1,
-        strat_refines delta_usr2 delta_usr1 addrs_usr2 addrs_usr1 ->
-        stratDrive s0 delta_usr2 addrs_usr2 s tr s' tr' ->
-        stratDrive s0 delta_usr1 addrs_usr1 s tr s' tr'.
-    Proof.
-      intros s0 s s' tr tr' delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 Hrefines Hdrive.
-      unfold stratDrive in Hdrive.
-      unfold stratDrive.
-      unfold strat_refines  in Hrefines.
-      destruct Hdrive as [a [Htrans [Hin Htr_eq]]].
-      specialize (Hrefines s0 s tr a s' tr').
-      exists a.
-      eapply Hrefines.
-      exists Htrans. split; [assumption|]. eauto.
-    Qed.
-      
-    Lemma multiStratDrive_refines:
-      forall s0 s s' tr tr' n delta_usr2 addrs_usr2 delta_usr1 addrs_usr1,
-        strat_refines delta_usr2 delta_usr1 addrs_usr2 addrs_usr1 ->
-        multiStratDrive delta_usr2 addrs_usr2 s0 s tr s' tr' n ->
-        multiStratDrive delta_usr1 addrs_usr1 s0 s tr s' tr' n.
-    Proof.
-      intros s0 s s' tr tr' n delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 Hrefines Hmulti.
-      induction Hmulti.
-      - (* Base case *)
-        apply MS_Refl.
-      - (* Step case *)
-        apply MS_Step with (s' := s') (tr' := tr') (count := count); auto.
-        apply stratDrive_refines with (delta_usr2 := delta_usr2) (addrs_usr2 := addrs_usr2); auto.
-    Qed.
-
-    Lemma userLiquidatesNSteps_incl_env_unchanging_refine 
-      (delta_usr1 : strat) (addrs_usr1: list Address) 
-      (delta_usr2 : strat) (addrs_usr2: list Address) 
-      (delta_env : strat) (addrs_env : list Address) :
-      forall s0 s s' c caddr tr tr' n,
-        wellDefinedSystem delta_usr2 addrs_usr2 delta_env addrs_env caddr c s0 ->
-        wellDefinedSystem delta_usr1 addrs_usr1 delta_env addrs_env caddr c s0 ->
-        strat_refines delta_usr2 delta_usr1 addrs_usr2 addrs_usr1 ->
-        UserLiquidatesNSteps delta_usr2 addrs_usr2 delta_env addrs_env caddr s0 s tr n s' tr' ->
-        UserLiquidatesNSteps delta_usr1 addrs_usr1 delta_env addrs_env caddr s0 s tr n s' tr'.
-    Proof.
-      intros s0 s s' c caddr tr tr' n Hwd2 Hwd1 Hrefines Hsteps.
-      eapply (ul_mutual_ind delta_usr2 addrs_usr2 delta_env addrs_env caddr s0 
-      (fun s tr n  s' tr' (_ : envProgress_Mutual delta_usr2 addrs_usr2 delta_env addrs_env caddr s0 s tr n s' tr') =>  
-      envProgress_Mutual  delta_usr1 addrs_usr1 delta_env addrs_env caddr s0 s tr n s' tr')
-      (fun  s tr n s' tr' (_ : UserLiquidatesNSteps delta_usr2 addrs_usr2 delta_env addrs_env caddr  s0 s tr n s' tr') => 
-      UserLiquidatesNSteps delta_usr1 addrs_usr1 delta_env addrs_env caddr s0 s tr n s' tr') );intros;subst;eauto.
-      - apply EPM_Base. assumption.
-      -  eapply EPM_Step; eauto.
-      -  apply ULM_Base. assumption.
-      -  eapply ULM_Step;eauto.
-        eapply stratDrive_refines;eauto.
-    Qed.
-
-
-    Lemma interleavedExecution_incl_env_unchanging_subst (delta_usr1 : strat) (addrs_usr1: list Address) (delta_usr2 : strat) (addrs_usr2: list Address) (delta_env : strat) (addrs_env: list Address) :
-    forall s0 s' c caddr flag tr tr',
-      wellDefinedSystem delta_usr2 addrs_usr2 delta_env addrs_env caddr c s0 ->
-      wellDefinedSystem delta_usr1 addrs_usr1 delta_env addrs_env caddr c s0 ->
-      strat_subset delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 ->
-      interleavedExecution delta_usr2 addrs_usr2 delta_env addrs_env s0 s0 tr flag s' tr' ->
-      interleavedExecution delta_usr1 addrs_usr1 delta_env addrs_env s0 s0 tr flag s' tr'.
-    Proof.
-      intros * Hwell_sys2 Hwell_sys1 Hsbt_delta Hrc_itv2.
-      induction Hrc_itv2.
-      - eapply IS_Refl. 
-      - eapply ISE_Step;eauto.
-      - eapply ISU_Step;eauto.
-        unfold strat_subset in Hsbt_delta.
-        specialize(Hsbt_delta s0 s' tr').
-        unfold acts_subset in Hsbt_delta.
-        unfold incl in Hsbt_delta.
-        unfold stratDrive in *.
-        decompose_exists.
-        destruct_and_split.
-        exists x, x0.
-        split.
-        specialize(Hsbt_delta x).
-        eapply Hsbt_delta;eauto.
-        intuition.
-    Qed.
-
-
-    Lemma interleavedExecution_incl_env_unchanging_refine (delta_usr1 : strat) (addrs_usr1: list Address) (delta_usr2 : strat) (addrs_usr2: list Address) (delta_env : strat) (addrs_env: list Address) :
-    forall s0 s' c caddr flag tr tr',
-      wellDefinedSystem delta_usr2 addrs_usr2 delta_env addrs_env caddr c s0 ->
-      wellDefinedSystem delta_usr1 addrs_usr1 delta_env addrs_env caddr c s0 ->
-      strat_refines delta_usr2  delta_usr1 addrs_usr2 addrs_usr1 ->
-      interleavedExecution delta_usr2 addrs_usr2 delta_env addrs_env s0 s0 tr flag s' tr' ->
-      interleavedExecution delta_usr1 addrs_usr1 delta_env addrs_env s0 s0 tr flag s' tr'.
-    Proof.
-      intros * Hwell_sys2 Hwell_sys1 Hsbt_delta Hrc_itv2.
-      induction Hrc_itv2.
-      - eapply IS_Refl. 
-      - eapply ISE_Step;eauto.
-      - eapply ISU_Step;eauto.
-        eapply stratDrive_refines in H3;eauto.
-    Qed.
-
 
     (* 少的成立，大的更成立 *)
-    Lemma usr_liquid_Mono_env_unchanging (delta_usr1 : strat) (addrs_usr1: list Address) (delta_usr2 : strat) (addrs_usr2: list Address) (delta_env : strat) (addrs_env: list Address) :
-      forall s0 c caddr, 
-        wellDefinedSystem delta_usr1 addrs_usr1 delta_env addrs_env caddr c s0 ->
-        wellDefinedSystem delta_usr2 addrs_usr2 delta_env addrs_env caddr c s0 ->
-        strat_refines delta_usr2 delta_usr1 addrs_usr2  addrs_usr1-> 
-        strat_liquidity delta_usr2 addrs_usr2 delta_env addrs_env caddr c s0 ->
-        strat_liquidity delta_usr1 addrs_usr1 delta_env addrs_env caddr c s0.
+    Lemma usr_liquid_Mono_env_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
+      forall s0 c, 
+        wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
+        wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
+        strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 -> 
+        strat_liquidity delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
+        strat_liquidity delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0.
     Proof.
       intros * Hwell_sys1 Hwell_sys2 Hstrat_refines Hliq_delta2.
       unfold strat_liquidity in *.
       intros Hwell_sys * Hrc_itv.
       unfold isReachableUnderInterleavedExecution in Hrc_itv.
       specialize(Hliq_delta2 Hwell_sys2 tr s' tr').
-    Admitted.
+      assert (interleavedExecution delta_usr addrs_usr delta_env2 addrs_env2 s0 s0
+      tr Tusr s' tr').
+      eapply interleavedExecution_mono_incl_usr_unchanging;eauto.
+      unfold isReachableUnderInterleavedExecution in Hliq_delta2.
+      specialize (Hliq_delta2 H3).
+      decompose_exists.
+      exists x, x0 ,x1.
+      eapply userLiquidatesNSteps_incl_env_unchanging in Hliq_delta2;eauto.
+    Qed.
 
-
-
-
-  End Monotonicity. *)
+  End Monotonicity.
     
   Inductive UserProgress  (delta_usr : strat)
                             (addrs_usr : list Address)

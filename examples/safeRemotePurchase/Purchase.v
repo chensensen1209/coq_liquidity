@@ -259,7 +259,7 @@ Definition find_purchase purchaseId (purchases : purchases_type) := FMap.find pu
 (* 检查调用者发送的金额是否为零 *)
 Definition required_amount_zero ctx := required_true (ctx.(ctx_amount) =? 0).
 
-(* 检查是否为自调用
+(* 检查是否为合约自调用
     用于防止合约自身调用其自身，避免潜在的重入攻击等问题。 *)
 Definition required_no_self_call ctx := required_false (ctx.(ctx_from) =? ctx.(ctx_contract_address))%address.
 
