@@ -1,4 +1,4 @@
-DIGEST d1c7ca181fd809a0ac25364ea102d11a
+DIGEST 3f4cf5e60d9ec4d2d2aceb899388eae9
 FTheroies.Containers
 R87:90 Coq.Lists.List <> <> lib
 R117:122 Coq.ZArith.ZArith <> <> lib
@@ -978,75 +978,392 @@ R8582:8592 Theroies.Containers FMap find_remove thm
 R8582:8592 Theroies.Containers FMap find_remove thm
 R8582:8592 Theroies.Containers FMap find_remove thm
 R8582:8592 Theroies.Containers FMap find_remove thm
-prf 8615:8629 FMap find_union_None
-R8640:8643 Theroies.Containers <> FMap abbrev
-R8647:8647 Theroies.Containers <> FMap.Theories.V var
-R8645:8645 Theroies.Containers <> FMap.Theories.K var
-binder 8632:8633 <> m1:116
-binder 8635:8636 <> m2:117
+prf 8615:8634 FMap map_Forall_to_list_2
+R8650:8653 Theroies.Containers <> FMap abbrev
+R8657:8657 Theroies.Containers <> FMap.Theories.V var
 R8655:8655 Theroies.Containers <> FMap.Theories.K var
-binder 8651:8651 <> k:118
-R8680:8687 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R8673:8675 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R8664:8667 Theroies.Containers FMap find abbrev
-R8671:8672 Theroies.Containers <> m1:116 var
-R8669:8669 Theroies.Containers <> k:118 var
-R8676:8679 Coq.Init.Datatypes <> None constr
-R8704:8711 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R8697:8699 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R8688:8691 Theroies.Containers FMap find abbrev
-R8695:8696 Theroies.Containers <> m2:117 var
-R8693:8693 Theroies.Containers <> k:118 var
-R8700:8703 Coq.Init.Datatypes <> None constr
-R8732:8734 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R8712:8715 Theroies.Containers FMap find abbrev
-R8720:8724 Theroies.Containers FMap union abbrev
-R8729:8730 Theroies.Containers <> m2:117 var
-R8726:8727 Theroies.Containers <> m1:116 var
-R8717:8717 Theroies.Containers <> k:118 var
-R8735:8738 Coq.Init.Datatypes <> None constr
-R8784:8809 stdpp.fin_maps <> lookup_union_None thm
-R8784:8809 stdpp.fin_maps <> lookup_union_None thm
-prf 8834:8850 FMap find_union_Some_l
-R8861:8864 Theroies.Containers <> FMap abbrev
-R8868:8868 Theroies.Containers <> FMap.Theories.V var
-R8866:8866 Theroies.Containers <> FMap.Theories.K var
-binder 8853:8854 <> m1:119
-binder 8856:8857 <> m2:120
-R8876:8876 Theroies.Containers <> FMap.Theories.K var
-binder 8872:8872 <> k:121
-R8884:8884 Theroies.Containers <> FMap.Theories.V var
-binder 8880:8880 <> v:122
-R8909:8914 Coq.Init.Logic <> ::type_scope:x_'->'_x not
-R8900:8902 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R8891:8894 Theroies.Containers FMap find abbrev
-R8898:8899 Theroies.Containers <> m1:119 var
-R8896:8896 Theroies.Containers <> k:121 var
-R8903:8906 Coq.Init.Datatypes <> Some constr
-R8908:8908 Theroies.Containers <> v:122 var
-R8935:8937 Coq.Init.Logic <> ::type_scope:x_'='_x not
-R8915:8918 Theroies.Containers FMap find abbrev
-R8923:8927 Theroies.Containers FMap union abbrev
-R8932:8933 Theroies.Containers <> m2:120 var
-R8929:8930 Theroies.Containers <> m1:119 var
-R8920:8920 Theroies.Containers <> k:121 var
-R8938:8941 Coq.Init.Datatypes <> Some constr
-R8943:8943 Theroies.Containers <> v:122 var
-R8959:8986 stdpp.fin_maps <> lookup_union_Some_l thm
-R8959:8986 stdpp.fin_maps <> lookup_union_Some_l thm
-R9001:9008 Theroies.Containers FMap.Theories <> sec
-R9015:9018 Theroies.Containers FMap <> mod
-inst 9260:9275 <> empty_set_eq_dec
-R9279:9299 stdpp.base <> EqDecision abbrev
-R9301:9309 Coq.Init.Datatypes <> Empty_set ind
-inst 9381:9399 <> empty_set_countable
-R9403:9421 stdpp.countable <> Countable class
-R9423:9431 Coq.Init.Datatypes <> Empty_set ind
-R9441:9456 stdpp.countable <> encode meth
-R9441:9456 stdpp.countable <> encode meth
-R9441:9456 stdpp.countable <> encode meth
-R9475:9490 stdpp.countable <> decode meth
-R9475:9490 stdpp.countable <> decode meth
-binder 9458:9458 <> e:123
-binder 9492:9492 <> d:124
-R9497:9500 Coq.Init.Datatypes <> None constr
+binder 8646:8646 <> m:116
+R8665:8665 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R8671:8675 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R8667:8669 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R8666:8666 Theroies.Containers <> FMap.Theories.K var
+R8670:8670 Theroies.Containers <> FMap.Theories.V var
+binder 8661:8661 <> P:117
+R8718:8722 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R8687:8705 stdpp.fin_maps <> map_Forall def
+R8717:8717 Theroies.Containers <> m:116 var
+R8708:8712 Coq.Init.Datatypes <> curry def
+R8714:8714 Theroies.Containers <> P:117 var
+R8723:8728 Coq.Lists.List <> Forall ind
+R8733:8740 Theroies.Containers FMap elements abbrev
+R8742:8742 Theroies.Containers <> m:116 var
+R8730:8730 Theroies.Containers <> P:117 var
+R8804:8816 Coq.Lists.List <> Forall_forall thm
+R8804:8816 Coq.Lists.List <> Forall_forall thm
+R8853:8872 stdpp.base <> elem_of_list_In thm
+R8853:8872 stdpp.base <> elem_of_list_In thm
+R8894:8921 stdpp.fin_maps <> elem_of_map_to_list meth
+R8894:8921 stdpp.fin_maps <> elem_of_map_to_list meth
+R8894:8921 stdpp.fin_maps <> elem_of_map_to_list meth
+R8996:9008 Coq.Lists.List <> Forall_forall thm
+R8996:9008 Coq.Lists.List <> Forall_forall thm
+R8996:9008 Coq.Lists.List <> Forall_forall thm
+R9033:9060 stdpp.fin_maps <> elem_of_map_to_list meth
+R9033:9060 stdpp.fin_maps <> elem_of_map_to_list meth
+R9033:9060 stdpp.fin_maps <> elem_of_map_to_list meth
+R9106:9125 stdpp.base <> elem_of_list_In thm
+R9106:9125 stdpp.base <> elem_of_list_In thm
+R9106:9125 stdpp.base <> elem_of_list_In thm
+prf 9144:9162 FMap Forall_elements_add
+R9178:9181 Theroies.Containers <> FMap abbrev
+R9185:9185 Theroies.Containers <> FMap.Theories.V var
+R9183:9183 Theroies.Containers <> FMap.Theories.K var
+binder 9174:9174 <> m:118
+R9193:9193 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9197:9201 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9195:9195 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R9194:9194 Theroies.Containers <> FMap.Theories.K var
+R9196:9196 Theroies.Containers <> FMap.Theories.V var
+binder 9189:9189 <> f:119
+R9219:9219 Theroies.Containers <> FMap.Theories.K var
+binder 9209:9215 <> new_key:120
+R9235:9235 Theroies.Containers <> FMap.Theories.V var
+binder 9223:9231 <> new_value:121
+R9265:9272 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9243:9243 Theroies.Containers <> f:119 var
+R9245:9245 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9253:9254 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9264:9264 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9246:9252 Theroies.Containers <> new_key:120 var
+R9255:9263 Theroies.Containers <> new_value:121 var
+R9294:9301 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9273:9278 Coq.Lists.List <> Forall ind
+R9283:9290 Theroies.Containers FMap elements abbrev
+R9292:9292 Theroies.Containers <> m:118 var
+R9280:9280 Theroies.Containers <> f:119 var
+R9302:9307 Coq.Lists.List <> Forall ind
+R9312:9319 Theroies.Containers FMap elements abbrev
+R9322:9324 Theroies.Containers FMap add abbrev
+R9344:9344 Theroies.Containers <> m:118 var
+R9334:9342 Theroies.Containers <> new_value:121 var
+R9326:9332 Theroies.Containers <> new_key:120 var
+R9309:9309 Theroies.Containers <> f:119 var
+R9408:9427 Theroies.Containers FMap map_Forall_to_list_2 thm
+R9408:9427 Theroies.Containers FMap map_Forall_to_list_2 thm
+R9446:9465 Theroies.Containers FMap map_Forall_to_list_2 thm
+R9446:9465 Theroies.Containers FMap map_Forall_to_list_2 thm
+R9493:9520 stdpp.fin_maps <> map_Forall_insert_2 thm
+R9493:9520 stdpp.fin_maps <> map_Forall_insert_2 thm
+prf 9546:9566 FMap val_in_map_In_key_val
+R9582:9585 Theroies.Containers <> FMap abbrev
+R9589:9589 Theroies.Containers <> FMap.Theories.V var
+R9587:9587 Theroies.Containers <> FMap.Theories.K var
+binder 9578:9578 <> m:122
+R9597:9597 Theroies.Containers <> FMap.Theories.V var
+binder 9593:9593 <> v:123
+R9620:9623 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9605:9606 Coq.Lists.List <> In def
+R9611:9616 Theroies.Containers FMap values def
+R9618:9618 Theroies.Containers <> m:122 var
+R9608:9608 Theroies.Containers <> v:123 var
+R9624:9631 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R9637:9639 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R9636:9636 Theroies.Containers <> FMap.Theories.K var
+binder 9632:9632 <> k:124
+R9640:9641 Coq.Lists.List <> In def
+R9651:9658 Theroies.Containers FMap elements abbrev
+R9660:9660 Theroies.Containers <> m:122 var
+R9643:9643 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9645:9646 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9648:9648 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R9644:9644 Theroies.Containers <> k:124 var
+R9647:9647 Theroies.Containers <> v:123 var
+R9698:9703 Theroies.Containers FMap values def
+R9717:9724 Theroies.Containers FMap elements abbrev
+R9717:9724 Theroies.Containers FMap elements abbrev
+prf 9931:9951 FMap key_val_in_map_In_val
+R9967:9970 Theroies.Containers <> FMap abbrev
+R9974:9974 Theroies.Containers <> FMap.Theories.V var
+R9972:9972 Theroies.Containers <> FMap.Theories.K var
+binder 9963:9963 <> m:125
+R9982:9982 Theroies.Containers <> FMap.Theories.K var
+binder 9978:9978 <> k:126
+R9990:9990 Theroies.Containers <> FMap.Theories.V var
+binder 9986:9986 <> v:127
+R10020:10023 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9998:9999 Coq.Lists.List <> In def
+R10009:10016 Theroies.Containers FMap elements abbrev
+R10018:10018 Theroies.Containers <> m:125 var
+R10001:10001 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10003:10004 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10006:10006 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10002:10002 Theroies.Containers <> k:126 var
+R10005:10005 Theroies.Containers <> v:127 var
+R10024:10025 Coq.Lists.List <> In def
+R10030:10035 Theroies.Containers FMap values def
+R10037:10037 Theroies.Containers <> m:125 var
+R10027:10027 Theroies.Containers <> v:127 var
+R10075:10080 Theroies.Containers FMap values def
+R10094:10101 Theroies.Containers FMap elements abbrev
+R10094:10101 Theroies.Containers FMap elements abbrev
+prf 10299:10320 FMap Forall_elements_values
+R10336:10339 Theroies.Containers <> FMap abbrev
+R10343:10343 Theroies.Containers <> FMap.Theories.V var
+R10341:10341 Theroies.Containers <> FMap.Theories.K var
+binder 10332:10332 <> m:128
+R10352:10355 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10351:10351 Theroies.Containers <> FMap.Theories.V var
+binder 10347:10347 <> f:129
+R10407:10411 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R10367:10372 Coq.Lists.List <> Forall ind
+R10396:10403 Theroies.Containers FMap elements abbrev
+R10405:10405 Theroies.Containers <> m:128 var
+R10380:10380 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10382:10383 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10385:10385 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+binder 10384:10384 <> v:130
+binder 10380:10385 <> pat:131
+R10390:10390 Theroies.Containers <> f:129 var
+R10392:10392 Theroies.Containers <> v:130 var
+R10412:10417 Coq.Lists.List <> Forall ind
+R10422:10427 Theroies.Containers FMap values def
+R10429:10429 Theroies.Containers <> m:128 var
+R10419:10419 Theroies.Containers <> f:129 var
+R10494:10506 Coq.Lists.List <> Forall_forall thm
+R10494:10506 Coq.Lists.List <> Forall_forall thm
+R10494:10506 Coq.Lists.List <> Forall_forall thm
+R10543:10563 Theroies.Containers FMap val_in_map_In_key_val thm
+R10543:10563 Theroies.Containers FMap val_in_map_In_key_val thm
+R10632:10632 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10635:10636 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10638:10638 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10632:10632 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10635:10636 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10638:10638 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R10656:10668 Coq.Lists.List <> Forall_forall thm
+R10656:10668 Coq.Lists.List <> Forall_forall thm
+R10656:10668 Coq.Lists.List <> Forall_forall thm
+R10734:10754 Theroies.Containers FMap key_val_in_map_In_val thm
+R10734:10754 Theroies.Containers FMap key_val_in_map_In_val thm
+prf 10786:10802 FMap Forall_values_add
+R10818:10821 Theroies.Containers <> FMap abbrev
+R10825:10825 Theroies.Containers <> FMap.Theories.V var
+R10823:10823 Theroies.Containers <> FMap.Theories.K var
+binder 10814:10814 <> m:132
+R10834:10837 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10833:10833 Theroies.Containers <> FMap.Theories.V var
+binder 10829:10829 <> f:133
+R10855:10855 Theroies.Containers <> FMap.Theories.K var
+binder 10845:10851 <> new_key:134
+R10871:10871 Theroies.Containers <> FMap.Theories.V var
+binder 10859:10867 <> new_value:135
+R10890:10897 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10879:10879 Theroies.Containers <> f:133 var
+R10881:10889 Theroies.Containers <> new_value:135 var
+R10917:10924 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10898:10903 Coq.Lists.List <> Forall ind
+R10908:10913 Theroies.Containers FMap values def
+R10915:10915 Theroies.Containers <> m:132 var
+R10905:10905 Theroies.Containers <> f:133 var
+R10925:10930 Coq.Lists.List <> Forall ind
+R10935:10940 Theroies.Containers FMap values def
+R10943:10945 Theroies.Containers FMap add abbrev
+R10965:10965 Theroies.Containers <> m:132 var
+R10955:10963 Theroies.Containers <> new_value:135 var
+R10947:10953 Theroies.Containers <> new_key:134 var
+R10932:10932 Theroies.Containers <> f:133 var
+R11034:11055 Theroies.Containers FMap Forall_elements_values thm
+R11034:11055 Theroies.Containers FMap Forall_elements_values thm
+R11034:11055 Theroies.Containers FMap Forall_elements_values thm
+R11077:11095 Theroies.Containers FMap Forall_elements_add thm
+R11077:11095 Theroies.Containers FMap Forall_elements_add thm
+prf 11114:11132 FMap In_values_find_some
+R11148:11151 Theroies.Containers <> FMap abbrev
+R11155:11155 Theroies.Containers <> FMap.Theories.V var
+R11153:11153 Theroies.Containers <> FMap.Theories.K var
+binder 11144:11144 <> m:136
+R11163:11163 Theroies.Containers <> FMap.Theories.V var
+binder 11159:11159 <> v:137
+R11186:11189 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11171:11172 Coq.Lists.List <> In def
+R11177:11182 Theroies.Containers FMap values def
+R11184:11184 Theroies.Containers <> m:136 var
+R11174:11174 Theroies.Containers <> v:137 var
+R11190:11196 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R11198:11199 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 11197:11197 <> k:138
+R11208:11210 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11200:11203 Theroies.Containers FMap find abbrev
+R11207:11207 Theroies.Containers <> m:136 var
+R11205:11205 Theroies.Containers <> k:138 var
+R11211:11214 Coq.Init.Datatypes <> Some constr
+R11216:11216 Theroies.Containers <> v:137 var
+R11256:11276 Theroies.Containers FMap val_in_map_In_key_val thm
+R11256:11276 Theroies.Containers FMap val_in_map_In_key_val thm
+R11353:11363 Theroies.Containers FMap In_elements thm
+R11353:11363 Theroies.Containers FMap In_elements thm
+prf 11382:11400 FMap find_some_In_values
+R11416:11419 Theroies.Containers <> FMap abbrev
+R11423:11423 Theroies.Containers <> FMap.Theories.V var
+R11421:11421 Theroies.Containers <> FMap.Theories.K var
+binder 11412:11412 <> m:139
+R11431:11431 Theroies.Containers <> FMap.Theories.K var
+binder 11427:11427 <> k:140
+R11439:11439 Theroies.Containers <> FMap.Theories.V var
+binder 11435:11435 <> v:141
+R11464:11467 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11455:11457 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11447:11450 Theroies.Containers FMap find abbrev
+R11454:11454 Theroies.Containers <> m:139 var
+R11452:11452 Theroies.Containers <> k:140 var
+R11458:11461 Coq.Init.Datatypes <> Some constr
+R11463:11463 Theroies.Containers <> v:141 var
+R11468:11469 Coq.Lists.List <> In def
+R11474:11479 Theroies.Containers FMap values def
+R11481:11481 Theroies.Containers <> m:139 var
+R11471:11471 Theroies.Containers <> v:141 var
+R11528:11538 Theroies.Containers FMap In_elements thm
+R11528:11538 Theroies.Containers FMap In_elements thm
+R11568:11588 Theroies.Containers FMap key_val_in_map_In_val thm
+R11568:11588 Theroies.Containers FMap key_val_in_map_In_val thm
+prf 11620:11636 FMap Forall_elements_f
+R11652:11655 Theroies.Containers <> FMap abbrev
+R11659:11659 Theroies.Containers <> FMap.Theories.V var
+R11657:11657 Theroies.Containers <> FMap.Theories.K var
+binder 11648:11648 <> m:142
+R11667:11667 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11671:11675 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11669:11669 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R11668:11668 Theroies.Containers <> FMap.Theories.K var
+R11670:11670 Theroies.Containers <> FMap.Theories.V var
+binder 11663:11663 <> f:143
+R11687:11687 Theroies.Containers <> FMap.Theories.K var
+binder 11683:11683 <> k:144
+R11695:11695 Theroies.Containers <> FMap.Theories.V var
+binder 11691:11691 <> v:145
+R11720:11727 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11711:11713 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11703:11706 Theroies.Containers FMap find abbrev
+R11710:11710 Theroies.Containers <> m:142 var
+R11708:11708 Theroies.Containers <> k:144 var
+R11714:11717 Coq.Init.Datatypes <> Some constr
+R11719:11719 Theroies.Containers <> v:145 var
+R11749:11756 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11728:11733 Coq.Lists.List <> Forall ind
+R11738:11745 Theroies.Containers FMap elements abbrev
+R11747:11747 Theroies.Containers <> m:142 var
+R11735:11735 Theroies.Containers <> f:143 var
+R11757:11757 Theroies.Containers <> f:143 var
+R11759:11759 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11761:11762 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11764:11764 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R11760:11760 Theroies.Containers <> k:144 var
+R11763:11763 Theroies.Containers <> v:145 var
+R11827:11846 Theroies.Containers FMap map_Forall_to_list_2 thm
+R11827:11846 Theroies.Containers FMap map_Forall_to_list_2 thm
+R11879:11906 stdpp.fin_maps <> map_Forall_lookup_1 thm
+R11909:11913 Coq.Init.Datatypes <> curry def
+R11879:11906 stdpp.fin_maps <> map_Forall_lookup_1 thm
+R11909:11913 Coq.Init.Datatypes <> curry def
+prf 11950:11973 FMap Forall_elements_f_remove
+R11989:11992 Theroies.Containers <> FMap abbrev
+R11996:11996 Theroies.Containers <> FMap.Theories.V var
+R11994:11994 Theroies.Containers <> FMap.Theories.K var
+binder 11985:11985 <> m:146
+R12004:12004 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12008:12012 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12006:12006 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R12005:12005 Theroies.Containers <> FMap.Theories.K var
+R12007:12007 Theroies.Containers <> FMap.Theories.V var
+binder 12000:12000 <> f:147
+R12024:12024 Theroies.Containers <> FMap.Theories.K var
+binder 12020:12020 <> k:148
+R12053:12060 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12032:12037 Coq.Lists.List <> Forall ind
+R12042:12049 Theroies.Containers FMap elements abbrev
+R12051:12051 Theroies.Containers <> m:146 var
+R12039:12039 Theroies.Containers <> f:147 var
+R12061:12066 Coq.Lists.List <> Forall ind
+R12071:12078 Theroies.Containers FMap elements abbrev
+R12081:12086 Theroies.Containers FMap remove abbrev
+R12090:12090 Theroies.Containers <> m:146 var
+R12088:12088 Theroies.Containers <> k:148 var
+R12068:12068 Theroies.Containers <> f:147 var
+R12126:12145 Theroies.Containers FMap map_Forall_to_list_2 thm
+R12126:12145 Theroies.Containers FMap map_Forall_to_list_2 thm
+R12158:12177 Theroies.Containers FMap map_Forall_to_list_2 thm
+R12158:12177 Theroies.Containers FMap map_Forall_to_list_2 thm
+R12200:12225 stdpp.fin_maps <> map_Forall_delete thm
+R12200:12225 stdpp.fin_maps <> map_Forall_delete thm
+prf 12246:12260 FMap find_union_None
+R12271:12274 Theroies.Containers <> FMap abbrev
+R12278:12278 Theroies.Containers <> FMap.Theories.V var
+R12276:12276 Theroies.Containers <> FMap.Theories.K var
+binder 12263:12264 <> m1:149
+binder 12266:12267 <> m2:150
+R12286:12286 Theroies.Containers <> FMap.Theories.K var
+binder 12282:12282 <> k:151
+R12311:12318 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12304:12306 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12295:12298 Theroies.Containers FMap find abbrev
+R12302:12303 Theroies.Containers <> m1:149 var
+R12300:12300 Theroies.Containers <> k:151 var
+R12307:12310 Coq.Init.Datatypes <> None constr
+R12335:12342 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12328:12330 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12319:12322 Theroies.Containers FMap find abbrev
+R12326:12327 Theroies.Containers <> m2:150 var
+R12324:12324 Theroies.Containers <> k:151 var
+R12331:12334 Coq.Init.Datatypes <> None constr
+R12363:12365 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12343:12346 Theroies.Containers FMap find abbrev
+R12351:12355 Theroies.Containers FMap union abbrev
+R12360:12361 Theroies.Containers <> m2:150 var
+R12357:12358 Theroies.Containers <> m1:149 var
+R12348:12348 Theroies.Containers <> k:151 var
+R12366:12369 Coq.Init.Datatypes <> None constr
+R12415:12440 stdpp.fin_maps <> lookup_union_None thm
+R12415:12440 stdpp.fin_maps <> lookup_union_None thm
+prf 12465:12481 FMap find_union_Some_l
+R12492:12495 Theroies.Containers <> FMap abbrev
+R12499:12499 Theroies.Containers <> FMap.Theories.V var
+R12497:12497 Theroies.Containers <> FMap.Theories.K var
+binder 12484:12485 <> m1:152
+binder 12487:12488 <> m2:153
+R12507:12507 Theroies.Containers <> FMap.Theories.K var
+binder 12503:12503 <> k:154
+R12515:12515 Theroies.Containers <> FMap.Theories.V var
+binder 12511:12511 <> v:155
+R12540:12545 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12531:12533 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12522:12525 Theroies.Containers FMap find abbrev
+R12529:12530 Theroies.Containers <> m1:152 var
+R12527:12527 Theroies.Containers <> k:154 var
+R12534:12537 Coq.Init.Datatypes <> Some constr
+R12539:12539 Theroies.Containers <> v:155 var
+R12566:12568 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12546:12549 Theroies.Containers FMap find abbrev
+R12554:12558 Theroies.Containers FMap union abbrev
+R12563:12564 Theroies.Containers <> m2:153 var
+R12560:12561 Theroies.Containers <> m1:152 var
+R12551:12551 Theroies.Containers <> k:154 var
+R12569:12572 Coq.Init.Datatypes <> Some constr
+R12574:12574 Theroies.Containers <> v:155 var
+R12590:12617 stdpp.fin_maps <> lookup_union_Some_l thm
+R12590:12617 stdpp.fin_maps <> lookup_union_Some_l thm
+R12632:12639 Theroies.Containers FMap.Theories <> sec
+R12646:12649 Theroies.Containers FMap <> mod
+inst 12891:12906 <> empty_set_eq_dec
+R12910:12930 stdpp.base <> EqDecision abbrev
+R12932:12940 Coq.Init.Datatypes <> Empty_set ind
+inst 13012:13030 <> empty_set_countable
+R13034:13052 stdpp.countable <> Countable class
+R13054:13062 Coq.Init.Datatypes <> Empty_set ind
+R13072:13087 stdpp.countable <> encode meth
+R13072:13087 stdpp.countable <> encode meth
+R13072:13087 stdpp.countable <> encode meth
+R13106:13121 stdpp.countable <> decode meth
+R13106:13121 stdpp.countable <> decode meth
+binder 13089:13089 <> e:156
+binder 13123:13123 <> d:157
+R13128:13131 Coq.Init.Datatypes <> None constr

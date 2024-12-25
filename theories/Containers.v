@@ -279,6 +279,106 @@ Module FMap.
       - now rewrite !find_remove.
     Qed.
 
+    Lemma map_Forall_to_list_2 : forall (m : FMap K V) (P : (K * V) -> Prop),
+    fin_maps.map_Forall (curry P) m <-> Forall P (elements m).
+  Proof.
+    intros *. split; intros HForall.
+    - apply Forall_forall. intros [i x] ix_in_m.
+      apply base.elem_of_list_In in ix_in_m. rewrite fin_maps.elem_of_map_to_list in ix_in_m. now apply (HForall i x).
+    - intros i x find_some. rewrite Forall_forall in HForall. rewrite <- fin_maps.elem_of_map_to_list in find_some. apply HForall. now rewrite <- base.elem_of_list_In.
+  Qed.
+
+  Lemma Forall_elements_add : forall (m : FMap K V) (f : (K*V) -> Prop) (new_key : K) (new_value : V),
+    f (new_key, new_value) ->
+    Forall f (elements m) ->
+    Forall f (elements (add new_key new_value m)).
+  Proof.
+    intros * new_satisfied m_satisfied.
+    apply map_Forall_to_list_2; auto.
+    apply map_Forall_to_list_2 in m_satisfied.
+    apply fin_maps.map_Forall_insert_2; auto.
+  Qed.
+
+
+  Lemma val_in_map_In_key_val : forall (m : FMap K V) (v : V),
+    In v (values m) -> exists (k : K), In (k, v) (elements m).
+  Proof.
+    intros *.
+    unfold values. induction (elements m) as [| [k' v'] vals' IH]; intros v_in_m.
+    - easy.
+    - cbn in *. destruct v_in_m.
+      + subst. exists k'. left. reflexivity.
+      + destruct IH; auto. exists x. right. congruence.
+  Qed.
+
+  Lemma key_val_in_map_In_val : forall (m : FMap K V) (k : K) (v : V),
+    In (k, v) (elements m) -> In v (values m).
+  Proof.
+    intros *.
+    unfold values. induction (elements m) as [| [k' v'] vals' IH]; intros kv_in_m; cbn in *.
+    - easy.
+    - destruct kv_in_m as [kv_eq | kv_in_vals'].
+      + left. now inversion kv_eq.
+      + right. now apply IH.
+  Qed. 
+
+  Lemma Forall_elements_values : forall (m : FMap K V) (f : V -> Prop),
+    Forall (fun '(_, v) => f v) (elements m) <-> Forall f (values m).
+  Proof.
+    intros *. split; intros forall_m.
+    - rewrite Forall_forall in *. intros v v_in_m.
+      apply val_in_map_In_key_val in v_in_m.
+      destruct v_in_m as [k' in_m]. now apply (forall_m (k', v)).
+    - rewrite Forall_forall in *. intros [k' v'] k'v'_in_m.
+      apply forall_m. now apply key_val_in_map_In_val in k'v'_in_m.
+  Qed.
+
+  Lemma Forall_values_add : forall (m : FMap K V) (f : V -> Prop) (new_key : K) (new_value : V),
+    f new_value ->
+    Forall f (values m) ->
+    Forall f (values (add new_key new_value m)).
+  Proof.
+    intros * new_satisfied m_satisfied.
+    rewrite <- Forall_elements_values in *.
+    now apply Forall_elements_add.
+  Qed.
+
+  Lemma In_values_find_some : forall (m : FMap K V) (v : V),
+    In v (values m) -> exists k, find k m = Some v.
+  Proof.
+    intros * kv_in_m. apply val_in_map_In_key_val in kv_in_m.
+    destruct kv_in_m as [k' kv_in_m].
+    exists k'. now apply In_elements.
+  Qed.
+
+  Lemma find_some_In_values : forall (m : FMap K V) (k : K) (v : V),
+    find k m = Some v -> In v (values m).
+  Proof.
+    intros * find_some.
+    apply In_elements in find_some.
+    now apply key_val_in_map_In_val in find_some.
+  Qed.
+
+  Lemma Forall_elements_f : forall (m : FMap K V) (f : (K*V) -> Prop) (k : K) (v : V),
+    find k m = Some v ->
+    Forall f (elements m) ->
+    f (k, v).
+  Proof.
+    intros * found_some forall_elements.
+    apply map_Forall_to_list_2 in forall_elements.
+    apply (fin_maps.map_Forall_lookup_1 (curry f) m k v); auto.
+  Qed.
+  
+  Lemma Forall_elements_f_remove : forall (m : FMap K V) (f : (K*V) -> Prop) (k : K),
+    Forall f (elements m) ->
+    Forall f (elements (remove k m)).
+  Proof.
+    intros.
+    apply map_Forall_to_list_2.
+    apply map_Forall_to_list_2 in H0.
+    now apply fin_maps.map_Forall_delete.
+  Qed.
+
     Lemma find_union_None (m1 m2 : FMap K V) (k : K) :
     find k m1 = None ->
     find k m2 = None ->
@@ -314,3 +414,5 @@ Proof. decidable.solve_decision. Defined.
 Program Instance empty_set_countable : countable.Countable Empty_set :=
   {| countable.encode e := 1%positive; countable.decode d := None; |}.
 Solve Obligations with contradiction.
+
+Global Hint Resolve FMap.find_add FMap.find_add_ne FMap.find_remove : core.

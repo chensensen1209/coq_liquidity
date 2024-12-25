@@ -64,7 +64,7 @@ Require Import Coq.NArith.BinNatDef.
 Definition required_true (b: bool) := if b then Some tt else None.
 Definition required_false (b: bool) := if b then None else Some tt.
 
-Section EcommerceFixed.
+Section Purchase.
 
 Open Scope Z.
 Context {BaseTypes : ChainBase}.
@@ -393,8 +393,20 @@ Definition buyer_abort_action (ctx : ContractCallContext)
           (* 检查调用者是否为该购买的买家 *)
           if ((ctx_from ctx) =? purchase.(buyer))%address then
             (* 更新购买记录的状态为 'failed'，并将池中的金额设为零 *)
-            let updated_purchase := purchase <| purchase_state := failed |>
-                                             <| pool := 0 |> in
+            let updated_purchase :=
+              {|
+                commit := commit purchase; 
+                last_block := last_block purchase;
+                itemId := itemId purchase; 
+                seller_bit := seller_bit purchase;
+                notes := notes purchase; 
+                purchase_state := failed; (* 设置购买状态为 requested *)
+                buyer := buyer purchase; 
+                pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
+                discarded_money := discarded_money purchase; 
+              |} in
+            (* let updated_purchase := purchase <| purchase_state := failed |>
+                                             <| pool := 0 |> in *)
             (* 将更新后的购买记录添加回购买记录映射中 *)
             let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
             (* 更新合约状态，包含更新后的购买记录 *)
@@ -437,8 +449,20 @@ Definition buyer_confirm_delivery_action (ctx : ContractCallContext)
           (* 检查调用者是否为买家 *)
           if ((ctx_from ctx) =? purchase.(buyer))%address then
             (* 更新购买记录的状态为 'completed'，并将池中的金额设为零 *)
-            let updated_purchase := purchase <| purchase_state := completed |>
-                                             <| pool := 0 |> in
+            let updated_purchase :=
+              {|
+                commit := commit purchase; 
+                last_block := last_block purchase;
+                itemId := itemId purchase; 
+                seller_bit := seller_bit purchase;
+                notes := notes purchase; 
+                purchase_state := completed; (* 设置购买状态为 completed *)
+                buyer := buyer purchase; 
+                pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
+                discarded_money := discarded_money purchase; 
+              |} in
+            (* let updated_purchase := purchase <| purchase_state := completed |>
+                                             <| pool := 0 |> in *)
             (* 将更新后的购买记录添加回购买记录映射中 *)
             let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
             (* 更新合约状态，包含更新后的购买记录 *)
@@ -485,10 +509,22 @@ Definition buyer_dispute_delivery_action (ctx : ContractCallContext)
               (* 检查调用者是否为买家 *)
               if ((ctx_from ctx) =? purchase.(buyer))%address then
                 (* 更新购买记录的状态为 dispute，记录承诺值和最新区块号，更新资金池 *)
-                let updated_purchase := purchase <| purchase_state := dispute |>
+                let updated_purchase :=
+                {|
+                  commit := commitment; 
+                  last_block := current_slot chain; (* *)
+                  itemId := itemId purchase; 
+                  seller_bit := seller_bit purchase;
+                  notes := notes purchase; 
+                  purchase_state := dispute; (* 设置购买状态为 dispute *)
+                  buyer := buyer purchase; 
+                  pool := purchase.(pool) + item.(item_value); (* 记录购买池中的金额，即买家支付的金额 *)
+                  discarded_money := discarded_money purchase; 
+                |} in
+                (* let updated_purchase := purchase <| purchase_state := dispute |>
                                                  <| commit := commitment |>
                                                  <| last_block := current_slot chain |>
-                                                 <| pool := purchase.(pool) + item.(item_value) |> in
+                                                 <| pool := purchase.(pool) + item.(item_value) |> in *)
                 (* 将更新后的购买记录添加回购买记录映射中 *)
                 let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
                 (* 更新合约状态，包含更新后的购买记录 *)
@@ -531,8 +567,20 @@ Definition buyer_call_timeout_action (ctx : ContractCallContext)
             (* 检查是否超过超时 *)
             if (purchase.(last_block) + state.(timeout) <? chain.(current_slot))%nat then
               (* 更新购买记录的状态为 failed，清空资金池 *)
-              let updated_purchase := purchase <| purchase_state := failed |>
-                                               <| pool := 0 |> in
+              let updated_purchase :=
+              {|
+                commit := commit purchase; 
+                last_block := last_block purchase;
+                itemId := itemId purchase; 
+                seller_bit := seller_bit purchase;
+                notes := notes purchase; 
+                purchase_state := failed; (* 设置购买状态为 failed *)
+                buyer := buyer purchase; 
+                pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
+                discarded_money := discarded_money purchase; 
+              |} in
+              (* let updated_purchase := purchase <| purchase_state := failed |>
+                                               <| pool := 0 |> in *)
               (* 将更新后的购买记录添加回购买记录映射中 *)
               let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
               (* 更新合约状态，包含更新后的购买记录 *)
@@ -579,9 +627,21 @@ Definition buyer_open_commitment_action (ctx : ContractCallContext)
                   (* 计算需要发送给买家或卖家的金额，池中的金额减去商品价值 *)
                   let to_send := purchase.(pool) - item.(item_value) in
                   (* 更新购买记录：状态设为 failed，清空资金池，记录被丢弃的金额 *)
-                  let updated_purchase := purchase <| purchase_state := failed |>
+                  let updated_purchase :=
+                  {|
+                    commit := commit purchase; 
+                    last_block := last_block purchase;
+                    itemId := itemId purchase; 
+                    seller_bit := seller_bit purchase;
+                    notes := notes purchase; 
+                    purchase_state := failed; (* 设置购买状态为 failed *)
+                    buyer := buyer purchase; 
+                    pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
+                    discarded_money := item.(item_value); (* 被丢弃 *)
+                  |} in
+                  (* let updated_purchase := purchase <| purchase_state := failed |>
                                                    <| pool := 0 |>
-                                                   <| discarded_money := item.(item_value) |> in
+                                                   <| discarded_money := item.(item_value) |> in *)
                   (* 将更新后的购买记录添加回购买记录映射中 *)
                   let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
                   (* 决定将资金转移给买家还是卖家，取决于 seller_bit 与 buyer_bit 的比较 *)
@@ -638,8 +698,20 @@ Definition seller_call_timeout_action (ctx : ContractCallContext)
             (* 检查是否已经超过超时区块 *)
             if (purchase.(last_block) + state.(timeout) <? chain.(current_slot))%nat then
               (* 更新购买记录的状态为 'completed'，并将资金池设为零 *)
-              let updated_purchase := purchase <| purchase_state := completed |>
-                                               <| pool := 0 |> in
+              let updated_purchase :=
+                  {|
+                    commit := commit purchase; 
+                    last_block := last_block purchase;
+                    itemId := itemId purchase; 
+                    seller_bit := seller_bit purchase;
+                    notes := notes purchase; 
+                    purchase_state := completed; (* 设置购买状态为 completed *)
+                    buyer := buyer purchase; 
+                    pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
+                    discarded_money := discarded_money purchase; 
+                  |} in
+              (* let updated_purchase := purchase <| purchase_state := completed |>
+                                               <| pool := 0 |> in *)
               (* 将更新后的购买记录添加回购买记录映射中 *)
               let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
               (* 更新合约状态，包含更新后的购买记录 *)
@@ -683,8 +755,20 @@ Definition seller_reject_contract_action (ctx : ContractCallContext)
           (* 检查调用者是否为卖家 *)
           if ((ctx_from ctx) =? state.(seller))%address then
             (* 更新购买记录的状态为 'rejected'，并清空资金池 *)
-            let updated_purchase := purchase <| purchase_state := rejected |>
-                                             <| pool := 0 |> in
+            let updated_purchase :=
+                  {|
+                    commit := commit purchase; 
+                    last_block := last_block purchase;
+                    itemId := itemId purchase; 
+                    seller_bit := seller_bit purchase;
+                    notes := notes purchase; 
+                    purchase_state := rejected; (* 设置购买状态为 rejected *)
+                    buyer := buyer purchase; 
+                    pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
+                    discarded_money := discarded_money purchase; 
+                  |} in
+            (* let updated_purchase := purchase <| purchase_state := rejected |>
+                                             <| pool := 0 |> in *)
             (* 将更新后的购买记录添加回购买记录映射中 *)
             let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
             (* 更新合约状态，包含更新后的购买记录 *)
@@ -727,8 +811,20 @@ Definition seller_accept_contract_action (ctx : ContractCallContext)
           (* 检查调用者是否为卖家 *)
           if ((ctx_from ctx) =? state.(seller))%address then
             (* 更新购买记录的状态为 'accepted'，并记录当前区块号 *)
-            let updated_purchase := purchase <| purchase_state := accepted |>
-                                             <| last_block := chain.(current_slot) |> in
+            let updated_purchase :=
+                {|
+                  commit := commit purchase; 
+                  last_block :=  chain.(current_slot); (*  *)
+                  itemId := itemId purchase; 
+                  seller_bit := seller_bit purchase;
+                  notes := notes purchase; 
+                  purchase_state := accepted; (* 设置购买状态为 accepted *)
+                  buyer := buyer purchase; 
+                  pool := pool purchase;
+                  discarded_money := discarded_money purchase; 
+                |} in
+            (* let updated_purchase := purchase <| purchase_state := accepted |>
+                                             <| last_block := chain.(current_slot) |> in *)
             (* 将更新后的购买记录添加回购买记录映射中 *)
             let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
             (* 更新合约状态，包含更新后的购买记录 *)
@@ -768,8 +864,20 @@ Definition seller_item_was_delivered_action (ctx : ContractCallContext)
               (* 检查调用者是否为卖家 *)
               if ((ctx_from ctx) =? state.(seller))%address then
                 (* 更新购买记录的状态为 'delivered'，并记录当前区块号 *)
-                let updated_purchase := purchase <| purchase_state := delivered |>
-                                                 <| last_block := chain.(current_slot) |> in
+                let updated_purchase :=
+                {|
+                  commit := commit purchase; 
+                  last_block :=  chain.(current_slot); (* 当前区块号 *)
+                  itemId := itemId purchase; 
+                  seller_bit := seller_bit purchase;
+                  notes := notes purchase; 
+                  purchase_state := delivered; (* 设置购买状态为 delivered *)
+                  buyer := buyer purchase; 
+                  pool := pool purchase;
+                  discarded_money := discarded_money purchase; 
+                |} in
+                (* let updated_purchase := purchase <| purchase_state := delivered |>
+                                                 <| last_block := chain.(current_slot) |> in *)
                 (* 将更新后的购买记录添加回购买记录映射中 *)
                 let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
                 (* 更新合约状态，包含更新后的购买记录 *)
@@ -808,8 +916,20 @@ Definition seller_forfeit_dispute_action (ctx : ContractCallContext)
               (* 检查调用者是否为卖家 *)
               if ((ctx_from ctx) =? state.(seller))%address then
                 (* 更新购买记录的状态为 'failed'，并清空资金池 *)
-                let updated_purchase := purchase <| purchase_state := failed |>
-                                                 <| pool := 0 |> in
+                let updated_purchase :=
+                {|
+                  commit := commit purchase; 
+                  last_block := last_block purchase; (* 当前区块号 *)
+                  itemId := itemId purchase; 
+                  seller_bit := seller_bit purchase;
+                  notes := notes purchase; 
+                  purchase_state := failed; (* 设置购买状态为 failed *)
+                  buyer := buyer purchase; 
+                  pool := 0;
+                  discarded_money := discarded_money purchase; 
+                |} in
+                (* let updated_purchase := purchase <| purchase_state := failed |>
+                                                 <| pool := 0 |> in *)
                 (* 将更新后的购买记录添加回购买记录映射中 *)
                 let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
                 (* 更新合约状态，包含更新后的购买记录 *)
@@ -858,22 +978,34 @@ Definition seller_counter_dispute_action (ctx : ContractCallContext)
                    - 记录当前区块号
                    - 设置卖家的随机位
                    - 增加资金池中的金额 *)
-                let updated_purchase := purchase <| purchase_state := counter |>
+                  let updated_purchase :=
+                  {|
+                    commit := commit purchase; 
+                    last_block := current_slot chain; (* 记录当前区块号 *)
+                    itemId := itemId purchase; 
+                    seller_bit := random_bit; (* 设置卖家的随机位 *)
+                    notes := notes purchase; 
+                    purchase_state := counter; (* 设置购买状态为 counter *)
+                    buyer := buyer purchase; 
+                    pool := purchase.(pool) + money_sent; (* 增加资金池中的金额 *)
+                    discarded_money := discarded_money purchase; 
+                  |} in
+                (* let updated_purchase := purchase <| purchase_state := counter |>
                                                  <| last_block := chain.(current_slot) |>
                                                  <| seller_bit := random_bit |>
-                                                 <| pool := purchase.(pool) + money_sent |> in
+                                                 <| pool := purchase.(pool) + money_sent |> in *)
                 (* 将更新后的购买记录添加回购买记录映射中 *)
                 let updated_purchases := FMap.add purchaseId updated_purchase current_purchases in
                 (* 决定资金的去向：
                    - 如果卖家的随机位与提交的随机位相同，则将资金转移给买家
                    - 否则，将资金转移给卖家 *)
-                let target_transaction := if Bool.eqb purchase.(seller_bit) random_bit 
+                (* let target_transaction := if Bool.eqb purchase.(seller_bit) random_bit 
                                           then purchase.(buyer) 
-                                          else state.(seller) in
+                                          else state.(seller) in *)
                 (* 更新合约状态，包含新的购买记录 *)
                 let updated_state := state <| purchases := updated_purchases |> in
                 (* 定义需要执行的动作列表，这里是将资金转移给目标地址 *)
-                let actions := [act_transfer target_transaction (purchase.(pool) + money_sent)] in
+                let actions := [] in
                 (* 返回更新后的状态和动作列表，表示操作成功 *)
                 Ok (updated_state, actions)
               else
@@ -1032,4 +1164,4 @@ Definition receive (chain : Chain)
 Definition contract : Contract Setup Msg State Error := 
     build_contract init receive.
 
-End EcommerceFixed.
+End Purchase.

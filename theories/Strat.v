@@ -984,8 +984,12 @@ Section envExec.
     eapply account_balance_nonnegative;eauto.
   Qed.
 
+
   Definition wait_action n := 
     build_act miner_address miner_address (act_transfer miner_address n).
+
+  Definition wait_action_vo :=
+    wait_action 1.
 
   Definition is_wait_action (act : Action) : bool :=
     match act with
@@ -1039,8 +1043,6 @@ Section envExec.
     | build_act _ _ (act_call addr _ _) => address_eqb addr caddr
     | _ => false
     end.
-
-  
 
   Definition transition
     (prev_bstate : ChainState)
@@ -4133,7 +4135,273 @@ Section envExec.
       eapply userLiquidatesNSteps_incl_env_unchanging in Hliq_delta2;eauto.
     Qed.
 
-  End Monotonicity.
+    Ltac decompose_wellStrat H :=
+      unfold wellStrat in H;
+      let Hs0 := fresh "Hs0" in
+      let Hs := fresh "Hs" in
+      let Htr_s := fresh "Htr_s" in
+      intros Hs0 Hs Htr_s;
+      match type of H with
+      | context[let delta_actions := ?delta _ _ _ _ in _] =>
+          let Hda := fresh "Hda" in
+          set (delta_actions := delta _ _ _ _) in H;
+          unfold delta_actions in H
+      | _ => idtac
+      end;
+      match type of H with
+      | _ -> Forall _ _ =>
+          let Hq := fresh "Hq" in
+          intros Hq; specialize (H Hq)
+      | Forall _ ?l =>
+          let Ha := fresh "Ha" in
+          apply Forall_forall in H; intros Ha
+      | _ => idtac
+      end.
+
+(* ---------------------------------------- *)
+(* ↓尝试在环境策略一定的情况下，验证单调性 ↓       *)
+(* ---------------------------------------- *)
+
+  (*
+  "user_stronger_than u1 u2" means:
+   1) From any environment path that arises with u1, we can produce
+      the same environment path with u2 (the user in u2 does not 
+      block or diverge forcibly).
+   2) For any state s that u1 can liquidate, u2 can also liquidate.
+
+  This is a 'semantic' notion: we don't care about time_remaining 
+  or sup/subset of actions directly, only about replicating 
+  or preserving the ability to reach funds=0.
+
+  u1 weak u2
+*)
+
+(** 
+  trace_extend s0 s tr a s' tr' 
+  means that tr' is exactly tr 
+  extended by one valid TransitionStep 
+  induced by action a from state s to s'.
+**)
+
+
+
+Inductive trace_extend
+          (s0 : ChainState)              (* initial chain state of the trace *)
+          (s  : ChainState)              (* current (ending) state of `tr` *)
+          (tr : TransitionTrace s0 s)    (* existing trace from s0 to s *)
+          (a  : Action)                  (* the single action we're appending *)
+          (s' : ChainState)              (* the new final state *)
+          (tr': TransitionTrace s0 s')   (* the extended trace from s0 to s' *)
+  : Prop :=
+  | TE_Trans
+      (Hcall  : is_call_to_caddr_bool a = true)
+      (Htrans : transition s a = Ok s')
+      (Heq    : tr' = snoc tr (step_trans a Hcall Htrans))
+      : trace_extend s0 s tr a s' tr'
+  | TE_Time
+    (Hwait  : is_wait_action a = true)
+    (Htrans : transition s a = Ok s')
+    (Heq    : tr' = snoc tr (step_time a Hwait Htrans))
+    : trace_extend s0 s tr a s' tr'.
+
+Definition is_good_action
+          (delta_usr : strat) (addrs_usr : list Address)
+          (delta_env : strat) (addrs_env : list Address)
+          (s0 s : ChainState) (tr : trace(s0, s))
+          (a : Action)
+  : Prop :=
+  match transition s a with
+  | Ok s' =>
+      exists (time_remaining : nat) (tr' : trace(s0, s')),
+        trace_extend s0 s tr a s' tr' 
+      /\ 
+      (exists s'' tr'' ,
+        envProgress_Mutual
+              delta_usr addrs_usr
+              delta_env addrs_env
+              caddr
+              s0 s' tr'
+              time_remaining
+              s'' tr'')
+  | Err _ => False
+  end.
+
+Definition all_actions_good
+            (delta_usr : strat) (addrs_usr : list Address)
+            (delta_env : strat) (addrs_env : list Address)
+            (s0 : ChainState) : Prop :=
+  forall (s : ChainState) (tr : trace(s0, s)),
+    let acts := delta_usr s0 s tr addrs_usr in
+    match acts with
+    | [] => (exists s' tr' time_remaining,
+              envProgress_Mutual
+                    delta_usr addrs_usr
+                    delta_env addrs_env
+                    caddr
+                    s0 s tr
+                    time_remaining
+                    s' tr')
+    | _ :: _ =>
+      Forall (fun a => is_good_action delta_usr addrs_usr delta_env addrs_env s0 s tr a) acts
+    end.
+
+Definition is_rational_user_strategy
+            (delta_usr : strat) (addrs_usr : list Address)
+            (delta_env : strat) (addrs_env : list Address)
+            (s0 : ChainState): Prop
+  := all_actions_good delta_usr addrs_usr delta_env addrs_env s0.
+
+
+  (* Lemma base_liquidity_start_is_:
+    forall s0 u u_a e e_a contract,
+       wellDefinedSystem u u_a e e_a caddr contract s0 ->
+      is_emtpty_strategy e e_a ->
+      is_complete_strategy u u_a contract s0 ->
+      base_liquidity contract caddr s0 ->
+      is_rational_user_strategy u u_a e e_a s0.
+  Proof.
+    intros.
+    eapply SL_implies_BL_with_empty_env_and_complete_user in H5;eauto.
+    unfold is_rational_user_strategy.
+    unfold all_actions_good.
+    intros.
+    destruct (u s0 s tr u_a) eqn : Hdelta.
+    unfold strat_liquidity in H5.
+    assert (tr_0:(trace(s0,s0))) by eapply clnil.
+    specialize(H5 H3 tr_0 s tr).
+    assert(isReachableUnderInterleavedExecution u e u_a e_a s0 tr_0 s tr).
+    {
+      eapply 
+    }
+
+  Qed. *)
+  
+
+  (* Lemma strat_liquidity_hold_usr_is_rational_user_strategy:
+    forall s0 u u_a e e_a contract,
+      wellDefinedSystem u u_a e e_a caddr contract s0 ->
+      strat_liquidity u u_a e e_a caddr contract s0 ->
+      rational_user_strategy u u_a e e_a contract s0.
+  Proof.
+    intros.
+    unfold strat_liquidity in H4.
+    unfold rational_user_strategy.
+    specialize(H4 H3).
+    split.
+    eauto.
+    intros.
+    specialize(H4 tr_0 s tr_s H5).
+    eauto.
+  Qed. *)
+
+  Definition completed_usr_plus_env u u_a e e_a s0 contract :=
+    wellStrat u u_a contract s0 /\ 
+    wellStrat e e_a contract s0 /\
+    (forall s s' (tr: trace(s0, s)) a,
+    transition s a = Ok s' ->
+    ((is_wait_action a = true -> (u s0 s tr u_a = [] /\ e s0 s tr e_a = [])) /\ 
+    (is_call_to_caddr_bool a = true -> In a (u s0 s tr u_a ++ e s0 s tr e_a )))).
+ 
+        
+
+  Definition user_stronger_than
+            (u1 u2 : strat)
+            (delta_env : strat)
+            (addrs_usr1 addrs_usr2 addrs_env : list Address)
+            (s0 : ChainState): Prop :=
+  forall tr s' tr',
+    isReachableUnderInterleavedExecution 
+      u1 delta_env addrs_usr1 addrs_env s0 tr s' tr'
+    ->
+    exists tr'2,
+      isReachableUnderInterleavedExecution
+        u2 delta_env addrs_usr2 addrs_env s0 tr s' tr'2
+      /\
+      (forall s'' tr'' time_remaining,
+          UserLiquidatesNSteps
+              u1 addrs_usr1 delta_env addrs_env caddr s0  s' tr' time_remaining s'' tr''
+          -> 
+          exists tr''2 time_remaining',
+          (time_remaining' <= time_remaining)%nat /\ 
+          UserLiquidatesNSteps
+              u2  addrs_usr2 delta_env addrs_env caddr s0 s' tr'2 time_remaining' s'' tr''2).
+  
+  Lemma user_stronger_than_lm u1 addr1 :
+    forall env addr s0 u2 addr2 contract,
+      is_complete_strategy u2 addr2 contract s0 ->
+      user_stronger_than u1 u2 env addr1 addr2 addr s0.
+  Proof.
+    intros.
+    unfold is_complete_strategy in H3.
+    unfold user_stronger_than.
+    intros.
+    destruct_and_split.
+    exists tr'.
+    split.
+    unfold isReachableUnderInterleavedExecution in *.
+    - induction H4.
+      + eapply IS_Refl.
+      + eapply IS_Wait_Step_Once;eauto.
+        admit.
+      + eapply ISE_Step;eauto.
+      + eapply ISE_Turn_Step;eauto.
+      + admit.
+      + admit.
+    - intros.
+      exists tr''.
+      exists time_remaining.
+      split.
+      eauto.
+      induction H6.
+      + eapply ULM_Base;eauto.
+      + admit.
+      + admit.
+      + admit.  
+  Admitted.
+
+  (* Lemma strat_liquidity_monotonic_usr u1 addr1 u2 addr2:
+    forall env addr s0 contract,
+      wellDefinedSystem u1 addr1 env addr caddr contract s0 ->
+      wellDefinedSystem u2 addr2 env addr caddr contract s0 ->
+      user_stronger_than u2 u1 env addr2 addr1 addr s0 ->
+      strat_liquidity u2 addr2 env addr caddr contract s0 ->
+      strat_liquidity u1 addr1 env addr caddr contract s0.
+  Proof.
+    intros.
+    unfold user_stronger_than in H5.
+    unfold strat_liquidity in *.
+    intros.
+    specialize (H5 H6).
+    specialize (H5 tr s' tr').
+
+    assert (isReachableUnderInterleavedExecution u1 env addr1 addr s0 tr s0 tr).
+    {
+      unfold isReachableUnderInterleavedExecution.
+      eapply IS_Refl.
+    }
+    specialize(H5 H8).
+    decompose_exists.
+    rename x into time_remaining.
+    rename x0 into s''.
+    rename x1 into tr''.
+    specialize(H4 tr s0 tr H8).
+    destruct_and_split.
+    specialize(H9 s'' tr'' time_remaining H5).
+    destruct_and_split.
+    rename x0 into tr''0.
+    rename x1 into time_remaining'.
+    exists time_remaining', s'',tr''0.
+    eauto.
+    decompose_exists.
+  Qed. *)
+      
+ 
+(* --------------------------------------- *)
+(* ↑ 尝试在环境策略一定的情况下，验证单调性  ↑*)
+(* ---------------------------------------- *) 
+
+
+End Monotonicity.
     
   Inductive UserProgress  (delta_usr : strat)
                             (addrs_usr : list Address)
@@ -4555,7 +4823,3 @@ Global Ltac decompose_timeDrive H :=
       let Htrans := fresh "Htrans" in
       destruct H as [Ha [Hact [Htrans Htr']]];
       subst.
-
-
-
-
