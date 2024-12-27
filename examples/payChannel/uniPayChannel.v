@@ -130,6 +130,7 @@ Section PaymentChannel.
 
   (* 初始化合约 *)
   (* 要求为外部地址，防止重入攻击 *)
+  
   Definition init
              (chain : Chain)
              (ctx : ContractCallContext)
@@ -143,11 +144,11 @@ Section PaymentChannel.
         (setup.(setup_duration) >? 0)%nat
     then
       Ok (build_state
-            false                                 (* frozen *)
-            msg_sender                            (* sender *)
-            setup.(setup_recipient)               (* recipient *)
-            (chain.(current_slot) + setup.(setup_duration))%nat(* expiration *)
-            msg_value                             (* balance *)
+            false                              
+            msg_sender                        
+            setup.(setup_recipient)          
+            (chain.(current_slot) + setup.(setup_duration))%nat
+            msg_value                       
           )
     else
       Err default_error.

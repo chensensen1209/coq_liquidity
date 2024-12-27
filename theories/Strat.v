@@ -1343,8 +1343,7 @@ Section envExec.
       (funds s caddr > 0)%Z ->
       delta_env s0 s tr addrs_env <> [] ->
       ( forall s' tr' n,
-          multiStratDrive delta_env addrs_env s0 s tr s' tr' n ->
-          (time_remaining >= n) ->
+          multiStratDrive delta_env addrs_env s0 s tr s' tr' n -> 
           UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr s0 s' tr' (time_remaining - n) s'' tr'' ) ->
       envProgress_Mutual delta_usr addrs_usr delta_env addrs_env caddr s0 s tr time_remaining s'' tr'' 
     | EPM_Time : forall s' s'' tr' tr'',
@@ -1364,9 +1363,6 @@ Section envExec.
     with env_mut := Induction for UserLiquidatesNSteps Sort Prop.
 
   Combined Scheme ul_mutual_ind from ul_mut, env_mut.
-
-
-
 
   (* 由于下面的清零过程要用户先开始，那么此处需要是Tusr *)
   Definition isReachableUnderInterleavedExecution
@@ -1969,7 +1965,6 @@ Section envExec.
           (* unfold maxMultiStratDrive.
           split. *)
           eapply MS_Refl.
-          lia.
         - intros.
           specialize(H3 H4).
           unfold timeDrive in t.
@@ -2030,7 +2025,6 @@ Section envExec.
       specialize(H3 s1 tr 0).
       eapply H3.
       eapply MS_Refl.
-      lia. 
   Qed.
 
 

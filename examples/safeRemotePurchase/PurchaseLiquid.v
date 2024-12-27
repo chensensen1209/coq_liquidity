@@ -61,17 +61,18 @@ Ltac receive_simpl_goal_step :=
 
 
   Ltac reduce_init :=
-  match goal with
-  | H : Purchase.init ?chain ?ctx ?setup = Ok ?res |- _ =>
-      (* 1. 展开 init 的定义 *)
-      unfold Purchase.init in H;
-      (* 2. 检查 required_no_self_call ctx *)
-      destruct (required_no_self_call ctx) eqn:ESelfCall in H; try discriminate;
-      (* 3. 检查 0 <? setup_timeout setup *)
-      destruct (0 <? setup_timeout setup)%nat eqn:ETimeout in H; try discriminate;
-      (* 4. 检查 required_amount_zero ctx *)
-      destruct (required_amount_zero ctx) eqn:EAmountZero in H; try discriminate
-  end.
+    match goal with
+    | H : Purchase.init ?chain ?ctx ?setup = Ok ?res |- _ =>
+        (* 1. 展开 init 的定义 *)
+        unfold Purchase.init in H;
+        (* 2. 检查 required_no_self_call ctx *)
+        destruct (required_no_self_call ctx) eqn:ESelfCall in H; try discriminate;
+        (* 3. 检查 0 <? setup_timeout setup *)
+        destruct (0 <? setup_timeout setup)%nat eqn:ETimeout in H; try discriminate;
+        (* 4. 检查 required_amount_zero ctx *)
+        destruct (required_amount_zero ctx) eqn:EAmountZero in H; try discriminate;
+        destruct (address_not_contract (setup_fair setup )) eqn:EFairEoa in H; try discriminate
+    end.
 
 Ltac reduce_buyer_abort_action :=
   match goal with
@@ -294,7 +295,6 @@ Ltac reduce_required_true :=
       unfold required_true in H;
       destruct b eqn:EB in H; [ | discriminate H ]
       (* 如果需要注入 tt，可用 injection ；不过通常直接 clear 就够了 *)
-
   end.
 
   Ltac reduce_required_false :=
@@ -342,9 +342,6 @@ Ltac reduce_find_item :=
       ]
   end.
 
-
-
-
 Ltac reduce_find_purchase :=
   match goal with
   | H : find_purchase ?purchaseId ?purchases = Some ?pur |- _ =>
@@ -359,8 +356,6 @@ Ltac reduce_no_active_purchase_for_itemId :=
   match goal with
   | H : no_active_purchase_for_itemId ?st ?id = true |- _ =>
       unfold no_active_purchase_for_itemId in H;
-      (* 这里你可能需要对 filter 和 forallb 做进一步 destruct，
-         但具体写法要看你下一步如何使用 H *)
       simpl in H
   end.
 
@@ -398,12 +393,12 @@ Lemma buyer_request_purchase_correct : forall chain ctx prev_state new_state new
       /\ new_purchase.(buyer) = ctx.(ctx_from)
       /\ new_purchase.(seller_bit) = false
       /\ new_purchase.(commit) = 0%N
-      /\ new_purchase.(notes) = _notes
-      /\ new_purchase.(discarded_money) = 0)
+      /\ new_purchase.(notes) = _notes)
   /\ ctx.(ctx_from) <> ctx.(ctx_contract_address)
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   /\ new_acts = []
   .
 Proof.
@@ -418,8 +413,7 @@ Proof.
       notes := _notes;
       purchase_state := requested;
       buyer := ctx_from ctx;
-      pool := ctx_amount ctx;
-      discarded_money := 0 |})
+      pool := ctx_amount ctx|})
     as new_purchase.
     reduce_buyer_request_purchase_action.
     repeat split; try now inversion receive_some .
@@ -428,23 +422,17 @@ Proof.
       intuition.
     + remember (hash_purchaseId chain.(current_slot) ctx.(ctx_from)) as new_purchaseId.
       exists new_purchaseId, new_purchase.
-      repeat split; try now inversion Heqnew_purchase.
-      inversion receive_some.
-      propify.
+      repeat split; try now inversion Heqnew_purchase;
+      inversion receive_some;propify;intuition.
       unfold purchase_exists  in EPurchaseExists.
-      destruct (find_purchase new_purchaseId (purchases prev_state)) eqn : H';try congruence.
-      unfold find_purchase in H'.
-      eauto.
-      simpl.
-      inversion receive_some.
-      simpl.
-      intuition.
-    + reduce_required_no_self_call.
+      destruct (find_purchase new_purchaseId (purchases prev_state)) eqn : H';try congruence;intuition.
+    +
+      reduce_required_no_self_call.
       destruct_address_eq; eauto.
   - intros ([item (prev_item & new_item & amount_sent)] &
             (purchaseId & new_purchase & purchaseId_hash & not_found_purchase & purchase_added & purchase_itemId & purchase_pool & purchase_last_block &
-             ppurchase_state & purchase_buyer & purchase_seller_bit & purchase_commit & purchase_notes & purchase_disc_money) &
-             not_caddr & const_listings & const_seller & const_timeout & empty_acts).
+             ppurchase_state & purchase_buyer & purchase_seller_bit & purchase_commit & purchase_notes ) &
+             not_caddr & const_listings & const_seller & const_timeout & const_fair & empty_acts).
     receive_simpl_goal.
     apply address_eq_ne in not_caddr.
     unfold buyer_request_purchase_action.
@@ -456,12 +444,13 @@ Proof.
     unfold purchase_exists.
     setoid_rewrite not_found_purchase; cbn.
     rewrite <- purchase_last_block, <- purchase_commit, <- purchase_itemId, <- purchase_pool, <- purchase_seller_bit,
-            <- purchase_notes, <- purchase_disc_money, <- ppurchase_state, <- purchase_buyer.   
+            <- purchase_notes, <- ppurchase_state, <- purchase_buyer.   
     destruct new_purchase; destruct new_state; cbn in *.
     rewrite empty_acts.
     rewrite <- const_listings.
     rewrite <-const_seller.
     rewrite <- const_timeout.
+    rewrite <- const_fair.
     now setoid_rewrite <- purchase_added. 
 Qed.
 
@@ -480,13 +469,13 @@ Lemma seller_accept_contract_correct : forall chain ctx prev_state new_state new
       /\ updated_purchase.(notes) = purchase.(notes)
       /\ updated_purchase.(buyer) = purchase.(buyer)
       /\ updated_purchase.(pool) = purchase.(pool)
-      /\ updated_purchase.(discarded_money) = purchase.(discarded_money)
       /\ new_state.(purchases) = FMap.add id updated_purchase prev_state.(purchases))
   /\ ctx.(ctx_from) = prev_state.(seller)
   /\ ctx.(ctx_amount) = 0
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   /\ new_acts = [].
 Proof.
   intros *. split.
@@ -502,8 +491,7 @@ Proof.
       notes := notes p;
       purchase_state := accepted;
       buyer := buyer p;
-      pool := pool p;
-      discarded_money := discarded_money p|})
+      pool := pool p|})
     as updated_purchase.
     inversion receive_some; clear receive_some. cbn. repeat split.
     exists p, updated_purchase. repeat split; try now inversion Hequpdated_purchase.
@@ -515,8 +503,8 @@ Proof.
       intuition.
   - intros ([purchase [updated_purchase (purchase_found & state_requested & updated_purchase_found &
                 updated_state_accepted & block_current & commit_constant & item_constant &
-                seller_bit_constant & notes_constant & buyer_constant & pool_constant & disc_constant & purchase_added)]] &
-             ctx_from_seller & amount_zero & listings_constant & seller_constant & timeout_constant & no_acts).
+                seller_bit_constant & notes_constant & buyer_constant & pool_constant &  purchase_added)]] &
+             ctx_from_seller & amount_zero & listings_constant & seller_constant & timeout_constant & fair_constant & no_acts).
     receive_simpl_goal.
     unfold seller_accept_contract_action.
     unfold required_amount_zero.
@@ -526,10 +514,10 @@ Proof.
     apply address_eqb_eq in ctx_from_seller. rewrite ctx_from_seller; cbn.
     rewrite no_acts; cbn.
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
-    rewrite seller_constant, listings_constant, timeout_constant.
+    rewrite seller_constant, listings_constant, timeout_constant, fair_constant.
     rewrite purchase_added. 
     rewrite <- updated_state_accepted, <- block_current, <- commit_constant, <- item_constant,
-            <- seller_bit_constant, <- notes_constant, <- buyer_constant, <- pool_constant, <- disc_constant.
+            <- seller_bit_constant, <- notes_constant, <- buyer_constant, <- pool_constant.
             auto.
 Qed.
 
@@ -551,11 +539,11 @@ Purchase.receive chain ctx prev_state (Some (buyer_dispute_delivery id commitmen
   /\ purchase.(seller_bit) = updated_purchase.(seller_bit)
   /\ purchase.(notes) = updated_purchase.(notes)
   /\ purchase.(buyer) = updated_purchase.(buyer)
-  /\ purchase.(discarded_money) = updated_purchase.(discarded_money)
   /\ ctx.(ctx_amount) = item.(item_value))
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   /\ new_acts = []
   .
 Proof.
@@ -571,8 +559,7 @@ Proof.
     notes := notes p;
     purchase_state := dispute;
     buyer := buyer p;
-    pool := pool p + i.(item_value);
-    discarded_money := discarded_money p |})
+    pool := pool p + i.(item_value)|})
     as updated_purchase.
     repeat split; try now inversion receive_some.
     exists p, updated_purchase, i.
@@ -583,8 +570,8 @@ Proof.
     + now apply Z.eqb_eq in EAmount.
   - intros ([purchase [updated_purchase [item
             (purchase_found & item_found & purchase_from & state_delivered & upd_state_dispute & upd_pool & block_current &
-             upd_purchases & com & const_item & const_seller_bit & const_notes & const_buyer & const_disc & amount_item_value)
-            ]]] & (const_listings & const_seller & const_timeout & acts_empty)).
+             upd_purchases & com & const_item & const_seller_bit & const_notes & const_buyer & amount_item_value)
+            ]]] & (const_listings & const_seller & const_timeout &  const_fair & acts_empty)).
   receive_simpl_goal.
   unfold buyer_dispute_delivery_action.
   setoid_rewrite purchase_found.
@@ -595,7 +582,7 @@ Proof.
   rewrite acts_empty.
   destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
   rewrite const_item, const_seller_bit, const_notes, const_buyer,
-          const_disc, const_listings, const_seller, const_timeout,
+           const_listings, const_seller, const_timeout,const_fair,
           com, <- upd_state_dispute, <- block_current, <- upd_pool.
   now setoid_rewrite <- upd_purchases.
 Qed.
@@ -610,7 +597,6 @@ Purchase.receive chain ctx prev_state (Some (buyer_open_commitment id buyer_bit 
   /\ new_state.(purchases) = FMap.add id updated_purchase prev_state.(purchases)
   /\ failed = updated_purchase.(purchase_state)
   /\ 0 = updated_purchase.(pool)
-  /\ item.(item_value) = updated_purchase.(discarded_money)
   /\ purchase.(last_block) = updated_purchase.(last_block)
   /\ purchase.(commit) = updated_purchase.(commit)
   /\ purchase.(itemId) = updated_purchase.(itemId)
@@ -621,14 +607,15 @@ Purchase.receive chain ctx prev_state (Some (buyer_open_commitment id buyer_bit 
   /\ hash_bid id buyer_bit nonce = purchase.(commit)
   /\ ctx.(ctx_from) = purchase.(buyer)
   /\ (eqb purchase.(seller_bit) buyer_bit = true
-     -> new_acts = [act_transfer purchase.(buyer) (purchase.(pool) - item.(item_value))])
+     -> new_acts = [act_transfer purchase.(buyer) (purchase.(pool) - item.(item_value)); act_transfer prev_state.(fair) item.(item_value)])
   /\ (eqb purchase.(seller_bit) buyer_bit = false
-     -> new_acts = [act_transfer prev_state.(seller) (purchase.(pool) - item.(item_value))])
+     -> new_acts = [act_transfer prev_state.(seller) (purchase.(pool) - item.(item_value));act_transfer prev_state.(fair) item.(item_value)])
   )
   /\ ctx.(ctx_amount) = 0
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   .
   intros *. split.
   - intros receive_some.
@@ -658,10 +645,10 @@ Purchase.receive chain ctx prev_state (Some (buyer_open_commitment id buyer_bit 
     + intros neq_bits. inversion receive_some. now rewrite neq_bits.
     + reduce_required_amount_zero. propify. eauto.
   - intros ([purchase [updated_purchase [item 
-            (purchase_found & item_found & updated_purchase_found & purchases_updated & upd_purchase_failed & pool_zero & const_disc &
+            (purchase_found & item_found & updated_purchase_found & purchases_updated & upd_purchase_failed & pool_zero &
              const_block & const_commit & const_itemId & const_seller_bit & const_notes & const_buyer &
              purchase_counter & correct_hash & ctx_from_buyer & eq_bits & neq_bits)]]] &
-             (amount_zero & const_listings & const_seller & const_timeout)).
+             (amount_zero & const_listings & const_seller & const_timeout & const_fair)).
     receive_simpl_goal.
     unfold buyer_open_commitment_action.
     unfold required_amount_zero.
@@ -674,16 +661,16 @@ Purchase.receive chain ctx prev_state (Some (buyer_open_commitment id buyer_bit 
     apply N.eqb_eq in correct_hash; rewrite correct_hash; cbn.
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
 
-    rewrite const_seller, const_listings, const_timeout.
-    rewrite const_commit, const_disc, const_block,
+    rewrite const_seller, const_listings, const_timeout,const_fair.
+    rewrite const_commit, const_block,
             const_seller_bit,const_notes, const_itemId, const_buyer.
     rewrite upd_purchase_failed.
     rewrite pool_zero.
     setoid_rewrite <- purchases_updated.  
     rewrite const_seller_bit in eq_bits, neq_bits.
     destruct (eqb seller_bit buyer_bit) eqn:E.
-    + rewrite eq_bits. rewrite const_buyer. rewrite const_disc. easy. eauto.
-    + rewrite neq_bits. rewrite const_seller. rewrite const_disc. eauto. eauto.
+    + rewrite eq_bits. rewrite const_buyer. rewrite const_fair. eauto.  easy.
+    + rewrite neq_bits. rewrite const_seller. rewrite const_fair. eauto. eauto.
 Qed.
 
 Lemma seller_item_was_delivered_correct : forall chain ctx prev_state new_state new_acts id,
@@ -702,13 +689,12 @@ Lemma seller_item_was_delivered_correct : forall chain ctx prev_state new_state 
    /\ purchase.(seller_bit) = updated_purchase.(seller_bit)
    /\ purchase.(notes) = updated_purchase.(notes)
    /\ purchase.(buyer) = updated_purchase.(buyer)
-   /\ purchase.(pool) = updated_purchase.(pool)
-   /\ purchase.(discarded_money) = updated_purchase.(discarded_money))
+   /\ purchase.(pool) = updated_purchase.(pool))
   /\ ctx.(ctx_amount) = 0
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
-
+  /\ prev_state.(fair) = new_state.(fair)
   /\ ctx.(ctx_from) = prev_state.(seller)
   /\ new_acts = []
   .
@@ -738,8 +724,8 @@ Proof.
     + now apply address_eqb_eq.
   - intros ([purchase [updated_purchase
             (found_purchase & found_upd_purchase & purchases_updated & purchase_accepted & upd_purchase_delivered & upd_purchase_block &
-             const_commit & const_item & const_seller_bit & const_notes & const_buyer & const_pool & const_disc)]] &
-            amount_zero & const_listings & const_seller & const_timeout & from_seller & empty_acts).
+             const_commit & const_item & const_seller_bit & const_notes & const_buyer & const_pool)]] &
+            amount_zero & const_listings & const_seller & const_timeout & const_fair & from_seller & empty_acts).
     receive_simpl_goal.
     unfold seller_item_was_delivered_action.
     unfold required_amount_zero.
@@ -748,8 +734,8 @@ Proof.
     rewrite purchase_accepted; cbn.
     apply address_eqb_eq in from_seller; rewrite from_seller; cbn. 
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
-    rewrite const_seller, const_listings, const_timeout.
-    rewrite const_commit, const_item, const_notes, const_seller_bit, const_buyer, const_pool, const_disc.
+    rewrite const_seller, const_listings, const_timeout , const_fair.
+    rewrite const_commit, const_item, const_notes, const_seller_bit, const_buyer, const_pool.
     rewrite <- upd_purchase_delivered, <- upd_purchase_block, empty_acts.
     now setoid_rewrite purchases_updated.
 Qed.
@@ -769,7 +755,6 @@ Lemma seller_counter_dispute_correct : forall chain ctx prev_state new_state new
    /\ ctx.(ctx_amount) = item.(item_value)
    /\ purchase.(pool) + item.(item_value) = updated_purchase.(pool)
    (* These should remain constant *)
-   /\ purchase.(discarded_money) = updated_purchase.(discarded_money)
    /\ purchase.(commit) = updated_purchase.(commit)
    /\ purchase.(itemId) = updated_purchase.(itemId)
    /\ purchase.(notes) = updated_purchase.(notes)
@@ -777,6 +762,7 @@ Lemma seller_counter_dispute_correct : forall chain ctx prev_state new_state new
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   /\ ctx.(ctx_from) = prev_state.(seller)
   /\ new_acts = []
 .
@@ -794,8 +780,7 @@ Proof.
     notes := notes p;
     purchase_state := counter;
     buyer := buyer p;
-    pool := pool p + ctx_amount ctx;
-    discarded_money := discarded_money p |})
+    pool := pool p + ctx_amount ctx |})
     as updated_purchase.
     exists p, updated_purchase, i.
     repeat split; try now inversion Hequpdated_purchase.
@@ -811,9 +796,10 @@ Proof.
   - intros ([purchase [updated_purchase [item (
              found_purchase & found_upd_purchase & found_item & updated_purchases & purchase_dispute &
              seller_bit_rand & upd_purchase_counter & upd_purchase_block & amount_as_item & upd_pool &
-             const_disc & const_commit & const_item & const_notes & const_buyer
+             const_commit & const_item & const_notes & const_buyer
             )]]] &
-            const_listings & const_seller & const_timeout & from_seller & empty_acts).
+            const_listings & const_seller & const_timeout & const_fair &
+             from_seller & empty_acts).
     receive_simpl_goal.
     unfold seller_counter_dispute_action .
     setoid_rewrite found_purchase.
@@ -826,8 +812,8 @@ Proof.
     apply Z.eqb_eq in amount_as_item; rewrite amount_as_item; cbn.
     apply Z.eqb_eq in amount_as_item; rewrite amount_as_item; cbn.
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
-    rewrite const_seller, const_listings, const_timeout.
-    rewrite const_commit, const_disc, <- upd_purchase_block, <- seller_bit_rand, <- upd_purchase_counter,
+    rewrite const_seller, const_listings, const_timeout,const_fair .
+    rewrite const_commit, <- upd_purchase_block, <- seller_bit_rand, <- upd_purchase_counter,
             const_item, const_notes, const_buyer, upd_pool.
     now setoid_rewrite <- updated_purchases. 
 Qed.
@@ -849,13 +835,13 @@ Lemma buyer_abort_correct : forall chain ctx prev_state new_state new_acts purch
      /\ updated_purchase.(seller_bit) = purchase.(seller_bit)
      /\ updated_purchase.(notes) = purchase.(notes)
      /\ updated_purchase.(buyer) = purchase.(buyer)
-     /\ updated_purchase.(discarded_money) = purchase.(discarded_money)
      /\ new_state.(purchases) = FMap.add purchaseId updated_purchase prev_state.(purchases)
      )
   /\ ctx.(ctx_amount) = 0
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   .
 Proof.
   intros *. split.
@@ -885,8 +871,8 @@ Proof.
       propify. eauto.
   - intros ([purchase [updated_purchase
             (found_purchase & upd_found_purchase & from_buyer & acts_transfer & purchase_req & upd_purchase_fail & upd_pool_zero &
-             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & const_disc & updated_purchases)
-            ]] & (amount_zero & const_listings & const_seller & const_timeout)).
+             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer  & updated_purchases)
+            ]] & (amount_zero & const_listings & const_seller & const_timeout & const_fair)).
     receive_simpl_goal.
     unfold buyer_abort_action.
     unfold required_amount_zero.
@@ -897,9 +883,9 @@ Proof.
     rewrite acts_transfer.
     rewrite <- upd_purchase_fail, <- upd_pool_zero.
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
-    rewrite const_seller, const_listings, const_timeout.
+    rewrite const_seller, const_listings, const_timeout, const_fair.
     rewrite <- const_commit, <- const_block, <- const_itemId, <- const_seller_bit,
-            <- const_notes, <- const_buyer, <- const_disc.
+            <- const_notes, <- const_buyer.
     now setoid_rewrite <- updated_purchases.
 Qed.
 
@@ -911,7 +897,6 @@ Lemma buyer_confirm_delivery_correct : forall chain ctx prev_state new_state new
      /\ FMap.find purchaseId new_state.(purchases) = Some updated_purchase
      /\ ctx.(ctx_from) = purchase.(buyer)
      /\ new_acts = [act_transfer prev_state.(seller) purchase.(pool)]
-
      /\ purchase.(purchase_state) = delivered
      /\ updated_purchase.(purchase_state) = completed
      /\ updated_purchase.(pool) = 0
@@ -921,14 +906,13 @@ Lemma buyer_confirm_delivery_correct : forall chain ctx prev_state new_state new
      /\ updated_purchase.(seller_bit) = purchase.(seller_bit)
      /\ updated_purchase.(notes) = purchase.(notes)
      /\ updated_purchase.(buyer) = purchase.(buyer)
-     /\ updated_purchase.(discarded_money) = purchase.(discarded_money)
-
      /\ new_state.(purchases) = FMap.add purchaseId updated_purchase prev_state.(purchases)
      )
   /\ ctx.(ctx_amount) = 0
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   .
 Proof.
   intros *. split.
@@ -957,8 +941,8 @@ Proof.
       propify. eauto.
   - intros ([purchase [updated_purchase
             (found_purchase & upd_found_purchase & from_buyer & acts_transfer & purchase_delivered & upd_purchase_completed & upd_pool_zero &
-             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & const_disc & updated_purchases)
-            ]] & (amount_zero & const_listings & const_seller & const_timeout)).
+             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & updated_purchases)
+            ]] & (amount_zero & const_listings & const_seller & const_timeout & const_fair)).
     receive_simpl_goal.
     unfold buyer_confirm_delivery_action.
     unfold required_amount_zero .
@@ -969,9 +953,9 @@ Proof.
     rewrite acts_transfer.
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
     rewrite <- upd_purchase_completed, <- upd_pool_zero.
-    rewrite const_seller, const_listings, const_timeout.
+    rewrite const_seller, const_listings, const_timeout, const_fair.
     rewrite <- const_commit, <- const_block, <- const_itemId, <- const_seller_bit,
-            <- const_notes, <- const_buyer, <- const_disc.
+            <- const_notes, <- const_buyer.
     now setoid_rewrite <- updated_purchases.
 Qed.
 
@@ -995,14 +979,13 @@ Lemma buyer_call_timeout_correct : forall chain ctx prev_state new_state new_act
      /\ updated_purchase.(seller_bit) = purchase.(seller_bit)
      /\ updated_purchase.(notes) = purchase.(notes)
      /\ updated_purchase.(buyer) = purchase.(buyer)
-     /\ updated_purchase.(discarded_money) = purchase.(discarded_money)
-
      /\ new_state.(purchases) = FMap.add purchaseId updated_purchase prev_state.(purchases)
      )
   /\ ctx.(ctx_amount) = 0
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   .
 Proof.
   intros *. split.
@@ -1035,8 +1018,8 @@ Proof.
       propify. eauto.
   - intros ([purchase [updated_purchase
             (found_purchase & upd_found_purchase & from_buyer & acts_transfer & purchase_states & slot_gt_timeout & upd_pool_zero & upd_purchase_fail &
-             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & const_disc & updated_purchases)
-            ]] & (amount_zero & const_listings & const_seller & const_timeout)).
+             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer  & updated_purchases)
+            ]] & (amount_zero & const_listings & const_seller & const_timeout & const_fair)).
     receive_simpl_goal.
     unfold buyer_call_timeout_action.
     unfold required_amount_zero.
@@ -1066,9 +1049,9 @@ Proof.
     destruct purchase_states as [p_state | p_state];
     rewrite acts_transfer;
     rewrite <- upd_purchase_fail, <- upd_pool_zero;
-    rewrite const_seller, const_listings, const_timeout;
+    rewrite const_seller, const_listings, const_timeout, const_fair;
     rewrite <- const_commit, <- const_block, <- const_itemId, <- const_seller_bit,
-            <- const_notes, <- const_buyer, <- const_disc;
+            <- const_notes, <- const_buyer;
     now setoid_rewrite <- updated_purchases.
 Qed.
 
@@ -1091,8 +1074,6 @@ Lemma seller_call_timeout_correct : forall chain ctx prev_state new_state new_ac
      /\ updated_purchase.(seller_bit) = purchase.(seller_bit)
      /\ updated_purchase.(notes) = purchase.(notes)
      /\ updated_purchase.(buyer) = purchase.(buyer)
-     /\ updated_purchase.(discarded_money) = purchase.(discarded_money)
-
      /\ new_state.(purchases) = FMap.add purchaseId updated_purchase prev_state.(purchases)
      )
   
@@ -1101,6 +1082,7 @@ Lemma seller_call_timeout_correct : forall chain ctx prev_state new_state new_ac
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   .
 Proof.
   intros *. split.
@@ -1131,8 +1113,8 @@ Proof.
       propify. eauto.
   - intros ([purchase [updated_purchase
             (found_purchase & upd_found_purchase & acts_transfer & purchase_states & slot_gt_timeout & upd_purchase_completed & upd_pool_zero &
-             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & const_disc & updated_purchases)
-            ]] & (from_buyer & amount_zero & const_listings & const_seller & const_timeout)).
+             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & updated_purchases)
+            ]] & (from_buyer & amount_zero & const_listings & const_seller & const_timeout & const_fair)).
     receive_simpl_goal.
     unfold seller_call_timeout_action.
     unfold required_amount_zero .
@@ -1159,9 +1141,9 @@ Proof.
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
     rewrite acts_transfer;
     rewrite <- upd_purchase_completed, <- upd_pool_zero;
-    rewrite const_seller, const_listings, const_timeout;
+    rewrite const_seller, const_listings, const_timeout, const_fair;
     rewrite <- const_commit, <- const_block, <- const_itemId, <- const_seller_bit,
-            <- const_notes, <- const_buyer, <- const_disc;
+            <- const_notes, <- const_buyer;
     now setoid_rewrite <- updated_purchases.
 Qed.
 
@@ -1182,7 +1164,6 @@ Lemma seller_reject_contract_correct : forall chain ctx prev_state new_state new
      /\ updated_purchase.(seller_bit) = purchase.(seller_bit)
      /\ updated_purchase.(notes) = purchase.(notes)
      /\ updated_purchase.(buyer) = purchase.(buyer)
-     /\ updated_purchase.(discarded_money) = purchase.(discarded_money)
 
      /\ new_state.(purchases) = FMap.add purchaseId updated_purchase prev_state.(purchases)
      )
@@ -1192,6 +1173,7 @@ Lemma seller_reject_contract_correct : forall chain ctx prev_state new_state new
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   .
 Proof.
   intros *. split.
@@ -1220,8 +1202,8 @@ Proof.
       propify. eauto.
   - intros ([purchase [updated_purchase
             (found_purchase & upd_found_purchase & acts_transfer & purchase_requested & upd_purchase_rejected & upd_pool_zero &
-             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & const_disc & updated_purchases)
-            ]] & (from_buyer & amount_zero & const_listings & const_seller & const_timeout)).
+             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer  & updated_purchases)
+            ]] & (from_buyer & amount_zero & const_listings & const_seller & const_timeout & const_fair)).
     receive_simpl_goal.
     unfold seller_reject_contract_action.
     unfold required_amount_zero.
@@ -1233,9 +1215,9 @@ Proof.
     rewrite acts_transfer.
     rewrite <- upd_purchase_rejected, <- upd_pool_zero.
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
-    rewrite const_seller, const_listings, const_timeout.
+    rewrite const_seller, const_listings, const_timeout, const_fair.
     rewrite <- const_commit, <- const_block, <- const_itemId, <- const_seller_bit,
-            <- const_notes, <- const_buyer, <- const_disc.
+            <- const_notes, <- const_buyer.
     now setoid_rewrite <- updated_purchases.
 Qed.
 
@@ -1256,7 +1238,6 @@ Lemma seller_forfeit_dispute_correct : forall chain ctx prev_state new_state new
      /\ updated_purchase.(seller_bit) = purchase.(seller_bit)
      /\ updated_purchase.(notes) = purchase.(notes)
      /\ updated_purchase.(buyer) = purchase.(buyer)
-     /\ updated_purchase.(discarded_money) = purchase.(discarded_money)
 
      /\ new_state.(purchases) = FMap.add purchaseId updated_purchase prev_state.(purchases)
      )
@@ -1266,6 +1247,7 @@ Lemma seller_forfeit_dispute_correct : forall chain ctx prev_state new_state new
   /\ prev_state.(listings) = new_state.(listings)
   /\ prev_state.(seller) = new_state.(seller)
   /\ prev_state.(timeout) = new_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   .
 Proof.
   intros *. split.
@@ -1294,8 +1276,8 @@ Proof.
       propify. eauto.
   - intros ([purchase [updated_purchase
             (found_purchase & upd_found_purchase & acts_transfer & purchase_dispute & upd_purchase_failed & upd_pool_zero &
-             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & const_disc & updated_purchases)
-            ]] & (from_buyer & amount_zero & const_listings & const_seller & const_timeout)).
+             const_commit & const_block & const_itemId & const_seller_bit & const_notes & const_buyer & updated_purchases)
+            ]] & (from_buyer & amount_zero & const_listings & const_seller & const_timeout & const_fair)).
     receive_simpl_goal.
     unfold seller_forfeit_dispute_action .
     unfold required_amount_zero.
@@ -1307,9 +1289,9 @@ Proof.
     rewrite acts_transfer.
     rewrite <- upd_purchase_failed, <- upd_pool_zero.
     destruct updated_purchase; destruct new_state;destruct prev_state; cbn in *.
-    rewrite const_seller, const_listings, const_timeout.
+    rewrite const_seller, const_listings, const_timeout , const_fair.
     rewrite <- const_commit, <- const_block, <- const_itemId, <- const_seller_bit,
-            <- const_notes, <- const_buyer, <- const_disc.
+            <- const_notes, <- const_buyer.
     now setoid_rewrite <- updated_purchases.
 Qed.
 
@@ -1382,6 +1364,7 @@ Lemma seller_update_listings_correct : forall chain ctx prev_state new_state new
   /\ new_state.(purchases) = prev_state.(purchases)
   /\ new_state.(seller) = prev_state.(seller)
   /\ new_state.(timeout) = prev_state.(timeout)
+  /\ prev_state.(fair) = new_state.(fair)
   /\ ctx.(ctx_amount) = 0
   /\ new_acts = []
   .
@@ -1396,7 +1379,7 @@ Proof.
     + reduce_required_amount_zero.
       propify. eauto.
   - intros (forall_purchases & from_seller & item_add & value_gt_zero &
-            const_purchases & const_seller & const_timeout & amount_zero & empty_acts).
+            const_purchases & const_seller & const_timeout & const_fair & amount_zero & empty_acts).
     receive_simpl_goal.
     unfold seller_update_listings_action.
     unfold required_amount_zero.
@@ -1406,9 +1389,10 @@ Proof.
     apply no_active_purchase_for_itemId_correct in forall_purchases.
     rewrite forall_purchases; cbn.
     destruct new_state;destruct prev_state; cbn in *.
-    rewrite item_add, <- const_seller, <- const_purchases, <- const_timeout, empty_acts.
+    rewrite item_add, <- const_seller, <- const_purchases, <- const_timeout, <-const_fair, empty_acts.
     eauto.
 Qed.
+
 
 
 (* init correct *)
@@ -1420,7 +1404,9 @@ Lemma init_correct : forall state chain ctx setup,
     /\ state.(listings) = setup.(setup_listings)
     /\ state.(seller) = ctx.(ctx_from)
     /\ state.(purchases) = FMap.empty
-    /\ ctx.(ctx_from) <> ctx.(ctx_contract_address).
+    /\ state.(fair) = setup.(setup_fair)
+    /\ ctx.(ctx_from) <> ctx.(ctx_contract_address)
+    /\ address_not_contract (state.(fair)) = true.
 Proof.
   intros * init_some.
   receive_simpl init_some. inversion init_some; cbn.
@@ -1478,10 +1464,10 @@ Proof.
   destruct_message; now apply_message_lemma receive_some.
 Qed.
 
-Lemma sum_pool_discarded_add : forall (purchases : purchases_type) (id : N) (purchase1 purchase2 : Purchase),
+Lemma sum_pool_add : forall (purchases : purchases_type) (id : N) (purchase1 purchase2 : Purchase),
   FMap.find id purchases = Some purchase1 ->
-  sumZ (fun '(_, purchase) => purchase.(pool) + purchase.(discarded_money)) (FMap.elements (FMap.add id purchase2 purchases))=
-  sumZ (fun '(_, purchase) => purchase.(pool) + purchase.(discarded_money)) (FMap.elements purchases) - (purchase1.(pool) + purchase1.(discarded_money)) + (purchase2.(pool) + purchase2.(discarded_money)).
+  sumZ (fun '(_, purchase) => purchase.(pool)) (FMap.elements (FMap.add id purchase2 purchases))=
+  sumZ (fun '(_, purchase) => purchase.(pool) ) (FMap.elements purchases) - (purchase1.(pool)) + (purchase2.(pool)).
 Proof.
   intros * p_found.
   assert (perm1 : Permutation (FMap.elements (FMap.add id purchase2 purchases)) ((id, purchase2)::(FMap.elements (FMap.remove id purchases))) ).
@@ -1498,7 +1484,7 @@ Qed.
 
 Lemma seller_not_contract_addr bstate caddr:
   reachable bstate ->
-  env_contracts bstate caddr = Some (contract : WeakContract) ->
+  env_contracts bstate caddr = Some (Purchase.contract : WeakContract) ->
   exists cstate,
        contract_state bstate caddr = Some cstate
     /\ cstate.(seller) <> caddr.
@@ -1507,6 +1493,31 @@ Proof.
   - apply init_correct in init_some; auto. destruct_hyps. intuition.
   - destruct_message; apply_message_lemma receive_some; destruct_hyps; auto; congruence.
   - destruct_message; apply_message_lemma receive_some; destruct_hyps; auto; congruence.
+  - solve_facts.
+Qed. 
+
+Lemma fair_not_contract_addr bstate caddr:
+  reachable bstate ->
+  env_contracts bstate caddr = Some (Purchase.contract : WeakContract) ->
+  exists cstate,
+       contract_state bstate caddr = Some cstate
+    /\ address_not_contract cstate.(fair) = true
+    /\ cstate.(fair) <> caddr.
+Proof.
+  contract_induction; intros; auto.
+  - instantiate (DeployFacts := fun _ ctx => 
+        address_is_contract  (ctx_contract_address ctx) = true).
+    apply init_correct in init_some; auto. destruct_hyps. split. eauto.
+    eapply address_not_contract_negb in H7.
+    unfold not.
+    intros.
+    cbn in *.
+    propify.
+    unfold DeployFacts in *.
+    rewrite <- H8 in *.
+    intuition.
+  - split; destruct_message; apply_message_lemma receive_some; destruct_hyps; auto; try congruence.
+  - split;destruct_message; apply_message_lemma receive_some; destruct_hyps; auto; congruence.
   - solve_facts.
 Qed. 
 
@@ -1546,9 +1557,10 @@ Proof.
     (* request_purchase *)
     assert (perm : Permutation (FMap.elements (FMap.add x x0 (purchases prev_state))) ((x, x0)::(FMap.elements prev_state.(purchases)))). { now apply FMap.elements_add. }
     setoid_rewrite perm. apply Forall_cons; auto.
-    now rewrite H12.
+    now rewrite H13.
     (* almost identical to non-recursive calls *)
-  - destruct_message; apply_message_lemma receive_some; destruct_hyps; auto;
+  - 
+    destruct_message; apply_message_lemma receive_some; destruct_hyps; auto;
     try(
         match goal with
         | [H : new_state.(purchases) = _ |- _] => rewrite H
@@ -1573,9 +1585,11 @@ Proof.
   contract_induction; intros; auto.
   - now inversion IH.
   - instantiate (CallFacts := fun _ ctx state _ _ =>
-      state.(seller) <> ctx_contract_address ctx /\ Forall (fun '(_, p) => p.(buyer) <> ctx_contract_address ctx) (FMap.elements state.(purchases))).
+      state.(seller) <> ctx_contract_address ctx /\ 
+      Forall (fun '(_, p) => p.(buyer) <> ctx_contract_address ctx) (FMap.elements state.(purchases)) /\ 
+      ctx_contract_address ctx <> state.(fair)).
     unfold CallFacts in facts.
-    destruct facts as [f1 f2].
+    destruct facts as [f1 [f2 f3]].
     apply address_eq_ne in from_other.
     apply address_eq_ne in f1.
     apply Forall_app; split; auto.
@@ -1585,11 +1599,50 @@ Proof.
       | [H : new_acts = _ |- _] => rewrite H
       end
     ); auto.
-    + constructor; auto. now rewrite <- H5.
-    + constructor; auto. now rewrite <- H5.
+    + constructor; auto. now rewrite <- H6.
+    + constructor; auto. now rewrite <- H6.
     + destruct (eqb (x.(seller_bit)) buyer_bit).
       * rewrite H19; auto. constructor; auto. now rewrite <- H18.
+        apply Forall_forall;eauto.
+        intros.
+        destruct x2 eqn : Hx;try congruence.
+        unfold In in H21.
+        destruct H21;try congruence.
+        assert (to = (fair prev_state)).
+        {
+          destruct_address_eq;eauto;try congruence.
+        }
+        rewrite H22.
+        unfold not in f3.
+        destruct_address_eq;eauto;try congruence.
+        inversion H21.
+        unfold In in H21.
+        destruct H21;try congruence.
+        unfold In in H21.
+        destruct H21;try congruence.
       * rewrite H20; auto.
+      apply Forall_forall;eauto.
+      intros.
+      destruct x2 eqn : Hx;try congruence.
+      unfold In in H21.
+      destruct H21;try congruence.
+      destruct H21;try congruence.
+      assert (to = (fair prev_state)).
+      {
+        destruct_address_eq;eauto;try congruence.
+      }
+      rewrite H22.
+      unfold not in f3.
+      destruct_address_eq;eauto;try congruence.
+      inversion H21.
+      unfold In in H21.
+      destruct H21;try congruence.
+      unfold In in H21.
+      destruct H21;try congruence.
+      unfold In in H21.
+      destruct H21;try congruence.
+      unfold In in H21.
+      destruct H21;try congruence.
     + constructor; auto. apply (FMap.Forall_elements_f _ _ id x) in f2; auto; cbn in *.
       now apply address_eq_ne in f2.
     + constructor; auto. apply (FMap.Forall_elements_f _ _ id x) in f2; auto; cbn in *.
@@ -1610,9 +1663,14 @@ Proof.
       * destruct_hyps;eauto.
         intuition.
       * constructor;eauto.
-    + apply buyers_not_contract_addr in contract_dep.
+    + pose proof contract_dep as contract_dep0.
+     apply buyers_not_contract_addr in contract_dep.
       * destruct_hyps;eauto.
-        intuition. 
+        intuition.
+        eapply fair_not_contract_addr in contract_dep0.
+        destruct_hyps;eauto.
+        intuition.
+        econstructor;eauto.
       * constructor;eauto.
 Qed.
 
@@ -1655,7 +1713,7 @@ Ltac rewrite_param to_rewrite :=
   | [H : _ = to_rewrite |- _] => rewrite <- H
   end.
 
-Definition purchases_discarded_zero_not_failed cstate :=
+(* Definition purchases_discarded_zero_not_failed cstate :=
   Forall (fun '(_, purchase) => purchase.(purchase_state) <> failed -> purchase.(discarded_money) = 0) (FMap.elements cstate.(purchases)).
   
 Lemma purchase_discarded_zero_when_not_failed : forall bstate contract_addr,
@@ -1688,45 +1746,45 @@ Proof.
     subst.
     eapply no_self_calls'; eauto.
     now constructor.
-Qed.
+Qed. *)
 
-Lemma contract_balance_is_pool_and_discarded_sum : forall bstate contract_addr,
+
+Lemma contract_balance_eq_pool_sum : forall bstate contract_addr,
   reachable bstate ->
   env_contracts bstate contract_addr = Some (contract : WeakContract) ->
   exists cstate,
      contract_state bstate contract_addr = Some cstate
-  /\ sumZ (fun '(_, purchase) => purchase.(pool) + purchase.(discarded_money)) (FMap.elements cstate.(purchases)) = env_account_balances bstate contract_addr - (sumZ (fun act => act_body_amount act) (outgoing_acts bstate contract_addr)).
+  /\ sumZ (fun '(_, purchase) => purchase.(pool)) (FMap.elements cstate.(purchases)) = env_account_balances bstate contract_addr - (sumZ (fun act => act_body_amount act) (outgoing_acts bstate contract_addr)). 
 Proof.
   contract_induction; intros; auto; only 1-4 : cbn in *.
   - apply init_correct in init_some; auto. destruct_hyps. now rewrite H4, H0.
   - rewrite IH. lia.
-  - instantiate (CallFacts := fun _ ctx cstate _ _ => purchases_discarded_zero_not_failed cstate /\ not_from_contract ctx).
-    unfold CallFacts, purchases_discarded_zero_not_failed, not_from_contract in *.
-    destruct facts as [H_disc_money not_from_contract].
+  - instantiate (CallFacts := fun _ ctx cstate _ _ => not_from_contract ctx).
+    unfold CallFacts, not_from_contract in *.
+    rename facts into not_from_contract.
     destruct_message; apply_message_lemma receive_some; destruct_hyps; auto;
     try(rewrite_param new_state.(purchases)); 
     try(rewrite_param new_acts); cbn;
-    try (rewrite (sum_pool_discarded_add prev_state.(purchases) id x x0) by auto;
+    try (rewrite (sum_pool_add prev_state.(purchases) id x x0) by auto;
     subst; cbn; rewrite IH; lia).
     + request_purchase_permutation x x0 prev_state.
       rewrite (sumZ_permutation req_perm); cbn.
-      rewrite_param x0.(pool); rewrite_param x0.(discarded_money).
       setoid_rewrite IH.
       intuition.
-    + specialize (FMap.Forall_elements_f _ _ id x H H_disc_money) as prev_disc_zero; cbn in *.
+    + cbn in *.
       destruct (eqb (x.(seller_bit)) (buyer_bit));
-      rewrite (sum_pool_discarded_add prev_state.(purchases) id x x0) by auto;
+      rewrite (sum_pool_add prev_state.(purchases) id x x0) by auto;
       try(rewrite H19 by auto); try(rewrite H20 by auto).
       * rewrite IH.
         rewrite_param ctx.(ctx_amount).
         rewrite_param x0.(pool).
-        rewrite_param x0.(discarded_money). cbn.
-        rewrite prev_disc_zero. lia. congruence.
+        simpl.
+        lia.
       * rewrite IH.
         rewrite_param ctx.(ctx_amount).
         rewrite_param x0.(pool).
-        rewrite_param x0.(discarded_money). cbn.
-        rewrite prev_disc_zero. lia. congruence.
+        simpl.
+        lia.
     + rewrite IH.
       rewrite_param ctx.(ctx_amount).
       intuition.
@@ -1737,17 +1795,47 @@ Proof.
     unset_all; subst.
     destruct_chain_step; auto.
     destruct_action_eval; auto.
-    intros * contr_deployed ?. split; cbn; subst.
-    + apply purchase_discarded_zero_when_not_failed in contr_deployed.
-      * destruct_hyps. congruence.
-      * now constructor.
+    intros * contr_deployed ?. cbn; subst.
     + unfold not_from_contract; cbn.
       eapply no_self_calls'; eauto.  constructor;eauto.
 Qed.
 
 
+Lemma contract_balance_eq_pool_sum' : forall bstate contract_addr,
+  reachable bstate ->
+  outgoing_acts bstate contract_addr = [] ->
+  env_contracts bstate contract_addr = Some (contract : WeakContract) ->
+  exists cstate,
+     contract_state bstate contract_addr = Some cstate
+  /\ sumZ (fun '(_, purchase) => purchase.(pool)) (FMap.elements cstate.(purchases)) = env_account_balances bstate contract_addr. 
+Proof.
+  intros.
+  specialize contract_balance_eq_pool_sum as (cstate & balance); eauto.
+  destruct_and_split.
+  exists cstate.
+  split.
+  eauto.
+  rewrite H0 in H3.
+  simpl in *.
+  lia.
+Qed.
 
-
+Lemma contract_balance_eq_pool_sum_forall :
+  forall bstate contract_addr cstate,
+    reachable bstate ->
+    env_contracts bstate contract_addr = Some (contract : WeakContract) ->
+    outgoing_acts bstate contract_addr = [] ->
+    contract_state bstate contract_addr = Some cstate ->
+    sumZ (fun '(_, purchase) => purchase.(pool)) (FMap.elements cstate.(purchases)) = env_account_balances bstate contract_addr. 
+Proof.
+  intros.
+  eapply contract_balance_eq_pool_sum' in H;eauto.
+  destruct H;
+  destruct_and_split.
+  rewrite H2 in H.
+  inversion H; subst;
+  eauto.
+Qed.
 
 Definition purchase_is_finished purchase :=
   match purchase.(purchase_state) with
@@ -1755,8 +1843,164 @@ Definition purchase_is_finished purchase :=
   | _ => False
   end.
 
+  Lemma no_active_purchase_for_itemId_pool_zero : forall state _itemId,
+  no_active_purchase_for_itemId state _itemId = true
+  ->
+  Forall (fun '(_, purchase) => 
+               purchase.(itemId) <> _itemId
+            \/ purchase.(purchase_state) = completed
+            \/ purchase.(purchase_state) = rejected
+            \/ purchase.(purchase_state) = failed)
+       (FMap.elements state.(purchases)).
+
+
+  Lemma contract_balance_is_zero_if_all_purchases_finished purchase :
+  forall bstate contract_addr,
+    reachable bstate ->
+    env_contracts bstate contract_addr = Some (contract : WeakContract) ->
+    exists cstate,
+      contract_state bstate contract_addr = Some cstate /\
+      ((Forall (fun '(_, purchase) => purchase_is_finished purchase) (FMap.elements cstate.(purchases))) ->
+      (Forall (fun '(_, purchase) => purchase.(pool) = 0) (FMap.elements cstate.(purchases)))).
+  Proof.
+    contract_induction; intros; auto; only 1-4 : cbn in *.
+    - apply init_correct in init_some; auto; destruct_hyps.
+      rewrite H5 in *.
+      setoid_rewrite FMap.elements_empty.
+      eauto.
+    - destruct_message; apply_message_lemma receive_some; destruct_hyps; auto;
+      try(
+          match goal with
+          | [H : new_state.(purchases) = _ |- _] => rewrite H in *
+          end
+      ); cbn.
+      +
+      assert (perm : Permutation (FMap.elements (FMap.add x x0 (purchases prev_state))) ((x, x0)::(FMap.elements prev_state.(purchases)))). 
+      { now apply FMap.elements_add. }
+      setoid_rewrite perm. apply Forall_cons; auto.
+      rewrite perm in H.
+      assert (  Forall (fun '(_, purchase) => purchase_is_finished purchase)
+          ((x, x0) :: FMap.elements (purchases prev_state)) ->
+          purchase_is_finished x0 /\ 
+          Forall (fun '(_, purchase) => purchase_is_finished purchase)
+          (FMap.elements (purchases prev_state))).
+      {
+          intros.
+          inversion H20 as [| (k, p) H21 H22]. eauto.
+      }
+      eapply H20 in H.
+      destruct_and_split.
+      unfold purchase_is_finished in H.
+      rewrite H13 in H.
+      inversion H.
+      rewrite perm in H.
+      assert (  Forall (fun '(_, purchase) => purchase_is_finished purchase)
+          ((x, x0) :: FMap.elements (purchases prev_state)) ->
+          purchase_is_finished x0 /\ 
+          Forall (fun '(_, purchase) => purchase_is_finished purchase)
+          (FMap.elements (purchases prev_state))).
+      {
+          intros.
+          inversion H20 as [| (k, p) H21 H22]. eauto.
+      }
+      eapply H20 in H.
+      destruct_and_split.
+      eapply IH in H21.
+      eauto.
+      + 
+      
+      assert (perm1 : Permutation (FMap.elements (FMap.add id x0 (purchases prev_state))) ((id, x0)::(FMap.elements (FMap.remove id (purchases prev_state)))) ).
+      { eapply FMap.elements_add_existing. eauto. }
+      rewrite  perm1 in *; cbn in *.
+
+      assert (   Forall (fun '(_, purchase) => purchase_is_finished purchase)
+            ((id, x0)
+       :: FMap.elements (FMap.remove id (purchases prev_state))) ->
+          purchase_is_finished x0 /\ 
+          Forall (fun '(_, purchase) => purchase_is_finished purchase)(FMap.elements (FMap.remove id (purchases prev_state)))).
+      {
+          intros.
+          inversion H19 as [| (k, p) H21 H22]. eauto.
+      }
+      eapply H19 in H.
+      destruct_and_split.
+      unfold purchase_is_finished in H.
+      rewrite H10 in H.
+      inversion H.
+      assert (perm1 : Permutation (FMap.elements (FMap.add id x0 x)) ((id, x0)::(FMap.elements (FMap.remove id x))) ).
+      { now eapply FMap.elements_add_existing. }
+      setoid_rewrite perm. apply Forall_cons; auto.
+      rewrite perm in H.
+      assert (  Forall (fun '(_, purchase) => purchase_is_finished purchase)
+          ((x, x0) :: FMap.elements (purchases prev_state)) ->
+          purchase_is_finished x0 /\ 
+          Forall (fun '(_, purchase) => purchase_is_finished purchase)
+          (FMap.elements (purchases prev_state))).
+      {
+          intros.
+          inversion H20 as [| (k, p) H21 H22]. eauto.
+      }
+      eapply H20 in H.
+      destruct_and_split.
+      unfold purchase_is_finished in H.
+      rewrite H13 in H.
+      inversion H.
+      rewrite perm in H.
+      assert (  Forall (fun '(_, purchase) => purchase_is_finished purchase)
+          ((x, x0) :: FMap.elements (purchases prev_state)) ->
+          purchase_is_finished x0 /\ 
+          Forall (fun '(_, purchase) => purchase_is_finished purchase)
+          (FMap.elements (purchases prev_state))).
+      {
+          intros.
+          inversion H20 as [| (k, p) H21 H22]. eauto.
+      }
+      eapply H20 in H.
+      destruct_and_split.
+      eapply IH in H21.
+      eauto.
+      ++ 
+      eapply Forall_forall in H.
+
+        destruct (FMap.find k (purchases prev_state)) eqn:H_find.
+
+  Qed.
+
+Lemma contract_balance_is_zero_if_all_purchases_finished :
+  forall bstate contract_addr,
+    reachable bstate ->
+    env_contracts bstate contract_addr = Some (contract : WeakContract) ->
+    exists cstate,
+      contract_state bstate contract_addr = Some cstate /\
+      (Forall (fun '(_, purchase) => purchase_is_finished purchase) 
+                    (FMap.elements cstate.(purchases)) ->
+      sumZ (fun '(_, purchase) => purchase.(pool)) (FMap.elements cstate.(purchases)) = 0).
+  Proof.
+    contract_induction; intros; auto; only 1-4 : cbn in *.
+    - apply init_correct in init_some; auto; destruct_hyps.
+      rewrite H5 in *.
+      setoid_rewrite FMap.elements_empty.
+      eauto.
+    - destruct_message; apply_message_lemma receive_some; destruct_hyps; auto;
+      try(rewrite_param new_state.(purchases)); 
+      try(rewrite_param new_acts); cbn;
+      try (rewrite (sum_pool_add prev_state.(purchases) id x x0) by auto;
+      subst; cbn; rewrite IH; lia).
+      
+
+      
+  Qed.
+              
+      
+
+
+
+
 Definition purchase_is_timed_out chain state purchase :=
   (purchase.(last_block) + state.(timeout) < chain.(current_slot))%nat.
+
+
+
 
 Lemma on_timeout_someone_can_always_end : forall chain purchaseId prev_state new_state new_acts,
   (exists purchase,
@@ -1769,7 +2013,6 @@ Lemma on_timeout_someone_can_always_end : forall chain purchaseId prev_state new
       exists updated_purchase,
             FMap.find purchaseId new_state.(purchases) = Some updated_purchase
         /\ purchase_is_finished updated_purchase
-      
   ).
 Proof.
   intros * (purchase & found & not_finished & timed_out).
@@ -1786,79 +2029,7 @@ Proof.
   exists x0; now rewrite_param x0.(purchase_state).
 Qed.
 
-Lemma balance_on_chain' :
-forall bstate caddr,
-  reachable bstate ->
-  let effective_balance := (env_account_balances bstate caddr - (sumZ (fun act => act_body_amount act) (outgoing_acts bstate caddr)))%Z in
-  env_contracts bstate caddr = Some (contract : WeakContract) ->
-  exists cstate,
-    contract_state bstate caddr = Some cstate /\
-    effective_balance = cstate.(pool).
-Proof.
 
-contract_induction; intros; auto; cbn in *;try congruence;try lia;eauto.
-- reduce_init.
-  inversion init_some.
-  simpl.
-  lia.
-- reduce_receive_some.
-  destruct_message;try congruence.
-  + reduce_close_channel. cbn in *.
-    inversion receive_some. simpl.
-    lia.
-  (* + reduce_extend. cbn in *.
-    inversion receive_some. simpl.
-    lia. *)
-  + reduce_claim_timeout. cbn in *.
-    inversion receive_some. simpl.
-    lia.
-- reduce_receive_some.
-  destruct_message;try congruence.
-  + reduce_close_channel. 
-    inversion receive_some; destruct head; cbn in *; lia.
-  (* + reduce_extend. 
-    inversion receive_some; destruct head; cbn in *; lia. *)
-  + reduce_claim_timeout. 
-    inversion receive_some; destruct head; cbn in *; lia.
-- now erewrite sumZ_permutation in IH by eauto.
-- solve_facts.
-Qed.
-
-Lemma balance_on_chain:
-forall bstate caddr,
-  reachable bstate ->
-  env_contracts bstate caddr = Some (contract : WeakContract) ->
-  outgoing_acts bstate caddr = [] ->
-  exists cstate,
-    contract_state bstate caddr = Some cstate /\
-    env_account_balances bstate caddr = cstate.(balance).
-Proof.
-intros * reach deployed.
-specialize balance_on_chain' as (cstate & balance); eauto.
-eauto.
-intros Hact. rewrite Hact in balance. cbn in *.
-exists cstate. destruct balance.
-split.
-eauto.
-lia.
-Qed.
-
-Lemma balance_on_chain_forall :
-forall bstate caddr cstate,
-  reachable bstate ->
-  env_contracts bstate caddr = Some (contract : WeakContract) ->
-  outgoing_acts bstate caddr = [] ->
-  contract_state bstate caddr = Some cstate ->
-  env_account_balances bstate caddr = cstate.(balance).
-Proof.
-intros.
-eapply balance_on_chain in H;eauto.
-destruct H;
-destruct_and_split.
-rewrite H2 in H.
-inversion H; subst;
-eauto.
-Qed.
 
 
 Section starat.

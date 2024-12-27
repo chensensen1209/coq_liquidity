@@ -33,6 +33,10 @@
 
 
 *)
+
+(* 
+  该合约不是流动性的，如果产生争议，那么最终会存在一笔钱在合约之中，
+*)
 Require Import Monads.
 Require Import Blockchain.
 Require Import Containers.
@@ -120,7 +124,7 @@ Record Purchase :=
     purchase_state : PurchaseState; (* 当前购买的状态 *)
     buyer : Address; (* 买家的地址 *)
     pool : Amount; (* 购买池中的金额，即买家支付的金额 *)
-    discarded_money : Amount; (* 被丢弃的金额，仅用于证明目的 *)
+    (* discarded_money : Amount; 被丢弃的金额，仅用于证明目的 *)
   }.
 
 (* 设置可设置实例 *)
@@ -144,13 +148,15 @@ Record State :=
     listings : listings_type; (* 商品列表，键为商品标识符（itemId） *)
     purchases : purchases_type; (* 购买记录，键为购买标识符（purchaseId） *)
     timeout : nat; (* 超时时间，用于控制购买和争议的时限 *)
+    fair : Address;
   }.
 
 (* 定义合约初始化设置 *)
 Record Setup :=
   build_setup {
     setup_listings : FMap nat Item; (* 初始商品列表，键为商品标识符（itemId） *)
-    setup_timeout : nat (* 初始的超时时间 *)
+    setup_timeout : nat; (* 初始的超时时间 *)
+    setup_fair : Address (* 双方约定好的罚金转移地址，不影响任何博弈内容 *)
   }.
 
 (* 定义合约可接收的消息类型 *)
@@ -178,13 +184,13 @@ Global Instance item_settable : Settable Item :=
 settable! build_item <item_value;item_description>.
 
 Global Instance purchase_settable : Settable Purchase :=
-settable! build_purchase <commit; last_block; itemId; seller_bit; notes;purchase_state;buyer;pool;discarded_money>.
+settable! build_purchase <commit; last_block; itemId; seller_bit; notes;purchase_state;buyer;pool>.
 
 Global Instance state_settable : Settable State :=
-settable! build_state <seller; listings; purchases;timeout>.
+settable! build_state <seller; listings; purchases;timeout;fair>.
 
 Global Instance setup_settable : Settable Setup :=
-settable! build_setup <setup_listings; setup_timeout>.
+settable! build_setup <setup_listings; setup_timeout;setup_fair>.
 
   Global Instance Msg_serializable : Serializable Msg :=
     Derive Serializable Msg_rect<
@@ -298,16 +304,22 @@ Definition init (chain : Chain)
     let seller := ctx_from ctx in
     let listings := setup_listings setup in
     let timeout := setup_timeout setup in
+    let fair := setup_fair setup in
     (* 检查 timeout 是否大于 0 *)
     if (0 <? timeout)%nat then
       (* 检查发送的金额是否为零 *)
       if required_amount_zero ctx then
-        Ok {|
-          seller := seller;
-          listings := listings;
-          purchases := FMap.empty;
-          timeout := chain.(current_slot) + timeout;
-        |}
+        (* 检查fair地址是否为合约地址 *)
+        if address_not_contract fair then
+          Ok {|
+            seller := seller;
+            listings := listings;
+            purchases := FMap.empty;
+            timeout := chain.(current_slot) + timeout;
+            fair := fair;
+          |}
+        else
+        Err default_error (* 错误：fair不是EOA *)
       else
         Err default_error (* 错误：发送的金额不是零 *)
     else
@@ -317,6 +329,7 @@ Definition init (chain : Chain)
 
 (* 用于处理买家的购买请求 *)
 (* 买家发送资金 *)
+(* 只有这个函数是创建新的 *)
 (* 状态变为request ： 买家请求购买 *)
 Definition buyer_request_purchase_action (chain : Chain) 
                                         (ctx : ContractCallContext) 
@@ -352,7 +365,7 @@ Definition buyer_request_purchase_action (chain : Chain)
                 purchase_state := requested; (* 设置购买状态为 requested *)
                 buyer := _buyer; (* 记录买家的地址 *)
                 pool := ctx.(ctx_amount); (* 记录购买池中的金额，即买家支付的金额 *)
-                discarded_money := 0; (* 被丢弃的金额，初始为 0 *)
+                (* discarded_money := 0; 被丢弃的金额，初始为 0 *)
               |} in
             (* 将新的购买记录添加到购买映射中 *)
             let updated_purchases := FMap.add purchaseId purchase (purchases state) in
@@ -403,7 +416,7 @@ Definition buyer_abort_action (ctx : ContractCallContext)
                 purchase_state := failed; (* 设置购买状态为 requested *)
                 buyer := buyer purchase; 
                 pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
-                discarded_money := discarded_money purchase; 
+                (* discarded_money := discarded_money purchase;  *)
               |} in
             (* let updated_purchase := purchase <| purchase_state := failed |>
                                              <| pool := 0 |> in *)
@@ -459,7 +472,7 @@ Definition buyer_confirm_delivery_action (ctx : ContractCallContext)
                 purchase_state := completed; (* 设置购买状态为 completed *)
                 buyer := buyer purchase; 
                 pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
-                discarded_money := discarded_money purchase; 
+                (* discarded_money := discarded_money purchase;  *)
               |} in
             (* let updated_purchase := purchase <| purchase_state := completed |>
                                              <| pool := 0 |> in *)
@@ -518,8 +531,8 @@ Definition buyer_dispute_delivery_action (ctx : ContractCallContext)
                   notes := notes purchase; 
                   purchase_state := dispute; (* 设置购买状态为 dispute *)
                   buyer := buyer purchase; 
-                  pool := purchase.(pool) + item.(item_value); (* 记录购买池中的金额，即买家支付的金额 *)
-                  discarded_money := discarded_money purchase; 
+                  pool := purchase.(pool) + item.(item_value); (* 记录购买池中的金额，交押金 *)
+                  (* discarded_money := discarded_money purchase;  *)
                 |} in
                 (* let updated_purchase := purchase <| purchase_state := dispute |>
                                                  <| commit := commitment |>
@@ -577,7 +590,7 @@ Definition buyer_call_timeout_action (ctx : ContractCallContext)
                 purchase_state := failed; (* 设置购买状态为 failed *)
                 buyer := buyer purchase; 
                 pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
-                discarded_money := discarded_money purchase; 
+                (* discarded_money := discarded_money purchase;  *)
               |} in
               (* let updated_purchase := purchase <| purchase_state := failed |>
                                                <| pool := 0 |> in *)
@@ -637,7 +650,7 @@ Definition buyer_open_commitment_action (ctx : ContractCallContext)
                     purchase_state := failed; (* 设置购买状态为 failed *)
                     buyer := buyer purchase; 
                     pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
-                    discarded_money := item.(item_value); (* 被丢弃 *)
+                    (* discarded_money := item.(item_value); 被丢弃 *)
                   |} in
                   (* let updated_purchase := purchase <| purchase_state := failed |>
                                                    <| pool := 0 |>
@@ -651,7 +664,8 @@ Definition buyer_open_commitment_action (ctx : ContractCallContext)
                   (* 更新合约状态，包含新的购买记录 *)
                   let updated_state := state <| purchases := updated_purchases |> in
                   (* 定义需要执行的动作列表，这里是将计算出的金额转移给目标地址 *)
-                  let actions := [act_transfer target_transaction to_send] in
+                  let actions := [act_transfer target_transaction to_send;
+                                  act_transfer state.(fair) item.(item_value)] in
                   (* 返回更新后的状态和动作列表，表示操作成功 *)
                   Ok (updated_state, actions)
                 else
@@ -708,7 +722,7 @@ Definition seller_call_timeout_action (ctx : ContractCallContext)
                     purchase_state := completed; (* 设置购买状态为 completed *)
                     buyer := buyer purchase; 
                     pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
-                    discarded_money := discarded_money purchase; 
+                    (* discarded_money := discarded_money purchase;  *)
                   |} in
               (* let updated_purchase := purchase <| purchase_state := completed |>
                                                <| pool := 0 |> in *)
@@ -765,7 +779,7 @@ Definition seller_reject_contract_action (ctx : ContractCallContext)
                     purchase_state := rejected; (* 设置购买状态为 rejected *)
                     buyer := buyer purchase; 
                     pool := 0; (* 记录购买池中的金额，即买家支付的金额 *)
-                    discarded_money := discarded_money purchase; 
+                    (* discarded_money := discarded_money purchase;  *)
                   |} in
             (* let updated_purchase := purchase <| purchase_state := rejected |>
                                              <| pool := 0 |> in *)
@@ -821,7 +835,7 @@ Definition seller_accept_contract_action (ctx : ContractCallContext)
                   purchase_state := accepted; (* 设置购买状态为 accepted *)
                   buyer := buyer purchase; 
                   pool := pool purchase;
-                  discarded_money := discarded_money purchase; 
+                  (* discarded_money := discarded_money purchase;  *)
                 |} in
             (* let updated_purchase := purchase <| purchase_state := accepted |>
                                              <| last_block := chain.(current_slot) |> in *)
@@ -874,7 +888,7 @@ Definition seller_item_was_delivered_action (ctx : ContractCallContext)
                   purchase_state := delivered; (* 设置购买状态为 delivered *)
                   buyer := buyer purchase; 
                   pool := pool purchase;
-                  discarded_money := discarded_money purchase; 
+                  (* discarded_money := discarded_money purchase;  *)
                 |} in
                 (* let updated_purchase := purchase <| purchase_state := delivered |>
                                                  <| last_block := chain.(current_slot) |> in *)
@@ -926,7 +940,7 @@ Definition seller_forfeit_dispute_action (ctx : ContractCallContext)
                   purchase_state := failed; (* 设置购买状态为 failed *)
                   buyer := buyer purchase; 
                   pool := 0;
-                  discarded_money := discarded_money purchase; 
+                  (* discarded_money := discarded_money purchase;  *)
                 |} in
                 (* let updated_purchase := purchase <| purchase_state := failed |>
                                                  <| pool := 0 |> in *)
@@ -988,7 +1002,7 @@ Definition seller_counter_dispute_action (ctx : ContractCallContext)
                     purchase_state := counter; (* 设置购买状态为 counter *)
                     buyer := buyer purchase; 
                     pool := purchase.(pool) + money_sent; (* 增加资金池中的金额 *)
-                    discarded_money := discarded_money purchase; 
+                    (* discarded_money := discarded_money purchase;  *)
                   |} in
                 (* let updated_purchase := purchase <| purchase_state := counter |>
                                                  <| last_block := chain.(current_slot) |>
