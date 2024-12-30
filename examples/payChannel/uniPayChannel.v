@@ -805,7 +805,7 @@ Section PaymentChannel.
       frozen cstate = false ->
       (expiration cstate <=? current_slot s)%nat = true ->
       readyToStepState miner caddr contract caddr s0 s ->
-      exists s', transition miner caddr s (anyone_ClaimTimeout cstate (sender cstate) caddr) = Ok s' .
+      exists s', transition miner caddr s (anyone_ClaimTimeout cstate (sender cstate) caddr) = Ok s'.
   Proof.
     intros * Hcs_s Hfrozen_cstate Hexpir_s Hready_state_s.
     eexists.
