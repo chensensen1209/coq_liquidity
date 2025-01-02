@@ -173,7 +173,7 @@ Section Gift1ETH.
     
 End Gift1ETH.
 
-Section Lqiuidity.
+Section Liqiuidity.
   
   Context {BaseTypes : ChainBase}.
   Set Primitive Projections.
@@ -299,6 +299,7 @@ Section Lqiuidity.
   Definition user_call_GetGift (state : State): Action :=
     build_call user1 caddr 0 (GetGift correct_pass).
 
+
   Lemma address_not_contract_negb:
     forall addr,
       address_not_contract addr= true -> address_is_contract addr = false.
@@ -407,56 +408,56 @@ Section Lqiuidity.
     - solve_facts.
   Qed.
 
-Lemma balance_on_chain:
-  forall bstate caddr,
-    reachable bstate ->
-    env_contracts bstate caddr = Some (contract : WeakContract) ->
-    outgoing_acts bstate caddr = [] ->
-    exists cstate,
-      contract_state bstate caddr = Some cstate /\
+  Lemma balance_on_chain:
+    forall bstate caddr,
+      reachable bstate ->
+      env_contracts bstate caddr = Some (contract : WeakContract) ->
+      outgoing_acts bstate caddr = [] ->
+      exists cstate,
+        contract_state bstate caddr = Some cstate /\
+        env_account_balances bstate caddr = cstate.(balance).
+  Proof.
+    intros * reach deployed.
+    specialize balance_on_chain' as (cstate & balance); eauto.
+    eauto.
+    intros Hact. rewrite Hact in balance. cbn in *.
+    exists cstate. destruct balance.
+    split.
+    eauto.
+    lia.
+  Qed.
+
+  Lemma balance_on_chain_forall :
+    forall bstate caddr cstate,
+      reachable bstate ->
+      env_contracts bstate caddr = Some (contract : WeakContract) ->
+      outgoing_acts bstate caddr = [] ->
+      contract_state bstate caddr = Some cstate ->
       env_account_balances bstate caddr = cstate.(balance).
-Proof.
-  intros * reach deployed.
-  specialize balance_on_chain' as (cstate & balance); eauto.
-  eauto.
-  intros Hact. rewrite Hact in balance. cbn in *.
-  exists cstate. destruct balance.
-  split.
-  eauto.
-  lia.
-Qed.
+  Proof.
+    intros.
+    eapply balance_on_chain in H;eauto.
+    destruct H;
+    destruct_and_split.
+    rewrite H2 in H.
+    inversion H; subst;
+    eauto.
+  Qed.
 
-Lemma balance_on_chain_forall :
-  forall bstate caddr cstate,
-    reachable bstate ->
-    env_contracts bstate caddr = Some (contract : WeakContract) ->
-    outgoing_acts bstate caddr = [] ->
-    contract_state bstate caddr = Some cstate ->
-    env_account_balances bstate caddr = cstate.(balance).
-Proof.
-  intros.
-  eapply balance_on_chain in H;eauto.
-  destruct H;
-  destruct_and_split.
-  rewrite H2 in H.
-  inversion H; subst;
-  eauto.
-Qed.
-
-Lemma get_valid_header_is_valid_header s:
-  validate_header( get_valid_header miner s )  s = true.
-Proof.
-  intros.
-  unfold get_valid_header.
-  unfold validate_header.
-  propify.
-  repeat split;cbn ;try lia;eauto.
-  unfold miner_reward.
-  lia. 
-Qed.
+  Lemma get_valid_header_is_valid_header s:
+    validate_header( get_valid_header miner s )  s = true.
+  Proof.
+    intros.
+    unfold get_valid_header.
+    unfold validate_header.
+    propify.
+    repeat split;cbn ;try lia;eauto.
+    unfold miner_reward.
+    lia. 
+  Qed.
 
   Lemma user_call_GetGift_is_call_act cstate:
-    is_call_act caddr (user_call_GetGift cstate) = true .
+    is_call_act (user_call_GetGift cstate) = true .
   Proof.
     unfold is_call_act.
     unfold user_call_GetGift.
@@ -469,9 +470,9 @@ Qed.
   Lemma user_call_GetGift_is_call_act_transition_correct:
     forall (s:ChainState) cstate,
       contract_state s caddr = Some cstate ->
-      readyToStepState miner caddr contract caddr s0 s ->
+      readyToStepState miner contract caddr s0 s ->
       exists s', 
-        transition miner caddr s (user_call_GetGift cstate) = Ok s'.
+        transition miner s (user_call_GetGift cstate) = Ok s'.
   Proof.
     intros * Hcs_s Hready_state_s.
     eexists.
@@ -706,8 +707,8 @@ Qed.
   Lemma user_call_GetGift_is_call_act_state_correct:
    forall (s s':ChainState) cstate,
       contract_state s caddr = Some cstate ->
-      readyToStepState miner caddr contract caddr s0 s ->
-      transition miner caddr s (user_call_GetGift cstate) = Ok s' ->
+      readyToStepState miner contract caddr s0 s ->
+      transition miner s (user_call_GetGift cstate) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
         cstate'.(balance) = 0.
@@ -715,21 +716,21 @@ Qed.
     intros * Hcs_s Hready Htrans.
     pose proof Hready.
     destruct H as [Htrc_s Hqueue_s].
-    assert (Hact_call : is_call_act caddr ((user_call_GetGift cstate)) = true).
+    assert (Hact_call : is_call_act ((user_call_GetGift cstate)) = true).
     {
       unfold is_call_act.
       unfold user_call_GetGift.
       unfold build_call.
       destruct_address_eq;eauto.
     }
-    assert(ttrace_s_s : TransitionTrace miner caddr s s) by eapply clnil.
-    assert(ttrace_s_s' : TransitionTrace miner caddr s s').
+    assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
+    assert(ttrace_s_s' : TransitionTrace miner s s').
     {
       econstructor;eauto.
       eapply step_trans;eauto.
 
     }
-    assert(Htrct_s_s' : reachable_via miner caddr contract caddr s0 s s').
+    assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
     {
       econstructor;eauto.
     }
@@ -1004,7 +1005,7 @@ Qed.
     intuition.
     (* caddr = miner *)
     eapply address_not_contract_negb in user1_eoa.
-    rewrite e0 in *.
+    rewrite e in *.
     intuition.
     (* 
       n: sender cstate <> miner
@@ -1227,7 +1228,7 @@ Qed.
   Qed.
 
   Lemma safi_BS:
-    base_liquidity miner caddr contract caddr s0.
+    base_liquidity miner contract caddr s0.
   Proof.
     unfold base_liquidity.
     intros.
@@ -1270,19 +1271,19 @@ Qed.
     pose proof Htrans.
     eapply user_call_GetGift_is_call_act_state_correct in H;eauto.
     destruct H as [cstate' [Hcs_s' HPhase]].
-    assert (Hready':readyToStepState miner caddr contract caddr s0 s').
+    assert (Hready':readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
         unfold readyToStepState in Hready.
         destruct Hready as [Htrc_st Hqueue_st].
         decompose_transition_reachable Htrc_st.
-        assert (TransitionTrace miner caddr s0 s').
-        assert(is_call_act caddr (user_call_GetGift cstate') = true).
+        assert (TransitionTrace miner s0 s').
+        assert(is_call_act (user_call_GetGift cstate') = true).
         {
           eapply (user_call_GetGift_is_call_act cstate').
         }
-        eapply (snoc trace (step_trans miner caddr (user_call_GetGift cstate') H  Htrans)).
+        eapply (snoc trace (step_trans miner (user_call_GetGift cstate') H  Htrans)).
         econstructor;eauto.
         unfold readyToStepState  in Hready.
         destruct_and_split.
@@ -1294,18 +1295,18 @@ Qed.
         eauto.
         eauto.
       }
-      assert (trace_s_s' :inhabited(TransitionTrace miner caddr s s')).
+      assert (trace_s_s' :inhabited(TransitionTrace miner s s')).
       {
         unfold readyToStepState  in Hready.
         destruct_and_split.
         decompose_transition_reachable H.
-        assert (TransitionTrace miner caddr s s) by eapply clnil.
-        assert(is_call_act caddr (user_call_GetGift cstate) = true).
+        assert (TransitionTrace miner s s) by eapply clnil.
+        assert(is_call_act (user_call_GetGift cstate) = true).
         {
           eapply (user_call_GetGift_is_call_act cstate).
         }
         econstructor;eauto.
-        eapply (snoc X (step_trans miner caddr (user_call_GetGift  cstate) H  Htrans)).
+        eapply (snoc X (step_trans miner (user_call_GetGift  cstate) H  Htrans)).
       }
       unfold readyToStepState in Hready'.
       destruct_and_split.
@@ -1325,10 +1326,11 @@ Qed.
       intuition.
       eauto.
   Qed.
+
+
   
-  
 
 
 
-End Lqiuidity.
+End Liqiuidity.
 

@@ -739,7 +739,7 @@ Qed.
 
 
   Lemma contract_constants_transition_via :forall s,
-    transition_reachable miner caddr contract caddr s0 s ->
+    transition_reachable miner contract caddr s0 s ->
     exists cstate, 
       contract_state s caddr = Some cstate /\
       cstate.(seller) = init_cstate.(seller) /\
@@ -747,7 +747,7 @@ Qed.
       cstate.(arbitrator) = init_cstate.(arbitrator) .
   Proof.
     intros.
-    assert(ttrace : transition_reachable miner caddr contract caddr s0 s) by eauto.
+    assert(ttrace : transition_reachable miner contract caddr s0 s) by eauto.
     unfold transition_reachable in ttrace.
     destruct ttrace as [_ [ttrace]].
     decompose_is_init_state H_init.
@@ -890,7 +890,7 @@ Qed.
   Qed.
 
   Lemma seller_call_MarkAsShipped_is_call_act cstate:
-    is_call_act caddr (seller_call_MarkAsShipped cstate) = true .
+    is_call_act (seller_call_MarkAsShipped cstate) = true .
   Proof.
     unfold is_call_act.
     unfold seller_call_MarkAsShipped.
@@ -899,7 +899,7 @@ Qed.
   Qed.
 
   Lemma buyer_call_AcceptItem_is_call_act cstate:
-    is_call_act caddr (buyer_call_AcceptItem  cstate) = true .
+    is_call_act (buyer_call_AcceptItem  cstate) = true .
   Proof.
     unfold is_call_act.
     unfold buyer_call_AcceptItem  .
@@ -908,7 +908,7 @@ Qed.
   Qed.
 
   Lemma buyer_call_RejectItem_is_call_act cstate:
-    is_call_act caddr (buyer_call_RejectItem  cstate) = true .
+    is_call_act (buyer_call_RejectItem  cstate) = true .
   Proof.
     unfold is_call_act.
     unfold buyer_call_RejectItem  .
@@ -917,7 +917,7 @@ Qed.
   Qed.
 
   Lemma seller_call_RejectItem_is_call_act cstate:
-    is_call_act caddr (seller_call_RejectItem  cstate) = true .
+    is_call_act (seller_call_RejectItem  cstate) = true .
   Proof.
     unfold is_call_act.
     unfold seller_call_RejectItem  .
@@ -926,7 +926,7 @@ Qed.
   Qed.
 
   Lemma arbitrator_call_Arbitrate_is_call_act cstate win:
-    is_call_act caddr (arbitrator_call_Arbitrate win  cstate) = true .
+    is_call_act (arbitrator_call_Arbitrate win  cstate) = true .
   Proof.
     unfold is_call_act.
     unfold arbitrator_call_Arbitrate.
@@ -939,9 +939,9 @@ Qed.
     forall (s:ChainState) cstate,
       contract_state s caddr = Some cstate ->
       require_phase cstate AWAITING_SHIPMENT = true ->
-      readyToStepState miner caddr contract caddr s0 s ->
+      readyToStepState miner contract caddr s0 s ->
       exists s', 
-        transition miner caddr s (seller_call_MarkAsShipped cstate) = Ok s'.
+        transition miner s (seller_call_MarkAsShipped cstate) = Ok s'.
   Proof.
     intros * Hcs_s Hphase_state Hready_state_s.
     eexists.
@@ -1116,9 +1116,9 @@ Qed.
     forall (s:ChainState) cstate,
     contract_state s caddr = Some cstate ->
     require_phase cstate AWAITING_ACCEPTANCE = true ->
-    readyToStepState miner caddr contract caddr s0 s ->
+    readyToStepState miner contract caddr s0 s ->
     exists s', 
-      transition miner caddr s (buyer_call_AcceptItem cstate) = Ok s'.
+      transition miner s (buyer_call_AcceptItem cstate) = Ok s'.
   Proof.
     intros * Hcs_s Hphase_state Hready_state_s.
     eexists.
@@ -1407,9 +1407,9 @@ Qed.
       contract_state s caddr = Some cstate ->
       (require_phase cstate AWAITING_ACCEPTANCE = true \/ 
       require_phase cstate AWAITING_SHIPMENT = true) ->
-      readyToStepState miner caddr contract caddr s0 s ->
+      readyToStepState miner contract caddr s0 s ->
       exists s', 
-        transition miner caddr s (buyer_call_RejectItem cstate) = Ok s'.
+        transition miner s (buyer_call_RejectItem cstate) = Ok s'.
   Proof.
     intros * Hcs_s Hphase_state Hready_state_s.
     destruct Hphase_state as [Hphase_state | Hphase_state].
@@ -1766,9 +1766,9 @@ Qed.
       contract_state s caddr = Some cstate ->
       (require_phase cstate AWAITING_ACCEPTANCE = true \/ 
       require_phase cstate AWAITING_SHIPMENT = true) ->
-      readyToStepState miner caddr contract caddr s0 s ->
+      readyToStepState miner contract caddr s0 s ->
       exists s', 
-        transition miner caddr s (seller_call_RejectItem cstate) = Ok s'.
+        transition miner s (seller_call_RejectItem cstate) = Ok s'.
   Proof.
     intros * Hcs_s Hphase_state Hready_state_s.
     destruct Hphase_state as [Hphase_state | Hphase_state].
@@ -2126,9 +2126,9 @@ Qed.
     forall (s:ChainState) cstate buyerWins,
       contract_state s caddr = Some cstate ->
       require_phase cstate DISPUTED = true ->
-      readyToStepState miner caddr contract caddr s0 s ->
+      readyToStepState miner contract caddr s0 s ->
       exists s', 
-        transition miner caddr s (arbitrator_call_Arbitrate cstate buyerWins) = Ok s'.
+        transition miner s (arbitrator_call_Arbitrate cstate buyerWins) = Ok s'.
   Proof.
     intros * Hcs_s Hphase_state Hready_state_s.
     
@@ -2539,8 +2539,8 @@ Qed.
     forall (s s':ChainState) cstate,
       contract_state s caddr = Some cstate ->
       require_phase cstate AWAITING_SHIPMENT = true ->
-      readyToStepState miner caddr contract caddr s0 s ->
-      transition miner caddr s (seller_call_MarkAsShipped cstate) = Ok s' ->
+      readyToStepState miner  contract caddr s0 s ->
+      transition miner  s (seller_call_MarkAsShipped cstate) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
         cstate'.(currentPhase) = AWAITING_ACCEPTANCE /\
@@ -2549,20 +2549,20 @@ Qed.
     intros * Hcs_s Hphase Hready Htrans.
     pose proof Hready.
     destruct H as [Htrc_s Hqueue_s].
-    assert (Hact_call : is_call_act caddr ((seller_call_MarkAsShipped cstate)) = true).
+    assert (Hact_call : is_call_act ((seller_call_MarkAsShipped cstate)) = true).
     {
       unfold is_call_act.
       unfold seller_call_MarkAsShipped.
       unfold build_call.
       destruct_address_eq;eauto.
     }
-    assert(ttrace_s_s : TransitionTrace miner caddr s s) by eapply clnil.
-    assert(ttrace_s_s' : TransitionTrace miner caddr s s').
+    assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
+    assert(ttrace_s_s' : TransitionTrace miner s s').
     {
       econstructor;eauto.
       eapply step_trans;eauto.
     }
-    assert(Htrct_s_s' : reachable_via miner caddr contract caddr s0 s s').
+    assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
     {
       econstructor;eauto.
     }
@@ -3022,8 +3022,8 @@ Qed.
   forall (s s':ChainState) cstate,
     contract_state s caddr = Some cstate ->
     require_phase cstate AWAITING_ACCEPTANCE = true ->
-    readyToStepState miner caddr contract caddr s0 s ->
-    transition miner caddr s (buyer_call_AcceptItem cstate) = Ok s' ->
+    readyToStepState miner  contract caddr s0 s ->
+    transition miner  s (buyer_call_AcceptItem cstate) = Ok s' ->
     exists cstate',
       contract_state s' caddr = Some cstate' /\
       cstate'.(currentPhase) = COMPLETED /\
@@ -3033,21 +3033,21 @@ Qed.
     intros * Hcs_s Hphase Hready Htrans.
     pose proof Hready.
     destruct H as [Htrc_s Hqueue_s].
-    assert (Hact_call : is_call_act caddr ((buyer_call_AcceptItem cstate)) = true).
+    assert (Hact_call : is_call_act ((buyer_call_AcceptItem cstate)) = true).
     {
       unfold is_call_act.
       unfold buyer_call_AcceptItem.
       unfold build_call.
       destruct_address_eq;eauto.
     }
-    assert(ttrace_s_s : TransitionTrace miner caddr s s) by eapply clnil.
-    assert(ttrace_s_s' : TransitionTrace miner caddr s s').
+    assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
+    assert(ttrace_s_s' : TransitionTrace miner s s').
     {
       econstructor;eauto.
       eapply step_trans;eauto.
 
     }
-    assert(Htrct_s_s' : reachable_via miner caddr contract caddr s0 s s').
+    assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
     {
       econstructor;eauto.
     }
@@ -3617,8 +3617,8 @@ Qed.
     contract_state s caddr = Some cstate ->
     (require_phase cstate AWAITING_ACCEPTANCE = true \/
       require_phase cstate AWAITING_SHIPMENT = true )->
-    readyToStepState miner caddr contract caddr s0 s ->
-    transition miner caddr s (buyer_call_RejectItem cstate) = Ok s' ->
+    readyToStepState miner contract caddr s0 s ->
+    transition miner s (buyer_call_RejectItem cstate) = Ok s' ->
     exists cstate',
       contract_state s' caddr = Some cstate' /\
       cstate'.(currentPhase) = DISPUTED.
@@ -3626,20 +3626,20 @@ Qed.
     intros * Hcs_s Hphase Hready Htrans.
     pose proof Hready.
     destruct H as [Htrc_s Hqueue_s].
-    assert (Hact_call : is_call_act caddr ((buyer_call_RejectItem cstate)) = true).
+    assert (Hact_call : is_call_act ((buyer_call_RejectItem cstate)) = true).
     {
       unfold is_call_act.
       unfold buyer_call_RejectItem.
       unfold build_call.
       destruct_address_eq;eauto.
     }
-    assert(ttrace_s_s : TransitionTrace miner caddr s s) by eapply clnil.
-    assert(ttrace_s_s' : TransitionTrace miner caddr s s').
+    assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
+    assert(ttrace_s_s' : TransitionTrace miner s s').
     {
       econstructor;eauto.
       eapply step_trans;eauto.
     }
-    assert(Htrct_s_s' : reachable_via miner caddr contract caddr s0 s s').
+    assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
     {
       econstructor;eauto.
     }
@@ -3951,8 +3951,8 @@ Qed.
       contract_state s caddr = Some cstate ->
       (require_phase cstate AWAITING_ACCEPTANCE = true \/
         require_phase cstate AWAITING_SHIPMENT = true )->
-      readyToStepState miner caddr contract caddr s0 s ->
-      transition miner caddr s (seller_call_RejectItem cstate) = Ok s' ->
+      readyToStepState miner contract caddr s0 s ->
+      transition miner s (seller_call_RejectItem cstate) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
         cstate'.(currentPhase) = DISPUTED.
@@ -3960,20 +3960,20 @@ Qed.
     intros * Hcs_s Hphase Hready Htrans.
     pose proof Hready.
     destruct H as [Htrc_s Hqueue_s].
-    assert (Hact_call : is_call_act caddr ((seller_call_RejectItem cstate)) = true).
+    assert (Hact_call : is_call_act ((seller_call_RejectItem cstate)) = true).
     {
       unfold is_call_act.
       unfold seller_call_RejectItem.
       unfold build_call.
       destruct_address_eq;eauto.
     }
-    assert(ttrace_s_s : TransitionTrace miner caddr s s) by eapply clnil.
-    assert(ttrace_s_s' : TransitionTrace miner caddr s s').
+    assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
+    assert(ttrace_s_s' : TransitionTrace miner s s').
     {
       econstructor;eauto.
       eapply step_trans;eauto.
     }
-    assert(Htrct_s_s' : reachable_via miner caddr contract caddr s0 s s').
+    assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
     {
       econstructor;eauto.
     }
@@ -4284,8 +4284,8 @@ Qed.
     forall (s s':ChainState) cstate buyerWins,
       contract_state s caddr = Some cstate ->
       require_phase cstate DISPUTED = true ->
-      readyToStepState miner caddr contract caddr s0 s ->
-      transition miner caddr s (arbitrator_call_Arbitrate cstate buyerWins) = Ok s' ->
+      readyToStepState miner contract caddr s0 s ->
+      transition miner s (arbitrator_call_Arbitrate cstate buyerWins) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
         cstate'.(currentPhase) = COMPLETED /\
@@ -4294,21 +4294,21 @@ Qed.
     intros * Hcs_s Hphase Hready Htrans.
     pose proof Hready.
     destruct H as [Htrc_s Hqueue_s].
-    assert (Hact_call : is_call_act caddr ((arbitrator_call_Arbitrate cstate buyerWins)) = true).
+    assert (Hact_call : is_call_act ((arbitrator_call_Arbitrate cstate buyerWins)) = true).
     {
       unfold is_call_act.
       unfold arbitrator_call_Arbitrate.
       unfold build_call.
       destruct_address_eq;eauto.
     }
-    assert(ttrace_s_s : TransitionTrace miner caddr s s) by eapply clnil.
-    assert(ttrace_s_s' : TransitionTrace miner caddr s s').
+    assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
+    assert(ttrace_s_s' : TransitionTrace miner s s').
     {
       econstructor;eauto.
       eapply step_trans;eauto.
 
     }
-    assert(Htrct_s_s' : reachable_via miner caddr contract caddr s0 s s').
+    assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
     {
       econstructor;eauto.
     }
@@ -5340,7 +5340,7 @@ Qed.
 
 
   Lemma safi_BS:
-    base_liquidity miner caddr contract caddr s0.
+    base_liquidity miner contract caddr s0.
   Proof.
     unfold base_liquidity.
     intros.
@@ -5452,19 +5452,19 @@ Qed.
       pose proof Htrans.
       eapply buyer_call_RejectItem_state_correct in  H;eauto.
       destruct H as [cstate' [Hcs_s' HPhase]].
-      assert (readyToStepState miner caddr contract caddr s0 s').
+      assert (readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
         unfold readyToStepState  in Hready.
         destruct_and_split.
         decompose_transition_reachable H2.
-        assert (TransitionTrace miner caddr s0 s').
-        assert(is_call_act caddr (buyer_call_RejectItem cstate) = true).
+        assert (TransitionTrace miner s0 s').
+        assert(is_call_act (buyer_call_RejectItem cstate) = true).
         {
           eapply (buyer_call_AcceptItem_is_call_act cstate).
         }
-        eapply (snoc trace (step_trans miner caddr (buyer_call_RejectItem cstate) H2  Htrans)).
+        eapply (snoc trace (step_trans miner (buyer_call_RejectItem cstate) H2  Htrans)).
         econstructor;eauto.
         unfold readyToStepState  in Hready.
         destruct_and_split.
@@ -5476,18 +5476,18 @@ Qed.
         eauto.
         eauto.
       }
-      assert (trace_s_s' :inhabited(TransitionTrace miner caddr s s')).
+      assert (trace_s_s' :inhabited(TransitionTrace miner s s')).
       {
         unfold readyToStepState  in Hready.
         destruct_and_split.
         decompose_transition_reachable H3.
-        assert (TransitionTrace miner caddr s s) by eapply clnil.
-        assert(is_call_act caddr (buyer_call_RejectItem cstate) = true).
+        assert (TransitionTrace miner s s) by eapply clnil.
+        assert(is_call_act (buyer_call_RejectItem cstate) = true).
         {
           eapply (buyer_call_AcceptItem_is_call_act cstate).
         }
         econstructor;eauto.
-        eapply (snoc X (step_trans miner caddr (buyer_call_RejectItem cstate) H3  Htrans)).
+        eapply (snoc X (step_trans miner (buyer_call_RejectItem cstate) H3  Htrans)).
       }
       pose proof H.
       eapply (arbitrator_call_Arbitrate_transition_correct
@@ -5496,19 +5496,19 @@ Qed.
       pose proof Htrans'.
       eapply arbitrator_call_Arbitrate_state_correct in H;eauto.
       destruct H as [cstate'' [Hcs_s'' [HPhase' Hbal ]]].
-      assert (Hready':readyToStepState miner caddr contract caddr s0 s'').
+      assert (Hready':readyToStepState miner contract caddr s0 s'').
       {
         econstructor;eauto.
         econstructor;eauto.
         unfold readyToStepState in H0.
         destruct_and_split.
         decompose_transition_reachable H.
-        assert (TransitionTrace miner caddr s0 s'').
-        assert(is_call_act caddr (arbitrator_call_Arbitrate cstate' true) = true).
+        assert (TransitionTrace miner s0 s'').
+        assert(is_call_act (arbitrator_call_Arbitrate cstate' true) = true).
         {
           eapply (buyer_call_AcceptItem_is_call_act cstate' ).
         }
-        eapply (snoc trace (step_trans miner caddr (arbitrator_call_Arbitrate cstate' true) H  Htrans')).
+        eapply (snoc trace (step_trans miner (arbitrator_call_Arbitrate cstate' true) H  Htrans')).
         econstructor;eauto.
         unfold readyToStepState  in H0.
         destruct_and_split.
@@ -5520,19 +5520,19 @@ Qed.
         eauto.
         eauto.
       }
-      assert (trace_s_s'' :inhabited(TransitionTrace miner caddr s s'')).
+      assert (trace_s_s'' :inhabited(TransitionTrace miner s s'')).
       {
         unfold readyToStepState  in Hready'.
         destruct_and_split.
         decompose_transition_reachable H.
         
-        assert(is_call_act caddr (arbitrator_call_Arbitrate cstate' true) = true).
+        assert(is_call_act (arbitrator_call_Arbitrate cstate' true) = true).
         {
           eapply (buyer_call_AcceptItem_is_call_act cstate' ).
         }
         destruct trace_s_s' as [trace_s_s'].
         econstructor;eauto.
-        eapply (snoc trace_s_s' (step_trans miner caddr (arbitrator_call_Arbitrate cstate' true) H  Htrans')).
+        eapply (snoc trace_s_s' (step_trans miner (arbitrator_call_Arbitrate cstate' true) H  Htrans')).
       }
       unfold readyToStepState in Hready'.
       destruct_and_split.
@@ -5566,19 +5566,19 @@ Qed.
       pose proof Htrans.
       eapply buyer_call_AcceptItem_state_correct in  H;eauto.
       destruct H as [cstate' [Hcs_s' HPhase]].
-      assert (readyToStepState miner caddr contract caddr s0 s').
+      assert (readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
         unfold readyToStepState  in Hready.
         destruct_and_split.
         decompose_transition_reachable H5.
-        assert (TransitionTrace miner caddr s0 s').
-        assert(is_call_act caddr (buyer_call_AcceptItem cstate) = true).
+        assert (TransitionTrace miner s0 s').
+        assert(is_call_act (buyer_call_AcceptItem cstate) = true).
         {
           eapply (buyer_call_AcceptItem_is_call_act cstate).
         }
-        eapply (snoc trace (step_trans miner caddr (buyer_call_AcceptItem cstate) H5  Htrans)).
+        eapply (snoc trace (step_trans miner (buyer_call_AcceptItem cstate) H5  Htrans)).
         econstructor;eauto.
         unfold readyToStepState  in Hready.
         destruct_and_split.
@@ -5590,18 +5590,18 @@ Qed.
         eauto.
         eauto.
       }
-      assert (trace_s_s' :inhabited(TransitionTrace miner caddr s s')).
+      assert (trace_s_s' :inhabited(TransitionTrace miner s s')).
       {
         unfold readyToStepState  in Hready.
         destruct_and_split.
         decompose_transition_reachable H6.
-        assert (TransitionTrace miner caddr s s) by eapply clnil.
-        assert(is_call_act caddr (buyer_call_RejectItem cstate) = true).
+        assert (TransitionTrace miner s s) by eapply clnil.
+        assert(is_call_act (buyer_call_RejectItem cstate) = true).
         {
           eapply (buyer_call_AcceptItem_is_call_act cstate).
         }
         econstructor;eauto.
-        eapply (snoc X (step_trans miner caddr (buyer_call_AcceptItem  cstate) H6  Htrans)).
+        eapply (snoc X (step_trans miner (buyer_call_AcceptItem  cstate) H6  Htrans)).
       }
       exists s'.
       split.
@@ -5652,19 +5652,19 @@ Qed.
       pose proof Htrans.
       eapply arbitrator_call_Arbitrate_state_correct in H;eauto.
       destruct H as [cstate' [Hcs_s' [HPhase Hbal ]]].
-      assert (Hready':readyToStepState miner caddr contract caddr s0 s').
+      assert (Hready':readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
         unfold readyToStepState in Hready.
         destruct_and_split.
         decompose_transition_reachable H2.
-        assert (TransitionTrace miner caddr s0 s').
-        assert(is_call_act caddr (arbitrator_call_Arbitrate cstate' true) = true).
+        assert (TransitionTrace miner s0 s').
+        assert(is_call_act (arbitrator_call_Arbitrate cstate' true) = true).
         {
           eapply (buyer_call_AcceptItem_is_call_act cstate').
         }
-        eapply (snoc trace (step_trans miner caddr (arbitrator_call_Arbitrate cstate' true) H2  Htrans)).
+        eapply (snoc trace (step_trans miner (arbitrator_call_Arbitrate cstate' true) H2  Htrans)).
         econstructor;eauto.
         unfold readyToStepState  in Hready.
         destruct_and_split.
@@ -5676,19 +5676,19 @@ Qed.
         eauto.
         eauto.
       }
-      assert (trace_s_s' :inhabited(TransitionTrace miner caddr s s')).
+      assert (trace_s_s' :inhabited(TransitionTrace miner s s')).
       {
         unfold readyToStepState  in Hready'.
         destruct_and_split.
         decompose_transition_reachable H.
         
-        assert(is_call_act caddr (arbitrator_call_Arbitrate cstate true) = true).
+        assert(is_call_act (arbitrator_call_Arbitrate cstate true) = true).
         {
           eapply (buyer_call_AcceptItem_is_call_act cstate).
         }
-        assert (TransitionTrace miner caddr s s) by eapply clnil.
+        assert (TransitionTrace miner s s) by eapply clnil.
         econstructor;eauto.
-        eapply (snoc X (step_trans miner caddr (arbitrator_call_Arbitrate cstate true) H  Htrans)).
+        eapply (snoc X (step_trans miner (arbitrator_call_Arbitrate cstate true) H  Htrans)).
       }
       unfold readyToStepState in Hready'.
       destruct_and_split.
@@ -5712,7 +5712,7 @@ Qed.
       rewrite HcurrentPhase;eauto.
   Qed.
 
-  Definition good_seller : (strat miner caddr) :=
+  Definition good_seller : (strat miner) :=
     fun s0 s tr addrs =>
       match get_contract_state s caddr with
       | Some state =>
@@ -5731,7 +5731,7 @@ Qed.
 
   Definition good_seller_addrs := [useller;uarbitrator].
 
-  Definition bad_seller : (strat miner caddr) :=
+  Definition bad_seller : (strat miner) :=
     fun s0 s tr addrs =>
       match get_contract_state s caddr with
       | Some state =>
@@ -5749,7 +5749,7 @@ Qed.
 
   Definition bad_seller_addrs := [useller].
 
-  Definition good_buyer : (strat miner caddr) :=
+  Definition good_buyer : (strat miner) :=
     fun s0 s tr addrs =>
       match get_contract_state s caddr with
       | Some state =>
@@ -5768,7 +5768,7 @@ Qed.
 
   Definition good_buyer_addrs := [ubuyer;uarbitrator].
 
-  Definition bad_buyer : (strat miner caddr) :=
+  Definition bad_buyer : (strat miner) :=
     fun s0 s tr addrs =>
       match get_contract_state s caddr with
       | Some state =>
@@ -5787,7 +5787,7 @@ Qed.
   Definition bad_buyer_addrs := [ubuyer].
     
   Lemma strat_liquidity_good_buyer_bad_seller:
-    strat_liquidity miner caddr good_buyer good_buyer_addrs bad_seller bad_seller_addrs caddr contract s0.
+    strat_liquidity miner good_buyer good_buyer_addrs bad_seller bad_seller_addrs caddr contract s0.
   Proof.
     unfold strat_liquidity.
     intros.
@@ -5807,7 +5807,7 @@ Qed.
     eapply (reachable_through_contract_deployed s0 s' caddr contract) in Hrct_s0_s' as Hec_s';eauto.
     assert(Hrc_s' : reachable s').
     {
-      assert(transition_reachable miner caddr contract caddr  s0 s').
+      assert(transition_reachable miner contract caddr  s0 s').
       {
         econstructor;eauto.
       }
@@ -5826,7 +5826,7 @@ Qed.
     destruct H as [cstate Hcs].
     destruct(cstate.(currentPhase)) eqn : HcurrentPhase.
     + assert(Htr1:exists s' : ChainState,
-            transition miner caddr s (buyer_call_RejectItem cstate) = Ok s').
+            transition miner s (buyer_call_RejectItem cstate) = Ok s').
       {
         eapply buyer_call_RejectItem_transition_correct;eauto.
         right.
@@ -5837,12 +5837,12 @@ Qed.
         econstructor;eauto.
       }
       destruct Htr1 as [s' Htranss'].
-      assert (Hact_call1:is_call_act caddr (buyer_call_RejectItem cstate) = true).
+      assert (Hact_call1:is_call_act (buyer_call_RejectItem cstate) = true).
       {
         eapply buyer_call_RejectItem_is_call_act.
       }
-      set(tr'':=(snoc tr' (step_trans miner caddr (buyer_call_RejectItem cstate) Hact_call1 Htranss'))).
-      assert (Hsd1:stratDrive miner caddr s0 good_buyer good_buyer_addrs s tr' s' tr'').
+      set(tr'':=(snoc tr' (step_trans miner (buyer_call_RejectItem cstate) Hact_call1 Htranss'))).
+      assert (Hsd1:stratDrive miner s0 good_buyer good_buyer_addrs s tr' s' tr'').
       {
         econstructor.
         exists Hact_call1,Htranss'.
@@ -5875,7 +5875,7 @@ Qed.
         econstructor;eauto.
         econstructor;eauto.
       }
-      assert(Hready' : readyToStepState miner caddr contract caddr s0 s').
+      assert(Hready' : readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -5887,7 +5887,7 @@ Qed.
       }
       destruct Htt2 as [cstate' [Hcs_s' HcurrentPhase']].
       assert(Htt2:exists s'' : ChainState,
-          transition miner caddr s' (arbitrator_call_Arbitrate cstate' true) = Ok s'').
+          transition miner s' (arbitrator_call_Arbitrate cstate' true) = Ok s'').
       {
         eapply arbitrator_call_Arbitrate_transition_correct
         ;eauto.
@@ -5896,12 +5896,12 @@ Qed.
         eauto.
       }
       destruct Htt2 as [s'' Htranss''].
-      assert (Hact_call2:is_call_act caddr (arbitrator_call_Arbitrate cstate' true) = true).
+      assert (Hact_call2:is_call_act (arbitrator_call_Arbitrate cstate' true) = true).
       {
         eapply arbitrator_call_Arbitrate_is_call_act.
       }
-      set(tr''':=(snoc tr'' (step_trans miner caddr (arbitrator_call_Arbitrate cstate' true) Hact_call2 Htranss''))).
-      assert (Hsd2:stratDrive miner caddr s0 good_buyer good_buyer_addrs s' tr'' s'' tr''').
+      set(tr''':=(snoc tr'' (step_trans miner (arbitrator_call_Arbitrate cstate' true) Hact_call2 Htranss''))).
+      assert (Hsd2:stratDrive miner s0 good_buyer good_buyer_addrs s' tr'' s'' tr''').
       {
         econstructor.
         exists Hact_call2,Htranss''.
@@ -5934,7 +5934,7 @@ Qed.
         rewrite HcurrentPhase'.
         eauto.
       }
-      assert(Hready'' : readyToStepState miner caddr contract caddr s0 s'').
+      assert(Hready'' : readyToStepState miner contract caddr s0 s'').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -5995,7 +5995,7 @@ Qed.
       destruct (get_contract_state s' caddr);eauto.
       destruct  (currentPhase s1);eauto.
     + assert(Htr1:exists s' : ChainState,
-            transition miner caddr s (buyer_call_AcceptItem cstate) = Ok s').
+            transition miner s (buyer_call_AcceptItem cstate) = Ok s').
       {
         eapply buyer_call_AcceptItem_transition_correct;eauto.
         unfold require_phase.
@@ -6005,12 +6005,12 @@ Qed.
         econstructor;eauto.
       }
       destruct Htr1 as [s' Htranss'].
-      assert (Hact_call1:is_call_act caddr (buyer_call_AcceptItem cstate) = true).
+      assert (Hact_call1:is_call_act (buyer_call_AcceptItem cstate) = true).
       {
         eapply buyer_call_AcceptItem_is_call_act.
       }
-      set(tr'':=(snoc tr' (step_trans miner caddr (buyer_call_AcceptItem cstate) Hact_call1 Htranss'))).
-      assert (Hsd1:stratDrive miner caddr s0 good_buyer good_buyer_addrs s tr' s' tr'').
+      set(tr'':=(snoc tr' (step_trans miner (buyer_call_AcceptItem cstate) Hact_call1 Htranss'))).
+      assert (Hsd1:stratDrive miner s0 good_buyer good_buyer_addrs s tr' s' tr'').
       {
         econstructor.
         exists Hact_call1,Htranss'.
@@ -6044,7 +6044,7 @@ Qed.
         econstructor;eauto.
         econstructor;eauto.
       }
-      assert(Hready' : readyToStepState miner caddr contract caddr s0 s').
+      assert(Hready' : readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -6089,7 +6089,7 @@ Qed.
       eapply ULM_Base.
       unfold funds;lia.
     + assert(Htt2:exists s' : ChainState,
-          transition miner caddr s (arbitrator_call_Arbitrate cstate true) = Ok s').
+          transition miner s (arbitrator_call_Arbitrate cstate true) = Ok s').
       {
         eapply arbitrator_call_Arbitrate_transition_correct
         ;eauto.
@@ -6100,12 +6100,12 @@ Qed.
         econstructor;eauto.
       }
       destruct Htt2 as [s' Htranss'].
-      assert (Hact_call2:is_call_act caddr (arbitrator_call_Arbitrate cstate true) = true).
+      assert (Hact_call2:is_call_act (arbitrator_call_Arbitrate cstate true) = true).
       {
         eapply arbitrator_call_Arbitrate_is_call_act.
       }
-      set(tr'':=(snoc tr' (step_trans miner caddr (arbitrator_call_Arbitrate cstate true) Hact_call2 Htranss'))).
-      assert (Hsd2:stratDrive miner caddr s0 good_buyer good_buyer_addrs s tr' s' tr'').
+      set(tr'':=(snoc tr' (step_trans miner (arbitrator_call_Arbitrate cstate true) Hact_call2 Htranss'))).
+      assert (Hsd2:stratDrive miner s0 good_buyer good_buyer_addrs s tr' s' tr'').
       {
         econstructor.
         exists Hact_call2,Htranss'.
@@ -6139,7 +6139,7 @@ Qed.
         econstructor;eauto.
         econstructor;eauto.
       }
-      assert(Hready' : readyToStepState miner caddr contract caddr s0 s').
+      assert(Hready' : readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -6173,7 +6173,7 @@ Qed.
   Qed.
 
   Lemma strat_liquidity_good_seller_bad_buyer:
-    strat_liquidity miner caddr good_seller good_seller_addrs bad_buyer bad_buyer_addrs caddr contract s0.
+    strat_liquidity miner good_seller good_seller_addrs bad_buyer bad_buyer_addrs caddr contract s0.
   Proof.
     unfold strat_liquidity.
     intros.
@@ -6193,7 +6193,7 @@ Qed.
     eapply (reachable_through_contract_deployed s0 s' caddr contract) in Hrct_s0_s' as Hec_s';eauto.
     assert(Hrc_s' : reachable s').
     {
-      assert(transition_reachable miner caddr contract caddr  s0 s').
+      assert(transition_reachable miner contract caddr  s0 s').
       {
         econstructor;eauto.
       }
@@ -6212,7 +6212,7 @@ Qed.
     destruct H as [cstate Hcs].
     destruct(cstate.(currentPhase)) eqn : HcurrentPhase.
     + assert(Htr1:exists s' : ChainState,
-            transition miner caddr s (seller_call_MarkAsShipped cstate) = Ok s').
+            transition miner s (seller_call_MarkAsShipped cstate) = Ok s').
       {
         eapply seller_call_MarkAsShipped_transition_correct;eauto.
         
@@ -6223,12 +6223,12 @@ Qed.
         econstructor;eauto.
       }
       destruct Htr1 as [s' Htranss'].
-      assert (Hact_call1:is_call_act caddr (seller_call_MarkAsShipped cstate) = true).
+      assert (Hact_call1:is_call_act (seller_call_MarkAsShipped cstate) = true).
       {
         eapply seller_call_MarkAsShipped_is_call_act.
       }
-      set(tr'':=(snoc tr' (step_trans miner caddr (seller_call_MarkAsShipped cstate) Hact_call1 Htranss'))).
-      assert (Hsd1:stratDrive miner caddr s0 good_seller good_seller_addrs s tr' s' tr'').
+      set(tr'':=(snoc tr' (step_trans miner (seller_call_MarkAsShipped cstate) Hact_call1 Htranss'))).
+      assert (Hsd1:stratDrive miner s0 good_seller good_seller_addrs s tr' s' tr'').
       {
         econstructor.
         exists Hact_call1,Htranss'.
@@ -6261,7 +6261,7 @@ Qed.
         econstructor;eauto.
         econstructor;eauto.
       }
-      assert(Hready' : readyToStepState miner caddr contract caddr s0 s').
+      assert(Hready' : readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -6273,7 +6273,7 @@ Qed.
       }
       destruct Htt2 as [cstate' [Hcs_s' [HcurrentPhase' HitemShipped]]].
       assert(Htt2:exists s'' : ChainState,
-          transition miner caddr s' (seller_call_RejectItem cstate') = Ok s'').
+          transition miner s' (seller_call_RejectItem cstate') = Ok s'').
       {
         eapply seller_call_RejectItem_transition_correct;eauto.
         left.
@@ -6282,12 +6282,12 @@ Qed.
         eauto.
       }
       destruct Htt2 as [s'' Htranss''].
-      assert (Hact_call2:is_call_act caddr (seller_call_RejectItem cstate' ) = true).
+      assert (Hact_call2:is_call_act (seller_call_RejectItem cstate' ) = true).
       {
         eapply seller_call_RejectItem_is_call_act.
       }
-      set(tr''':=(snoc tr'' (step_trans miner caddr (seller_call_RejectItem cstate') Hact_call2 Htranss''))).
-      assert (Hsd2:stratDrive miner caddr s0 good_seller good_seller_addrs s' tr'' s'' tr''').
+      set(tr''':=(snoc tr'' (step_trans miner (seller_call_RejectItem cstate') Hact_call2 Htranss''))).
+      assert (Hsd2:stratDrive miner s0 good_seller good_seller_addrs s' tr'' s'' tr''').
       {
         econstructor.
         exists Hact_call2,Htranss''.
@@ -6319,7 +6319,7 @@ Qed.
         rewrite HcurrentPhase'.
         eauto.
       }
-      assert(Hready'' : readyToStepState miner caddr contract caddr s0 s'').
+      assert(Hready'' : readyToStepState miner contract caddr s0 s'').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -6334,7 +6334,7 @@ Qed.
       }
       destruct Htt2 as [cstate'' [Hcs_s'' HcurrentPhase'']].
       assert(Htt2:exists s''' : ChainState,
-          transition miner caddr s'' (arbitrator_call_Arbitrate cstate'' true) = Ok s''').
+          transition miner s'' (arbitrator_call_Arbitrate cstate'' true) = Ok s''').
       {
         eapply arbitrator_call_Arbitrate_transition_correct;eauto.
         unfold require_phase .
@@ -6342,12 +6342,12 @@ Qed.
         eauto.
       }
       destruct Htt2 as [s''' Htranss'''].
-      assert (Hact_call3:is_call_act caddr (arbitrator_call_Arbitrate cstate'' true) = true).
+      assert (Hact_call3:is_call_act (arbitrator_call_Arbitrate cstate'' true) = true).
       {
         eapply (seller_call_RejectItem_is_call_act cstate'').
       }
-      set(tr'''':=(snoc tr''' (step_trans miner caddr (arbitrator_call_Arbitrate cstate' true) Hact_call3 Htranss'''))).
-      assert (Hsd3:stratDrive miner caddr s0 good_seller good_seller_addrs s'' tr''' s''' tr'''').
+      set(tr'''':=(snoc tr''' (step_trans miner (arbitrator_call_Arbitrate cstate' true) Hact_call3 Htranss'''))).
+      assert (Hsd3:stratDrive miner s0 good_seller good_seller_addrs s'' tr''' s''' tr'''').
       {
         econstructor.
         exists Hact_call3,Htranss'''.
@@ -6378,7 +6378,7 @@ Qed.
         rewrite HcurrentPhase''.
         eauto.
       }
-      assert(Hready''' : readyToStepState miner caddr contract caddr s0 s''').
+      assert(Hready''' : readyToStepState miner contract caddr s0 s''').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -6474,7 +6474,7 @@ Qed.
       destruct (get_contract_state s' caddr);eauto.
       destruct  (currentPhase s1);eauto.
     + assert(Htr1:exists s' : ChainState,
-            transition miner caddr s (seller_call_RejectItem cstate) = Ok s').
+            transition miner s (seller_call_RejectItem cstate) = Ok s').
       {
         eapply seller_call_RejectItem_transition_correct;eauto.
         left.
@@ -6485,12 +6485,12 @@ Qed.
         econstructor;eauto.
       }
       destruct Htr1 as [s' Htranss'].
-      assert (Hact_call1:is_call_act caddr (seller_call_RejectItem cstate) = true).
+      assert (Hact_call1:is_call_act (seller_call_RejectItem cstate) = true).
       {
         eapply seller_call_RejectItem_is_call_act.
       }
-      set(tr'':=(snoc tr' (step_trans miner caddr (seller_call_RejectItem cstate) Hact_call1 Htranss'))).
-      assert (Hsd1:stratDrive miner caddr s0 good_seller good_seller_addrs s tr' s' tr'').
+      set(tr'':=(snoc tr' (step_trans miner (seller_call_RejectItem cstate) Hact_call1 Htranss'))).
+      assert (Hsd1:stratDrive miner s0 good_seller good_seller_addrs s tr' s' tr'').
       {
         econstructor.
         exists Hact_call1,Htranss'.
@@ -6523,7 +6523,7 @@ Qed.
         econstructor;eauto.
         econstructor;eauto.
       }
-      assert(Hready' : readyToStepState miner caddr contract caddr s0 s').
+      assert(Hready' : readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -6535,7 +6535,7 @@ Qed.
       }
       destruct Htt2 as [cstate' [Hcs_s' HcurrentPhase']].
       assert(Htt2:exists s'' : ChainState,
-          transition miner caddr s' (arbitrator_call_Arbitrate cstate' true) = Ok s'').
+          transition miner s' (arbitrator_call_Arbitrate cstate' true) = Ok s'').
       {
         eapply arbitrator_call_Arbitrate_transition_correct
         ;eauto.
@@ -6544,12 +6544,12 @@ Qed.
         eauto.
       }
       destruct Htt2 as [s'' Htranss''].
-      assert (Hact_call2:is_call_act caddr (arbitrator_call_Arbitrate cstate' true) = true).
+      assert (Hact_call2:is_call_act (arbitrator_call_Arbitrate cstate' true) = true).
       {
         eapply arbitrator_call_Arbitrate_is_call_act.
       }
-      set(tr''':=(snoc tr'' (step_trans miner caddr (arbitrator_call_Arbitrate cstate' true) Hact_call2 Htranss''))).
-      assert (Hsd2:stratDrive miner caddr s0 good_seller good_seller_addrs s' tr'' s'' tr''').
+      set(tr''':=(snoc tr'' (step_trans miner (arbitrator_call_Arbitrate cstate' true) Hact_call2 Htranss''))).
+      assert (Hsd2:stratDrive miner s0 good_seller good_seller_addrs s' tr'' s'' tr''').
       {
         econstructor.
         exists Hact_call2,Htranss''.
@@ -6582,7 +6582,7 @@ Qed.
         rewrite HcurrentPhase'.
         eauto.
       }
-      assert(Hready'' : readyToStepState miner caddr contract caddr s0 s'').
+      assert(Hready'' : readyToStepState miner contract caddr s0 s'').
       {
         econstructor;eauto.
         econstructor;eauto.
@@ -6655,7 +6655,7 @@ Qed.
       eapply ULM_Base.
       unfold funds;lia.
     + assert(Htt2:exists s' : ChainState,
-          transition miner caddr s (arbitrator_call_Arbitrate cstate true) = Ok s').
+          transition miner s (arbitrator_call_Arbitrate cstate true) = Ok s').
       {
         eapply arbitrator_call_Arbitrate_transition_correct
         ;eauto.
@@ -6666,12 +6666,12 @@ Qed.
         econstructor;eauto.
       }
       destruct Htt2 as [s' Htranss'].
-      assert (Hact_call2:is_call_act caddr (arbitrator_call_Arbitrate cstate true) = true).
+      assert (Hact_call2:is_call_act (arbitrator_call_Arbitrate cstate true) = true).
       {
         eapply arbitrator_call_Arbitrate_is_call_act.
       }
-      set(tr'':=(snoc tr' (step_trans miner caddr (arbitrator_call_Arbitrate cstate true) Hact_call2 Htranss'))).
-      assert (Hsd2:stratDrive miner caddr s0 good_seller good_seller_addrs s tr' s' tr'').
+      set(tr'':=(snoc tr' (step_trans miner (arbitrator_call_Arbitrate cstate true) Hact_call2 Htranss'))).
+      assert (Hsd2:stratDrive miner s0 good_seller good_seller_addrs s tr' s' tr'').
       {
         econstructor.
         exists Hact_call2,Htranss'.
@@ -6705,7 +6705,7 @@ Qed.
         econstructor;eauto.
         econstructor;eauto.
       }
-      assert(Hready' : readyToStepState miner caddr contract caddr s0 s').
+      assert(Hready' : readyToStepState miner contract caddr s0 s').
       {
         econstructor;eauto.
         econstructor;eauto.

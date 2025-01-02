@@ -43,7 +43,8 @@ Section Strat.
   Set Nonrecursive Elimination Schemes.
 
   Local Open Scope Z.
-
+Section concert_exec_base.
+  
   Definition build_call {A : Type}
                         {ser : Serializable A}
                         (from to : Address)
@@ -210,7 +211,7 @@ Section Strat.
       eapply build_env_equiv;eauto.
     Qed.
 
-    Local Hint Resolve deploy_contract_step : core.
+  Local Hint Resolve deploy_contract_step : core.
 
   Definition msg_to_call_action 
               (from to : Address)
@@ -227,85 +228,8 @@ Section Strat.
 
   Open Scope Z.
 
-Section envExec.
-
-  Definition send_or_call_env
-              (origin : Address)
-              (from to : Address)
-              (amount : Amount)
-              (msg : option SerializedValue)
-              (env : Environment)
-              : result (Environment * list Action) Error :=
-    if amount <? 0 then
-      Err default_error
-    else if amount >? env_account_balances env from then
-      Err default_error
-    else
-      match env_contracts env to with
-      | None =>
-        (* Fail if sending a message to address without contract *)
-        if address_is_contract to then
-          Err default_error
-        else
-          match msg with
-          | None =>
-            let new_env := transfer_balance from to amount env in
-            Ok (new_env,[])  (* 空的动作队列 *)
-          | Some _ => Err default_error
-          end
-      | Some wc =>
-        match env_contract_states env to with
-        | None => Err default_error
-        | Some state =>
-          let env' := transfer_balance from to amount env in
-          let ctx := build_ctx origin from to (env_account_balances env' to) amount in
-          match weak_error_to_error_receive( wc_receive wc env' ctx state msg) with
-          | Err e => Err e
-          | Ok (new_state, new_actions) =>
-            let new_env := set_contract_state to new_state env' in
-            Ok (new_env,(map (build_act origin to) new_actions)) (* 将新生成的动作添加到动作队列中 *)
-          end
-        end
-      end.
- 
-  Local Open Scope nat.
- 
-  Definition execute_action_env
-             (act : Action)
-             (env : Environment)
-             : result (Environment * list Action) Error :=
-   match act with
-   | build_act origin from (act_transfer to amount) =>
-     send_or_call_env origin from to amount None env
-   | build_act origin from (act_call to amount msg) =>
-     send_or_call_env origin from to amount (Some msg) env
-   | _ => Err default_error
-   end.
- 
-  Fixpoint execute_actions_env
-               (count : nat)
-               (acts : list Action)
-               (lc : Environment)
-               (true : bool)
-               : result Environment Error :=
-       match count, acts with
-       | _, [] => Ok lc
-       | 0, _ => Err default_error
-       | S count, act :: acts =>
-         match execute_action_env act lc with
-         | Ok (lc, next_acts) =>
-           let acts := if true
-                       then next_acts ++ acts
-                       else acts ++ next_acts in
-           execute_actions_env count acts lc true
-         | Err default_error =>
-         Err default_error
-         end
-       end.
- 
-  End envExec.
-
   Section cstExec.
+
   Open Scope Z.
   Definition send_or_call
               (origin : Address)
@@ -386,7 +310,10 @@ Section envExec.
       end
     end.
   End cstExec.
-  
+
+End concert_exec_base.
+
+Section exec_base_proof.
   Local Open Scope Z.
   
   Lemma gtb_le x y :
@@ -423,10 +350,8 @@ Section envExec.
     destruct (Z.gtb amount (env_account_balances lc_before from)) eqn:balance_enough;
       [cbn in *; congruence|].
     destruct (env_contracts lc_before to) as [wc|] eqn:to_contract.
-    - (* there is a contract at destination, so do call *)
-      destruct (env_contract_states _ _) as [prev_state|] eqn:prev_state_eq;
+    - destruct (env_contract_states _ _) as [prev_state|] eqn:prev_state_eq;
         [|cbn in *; congruence].
-      
       destruct (wc_receive wc _ _ _ _) as [[new_state resp_acts]|] eqn:receive;
         [|cbn in *; congruence].
       apply (eval_call origin from to amount wc msg prev_state new_state resp_acts);
@@ -444,8 +369,7 @@ Section envExec.
         inversion_clear sent.
         simpl. eauto.
         apply build_env_equiv; auto.
-    - (* no contract at destination, so msg should be empty *)
-      destruct (address_is_contract to) eqn:addr_format; cbn in *; try congruence.
+    - destruct (address_is_contract to) eqn:addr_format; cbn in *; try  congruence.
       destruct msg; cbn in *; try congruence.
       assert (chain_state_queue bstate = []).
       inversion sent. simpl. eauto.
@@ -456,54 +380,9 @@ Section envExec.
       apply build_env_equiv; auto.
   Qed.
 
-  
-
   Local Hint Resolve deploy_contract_step : core.
-  Lemma send_or_call_env_step origin from to amount msg act lc_before new_acts lc_after :
-    send_or_call_env origin from to amount msg lc_before = Ok (lc_after ,new_acts ) ->
-    act = build_act origin from (match msg with
-                                | None => act_transfer to amount
-                                | Some msg => act_call to amount msg
-                                end) ->
-    ActionEvaluation lc_before act lc_after new_acts.
-  Proof.
-    intros sent act_eq.
-    unfold send_or_call_env in sent.
-    destruct (Z.ltb amount 0) eqn:amount_nonnegative;
-      [cbn in *; congruence|].
-    destruct (Z.gtb amount (env_account_balances lc_before from)) eqn:balance_enough;
-      [cbn in *; congruence|].
-    destruct (env_contracts lc_before to) as [wc|] eqn:to_contract.
-    - (* there is a contract at destination, so do call *)
-      destruct (env_contract_states _ _) as [prev_state|] eqn:prev_state_eq;
-        [|cbn in *; congruence].
-      
-      destruct (wc_receive wc _ _ _ _) as [[new_state resp_acts]|] eqn:receive;
-        [|cbn in *; congruence].
-      apply (eval_call origin from to amount wc msg prev_state new_state resp_acts);
-        try solve [cbn in *; auto; congruence].
-      + cbn in sent.
-        inversion_clear sent.
-        lia.
-      + inversion sent; subst.
-        lia.
-      + inversion sent; subst. eauto.
-      + cbn in sent.
-        inversion_clear sent.
-        simpl. eauto.
-        apply build_env_equiv; auto.
-    - destruct (address_is_contract to) eqn:addr_format; cbn in *; try       congruence.
-      destruct msg; cbn in *; try congruence.
-      assert (new_acts = []).
-      inversion sent. simpl. eauto.
-      rewrite H.
-      apply (eval_transfer origin from to amount); auto.
-      lia. lia.
-      inversion sent; subst.
-      apply build_env_equiv; auto.
-  Qed.
-  
-  Local Hint Resolve send_or_call_step send_or_call_env_step : core.
+
+  Local Hint Resolve send_or_call_step : core.
   
   Lemma execute_action_step
         (act : Action)
@@ -529,22 +408,6 @@ Section envExec.
     eapply execute_action_step;eauto.
   Qed.
 
-  Local Hint Resolve send_or_call_env_step : core.
-  Lemma execute_action_env_step
-            (act : Action)
-            (new_acts : list Action)
-            (lc_before : Environment)
-            (lc_after : Environment) :
-      execute_action_env act lc_before = Ok (lc_after,new_acts) ->
-      ActionEvaluation lc_before act lc_after new_acts.
-  Proof.
-    intros exec.
-    unfold execute_action_env in exec.
-    destruct act as [orig from body].
-    destruct body as [to amount|to amount msg|amount wc setup]; eauto.
-    congruence.
-  Qed.
-  
   Hint Constructors ChainStep : core.
   Hint Constructors ChainedList : core.
   Hint Unfold ChainTrace : core.
@@ -591,45 +454,28 @@ Section envExec.
   Proof.
     intros df count.
     induction count as [| count' IH]; intros prev_bstate next_bstate Hexec.
-    - (* Base case: count = 0 *)
-      (* 当 count = 0 时，根据 execute_actions 的定义，如果动作队列不为空，将返回错误。 *)
-      simpl in Hexec.
+    - simpl in Hexec.
       destruct prev_bstate.(chain_state_queue) eqn:Hqueue.
-      + (* 动作队列为空 *)
+      + 
         inversion Hexec. subst.
         reflexivity.
-      + (* 动作队列不为空 *)
-        (* execute_actions 在这种情况下应该返回 Err，但 Hexec 告诉我们它返回了 Ok *)
-        (* 矛盾，因此这种情况不会发生 *)
-        discriminate Hexec.
-    - (* Inductive step: count = S count' *)
-      simpl in Hexec.
+      + discriminate Hexec.
+    - simpl in Hexec.
       destruct prev_bstate.(chain_state_queue) eqn:Hqueue.
-      + (* 动作队列为空 *)
-        inversion Hexec. subst.
+      + inversion Hexec. subst.
         reflexivity.
-      + (* 动作队列为 x :: xs *)
-        (* 执行 execute_action *)
-        destruct (execute_action a prev_bstate.(chain_state_env)) eqn:Hexec_act.
-        * (* execute_action 返回 Ok *)
-          destruct t as [env_after new_queue].
-          (* 根据 true，不同地更新 new_acts *)
+      + destruct (execute_action a prev_bstate.(chain_state_env)) eqn:Hexec_act.
+        * destruct t as [env_after new_queue].
           destruct df.
-          -- (* df = true，深度优先 *)
-              simpl in Hexec.
+          -- simpl in Hexec.
               set (new_acts := new_queue ++ l).
-              (* 递归调用 execute_actions *)
               apply IH in Hexec.
               assumption.
-          -- (* df = false，广度优先 *)
-              simpl in Hexec.
+          -- simpl in Hexec.
               set (new_acts := l ++ new_queue).
-              (* 递归调用 execute_actions *)
               apply IH in Hexec.
               assumption.
-        * (* execute_action 返回 Err *)
-          (* 这与 Hexec 返回 Ok 矛盾 *)
-          discriminate Hexec.
+        * discriminate Hexec.
   Qed.
   
   Lemma execute_actions_trace_pb count (prev_bstate next_bstate : ChainState) df (trace : ChainTrace empty_state prev_bstate) :
@@ -723,83 +569,18 @@ Section envExec.
     rewrite H.
     eauto.
   Qed.
+
+End exec_base_proof.
+
+
   Hint Constructors ChainStep : core.
   Hint Constructors ChainedList : core.
   Hint Unfold ChainTrace : core.
   
-  Lemma execute_actions_env_trace count acts_1 acts_2 (lc lc_final : Environment) df
-  (trace : ChainTrace empty_state (build_chain_state lc (acts_1++acts_2))) :
-  execute_actions_env count acts_1 lc df = Ok lc_final ->
-  df = true ->
-  ChainTrace (build_chain_state lc (acts_1++acts_2)) (build_chain_state lc_final acts_2).
-  Proof.
-    revert acts_1 acts_2 lc lc_final trace.
-    induction count as [| count IH]; intros acts_1 acts_2 lc lc_final trace exec df_true; cbn in *.
-    - destruct acts_1 eqn : acts.
-      simpl in *. eauto.
-      inversion exec.
-      eauto.
-      congruence.
-    - destruct acts_1 as [|x xs] eqn : acts1'; try congruence.
-      simpl in trace. eauto.
-      inversion exec. eauto.
-      destruct (execute_action_env x lc) as [[lc_after new_acts ]|] eqn:exec_once;
-        cbn in *; try congruence.
-      assert (step : ActionEvaluation lc x lc_after new_acts).
-      {
-          apply execute_action_env_step.
-          eauto.
-      }
-      rewrite df_true in *.
-      assert (step1 : ChainStep
-      {| chain_state_env := lc; chain_state_queue := x :: xs ++ acts_2 |}
-      {| chain_state_env := lc_after; chain_state_queue := new_acts ++ xs ++ acts_2 |}).
-      {
-        set (mid_bstate :=  {| chain_state_env := lc; chain_state_queue := x :: xs ++ acts_2 |}).
-          set (next_bstate := {| chain_state_env := lc_after; chain_state_queue := new_acts ++ xs ++ acts_2 |}).
-        (* 使用 step 构造这一步的 ChainTrace *)
-        eapply step_action.
-        eauto.
-        eauto.
-        eauto.
-      }
-      assert (s1 :reachable {| chain_state_env := lc; chain_state_queue := x :: xs ++ acts_2 |}).
-      {
-        apply trace_reachable in trace.
-        eauto.
-      }
-      assert(s2 : reachable {| chain_state_env := lc_after; chain_state_queue := new_acts ++ xs ++ acts_2 |}).
-      {
-        eapply reachable_step.
-        eauto.
-        eauto.
-      }
-      unfold reachable in s2.
-      assert (trace' : (ChainTrace empty_state
-      {| chain_state_env := lc_after; chain_state_queue := new_acts ++ xs ++ acts_2 |})) by eauto.
-      set (mid := {| chain_state_env := lc_after; chain_state_queue := (new_acts ++ xs)  ++ acts_2 |}).
+Section exec_action.
   
-      assert (trace1 : ChainTrace
-      {| chain_state_env := lc_after; chain_state_queue := (new_acts ++ xs) ++ acts_2 |}
-      {| chain_state_env := lc_final; chain_state_queue := acts_2 |}).
-    {
-      apply IH with (lc := lc_after) (lc_final := lc_final)
-                    (acts_1 := new_acts ++ xs) (acts_2 := acts_2).
-                    rewrite  app_assoc in trace'.
-      eauto.
-      eauto.
-      eauto.
-    }
-    assert (trace2 : ChainTrace {| chain_state_env := lc; chain_state_queue := x :: xs ++ acts_2 |}
-    {| chain_state_env := lc_after; chain_state_queue := new_acts ++ xs ++ acts_2 |}).
-    {
-      eauto. 
-    }
-    rewrite  app_assoc in trace2.
-    set (final_trace := clist_app trace2 trace1).
-    eauto.
-  Qed.
-  
+
+
   Local Open Scope nat.
   
   Definition validate_header (header : BlockHeader) (chain : Chain) : bool :=
@@ -956,13 +737,13 @@ Section envExec.
     set (trace' := clist_app trace X).
     eauto.
   Qed.
+End exec_action.
 
   Context {Setup Msg State Error : Type}
           `{Serializable Setup}
           `{Serializable Msg}
           `{Serializable State}
           `{Serializable Error}.
-
     
   Variable miner_address : Address.
 
@@ -970,6 +751,10 @@ Section envExec.
 
 
   Global Definition miner_reward := 10%Z.
+
+Section transition_trace.
+    
+ 
 
   Definition funds (env : ChainState) (caddr : Address) : Amount :=
     env_account_balances env caddr.
@@ -984,26 +769,11 @@ Section envExec.
     eapply account_balance_nonnegative;eauto.
   Qed.
 
-  Definition wait_action addr n := 
-    build_act addr miner_address (act_transfer miner_address n).
-
-  Definition is_wait_act (act : Action) : bool :=
-    match act with
-    | build_act from to (act_transfer to' amount) =>
-        (address_eqb from to) && (address_eqb to to') && (amount >? 0)%Z
-    | _ => false
-    end.
-
   Definition safe_Z_to_nat (z : Z) : nat :=
     if Z.leb 0 z then Z.to_nat z else 0.
   
   Global Definition time_speed := 1%nat.
 
-  Definition get_wait_time (act : Action) :result nat Strat.Error :=
-    if is_wait_act act then
-      Ok time_speed
-    else
-      Err default_error.
   
   Definition get_valid_header bstate : BlockHeader :=
     build_block_Header 
@@ -1012,14 +782,6 @@ Section envExec.
       (finalized_height bstate)
       miner_reward
       miner_address.
-
-  Definition get_valid_header_forward_time bstate n : BlockHeader :=
-  build_block_Header 
-    (S (chain_height bstate))
-    (current_slot bstate + n)%nat
-    (finalized_height bstate)
-    miner_reward
-    miner_address.
 
   Definition is_init_state (contract : Contract Setup Msg State Error) 
                             (caddr : Address)
@@ -1032,74 +794,12 @@ Section envExec.
         env_contract_states init_state caddr = Some (serialize state) /\
         init contract env ctx setup = Ok state.
 
-  Variable caddr : Address.
-
-  Definition is_wait_act_vo (act : Action) : bool :=
-    match act with
-    | build_act from to (act_transfer to' amount) =>
-        (address_eqb from to) && (address_eqb to to') && (amount =? 1)%Z
-        && (address_eqb to miner_address)
-    | _ => false
-    end.
+    
   Definition is_call_act (a : Action) : bool :=
     match a with
-    | build_act _ _ (act_call addr _ _) => address_eqb addr caddr
+    | build_act _ _ (act_call _ _ _) => true
     | _ => false
     end.
-
-  (* call to addr 或者wait *)
-  Definition is_call_or_wait (a : Action) : bool :=
-    (is_wait_act_vo a) || (is_call_act a ).
-
-  Definition wait_action_vo := wait_action miner_address 1.
-
-  Lemma is_wait_act_vo_true :
-     is_wait_act_vo wait_action_vo = true .
-  Proof.
-    unfold is_wait_act_vo .
-    unfold wait_action_vo.
-    simpl.
-    destruct_address_eq;try congruence.
-    simpl.
-    eauto.
-  Qed.
-
-  Lemma is_wait_act_vo_true_a :
-    forall a,
-      is_wait_act_vo a = true ->
-      a = wait_action_vo.
-  Proof.
-    intros.
-    unfold is_wait_act_vo in H3.
-    unfold wait_action_vo.
-    destruct a .
-    destruct_match in H3 ; try congruence.
-    destruct_address_eq;try congruence;eauto;try lia.
-    subst.
-    unfold wait_action.
-    propify.
-    destruct_and_split.
-    subst.
-    eauto.
-  Qed.
-
-  Lemma is_wait_act_vo_fasle_a :
-    forall a,
-      is_wait_act_vo a = false ->
-      a <> wait_action_vo.
-  Proof.
-    intros.
-    unfold is_wait_act_vo in H3.
-    unfold wait_action_vo.
-    unfold not.
-    intros.
-    rewrite H4 in H3.
-    unfold wait_action in H3.
-    destruct_address_eq;eauto;try congruence.
-    simpl in H3.
-    intuition.
-  Qed.
-  
 
   Definition transition
     (prev_bstate : ChainState)
@@ -1140,6 +840,8 @@ Section envExec.
 
   Definition reachable_via contract caddr s0 mid to := transition_reachable contract caddr s0 mid /\ inhabited (trace(mid, to)).
 
+
+
   Definition readyToStepState 
               (contract : Contract Setup Msg State Error)
               (caddr : Address )
@@ -1158,45 +860,26 @@ Section envExec.
       readyToStepState c caddr s0 s ->
       exists s',
         (inhabited(trace( s, s')) /\ funds s' caddr = 0)%Z.
+End transition_trace.
+
+Section strat_model.
+
+  Notation "trace( from , to )" := (TransitionTrace from to)(at level 10).
 
   Definition strat := forall s0 s, trace(s0, s) -> list Address -> list Action.
 
   Definition is_valid_action (s : ChainState) (a : Action) : bool :=
     match transition s a with
     (* 包含等待动作以及caddr的act_call *)
-    | Ok _ => is_call_or_wait a
+    | Ok _ => is_call_act a
     | Err _ => false
     end.
 
-  Fixpoint at_most_one_wait (l : list Action) : Prop :=
-    match l with
-    | [] => True
-    | x :: xs =>
-        if is_wait_act_vo x then
-          (forall y, In y xs -> is_wait_act_vo y = false)
-        else
-          at_most_one_wait xs
-    end.
-
-  Lemma head_wait_implies_tail_no_wait :
-    forall (l : list Action) (a : Action) (l' : list Action),
-    at_most_one_wait l ->
-      l = a :: l' ->
-      is_wait_act_vo a = true ->
-      (forall x, In x l' -> is_wait_act_vo x = false).
-  Proof.
-    intros l a l' Hamt Hcons Hwait x Hin.
-    rewrite Hcons in Hamt.
-    simpl in Hamt.
-    rewrite Hwait in Hamt.
-    apply Hamt. assumption.
-  Qed.
-
-
-    Definition wellStrat (delta : strat)
-                       (addrs : list Address)
-                       (contract : Contract Setup Msg State Error)
-                       (s0 : ChainState)
+  Definition wellStrat (delta : strat)
+                        (addrs : list Address)
+                        (contract : Contract Setup Msg State Error)
+                        (caddr : Address)
+                        (s0 : ChainState)
                        : Prop :=
     forall (s: ChainState) (tr_s : trace(s0, s)) ,
       let delta_actions := (delta s0 s tr_s addrs) in
@@ -1209,8 +892,9 @@ Section envExec.
                   (delta : strat)
                   (addrs : list Address)
                   (contract : Contract Setup Msg State Error)
+                  (caddr : Address)
                   (s0 : ChainState) :=
-    wellStrat delta addrs contract s0  /\ 
+    wellStrat delta addrs contract caddr s0  /\ 
     (forall s s' tr a,
       transition s a = Ok s' ->
       (* 包含了等待动作，主动选择 *)
@@ -1233,7 +917,6 @@ Section envExec.
     exists  (a : Action)
             (Hact : is_call_act a = true)
             (Htrans : transition s a = Ok s'),
-      (* 只包含了act——call *)
       In a (delta s0 s tr addrs) /\
       tr' = snoc tr (step_trans a Hact Htrans).
 
@@ -1252,9 +935,6 @@ Section envExec.
           multiStratDrive delta addrs s0 s tr s' tr' count -> 
           stratDrive s0 delta addrs s' tr' s'' tr''-> 
           multiStratDrive delta addrs s0 s tr s'' tr'' (count + 1).
-
-  Definition passive_delta (delta : strat) (addrs : list Address) (s0 s : ChainState) (tr : trace(s0,s)):=
-    delta s0 s tr addrs  = [wait_action_vo].
 
   Definition maxMultiStratDrive (delta : strat) 
                                 (addrs : list Address)
@@ -1367,8 +1047,8 @@ Section envExec.
           (caddr : Address)
           (c : Contract Setup Msg State Error)
           (s0 : ChainState) :=
-    wellStrat delta_usr addrs_usr c s0  /\
-    wellStrat delta_env addrs_env c s0 /\
+    wellStrat delta_usr addrs_usr c caddr s0  /\
+    wellStrat delta_env addrs_env c caddr s0 /\
     strat_finite delta_env addrs_env maxMultiStratDriveSteps /\
     is_init_state c caddr s0.
 
@@ -1386,6 +1066,8 @@ Section envExec.
       isReachableUnderInterleavedExecution delta_usr delta_env addrs_usr addrs_env s0 tr s' tr' ->
       (exists s'' tr'',
         UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr  s0 s' tr' s'' tr'').
+
+End strat_model.
   
   Ltac decompose_exists :=
     repeat match goal with
@@ -1393,78 +1075,74 @@ Section envExec.
                 let x := fresh "x" in
                 destruct H as [x H]
             end.
-    Ltac decompose_wellDefinedSystem H :=
-      match type of H with
-      | wellDefinedSystem ?delta_usr ?addrs_usr ?delta_env ?addrs_env ?caddr ?c ?s0 =>
-          unfold wellDefinedSystem in H;
-          let H_usr_strat := fresh "H_usr_strat" in
-          let H_env_strat := fresh "H_env_strat" in
-          let H_finite := fresh "H_finite" in
-          let H_init := fresh "H_init" in
-          destruct H as [H_usr_strat [H_env_strat [H_finite H_init]]]
-      | _ => fail "The hypothesis" H "is not of the form wellDefinedSystem."
-      end.
 
-  
-    Ltac decompose_wellStrat H :=
-      unfold wellStrat in H;
-      let Hs0 := fresh "Hs0" in
-      let Hs := fresh "Hs" in
-      let Htr_s := fresh "Htr_s" in
-      intros Hs0 Hs Htr_s;
-      match type of H with
-      | context[let delta_actions := ?delta _ _ _ _ in _] =>
-          let Hda := fresh "Hda" in
-          set (delta_actions := delta _ _ _ _) in H;
-          unfold delta_actions in H
-      | _ => idtac
-      end;
-      match type of H with
-      | _ -> Forall _ _ =>
-          let Hq := fresh "Hq" in
-          intros Hq; specialize (H Hq)
-      | Forall _ ?l =>
-          let Ha := fresh "Ha" in
-          apply Forall_forall in H; intros Ha
-      | _ => idtac
-      end.
+  Ltac decompose_wellDefinedSystem H :=
+    match type of H with
+    | wellDefinedSystem ?delta_usr ?addrs_usr ?delta_env ?addrs_env ?caddr ?c ?s0 =>
+        unfold wellDefinedSystem in H;
+        let H_usr_strat := fresh "H_usr_strat" in
+        let H_env_strat := fresh "H_env_strat" in
+        let H_finite := fresh "H_finite" in
+        let H_init := fresh "H_init" in
+        destruct H as [H_usr_strat [H_env_strat [H_finite H_init]]]
+    | _ => fail "The hypothesis" H "is not of the form wellDefinedSystem."
+    end.
+
+  Ltac decompose_wellStrat H :=
+    unfold wellStrat in H;
+    let Hs0 := fresh "Hs0" in
+    let Hs := fresh "Hs" in
+    let Htr_s := fresh "Htr_s" in
+    intros Hs0 Hs Htr_s;
+    match type of H with
+    | context[let delta_actions := ?delta _ _ _ _ in _] =>
+        let Hda := fresh "Hda" in
+        set (delta_actions := delta _ _ _ _) in H;
+        unfold delta_actions in H
+    | _ => idtac
+    end;
+    match type of H with
+    | _ -> Forall _ _ =>
+        let Hq := fresh "Hq" in
+        intros Hq; specialize (H Hq)
+    | Forall _ ?l =>
+        let Ha := fresh "Ha" in
+        apply Forall_forall in H; intros Ha
+    | _ => idtac
+    end.
 
   Ltac decompose_transition_reachable H :=
     unfold transition_reachable in H;
     destruct H as [init_bstate [trace]].
   
+  Ltac decompose_reachable_via H :=
+    match type of H with
+    | reachable_via ?contract ?caddr ?s0 ?mid ?to =>
+        unfold reachable_via in H;
+        let H_reachable := fresh "H_reachable" in
+        let tr := fresh "tr" in
+        destruct H as [H_reachable H_trace];
+        destruct H_trace as [tr] (* 只引入轨迹变量 tr，避免未使用的附加绑定 *)
+    | _ => fail "The hypothesis" H "is not of the form reachable_via contract caddr s0 mid to."
+    end.
 
-
-    Ltac decompose_reachable_via H :=
-      match type of H with
-      | reachable_via ?contract ?caddr ?s0 ?mid ?to =>
-          unfold reachable_via in H;
-          let H_reachable := fresh "H_reachable" in
-          let tr := fresh "tr" in
-          destruct H as [H_reachable H_trace];
-          destruct H_trace as [tr] (* 只引入轨迹变量 tr，避免未使用的附加绑定 *)
-      | _ => fail "The hypothesis" H "is not of the form reachable_via contract caddr s0 mid to."
-      end.
-
-    Ltac decompose_is_init_state H :=
-      match type of H with
-      | is_init_state ?contract ?caddr ?init_state =>
-          unfold is_init_state in H;
-          let H_reachable := fresh "H_reachable" in
-          let H_queue := fresh "H_queue" in
-          let H_env_contracts := fresh "H_env_contracts" in
-          let H_env_details := fresh "H_env_details" in
-          destruct H as [H_reachable [H_queue [H_env_contracts H_env_details]]];
-          let ctx := fresh "ctx" in
-          let setup := fresh "setup" in
-          let state := fresh "state" in
-          let H_env_states := fresh "H_env_states" in
-          let H_init := fresh "H_init" in
-          destruct H_env_details as [ctx [setup [state [H_env_states H_init]]]]
-      | _ => fail "The hypothesis" H "is not of the form is_init_state contract caddr init_state."
-      end.
-
-
+  Ltac decompose_is_init_state H :=
+    match type of H with
+    | is_init_state ?contract ?caddr ?init_state =>
+        unfold is_init_state in H;
+        let H_reachable := fresh "H_reachable" in
+        let H_queue := fresh "H_queue" in
+        let H_env_contracts := fresh "H_env_contracts" in
+        let H_env_details := fresh "H_env_details" in
+        destruct H as [H_reachable [H_queue [H_env_contracts H_env_details]]];
+        let ctx := fresh "ctx" in
+        let setup := fresh "setup" in
+        let state := fresh "state" in
+        let H_env_states := fresh "H_env_states" in
+        let H_init := fresh "H_init" in
+        destruct H_env_details as [ctx [setup [state [H_env_states H_init]]]]
+    | _ => fail "The hypothesis" H "is not of the form is_init_state contract caddr init_state."
+    end.
 
   Ltac decompose_stratDrive H :=
     match type of H with
@@ -1476,27 +1154,34 @@ Section envExec.
     | _ => fail "The hypothesis" H "is not of the form stratDrive s0 delta addrs s tr s' tr'."
     end.
 
-
-
   Ltac decompose_transition H :=
     unfold transition in H;
     repeat match type of H with
-    | context[if ?cond then _ else _] =>
-        let Hcond := fresh "Hcond" in
-        destruct cond eqn:Hcond; try congruence
-    | context[match get_wait_time ?act with | Ok _ => _ | Err _ => _ end] =>
-        let Hres := fresh "Hres" in
-        destruct (get_wait_time act) eqn:Hres; try congruence
+    | context[if queue_isb_empty ?state then _ else _] =>
+        let Hqueue := fresh "Hqueue" in
+        destruct (queue_isb_empty state) eqn:Hqueue; try congruence
+    | context[if is_call_act ?act then _ else _] =>
+        let Hcall := fresh "Hcall" in
+        destruct (is_call_act act) eqn:Hcall; try congruence
+    | context[let header := get_valid_header ?state in _] =>
+        let Hheader := fresh "Hheader" in
+        remember (get_valid_header state) as header eqn:Hheader
     | context[match add_block_exec ?mode ?state ?header ?acts with | Ok _ => _ | Err _ => _ end] =>
         let Hexec := fresh "Hexec" in
         destruct (add_block_exec mode state header acts) eqn:Hexec; try congruence
+    | context[match ?res with | Ok _ => _ | Err _ => _ end] =>
+        let Hres := fresh "Hres" in
+        destruct res eqn:Hres; try congruence
     end;
     repeat match type of H with
     | Ok _ = Ok _ => inversion H; subst; clear H
     | Err _ = Err _ => inversion H; subst; clear H
     end.
 
-    Section Monotonicity.
+    Notation "trace( from , to )" := (TransitionTrace from to)(at level 10).
+
+
+  Section Monotonicity.
 
     Definition addrs_subset (addrs1: list Address) (addrs2 : list Address) :=
       incl addrs1 addrs2.
@@ -1512,7 +1197,6 @@ Section envExec.
           acts_subset_strict
           (delta1 s0 s tr addrs1)
           (delta2 s0 s tr addrs2).
-  
   
     Lemma in_empty_false : forall (A : Type) (x : A), ~ In x [].
     Proof.
@@ -1604,19 +1288,14 @@ Section envExec.
           eapply MS_Step;eauto.
       Qed.
   
-  
-  
-  
       (* 少的能到，多的也能到 *)
       Lemma interleavedExecution_mono_incl_usr_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
-        forall s0 s' c flag tr tr',
-          wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
-          wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
+        forall s0 s' flag tr tr',
           strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 s0 ->
           interleavedExecution delta_usr addrs_usr delta_env1 addrs_env1 s0 s0 tr flag s' tr' ->
           interleavedExecution delta_usr addrs_usr delta_env2 addrs_env2 s0 s0 tr flag s' tr'.
       Proof.
-        intros * Hwell_sys1 Hwell_sys2 Hsbt_delta Hrc_itv.
+        intros * Hsbt_delta Hrc_itv.
         induction Hrc_itv;eauto;try intuition.
         - eapply IS_Refl.
         - eapply ISE_Step;eauto.
@@ -1632,7 +1311,7 @@ Section envExec.
       Qed.
   
       Lemma userLiquidatesNSteps_incl_usr_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
-        forall s0 s s' c tr tr',
+        forall s0 s s' c caddr tr tr',
           wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
           wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
           strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 s0->
@@ -1670,7 +1349,7 @@ Section envExec.
         (delta_usr : strat) (addrs_usr: list Address)
         (delta_env1 : strat) (addrs_env1: list Address) 
         (delta_env2 : strat) (addrs_env2: list Address) :
-        forall s0 s s' c tr tr',
+        forall s0 s s' c caddr tr tr',
           wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
           wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
           is_empty_strat delta_env1 addrs_env1 ->
@@ -1704,8 +1383,8 @@ Section envExec.
         - eapply ULM_Step;eauto.
       Qed.
   
-      Lemma usr_liquid_Mono_env_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
-        forall s0 c, 
+      Lemma strat_liquid_Mono_usr_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
+        forall s0 c caddr, 
           wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
           wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
           strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 s0 -> 
@@ -1731,7 +1410,7 @@ Section envExec.
           (delta_usr : strat) (addrs_usr: list Address)  
           (delta_env1 : strat) (addrs_env1: list Address) 
           (delta_env2 : strat) (addrs_env2: list Address) :
-        forall s0 c, 
+        forall s0 c caddr, 
           wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
           wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
           is_empty_strat delta_env1 addrs_env1 ->
@@ -1757,7 +1436,7 @@ Section envExec.
   End Monotonicity.
     
 
-  Lemma transition_reachable_init_state c s0 :
+  Lemma transition_reachable_init_state c s0 caddr:
     is_init_state c caddr s0 ->
     transition_reachable c caddr s0 s0.
   Proof.
@@ -1770,7 +1449,7 @@ Section envExec.
   Qed.
 
 
-  Lemma transition_reachable_trans c s0 s s' :
+  Lemma transition_reachable_trans c s0 s s' caddr:
     transition_reachable c caddr s0 s -> 
     TransitionTrace s s' -> 
     transition_reachable c caddr s0 s'.
@@ -1785,7 +1464,7 @@ Section envExec.
   Qed.
 
   (* Transitivity property of reachable and ChainStep *)
-  Lemma transition_reachable_step s0 c from to :
+  Lemma transition_reachable_step s0 c from to caddr:
     transition_reachable c caddr s0 from -> 
     TransitionStep from to -> 
     transition_reachable c caddr s0 to.
@@ -1863,26 +1542,8 @@ Section envExec.
     eapply ChainedList.clist_app ; eauto.
   Qed.
   
-  Lemma is_wait_act_vo_true_vo:
-    forall a,
-      is_wait_act_vo a = true ->
-      a = wait_action_vo.
-  Proof.
-    intros.
-    unfold is_wait_act_vo in H3.
-    destruct a eqn : H_a;try congruence.
-    destruct (act_body);try congruence.
-    unfold wait_action_vo.
-    unfold wait_action.
-    destruct_address_eq;eauto;try congruence;simpl in *;try lia.
-    propify.
-    destruct_and_split.
-    subst.
-    simpl.
-    eauto.
-  Qed.
 
-  Lemma transition_trans_through c :
+  Lemma transition_trans_through c caddr:
   forall (s0 s s' : ChainState) a,
     transition_reachable c caddr s0 s ->
     transition s a = Ok s' ->
@@ -1912,11 +1573,11 @@ Section envExec.
 
 
   Lemma init_ready : 
-  forall s0 c,
+  forall s0 c caddr,
     is_init_state c caddr s0 ->
     readyToStepState c caddr s0 s0 .
   Proof.
-    intros s0 c H_init.
+    intros s0 c caddr H_init.
     unfold readyToStepState.
     assert (H_temp:is_init_state c caddr s0) by eauto.
     decompose_is_init_state H_temp.
@@ -1940,12 +1601,13 @@ Section envExec.
 
   Hint Unfold maxMultiStratDrive : core.
 
+  Local Open Scope nat.
 
   Lemma delta_all_is_wellStrat:
-    forall delta addrs contract s0 ,
+    forall delta addrs contract caddr s0 ,
       is_init_state contract caddr s0 ->
-      is_complete_strategy delta addrs contract s0 ->
-      wellStrat delta addrs contract s0.
+      is_complete_strategy delta addrs contract caddr s0 ->
+      wellStrat delta addrs contract caddr s0.
     Proof.
       intros * H_init H_complete_strategy.
       edestruct H_complete_strategy;eauto.
@@ -1954,40 +1616,13 @@ Section envExec.
     Lemma multiStratDrive_n_zero_s_eq:
       forall s0 s s' tr tr' n delta addrs,
         multiStratDrive delta addrs s0 s tr s' tr' n -> 
-        n = 0 ->
+        (n = 0)%nat ->
         s = s' /\ existT s tr = existT s' tr'.
     Proof.
       intros s0 s s' tr tr' n delta addrs H_multi H_n.
       induction H_multi;eauto;try lia.
     Qed.
 
-
-
-  Lemma call_act_not_wait_act : 
-    forall act,
-      is_call_act act = true ->
-      is_wait_act act = false.
-  Proof.
-    intros.
-    intros.
-    unfold is_call_act in *.
-    unfold is_wait_act in *.
-    destruct act.
-    destruct act_body;try congruence.
-  Qed.
-
-  Lemma wait_act_not_call_act : 
-    forall act,
-      is_wait_act act = true ->
-      is_call_act act = false.
-  Proof.
-    intros.
-    intros.
-    unfold is_call_act in *.
-    unfold is_wait_act in *.
-    destruct act.
-    destruct act_body;try congruence.
-  Qed.
 
   Lemma get_valid_header_is_valid_header s:
     validate_header( get_valid_header s )  s = true.
@@ -2006,37 +1641,10 @@ Section envExec.
     lia. 
   Qed.
 
-  Lemma get_valid_header_forward_time_is_valid_header s n:
-  n >= 1 ->
-  validate_header( get_valid_header_forward_time s n)  s = true.
-  Proof.
-    intros.
-    unfold get_valid_header_forward_time.
-    unfold validate_header.
-    propify.
-    repeat split;cbn ;try lia;eauto.
-    unfold address_not_contract.
-    rewrite miner_always_eoa.
-    simpl.
-    lia.
-    unfold miner_reward.
-    lia. 
-  Qed.
 
-  Lemma wait_action_vo_is_wait_act :
-    is_wait_act wait_action_vo = true.
-  Proof.
-    intros.
-    unfold is_wait_act.
-    unfold wait_action_vo.
-    unfold wait_action.
-    destruct_address_eq;eauto.
-  Qed.
-
-
-  Lemma delta_empty_is_wellStrat delta addrs contract s0 :
+  Lemma delta_empty_is_wellStrat delta addrs contract caddr s0 :
     is_empty_strat delta addrs -> 
-    wellStrat delta addrs contract s0.
+    wellStrat delta addrs contract caddr s0.
     Proof.
       unfold wellStrat, is_empty_strat.
       intros.
@@ -2055,20 +1663,6 @@ Section envExec.
       inversion H4.
     Qed.
 
-    Lemma wait_action_vo_in_list_no_call :
-    forall x,
-      In x [wait_action_vo] ->
-      is_call_act x = false.
-    Proof.
-      intros.
-      inversion H3.
-      unfold is_call_act.
-      rewrite <- H4.
-      unfold wait_action_vo.
-      unfold wait_action.
-      eauto.
-      inversion H4.
-    Qed.
 
     Lemma multiSuccTrace_delta_empty_refl_multr :
       forall (s0 s : ChainState) (tr : trace(s0,s)) (s' : ChainState) (tr' : trace(s0 ,s')) delta addrs n,
@@ -2140,7 +1734,6 @@ Section envExec.
       inversion H5.
       rewrite H8 in H5.
       inversion H5.
-
     Qed.
 
 
@@ -2170,15 +1763,15 @@ Section envExec.
         
 
     Lemma transition_reachable_can_Inter_usr_all:
-      forall s0 s (tr:trace(s0,s0))  c delta_usr delta_env addrs_usr addrs_env,
-        is_complete_strategy delta_usr addrs_usr c s0->
+      forall s0 s (tr:trace(s0,s0)) c caddr delta_usr delta_env addrs_usr addrs_env,
+        is_complete_strategy delta_usr addrs_usr c caddr s0->
         is_empty_strat delta_env addrs_env ->
         is_init_state c caddr s0  ->
         transition_reachable c caddr s0 s ->
         exists (trace:trace(s0,s)),
           interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s0 tr Tusr s trace.
     Proof.
-      intros s0 s tr c delta_usr delta_env addrs_usr addrs_env
+      intros s0 s tr c caddr delta_usr delta_env addrs_usr addrs_env
       H_complete_strategy H_empty_delta H_init_state H_transition_reachable.
       assert(H_temp: transition_reachable c caddr s0 s) by eauto.
       decompose_transition_reachable H_temp.
@@ -2223,22 +1816,22 @@ Section envExec.
 
 
     Lemma stratDrive_reachable_via :
-      forall (s0 s s' : ChainState) tr_s delta addrs c tr_s' ,
+      forall (s0 s s' : ChainState) tr_s delta addrs c caddr tr_s' ,
         transition_reachable c caddr s0 s ->
         stratDrive s0 delta addrs s tr_s s' tr_s' ->
         reachable_via c caddr s0 s s'.
     Proof.
-      intros s0 s s' tr_s delta addrs c tr_s' H_transition_reachable H_stratDrive.
+      intros s0 s s' tr_s delta addrs c caddr tr_s' H_transition_reachable H_stratDrive.
       unfold stratDrive in H_stratDrive.
       destruct_and_split.
       eapply transition_trans_through;eauto.
     Qed.
 
   Lemma UserLiquidatesNSteps_can_reachable_via :
-    forall delta_usr delta_env addrs_usr addrs_env c s0 s s' tr_s tr_s' ,
+    forall delta_usr delta_env addrs_usr addrs_env c caddr s0 s s' tr_s tr_s' ,
       is_init_state c caddr s0 ->
-      wellStrat delta_usr addrs_usr c s0 ->
-      wellStrat delta_env addrs_env c s0->
+      wellStrat delta_usr addrs_usr c caddr s0 ->
+      wellStrat delta_env addrs_env c caddr s0->
       UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr s0 s  tr_s s' tr_s' ->
       reachable_via c caddr s0 s s'.
   Proof.
@@ -2267,10 +1860,10 @@ Section envExec.
     Qed.
 
   Lemma UserLiquidatesNSteps_can_liquid :
-    forall delta_usr delta_env addrs_usr addrs_env  c s0 s s' tr_s tr_s' ,
+    forall delta_usr delta_env addrs_usr addrs_env c caddr s0 s s' tr_s tr_s' ,
       is_init_state c caddr s0 ->
-      wellStrat delta_usr addrs_usr c s0->
-      wellStrat delta_env addrs_env c s0->
+      wellStrat delta_usr addrs_usr c caddr s0->
+      wellStrat delta_env addrs_env c caddr s0->
       UserLiquidatesNSteps delta_usr addrs_usr delta_env  addrs_env  caddr s0 s tr_s  s' tr_s' ->
       funds s' caddr = 0%Z.
   Proof.
@@ -2291,7 +1884,7 @@ Section envExec.
 
 
   Lemma transition_reachable_stratDrive_transition_reachable_through:
-    forall s0 s tr_s  delta s' c tr' addrs,
+    forall s0 s tr_s  delta s' c  caddr tr' addrs,
       transition_reachable c caddr s0 s ->
       stratDrive s0 delta addrs s tr_s s' tr' ->
       reachable_via c caddr s0 s s'.
@@ -2402,7 +1995,7 @@ Section envExec.
   Qed.
 
   Lemma tthrough_to_reachable_through:
-    forall (s0 s s' : ChainState) c,
+    forall (s0 s s' : ChainState) c caddr,
       is_init_state c caddr s0 ->
       reachable_via c caddr s0 s s' ->
       reachable_through s s'.
@@ -2426,7 +2019,7 @@ Section envExec.
   Qed.
 
   Lemma readyToStepState_stratDrive_readyToStepState :
-    forall (s0 s s' : ChainState) (tr_s : trace(s0,s)) contract delta tr_s' addrs,
+    forall (s0 s s' : ChainState) (tr_s : trace(s0,s)) contract caddr delta tr_s' addrs,
       readyToStepState  contract caddr s0 s  ->
       stratDrive s0 delta addrs  s  tr_s s' tr_s' ->
       readyToStepState contract caddr s0 s'.
@@ -2465,7 +2058,7 @@ Section envExec.
 
 
     Lemma readyToStepState_multiStratDrive_readyToStepState:
-      forall (s0 s s' : ChainState) (tr : trace(s0,s)) (delta : strat) addrs contract tr' n,
+      forall (s0 s s' : ChainState) (tr : trace(s0,s)) (delta : strat) addrs contract caddr tr' n,
         readyToStepState contract caddr s0 s  ->
         multiStratDrive delta addrs s0 s tr s' tr' n ->
         readyToStepState contract caddr s0 s'  .
@@ -2476,12 +2069,12 @@ Section envExec.
     Qed.
 
     Lemma readyToStepState_interleavedExecution_readyToStepState:
-      forall (delta_usr delta_env : strat) (addrs_usr addrs_env : list Address) (s0 s : ChainState) (tr : TransitionTrace s0 s) (s' : ChainState) (tr' : TransitionTrace s0 s') contract flag,
+      forall (delta_usr delta_env : strat) (addrs_usr addrs_env : list Address) (s0 s : ChainState) (tr : TransitionTrace s0 s) (s' : ChainState) (tr' : TransitionTrace s0 s') contract caddr flag,
         readyToStepState contract caddr s0 s ->
         interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s tr flag s' tr' ->
         readyToStepState contract caddr s0 s'.
     Proof.
-      intros delta_usr delta_env addrs_usr addrs_env s0 s tr s' tr' contract flag H_readyToStepState H_interaction .
+      intros delta_usr delta_env addrs_usr addrs_env s0 s tr s' tr' contract caddr flag H_readyToStepState H_interaction .
       induction H_interaction;eauto.
       (* - eapply readyToStepState_timeDrive_readyToStepState in H3;eauto. *)
       - eapply readyToStepState_multiStratDrive_readyToStepState in H3;eauto.
@@ -2513,7 +2106,7 @@ Section envExec.
 
 
     Lemma readyToStepState_multiStratDrive_reachable_via:
-    forall (s0 s s' : ChainState) (delta : strat) addrs c  tr tr' n,
+    forall (s0 s s' : ChainState) (delta : strat) addrs c caddr tr tr' n,
       readyToStepState c caddr s0 s   ->
       multiStratDrive delta addrs s0 s tr s' tr' n ->
       reachable_via c caddr s0 s s'.
@@ -2547,7 +2140,7 @@ Section envExec.
     Qed.
 
     Lemma transition_reachable_readyToStepState: 
-    forall s0 s c ,
+    forall s0 s c caddr,
       is_init_state c caddr s0 ->
       transition_reachable c caddr s0 s ->
       readyToStepState c caddr s0 s .
@@ -2574,7 +2167,7 @@ Section envExec.
     Qed.
 
     Lemma reachable_via_multiStratDrive_reachable_via:
-    forall (s0 s s' s'' : ChainState) (delta : strat) addrs c tr' tr'' n,
+    forall (s0 s s' s'' : ChainState) (delta : strat) addrs c caddr tr' tr'' n,
       reachable_via c caddr s0 s s'  ->
       multiStratDrive delta addrs s0 s' tr' s'' tr'' n ->
       reachable_via c caddr s0 s s''.
@@ -2600,7 +2193,7 @@ Section envExec.
 
 
     Lemma reachable_via_stratDrive_reachable_via :
-      forall s0 s s' s'' tr' tr'' delta addrs c,
+      forall s0 s s' s'' tr' tr'' delta addrs c caddr,
         reachable_via c caddr s0 s s' ->
         stratDrive s0 delta addrs s'  tr' s''  tr'' ->
         reachable_via c caddr s0 s s''.
@@ -2627,10 +2220,10 @@ Section envExec.
 
 
     Lemma BL_implies_SL_with_empty_env_and_complete_user:
-      forall delta_usr delta_env addrs_usr addrs_env c s0,
+      forall delta_usr delta_env addrs_usr addrs_env c caddr s0,
         is_init_state c caddr s0 ->
         is_empty_strat delta_env addrs_env->
-        is_complete_strategy delta_usr addrs_usr c s0->
+        is_complete_strategy delta_usr addrs_usr c caddr s0->
         strat_liquidity delta_usr addrs_usr delta_env addrs_env caddr c s0 ->
         base_liquidity c caddr s0.
     Proof.
@@ -2644,7 +2237,7 @@ Section envExec.
       unfold readyToStepState in H4.
       destruct H4 as [Htr_reachable Hqueue].
       assert(H':transition_reachable c caddr s0 s) by eauto.
-      eapply (transition_reachable_can_Inter_usr_all s0 s X c delta_usr delta_env)in H';eauto.
+      eapply (transition_reachable_can_Inter_usr_all s0 s X c caddr delta_usr delta_env)in H';eauto.
       destruct H'.
       unfold strat_liquidity in H_liquidity.
       assert(Hwell : wellDefinedSystem delta_usr addrs_usr delta_env addrs_env caddr c s0).
@@ -2680,8 +2273,8 @@ Section envExec.
       eapply delta_empty_is_wellStrat;eauto.
     Qed.
 
-    Lemma activest_interactionSuccession_reachable_via delta_usr addrs_usr delta_env addrs_env c:
-    forall s0 s  s' tr tr' flag,
+    Lemma activest_interactionSuccession_reachable_via delta_usr addrs_usr delta_env addrs_env c caddr:
+    forall s0 s s' tr tr' flag,
       readyToStepState c caddr s0 s  ->
       interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s tr flag s' tr' ->
       reachable_via c caddr s0 s s'.
@@ -2743,9 +2336,9 @@ Qed.
 
 
   Lemma SL_implies_BL_with_empty_env_and_complete_user:
-    forall delta_usr delta_env addrs_usr addrs_env c s0,
+    forall delta_usr delta_env addrs_usr addrs_env c caddr s0,
       is_empty_strat delta_env addrs_env ->
-      is_complete_strategy delta_usr addrs_usr c s0 ->
+      is_complete_strategy delta_usr addrs_usr c caddr s0 ->
       base_liquidity c caddr s0 ->
       strat_liquidity delta_usr addrs_usr delta_env addrs_env caddr c s0.
   Proof.
@@ -2957,10 +2550,10 @@ Qed.
   Qed.
      
   Lemma SL_equiv_BL_with_empty_env_and_complete_user:
-    forall delta_usr delta_env addrs_usr addrs_env c s0,
+    forall delta_usr delta_env addrs_usr addrs_env c caddr s0,
       is_init_state c caddr s0 ->
       is_empty_strat delta_env addrs_env ->
-      is_complete_strategy delta_usr addrs_usr c s0 ->
+      is_complete_strategy delta_usr addrs_usr c caddr s0 ->
       base_liquidity c caddr s0 <->
       strat_liquidity delta_usr addrs_usr delta_env addrs_env caddr c s0.
   Proof.
@@ -3116,7 +2709,7 @@ Section normal.
 
 
   Lemma readyToStepState_transition_readyToStepState:
-  forall (s0 s s' : ChainState) a c,
+  forall (s0 s s' : ChainState) a c caddr,
     readyToStepState c caddr s0 s  ->
     transition s a = Ok s' ->
     readyToStepState c caddr s0 s'  .
@@ -3133,7 +2726,7 @@ Section normal.
       (* eapply is_wait_act_vo_true_a in Hcond0.
       subst.
       eapply (step_time H4). *)
-      eapply (step_trans a Hcond0 H4).
+      eapply (step_trans a Hcall H4).
     }
     econstructor;eauto.
     assert(trace(s0,s')).
@@ -3150,7 +2743,7 @@ Section normal.
   Qed.
 
   Lemma readyToStepState_ttrace_readyToStepState:
-  forall (s0 s s' : ChainState) (tr_s : trace(s0,s)) contract,
+  forall (s0 s s' : ChainState) (tr_s : trace(s0,s)) contract caddr,
     is_init_state contract caddr s0 ->
     readyToStepState contract caddr s0 s.
   Proof.
@@ -3202,6 +2795,8 @@ Section normal.
 
 
 End normal.
+
+
 End Strat.
 
 
@@ -3211,22 +2806,28 @@ Global Ltac decompose_transition_reachable H :=
 
 
 Global Ltac decompose_transition H :=
-    unfold transition in H;
-    repeat match type of H with
-    | context[if ?cond then _ else _] =>
-        let Hcond := fresh "Hcond" in
-        destruct cond eqn:Hcond; try congruence
-    | context[match get_wait_time ?act with | Ok _ => _ | Err _ => _ end] =>
-        let Hres := fresh "Hres" in
-        destruct (get_wait_time act) eqn:Hres; try congruence
-    | context[match add_block_exec ?mode ?state ?header ?acts with | Ok _ => _ | Err _ => _ end] =>
-        let Hexec := fresh "Hexec" in
-        destruct (add_block_exec mode state header acts) eqn:Hexec; try congruence
-    end;
-    repeat match type of H with
-    | Ok _ = Ok _ => inversion H; subst; clear H
-    | Err _ = Err _ => inversion H; subst; clear H
-    end.
+  unfold transition in H;
+  repeat match type of H with
+  | context[if queue_isb_empty ?state then _ else _] =>
+      let Hqueue := fresh "Hqueue" in
+      destruct (queue_isb_empty state) eqn:Hqueue; try congruence
+  | context[if is_call_act ?act then _ else _] =>
+      let Hcall := fresh "Hcall" in
+      destruct (is_call_act act) eqn:Hcall; try congruence
+  | context[let header := get_valid_header ?state in _] =>
+      let Hheader := fresh "Hheader" in
+      remember (get_valid_header state) as header eqn:Hheader
+  | context[match add_block_exec ?mode ?state ?header ?acts with | Ok _ => _ | Err _ => _ end] =>
+      let Hexec := fresh "Hexec" in
+      destruct (add_block_exec mode state header acts) eqn:Hexec; try congruence
+  | context[match ?res with | Ok _ => _ | Err _ => _ end] =>
+      let Hres := fresh "Hres" in
+      destruct res eqn:Hres; try congruence
+  end;
+  repeat match type of H with
+  | Ok _ = Ok _ => inversion H; subst; clear H
+  | Err _ = Err _ => inversion H; subst; clear H
+  end.
 
 Global Ltac decompose_reachable_via H :=
   match type of H with

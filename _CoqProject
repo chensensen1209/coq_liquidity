@@ -26,6 +26,7 @@ record-update/RecordUpdate.v
 
 -R examples Example
 examples/instrumentEscrow/InstrumentEscrow.v
+examples/honeypots/Honeypots.v
 
 
 
