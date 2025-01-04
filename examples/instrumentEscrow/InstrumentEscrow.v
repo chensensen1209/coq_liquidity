@@ -50,12 +50,11 @@ Section InstrumentEscrow.
   Record State := build_state {
     buyer         : Address;         (* 买家地址 *)
     seller        : Address;         (* 卖家地址 *)
-    depositAmount : Amount;          (* 押金金额（初始部署时传入） *)
     itemShipped   : bool;            (* 是否已发货 *)
     itemAccepted  : bool;            (* 是否买家验收通过 *)
     arbitrator    : Address;         (* 仲裁人地址（可选） *)
     currentPhase  : EscrowPhase;     (* 当前状态机阶段 *)
-    balance       : Amount           (* 合约里剩余的资金余额 *)
+    depositAmount       : Amount           (* 合约里剩余的资金余额 *)
   }.
 
   (** 若需要在合约初始化时接受一些 Setup 参数，可定义 [Setup]。
@@ -74,7 +73,7 @@ Section InstrumentEscrow.
   (* 仅演示结构，无实际序列化逻辑。实际可用框架提供的 Derive 语法。 *)
   Instance state_settable : Settable State :=
     settable! build_state
-      <buyer; seller; depositAmount; itemShipped; itemAccepted; arbitrator; currentPhase; balance>.
+      <buyer; seller; itemShipped; itemAccepted; arbitrator; currentPhase; depositAmount>.
 
   Instance setup_settable : Settable Setup :=
     settable! build_setup
@@ -153,12 +152,11 @@ Section InstrumentEscrow.
       let st := build_state
                   msg_sender            (* buyer = msg.seller *)
                   setup.(setup_seller)  (* seller = _seller *)
-                  msg_value             (* depositAmount = msg.value *)
                   false                 (* itemShipped = false *)
                   false                 (* itemAccepted = false *)
                   setup.(setup_arbitrator) (* arbitrator = _arbitrator *)
                   AWAITING_SHIPMENT   (* currentPhase = AWAITING_SHIPMENT *)
-                  msg_value             (* balance = msg.value *)
+                  msg_value             (* depositAmount = msg.value *)
       in Ok st
     else
      Err default_error.
@@ -214,10 +212,10 @@ Section InstrumentEscrow.
     then
       (** itemAccepted = true; currentPhase = COMPLETED;
           资金释放给卖家 -> [act_transfer st.(seller) st.(balance)] *)
-      let actions := [ act_transfer st.(seller) st.(balance) ] in
+      let actions := [ act_transfer st.(seller) st.(depositAmount) ] in
       let new_st := st <| itemAccepted := true |>
                        <| currentPhase := COMPLETED |>
-                       <| balance := 0 |>
+                       <| depositAmount := 0 |>
       in
       Ok (new_st, actions)
     else
@@ -253,9 +251,9 @@ Section InstrumentEscrow.
       (** if buyerWins then transfer to buyer; else transfer to seller. *)
       let to_addr :=
         if buyerWins then st.(buyer) else st.(seller) in
-      let actions := [ act_transfer to_addr st.(balance) ] in
+      let actions := [ act_transfer to_addr st.(depositAmount) ] in
       let new_st := st <| currentPhase := COMPLETED |>
-                       <| balance := 0 |> in
+                       <| depositAmount := 0 |> in
       Ok (new_st, actions)
     else
       Err default_error.
@@ -460,7 +458,7 @@ Lemma balance_on_chain' :
     env_contracts bstate caddr = Some (contract : WeakContract) ->
     exists cstate,
       contract_state bstate caddr = Some cstate /\
-      effective_balance = cstate.(balance).
+      effective_balance = cstate.(depositAmount).
 Proof.
   intros.
   unfold effective_balance.
@@ -524,7 +522,7 @@ Lemma balance_on_chain:
     outgoing_acts bstate caddr = [] ->
     exists cstate,
       contract_state bstate caddr = Some cstate /\
-      env_account_balances bstate caddr = cstate.(balance).
+      env_account_balances bstate caddr = cstate.(depositAmount).
 Proof.
   intros * reach deployed.
   specialize balance_on_chain' as (cstate & balance); eauto.
@@ -542,7 +540,7 @@ Lemma balance_on_chain_forall :
     env_contracts bstate caddr = Some (contract : WeakContract) ->
     outgoing_acts bstate caddr = [] ->
     contract_state bstate caddr = Some cstate ->
-    env_account_balances bstate caddr = cstate.(balance).
+    env_account_balances bstate caddr = cstate.(depositAmount).
 Proof.
   intros.
   eapply balance_on_chain in H;eauto.
@@ -558,7 +556,7 @@ Qed.
     env_contracts bstate caddr = Some (contract : WeakContract) ->
     exists cstate, 
       contract_state bstate caddr = Some cstate /\
-      (cstate.(currentPhase) = COMPLETED -> (cstate.(balance) = 0)%Z).
+      (cstate.(currentPhase) = COMPLETED -> (cstate.(depositAmount) = 0)%Z).
   Proof.
     contract_induction;intros;cbn in *;eauto;try congruence;try lia.
     - reduce_init_escrow.
@@ -598,7 +596,7 @@ Qed.
     env_contracts bstate caddr = Some (contract : WeakContract) ->
     contract_state bstate caddr = Some cstate ->
     cstate.(currentPhase) = COMPLETED -> 
-    (cstate.(balance) = 0)%Z.
+    (cstate.(depositAmount) = 0)%Z.
   Proof.
     intros.
     eapply COMPLETED_impl_bal in H;eauto.
@@ -1034,7 +1032,7 @@ Qed.
     {
       eapply transition_reachable_impl_reachable in Htrc_s;eauto.
     }
-    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    assert(Hbal:env_account_balances s caddr = cstate.(depositAmount)).
     {
       eapply balance_on_chain_forall;eauto.
       unfold outgoing_acts.
@@ -1210,7 +1208,7 @@ Qed.
     {
       eapply transition_reachable_impl_reachable in Htrc_s;eauto.
     }
-    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    assert(Hbal:env_account_balances s caddr = cstate.(depositAmount)).
     {
       eapply balance_on_chain_forall;eauto.
       unfold outgoing_acts.
@@ -1252,7 +1250,7 @@ Qed.
         simpl.
         destruct_address_eq;try congruence;cbn;eauto.
         unfold send_or_call.
-        assert(balance cstate <? 0 = false).
+        assert(depositAmount cstate <? 0 = false).
         {
           eapply (account_balance_nonnegative s caddr) in Hrc_s.
           propify.
@@ -1262,7 +1260,7 @@ Qed.
         simpl.
         destruct_address_eq;try congruence.
         (* 1 *)
-        assert(balance cstate >? 0 + (env_account_balances s caddr) = false)%Z.
+        assert(depositAmount cstate >? 0 + (env_account_balances s caddr) = false)%Z.
         {
           propify.
           lia.
@@ -1281,7 +1279,7 @@ Qed.
         simpl.
         eauto.
         (* 2 *)
-        assert(balance cstate >? 0 + (env_account_balances s caddr) = false)%Z.
+        assert(depositAmount cstate >? 0 + (env_account_balances s caddr) = false)%Z.
         {
           propify.
           lia.
@@ -1333,7 +1331,7 @@ Qed.
       simpl.
       destruct_address_eq;try congruence;cbn;eauto.
       unfold send_or_call.
-        assert(balance cstate <? 0 = false).
+        assert(depositAmount cstate <? 0 = false).
         {
           eapply (account_balance_nonnegative s caddr) in Hrc_s.
           propify.
@@ -1343,7 +1341,7 @@ Qed.
         simpl.
         destruct_address_eq;try congruence.
         (* 1 *)
-        assert(balance cstate >? 0 + (env_account_balances s caddr) = false)%Z.
+        assert(depositAmount cstate >? 0 + (env_account_balances s caddr) = false)%Z.
         {
           propify.
           lia.
@@ -1362,7 +1360,7 @@ Qed.
         simpl.
         eauto.
         (* 2 *)
-        assert(balance cstate >? 0 + (env_account_balances s caddr) = false)%Z.
+        assert(depositAmount cstate >? 0 + (env_account_balances s caddr) = false)%Z.
         {
           propify.
           lia.
@@ -1381,7 +1379,7 @@ Qed.
         simpl.
         eauto.
         (* 3 *)
-        assert(balance cstate >? 0 + (env_account_balances s caddr) = false)%Z.
+        assert(depositAmount cstate >? 0 + (env_account_balances s caddr) = false)%Z.
         {
           propify.
           lia.
@@ -1504,7 +1502,7 @@ Qed.
     {
       eapply transition_reachable_impl_reachable in Htrc_s;eauto.
     }
-    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    assert(Hbal:env_account_balances s caddr = cstate.(depositAmount)).
     {
       eapply balance_on_chain_forall;eauto.
       unfold outgoing_acts.
@@ -1668,7 +1666,7 @@ Qed.
     {
       eapply transition_reachable_impl_reachable in Htrc_s;eauto.
     }
-    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    assert(Hbal:env_account_balances s caddr = cstate.(depositAmount)).
     {
       eapply balance_on_chain_forall;eauto.
       unfold outgoing_acts.
@@ -1863,7 +1861,7 @@ Qed.
     {
       eapply transition_reachable_impl_reachable in Htrc_s;eauto.
     }
-    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    assert(Hbal:env_account_balances s caddr = cstate.(depositAmount)).
     {
       eapply balance_on_chain_forall;eauto.
       unfold outgoing_acts.
@@ -2027,7 +2025,7 @@ Qed.
     {
       eapply transition_reachable_impl_reachable in Htrc_s;eauto.
     }
-    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    assert(Hbal:env_account_balances s caddr = cstate.(depositAmount)).
     {
       eapply balance_on_chain_forall;eauto.
       unfold outgoing_acts.
@@ -2236,7 +2234,7 @@ Qed.
     {
       eapply transition_reachable_impl_reachable in Htrc_s;eauto.
     }
-    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    assert(Hbal:env_account_balances s caddr = cstate.(depositAmount)).
     {
       eapply balance_on_chain_forall;eauto.
       unfold outgoing_acts.
@@ -2277,7 +2275,7 @@ Qed.
         simpl.
         destruct_address_eq;try congruence;cbn;eauto.
         unfold send_or_call.
-        assert(balance cstate <? 0 = false).
+        assert(depositAmount cstate <? 0 = false).
         {
           eapply (account_balance_nonnegative s caddr) in Hrc_s.
           propify.
@@ -2288,7 +2286,7 @@ Qed.
         destruct buyerWins eqn : H_eq;destruct_address_eq;try congruence.
         destruct_address_eq;try congruence;eauto.
         (* 1 *)
-        assert(balance cstate >? 0 + (env_account_balances s caddr) = false)%Z.
+        assert(depositAmount cstate >? 0 + (env_account_balances s caddr) = false)%Z.
         {
           propify.
           lia.
@@ -2307,7 +2305,7 @@ Qed.
         simpl.
         eauto.
         (* 2 *)
-        assert(balance cstate >? 0 + (env_account_balances s caddr) = false)%Z.
+        assert(depositAmount cstate >? 0 + (env_account_balances s caddr) = false)%Z.
         {
           propify.
           lia.
@@ -2357,7 +2355,7 @@ Qed.
       simpl.
       destruct_address_eq;try congruence;cbn;eauto.
       unfold send_or_call.
-      assert(balance cstate <? 0 = false).
+      assert(depositAmount cstate <? 0 = false).
       {
         eapply (account_balance_nonnegative s caddr) in Hrc_s.
         propify.
@@ -2368,7 +2366,7 @@ Qed.
       destruct buyerWins eqn : H_eq;destruct_address_eq;try congruence.
       destruct_address_eq;try congruence;eauto.
       (* 1 *)
-      assert(balance cstate >? 0 + ( miner_reward  + env_account_balances s caddr) = false)%Z.
+      assert(depositAmount cstate >? 0 + ( miner_reward  + env_account_balances s caddr) = false)%Z.
       {
         propify.
         rewrite Hbal.
@@ -2389,7 +2387,7 @@ Qed.
       simpl.
       eauto.
       (* 2 *)
-      assert(balance cstate >? 0 + (miner_reward + env_account_balances s caddr) = false)%Z.
+      assert(depositAmount cstate >? 0 + (miner_reward + env_account_balances s caddr) = false)%Z.
       {
       propify.
       rewrite Hbal.
@@ -2441,7 +2439,7 @@ Qed.
     simpl.
     destruct_address_eq;try congruence;cbn;eauto.
     unfold send_or_call.
-    assert(balance cstate <? 0 = false).
+    assert(depositAmount cstate <? 0 = false).
     {
       eapply (account_balance_nonnegative s caddr) in Hrc_s.
       propify.
@@ -2452,7 +2450,7 @@ Qed.
     destruct buyerWins eqn : H_eq;destruct_address_eq;try congruence.
     destruct_address_eq;try congruence;eauto.
     (* 1 *)
-    assert(balance cstate >? 0 + (   env_account_balances s caddr) = false)%Z.
+    assert(depositAmount cstate >? 0 + (   env_account_balances s caddr) = false)%Z.
     {
       propify.
       rewrite Hbal.
@@ -2473,7 +2471,7 @@ Qed.
     simpl.
     eauto.
     (* 2 *)
-    assert(balance cstate >? 0 + ( env_account_balances s caddr) = false)%Z.
+    assert(depositAmount cstate >? 0 + ( env_account_balances s caddr) = false)%Z.
     {
     propify.
     rewrite Hbal.
@@ -2493,7 +2491,7 @@ Qed.
     rewrite H_buyer_eoa.
     simpl.
     eauto.
-    assert(balance cstate >? 0 + ( env_account_balances s caddr) = false)%Z.
+    assert(depositAmount cstate >? 0 + ( env_account_balances s caddr) = false)%Z.
     {
     propify.
     rewrite Hbal.
@@ -2513,7 +2511,7 @@ Qed.
     rewrite H_seller_eoa.
     simpl.
     eauto.
-    assert(balance cstate >? 0 + ( env_account_balances s caddr) = false)%Z.
+    assert(depositAmount cstate >? 0 + ( env_account_balances s caddr) = false)%Z.
     {
     propify.
     rewrite Hbal.
@@ -3028,7 +3026,7 @@ Qed.
       contract_state s' caddr = Some cstate' /\
       cstate'.(currentPhase) = COMPLETED /\
       cstate'.(itemAccepted) = true /\
-      cstate'.(balance) = 0.
+      cstate'.(depositAmount) = 0.
   Proof.
     intros * Hcs_s Hphase Hready Htrans.
     pose proof Hready.
@@ -3247,11 +3245,11 @@ Qed.
     inversion H_send_or_call_AcceptItem;subst.
     simpl in H_exec.
     destruct (  send_or_call (buyer cstate) caddr (seller prev_state_strong)
-    (balance prev_state_strong) None
+    (depositAmount prev_state_strong) None
     (set_contract_state caddr
        (serialize
           (prev_state_strong <| itemAccepted := true |> <| currentPhase :=
-           COMPLETED |> <| balance := 0 |>))
+           COMPLETED |> <| depositAmount := 0 |>))
        (transfer_balance (buyer cstate) caddr 0
           (add_new_block_to_env (get_valid_header (buyer cstate) s) s)))) eqn : H_send_or_call_None;try congruence.
     unfold send_or_call in H_send_or_call_None.
@@ -3262,7 +3260,7 @@ Qed.
       (set_contract_state caddr
          (serialize
             (prev_state_strong <| itemAccepted := true |> <|
-             currentPhase := COMPLETED |> <| balance := 0 |>))
+             currentPhase := COMPLETED |> <| depositAmount := 0 |>))
          (transfer_balance (buyer cstate) caddr 0
             (add_new_block_to_env
                (get_valid_header (buyer cstate) s) s)))
@@ -3271,7 +3269,7 @@ Qed.
     set (
         mid_env:=(set_contract_state caddr
           (serialize (prev_state_strong <| itemAccepted := true |> <|
-             currentPhase := COMPLETED |> <| balance := 0 |>))
+             currentPhase := COMPLETED |> <| depositAmount := 0 |>))
           (transfer_balance (buyer cstate) caddr 0
               (add_new_block_to_env (get_valid_header (buyer cstate) s) s)))) 
     in H_none_wc.
@@ -3285,7 +3283,7 @@ Qed.
             act_from := caddr;
             act_body :=
               act_transfer (seller prev_state_strong)
-                (balance prev_state_strong)
+                (depositAmount prev_state_strong)
           |}]
       |}
     ).
@@ -3336,15 +3334,15 @@ Qed.
           act_from := caddr;
           act_body :=
             act_transfer (seller prev_state_strong)
-              (balance prev_state_strong)
+              (depositAmount prev_state_strong)
         |}] )
         ;eauto.
         eapply (eval_call (buyer cstate) (buyer cstate) caddr 0 
           (contract:WeakContract) (Some (serialize AcceptItem))
           ( s1) (serialize (prev_state_strong <| itemAccepted := true |> <|
-                currentPhase := COMPLETED |> <| balance := 0
+                currentPhase := COMPLETED |> <| depositAmount := 0
                 |>)) 
-          [act_transfer (seller prev_state_strong) (balance prev_state_strong)]);eauto;intuition.
+          [act_transfer (seller prev_state_strong) (depositAmount prev_state_strong)]);eauto;intuition.
         eapply reachable_through_reachable in H3.
         eapply (account_balance_nonnegative mid_state (buyer cstate)) in H3.
         lia.
@@ -3467,11 +3465,11 @@ Qed.
     inversion H_send_or_call_AcceptItem;subst.
     simpl in H_exec.
     destruct (  send_or_call (buyer cstate) caddr (seller prev_state_strong)
-    (balance prev_state_strong) None
+    (depositAmount prev_state_strong) None
     (set_contract_state caddr
        (serialize
           (prev_state_strong <| itemAccepted := true |> <| currentPhase :=
-           COMPLETED |> <| balance := 0 |>))
+           COMPLETED |> <| depositAmount := 0 |>))
        (transfer_balance (buyer cstate) caddr 0
           (add_new_block_to_env (get_valid_header miner s) s)))) eqn : H_send_or_call_None;try congruence.
     unfold send_or_call in H_send_or_call_None.
@@ -3482,7 +3480,7 @@ Qed.
       (set_contract_state caddr
          (serialize
             (prev_state_strong <| itemAccepted := true |> <|
-             currentPhase := COMPLETED |> <| balance := 0 |>))
+             currentPhase := COMPLETED |> <| depositAmount := 0 |>))
          (transfer_balance (buyer cstate) caddr 0
             (add_new_block_to_env
                (get_valid_header miner s) s)))
@@ -3491,7 +3489,7 @@ Qed.
     set (
         mid_env:=(set_contract_state caddr
           (serialize (prev_state_strong <| itemAccepted := true |> <|
-             currentPhase := COMPLETED |> <| balance := 0 |>))
+             currentPhase := COMPLETED |> <| depositAmount := 0 |>))
           (transfer_balance (buyer cstate) caddr 0
               (add_new_block_to_env (get_valid_header miner s) s)))) 
     in H_none_wc.
@@ -3505,7 +3503,7 @@ Qed.
             act_from := caddr;
             act_body :=
               act_transfer (seller prev_state_strong)
-                (balance prev_state_strong)
+                (depositAmount prev_state_strong)
           |}]
       |}
     ).
@@ -3556,15 +3554,15 @@ Qed.
           act_from := caddr;
           act_body :=
             act_transfer (seller prev_state_strong)
-              (balance prev_state_strong)
+              (depositAmount prev_state_strong)
         |}] )
         ;eauto.
         eapply (eval_call (buyer cstate) (buyer cstate) caddr 0 
           (contract:WeakContract) (Some (serialize AcceptItem))
           ( s1) (serialize (prev_state_strong <| itemAccepted := true |> <|
-                currentPhase := COMPLETED |> <| balance := 0
+                currentPhase := COMPLETED |> <| depositAmount := 0
                 |>)) 
-          [act_transfer (seller prev_state_strong) (balance prev_state_strong)]);eauto;intuition.
+          [act_transfer (seller prev_state_strong) (depositAmount prev_state_strong)]);eauto;intuition.
         eapply reachable_through_reachable in H3.
         eapply (account_balance_nonnegative mid_state (buyer cstate)) in H3.
         lia.
@@ -4289,7 +4287,7 @@ Qed.
       exists cstate',
         contract_state s' caddr = Some cstate' /\
         cstate'.(currentPhase) = COMPLETED /\
-        cstate'.(balance) = 0.
+        cstate'.(depositAmount) = 0.
   Proof.
     intros * Hcs_s Hphase Hready Htrans.
     pose proof Hready.
@@ -4510,10 +4508,10 @@ Qed.
       inversion H_send_or_call_Arbitrate;subst.
       simpl in H_exec.
       destruct (  send_or_call (arbitrator cstate) caddr (buyer prev_state_strong)
-      (balance prev_state_strong) None
+      (depositAmount prev_state_strong) None
       (set_contract_state caddr
         (serialize
-            (prev_state_strong <| currentPhase := COMPLETED |> <| balance := 0
+            (prev_state_strong <| currentPhase := COMPLETED |> <| depositAmount := 0
             |>))
         (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env (get_valid_header (arbitrator cstate) s) s)))) eqn : H_send_or_call_None;try congruence.
@@ -4524,7 +4522,7 @@ Qed.
       (set_contract_state caddr
         (serialize
             (prev_state_strong <| currentPhase := COMPLETED |> <|
-            balance := 0 |>))
+            depositAmount := 0 |>))
         (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env
               (get_valid_header (arbitrator cstate) s) s)))
@@ -4534,7 +4532,7 @@ Qed.
           mid_env:=(set_contract_state caddr
           (serialize
             (prev_state_strong <| currentPhase := COMPLETED |> <|
-              balance := 0 |>))
+            depositAmount := 0 |>))
           (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env
                 (get_valid_header (arbitrator cstate) s) s)))) 
@@ -4549,7 +4547,7 @@ Qed.
               act_from := caddr;
               act_body :=
                 act_transfer (buyer  prev_state_strong)
-                  (balance prev_state_strong)
+                  (depositAmount prev_state_strong)
             |}]
         |}
       ).
@@ -4600,14 +4598,14 @@ Qed.
             act_from := caddr;
             act_body :=
               act_transfer (buyer   prev_state_strong)
-                (balance prev_state_strong)
+                (depositAmount prev_state_strong)
           |}] )
           ;eauto.
           eapply (eval_call (arbitrator cstate) (arbitrator cstate) caddr 0 
             (contract:WeakContract) (Some (serialize (Arbitrate true)))
             ( s1) (serialize (prev_state_strong <| currentPhase := COMPLETED
-            |> <| balance := 0 |>)) 
-            [act_transfer (buyer prev_state_strong) (balance prev_state_strong)]);eauto;intuition.
+            |> <| depositAmount := 0 |>)) 
+            [act_transfer (buyer prev_state_strong) (depositAmount prev_state_strong)]);eauto;intuition.
           eapply reachable_through_reachable in H3.
           eapply (account_balance_nonnegative mid_state (arbitrator  cstate)) in H3.
           lia.
@@ -4732,10 +4730,10 @@ Qed.
       inversion H_send_or_call_Arbitrate;subst.
       simpl in H_exec.
       destruct ( send_or_call (arbitrator cstate) caddr (buyer prev_state_strong)
-      (balance prev_state_strong) None
+      (depositAmount prev_state_strong) None
       (set_contract_state caddr
         (serialize
-            (prev_state_strong <| currentPhase := COMPLETED |> <| balance := 0
+            (prev_state_strong <| currentPhase := COMPLETED |> <| depositAmount := 0
             |>))
         (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env (get_valid_header miner s) s)))) eqn : H_send_or_call_None;try congruence.
@@ -4745,7 +4743,7 @@ Qed.
       destruct (env_contracts
       (set_contract_state caddr
         (serialize
-            (prev_state_strong <| currentPhase := COMPLETED |> <| balance := 0
+            (prev_state_strong <| currentPhase := COMPLETED |> <| depositAmount := 0
             |>))
         (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env (get_valid_header miner s) s)))
@@ -4755,7 +4753,7 @@ Qed.
           mid_env:=(set_contract_state caddr
           (serialize
             (prev_state_strong <| currentPhase := COMPLETED |> <|
-              balance := 0 |>))
+            depositAmount := 0 |>))
           (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env
             (get_valid_header miner s) s)))) 
@@ -4770,7 +4768,7 @@ Qed.
               act_from := caddr;
               act_body :=
                 act_transfer (buyer  prev_state_strong)
-                  (balance prev_state_strong)
+                  (depositAmount prev_state_strong)
             |}]
         |}
       ).
@@ -4821,14 +4819,14 @@ Qed.
             act_from := caddr;
             act_body :=
               act_transfer (buyer   prev_state_strong)
-                (balance prev_state_strong)
+                (depositAmount prev_state_strong)
           |}] )
           ;eauto.
           eapply (eval_call (arbitrator cstate) (arbitrator cstate) caddr 0 
             (contract:WeakContract) (Some (serialize (Arbitrate true)))
             ( s1) (serialize (prev_state_strong <| currentPhase := COMPLETED
-            |> <| balance := 0 |>)) 
-            [act_transfer (buyer prev_state_strong) (balance prev_state_strong)]);eauto;intuition.
+            |> <| depositAmount := 0 |>)) 
+            [act_transfer (buyer prev_state_strong) (depositAmount prev_state_strong)]);eauto;intuition.
           eapply reachable_through_reachable in H3.
           eapply (account_balance_nonnegative mid_state (arbitrator  cstate)) in H3.
           lia.
@@ -4970,10 +4968,10 @@ Qed.
       inversion H_send_or_call_Arbitrate;subst.
       simpl in H_exec.
       destruct (  send_or_call (arbitrator cstate) caddr (seller prev_state_strong)
-      (balance prev_state_strong) None
+      (depositAmount prev_state_strong) None
       (set_contract_state caddr
         (serialize
-            (prev_state_strong <| currentPhase := COMPLETED |> <| balance := 0
+            (prev_state_strong <| currentPhase := COMPLETED |> <| depositAmount := 0
             |>))
         (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env (get_valid_header (arbitrator cstate) s) s)))) eqn : H_send_or_call_None;try congruence.
@@ -4984,7 +4982,7 @@ Qed.
       (set_contract_state caddr
          (serialize
             (prev_state_strong <| currentPhase := COMPLETED |> <|
-             balance := 0 |>))
+            depositAmount := 0 |>))
          (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env
                (get_valid_header (arbitrator cstate) s) s)))
@@ -4994,7 +4992,7 @@ Qed.
           mid_env:=(set_contract_state caddr
           (serialize
              (prev_state_strong <| currentPhase := COMPLETED |> <|
-              balance := 0 |>))
+             depositAmount := 0 |>))
           (transfer_balance (arbitrator cstate) caddr 0
              (add_new_block_to_env
                 (get_valid_header (arbitrator cstate) s) s)))) 
@@ -5009,7 +5007,7 @@ Qed.
               act_from := caddr;
               act_body :=
                 act_transfer (seller  prev_state_strong)
-                  (balance prev_state_strong)
+                  (depositAmount prev_state_strong)
             |}]
         |}
       ).
@@ -5060,14 +5058,14 @@ Qed.
             act_from := caddr;
             act_body :=
               act_transfer (seller prev_state_strong)
-                (balance prev_state_strong)
+                (depositAmount prev_state_strong)
           |}] )
           ;eauto.
           eapply (eval_call (arbitrator cstate) (arbitrator cstate) caddr 0 
             (contract:WeakContract) (Some (serialize (Arbitrate false)))
             ( s1) (serialize (prev_state_strong <| currentPhase := COMPLETED
-            |> <| balance := 0 |>)) 
-            [act_transfer (seller prev_state_strong) (balance prev_state_strong)]);eauto;intuition.
+            |> <| depositAmount := 0 |>)) 
+            [act_transfer (seller prev_state_strong) (depositAmount prev_state_strong)]);eauto;intuition.
           eapply reachable_through_reachable in H3.
           eapply (account_balance_nonnegative mid_state (arbitrator  cstate)) in H3.
           lia.
@@ -5192,10 +5190,10 @@ Qed.
       inversion H_send_or_call_Arbitrate;subst.
       simpl in H_exec.
       destruct (send_or_call (arbitrator cstate) caddr (seller prev_state_strong)
-      (balance prev_state_strong) None
+      (depositAmount prev_state_strong) None
       (set_contract_state caddr
          (serialize
-            (prev_state_strong <| currentPhase := COMPLETED |> <| balance := 0
+            (prev_state_strong <| currentPhase := COMPLETED |> <| depositAmount := 0
              |>))
          (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env (get_valid_header miner s) s)))) eqn : H_send_or_call_None;try congruence.
@@ -5206,7 +5204,7 @@ Qed.
       (set_contract_state caddr
          (serialize
             (prev_state_strong <| currentPhase := COMPLETED |> <|
-             balance := 0 |>))
+            depositAmount := 0 |>))
          (transfer_balance (arbitrator cstate) caddr 0
             (add_new_block_to_env (get_valid_header miner s) s)))
       (seller prev_state_strong)) 
@@ -5215,7 +5213,7 @@ Qed.
           mid_env:=(set_contract_state caddr
           (serialize
              (prev_state_strong <| currentPhase := COMPLETED |> <|
-              balance := 0 |>))
+             depositAmount := 0 |>))
           (transfer_balance (arbitrator cstate) caddr 0
              (add_new_block_to_env (get_valid_header miner s) s)))) 
       in H_none_wc.
@@ -5229,7 +5227,7 @@ Qed.
               act_from := caddr;
               act_body :=
                 act_transfer (seller  prev_state_strong)
-                  (balance prev_state_strong)
+                  (depositAmount prev_state_strong)
             |}]
         |}
       ).
@@ -5280,14 +5278,14 @@ Qed.
             act_from := caddr;
             act_body :=
               act_transfer (seller prev_state_strong)
-                (balance prev_state_strong)
+                (depositAmount prev_state_strong)
           |}] )
           ;eauto.
           eapply (eval_call (arbitrator cstate) (arbitrator cstate) caddr 0 
             (contract:WeakContract) (Some (serialize (Arbitrate false)))
             ( s1) (serialize (prev_state_strong <| currentPhase := COMPLETED
-            |> <| balance := 0 |>)) 
-            [act_transfer (seller prev_state_strong) (balance prev_state_strong)]);eauto;intuition.
+            |> <| depositAmount := 0 |>)) 
+            [act_transfer (seller prev_state_strong) (depositAmount prev_state_strong)]);eauto;intuition.
           eapply reachable_through_reachable in H3.
           eapply (account_balance_nonnegative mid_state (arbitrator  cstate)) in H3.
           lia.
@@ -5339,7 +5337,7 @@ Qed.
 
 
 
-  Lemma safi_BS:
+  Lemma escrow_satisfy_base_liqudity:
     base_liquidity miner contract caddr s0.
   Proof.
     unfold base_liquidity.
@@ -5786,7 +5784,7 @@ Qed.
     
   Definition bad_buyer_addrs := [ubuyer].
     
-  Lemma strat_liquidity_good_buyer_bad_seller:
+  Lemma escrow_satisfy_strat_liquidity_with_good_buyer_bad_seller:
     strat_liquidity miner good_buyer good_buyer_addrs bad_seller bad_seller_addrs caddr contract s0.
   Proof.
     unfold strat_liquidity.
@@ -5926,7 +5924,7 @@ Qed.
 
       assert(Htt2:exists cstate'' : State,
       contract_state s'' caddr = Some cstate'' /\
-      currentPhase cstate'' = COMPLETED /\ balance cstate'' = 0).
+      currentPhase cstate'' = COMPLETED /\ depositAmount cstate'' = 0).
       {
         eapply arbitrator_call_Arbitrate_state_correct in Htt1';eauto.
         destruct_and_split.
@@ -5952,7 +5950,7 @@ Qed.
       destruct_and_split.
       pose proof H.
       eapply transition_reachable_impl_reachable in H;eauto.
-      assert(Hbal: env_account_balances s'' caddr = balance cstate'').
+      assert(Hbal: env_account_balances s'' caddr = depositAmount cstate'').
       {
         eapply balance_on_chain_forall in H;eauto.
         eauto.
@@ -6035,7 +6033,7 @@ Qed.
       assert(Htt2:exists cstate' : State,
       contract_state s' caddr = Some cstate' /\
       currentPhase cstate' = COMPLETED /\
-      itemAccepted cstate' = true /\ balance cstate' = 0).
+      itemAccepted cstate' = true /\ depositAmount cstate' = 0).
       {
         eapply buyer_call_AcceptItem_state_correct in Htt1;eauto.
         unfold require_phase.
@@ -6060,7 +6058,7 @@ Qed.
       destruct Hready' as [Htrs' Hqueue_s''].
       pose proof Htrs' as Htrst'.
       eapply transition_reachable_impl_reachable in Htrs';eauto.
-      assert(Hbal: env_account_balances s' caddr = balance cstate').
+      assert(Hbal: env_account_balances s' caddr = depositAmount cstate').
       {
         eapply balance_on_chain_forall in Htrs';eauto.
         eauto.
@@ -6076,7 +6074,7 @@ Qed.
       unfold funds.
       lia.
     + 
-      assert(Hbal: env_account_balances s caddr = balance cstate).
+      assert(Hbal: env_account_balances s caddr = depositAmount cstate).
       {
         eapply balance_on_chain_forall in Hrc_s';eauto.
         eauto.
@@ -6129,7 +6127,7 @@ Qed.
       pose proof Htranss' as Htt1'.
       assert(Htt2:exists cstate' : State,
       contract_state s' caddr = Some cstate' /\
-      currentPhase cstate' = COMPLETED /\ balance cstate' = 0).
+      currentPhase cstate' = COMPLETED /\ depositAmount cstate' = 0).
       {
         eapply arbitrator_call_Arbitrate_state_correct in Htt1';eauto.
         destruct_and_split.
@@ -6155,7 +6153,7 @@ Qed.
       destruct_and_split.
       pose proof H.
       eapply transition_reachable_impl_reachable in H;eauto.
-      assert(Hbal: env_account_balances s' caddr = balance cstate'').
+      assert(Hbal: env_account_balances s' caddr = depositAmount cstate'').
       {
         eapply balance_on_chain_forall in H;eauto.
         eauto.
@@ -6172,7 +6170,7 @@ Qed.
         lia.
   Qed.
 
-  Lemma strat_liquidity_good_seller_bad_buyer:
+  Lemma escrow_satisfy_strat_liquidity_with_good_seller_bad_buyer:
     strat_liquidity miner good_seller good_seller_addrs bad_buyer bad_buyer_addrs caddr contract s0.
   Proof.
     unfold strat_liquidity.
@@ -6371,7 +6369,7 @@ Qed.
       pose proof Htranss''' as Htt1''.
       assert(Htt2:exists cstate' : State,
       contract_state s''' caddr = Some cstate' /\
-      currentPhase cstate' = COMPLETED /\ balance cstate' = 0).
+      currentPhase cstate' = COMPLETED /\ depositAmount cstate' = 0).
       {
         eapply arbitrator_call_Arbitrate_state_correct in Htt1'';eauto.
         unfold require_phase.
@@ -6396,7 +6394,7 @@ Qed.
       destruct_and_split.
       pose proof H.
       eapply transition_reachable_impl_reachable in H;eauto.
-      assert(Hbal: env_account_balances s''' caddr = balance cstate''').
+      assert(Hbal: env_account_balances s''' caddr = depositAmount cstate''').
       {
         eapply balance_on_chain_forall in H;eauto.
         eauto.
@@ -6574,7 +6572,7 @@ Qed.
 
       assert(Htt2:exists cstate'' : State,
       contract_state s'' caddr = Some cstate'' /\
-      currentPhase cstate'' = COMPLETED /\ balance cstate'' = 0).
+      currentPhase cstate'' = COMPLETED /\ depositAmount cstate'' = 0).
       {
         eapply arbitrator_call_Arbitrate_state_correct in Htt1';eauto.
         destruct_and_split.
@@ -6600,7 +6598,7 @@ Qed.
       destruct_and_split.
       pose proof H.
       eapply transition_reachable_impl_reachable in H;eauto.
-      assert(Hbal: env_account_balances s'' caddr = balance cstate'').
+      assert(Hbal: env_account_balances s'' caddr = depositAmount cstate'').
       {
         eapply balance_on_chain_forall in H;eauto.
         eauto.
@@ -6642,7 +6640,7 @@ Qed.
       unfold bad_buyer.
       destruct (get_contract_state s' caddr);eauto.
       destruct  (currentPhase s1);eauto.
-    + assert(Hbal: env_account_balances s caddr = balance cstate).
+    + assert(Hbal: env_account_balances s caddr = depositAmount cstate).
       {
         eapply balance_on_chain_forall in Hrc_s';eauto.
         eauto.
@@ -6695,7 +6693,7 @@ Qed.
       pose proof Htranss' as Htt1'.
       assert(Htt2:exists cstate' : State,
       contract_state s' caddr = Some cstate' /\
-      currentPhase cstate' = COMPLETED /\ balance cstate' = 0).
+      currentPhase cstate' = COMPLETED /\ depositAmount cstate' = 0).
       {
         eapply arbitrator_call_Arbitrate_state_correct in Htt1';eauto.
         destruct_and_split.
@@ -6721,7 +6719,7 @@ Qed.
       destruct_and_split.
       pose proof H.
       eapply transition_reachable_impl_reachable in H;eauto.
-      assert(Hbal: env_account_balances s' caddr = balance cstate'').
+      assert(Hbal: env_account_balances s' caddr = depositAmount cstate'').
       {
         eapply balance_on_chain_forall in H;eauto.
         eauto.

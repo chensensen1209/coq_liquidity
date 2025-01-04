@@ -19,7 +19,10 @@ From Coq Require Import Bool.
 From Coq Require Import ZArith.
 From Coq Require Import Arith.
 From Coq Require Import String.
+Require Import Coq.NArith.BinNatDef.
+Require Import Coq.Strings.Byte.
 Import ListNotations.
 Require Import Lia.
 Import RecordSetNotations.
 From Coq Require Import Permutation.
+

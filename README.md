@@ -79,15 +79,23 @@
 
 ## **案例分析**
 
-### 1. **托管合约 (`examples/instrumentEscrow/InstrumentEscrow.v`)**
+### 1. **托管合约 (`examples/instrumentEscrow/`)**
+#### InstrumentEscrow.v
 该文件形式化建模了托管合约，并证明了其流动性性质。
-- **`safi_BS`**: 证明托管合约满足基本流动性。
-- **`strat_liquidity_good_buyer_bad_seller`**: 证明在托管合约中，诚实买家满足策略流动性。
-- **`strat_liquidity_good_seller_bad_buyer`**: 证明在托管合约中，诚实卖家满足策略流动性。
+- **`escrow_satisfy_base_liqudity`**: 证明托管合约满足基本流动性。
+- **`escrow_satisfy_strat_liquidity_with_good_buyer_bad_seller`**: 证明在托管合约中，诚实买家满足策略流动性。
+- **`escrow_satisfy_strat_liquidity_with_good_seller_bad_buyer`**: 证明在托管合约中，诚实卖家满足策略流动性。
+#### InstrumentEscrow.sol
+与`InstrumentEscrow.v`中所定义合约具有相同逻辑的Solidity合约，可运行。
 
-### 2. **蜜罐合约 (`examples/honeypots/Honeypots.v`)**
+### 2. **蜜罐合约 (`examples/honeypots/`)**
+#### Honeypots.v
 该文件形式化建模了蜜罐合约，并验证了其流动性性质。
-- **`safi_BS`**: 证明蜜罐合约满足基本流动性。
+- **`honeypot_satisfy_base_liquidity`**: 证明蜜罐合约满足基本流动性。
+- 不满足策略流动性
+#### Gift_1_ETH.sol
+`Honeypots.v` 中的合约由Gift_1_ETH建模而来
+原始合约的部署地址：`contract address: 0xd8993F49F372BB014fB088eaBec95cfDC795CBF6`
 
 ---
 

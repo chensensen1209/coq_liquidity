@@ -453,7 +453,7 @@ Section Liqiuidity.
     propify.
     repeat split;cbn ;try lia;eauto.
     unfold miner_reward.
-    lia. 
+    lia.
   Qed.
 
   Lemma user_call_GetGift_is_call_act cstate:
@@ -1227,7 +1227,7 @@ Section Liqiuidity.
     intuition.
   Qed.
 
-  Lemma safi_BS:
+  Lemma honeypot_satisfy_base_liquidity:
     base_liquidity miner contract caddr s0.
   Proof.
     unfold base_liquidity.
@@ -1326,11 +1326,6 @@ Section Liqiuidity.
       intuition.
       eauto.
   Qed.
-
-
-  
-
-
 
 End Liqiuidity.
 

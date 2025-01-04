@@ -850,6 +850,7 @@ Section transition_trace.
     transition_reachable contract caddr s0 s  /\
     chain_state_queue s = [].
 
+    
       (* 清算能力的存在性 *)
   Definition base_liquidity 
             (c : Contract Setup Msg State Error)
@@ -2565,8 +2566,38 @@ Qed.
     eapply BL_implies_SL_with_empty_env_and_complete_user;eauto.
   Qed.
 
+  Definition not_base_liquidity 
+  (c : Contract Setup Msg State Error)
+  (caddr : Address)
+  (s0 : ChainState) := 
+    is_init_state c caddr s0 -> 
+    exists s, 
+    (readyToStepState c caddr s0 s /\ 
+      forall s', 
+      ~(inhabited(trace(s ,s')) /\ funds s' caddr = 0)%Z).
 
- 
+
+Lemma base_liquidity_equiv_not_base_liquidity :
+  forall c caddr s0,
+  is_init_state c caddr s0 ->
+  base_liquidity c caddr s0 ->
+    ~ not_base_liquidity c caddr s0 .
+Proof.
+  intros c caddr s0 Hbase Hnot_base.
+  unfold base_liquidity  in Hnot_base.
+  unfold not_base_liquidity .
+  unfold not.
+  intros.
+  specialize(H3 Hbase).
+  destruct_and_split.
+  specialize(Hnot_base x Hbase H3).
+  destruct_and_split.
+  specialize(H4 x0).
+  destruct_and_split.
+  eapply H4.
+  eauto.
+Qed.
+
 Section normal.
 
   Lemma reachable_via_impl_contract_deployed:
