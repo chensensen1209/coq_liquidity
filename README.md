@@ -49,7 +49,7 @@
 #### 主要内容
 
 - **`concert_exec_base`**: Concert 框架中自带的动作执行函数。
-- **`exec_base_proof`**: 对这些函数的正确性进行验证，包括多个辅助证明引理。
+- **`exec_base_proof`**: 对Concert 框架中自带的动作执行函数的正确性进行验证，包括多个辅助证明引理。
 - **`Monotonicity`**: 证明流动性的单调性性质。
 - **`normal`**: 包含案例分析中常用的辅助引理。
 - **`transition_trace`**: 定义了迁移轨迹、可达性以及 **基本流动性** (`base_liquidity`)。

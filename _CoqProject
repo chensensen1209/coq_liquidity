@@ -27,6 +27,8 @@ record-update/RecordUpdate.v
 -R examples Example
 examples/instrumentEscrow/InstrumentEscrow.v
 examples/honeypots/Honeypots.v
+examples/lucky7game/EtherGame.v
+examples/lucky7game/Attacker.v
 
 
 

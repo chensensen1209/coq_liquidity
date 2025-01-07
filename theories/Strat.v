@@ -147,15 +147,15 @@ Section concert_exec_base.
       apply build_env_equiv; auto.
     Qed.
 
-      Lemma transfer_balance_equiv
-            (from to : Address)
-            (amount : Amount)
-            (bstate : ChainState)
-            (env : Environment) :
-      EnvironmentEquiv bstate env ->
-      EnvironmentEquiv
-        (transfer_balance from to amount bstate)
-        (Blockchain.transfer_balance from to amount env).
+  Lemma transfer_balance_equiv
+          (from to : Address)
+          (amount : Amount)
+          (bstate : ChainState)
+          (env : Environment) :
+    EnvironmentEquiv bstate env ->
+    EnvironmentEquiv
+      (transfer_balance from to amount bstate)
+      (Blockchain.transfer_balance from to amount env).
     Proof.
       intros <-.
       apply build_env_equiv; auto.
@@ -174,42 +174,42 @@ Section concert_exec_base.
 
   Lemma deploy_contract_step origin from to amount wc setup act env  new_bstate :
     deploy_contract origin from to amount wc setup env = Ok new_bstate ->
-      let new_acts := new_bstate.(chain_state_queue) in
       act = build_act origin from (act_deploy amount wc setup) ->
-      ActionEvaluation env act (new_bstate.(chain_state_env)) new_acts.
-    Proof.
-      intros dep new_acts act_eq.
-      unfold deploy_contract in dep.
-      destruct (Z.ltb amount 0) eqn:amount_nonnegative;
-        [cbn in *; congruence|].
-      destruct (Z.gtb amount (env_account_balances env from)) eqn:balance_enough;
-        [cbn in *; congruence|].
-      destruct (correct_contract_addr env to) eqn: ctr_addr;try congruence.
-      destruct (wc_init _ _ _ _) as [state|] eqn:recv; [|cbn in *; congruence].
-      assert (new_acts = []) . 
-      subst new_acts.
-      inversion dep.
-      subst.
-      simpl.
-      eauto.
-      apply (eval_deploy origin from to amount wc setup state); eauto.
-      inversion dep;propify;eauto;try lia.
-      propify.
-      eauto.
-      unfold correct_contract_addr  in ctr_addr.
-      destruct_and_split.
-      propify.
-      destruct_and_split.
-      eauto.
-      unfold correct_contract_addr  in ctr_addr.
-      destruct_and_split.
-      propify.
-      destruct_and_split.
-      unfold isNone in H1.
-      destruct (env_contracts env to );try congruence.
-      inversion dep.
-      eapply build_env_equiv;eauto.
-    Qed.
+      ActionEvaluation env act (new_bstate.(chain_state_env)) new_bstate.(chain_state_queue).
+  Proof.
+    intros dep act_eq.
+    unfold deploy_contract in dep.
+    destruct (Z.ltb amount 0) eqn:amount_nonnegative;
+      [cbn in *; congruence|].
+    destruct (Z.gtb amount (env_account_balances env from)) eqn:balance_enough;
+      [cbn in *; congruence|].
+    destruct (correct_contract_addr env to) eqn: ctr_addr;try congruence.
+    destruct (wc_init _ _ _ _) as [state|] eqn:recv; [|cbn in *; congruence].
+    set(new_acts := (chain_state_queue new_bstate)) in *.
+    assert (new_acts = []) . 
+    subst new_acts.
+    inversion dep.
+    subst.
+    simpl.
+    eauto.
+    apply (eval_deploy origin from to amount wc setup state); eauto.
+    inversion dep;propify;eauto;try lia.
+    propify.
+    eauto.
+    unfold correct_contract_addr  in ctr_addr.
+    destruct_and_split.
+    propify.
+    destruct_and_split.
+    eauto.
+    unfold correct_contract_addr  in ctr_addr.
+    destruct_and_split.
+    propify.
+    destruct_and_split.
+    unfold isNone in H1.
+    destruct (env_contracts env to );try congruence.
+    inversion dep.
+    eapply build_env_equiv;eauto.
+  Qed.
 
   Local Hint Resolve deploy_contract_step : core.
 
@@ -219,12 +219,6 @@ Section concert_exec_base.
               (msg: SerializedValue) 
               : Action :=
     build_act from from (act_call to amount msg).
-
-  Definition current_bstate
-              {from to : ChainState}
-              (trace : ChainTrace from to)
-              : ChainState :=
-              to.
 
   Open Scope Z.
 
@@ -618,8 +612,9 @@ Section exec_action.
           end
       | false => Err default_error
     end.
-  
-  Definition add_block_exec
+
+
+  Definition evaluate_action
             (true:bool) 
             (env : Environment)
             (header : BlockHeader)
@@ -645,11 +640,11 @@ Section exec_action.
   Local Hint Resolve validate_header find_origin_neq_from       find_invalid_root_action : core.
   
   Lemma add_block_next_state_queue_empty (prev_bstate next_bstate : ChainState) df header actions (trace : ChainTrace empty_state prev_bstate)  :
-      add_block_exec df prev_bstate header actions = Ok next_bstate ->
+      evaluate_action df prev_bstate header actions = Ok next_bstate ->
       next_bstate.(chain_state_queue) = [].
   Proof.
     intros H_exec.
-    unfold add_block_exec in H_exec.
+    unfold evaluate_action in H_exec.
     destruct_match in H_exec;try congruence.
     destruct_match in H_exec;try congruence.
     destruct_match in H_exec;try congruence.
@@ -676,11 +671,11 @@ Section exec_action.
   Lemma add_block_reachable_through_aux (prev_bstate next_bstate : ChainState) df header actions (trace : ChainTrace empty_state prev_bstate)  :
       df = true ->
       prev_bstate.(chain_state_queue) = [] ->
-      add_block_exec df prev_bstate header actions = Ok next_bstate ->
+      evaluate_action df prev_bstate header actions = Ok next_bstate ->
       ChainTrace prev_bstate next_bstate.
   Proof.
     intros H_df H_queue H_exec.
-    unfold add_block_exec in H_exec.
+    unfold evaluate_action in H_exec.
     destruct (validate_header header prev_bstate) eqn: H_header;try congruence.
     destruct (find_origin_neq_from actions) eqn:H_fonf;try congruence.
     destruct (find_invalid_root_action actions) eqn:H_fira;try congruence.
@@ -726,7 +721,7 @@ Section exec_action.
   Lemma add_block_trace (prev_bstate next_bstate : ChainState) df header actions (trace : ChainTrace empty_state prev_bstate) :
     df = true ->
     prev_bstate.(chain_state_queue) = [] ->
-    add_block_exec df prev_bstate header actions = Ok next_bstate ->
+    evaluate_action df prev_bstate header actions = Ok next_bstate ->
     ChainTrace empty_state next_bstate.
   Proof.
     intros.
@@ -807,7 +802,7 @@ Section transition_trace.
     if (queue_isb_empty prev_bstate) then 
         if is_call_act act then
           let header := get_valid_header prev_bstate in
-          match add_block_exec true prev_bstate header [act] with
+          match evaluate_action true prev_bstate header [act] with
           | Ok new_bstate => Ok new_bstate
           | Err _ => Err default_error
           end
@@ -840,8 +835,6 @@ Section transition_trace.
 
   Definition reachable_via contract caddr s0 mid to := transition_reachable contract caddr s0 mid /\ inhabited (trace(mid, to)).
 
-
-
   Definition readyToStepState 
               (contract : Contract Setup Msg State Error)
               (caddr : Address )
@@ -851,7 +844,7 @@ Section transition_trace.
     chain_state_queue s = [].
 
     
-      (* 清算能力的存在性 *)
+  (* 清算能力的存在性 *)
   Definition base_liquidity 
             (c : Contract Setup Msg State Error)
             (caddr : Address)
@@ -867,159 +860,120 @@ Section strat_model.
 
   Notation "trace( from , to )" := (TransitionTrace from to)(at level 10).
 
-  Definition strat := forall s0 s, trace(s0, s) -> list Address -> list Action.
+  Definition strat (addrs : list Address):= forall s0 s,trace(s0, s) -> list Action.
 
   Definition is_valid_action (s : ChainState) (a : Action) : bool :=
     match transition s a with
-    (* 包含等待动作以及caddr的act_call *)
     | Ok _ => is_call_act a
     | Err _ => false
     end.
 
-  Definition wellStrat (delta : strat)
-                        (addrs : list Address)
-                        (contract : Contract Setup Msg State Error)
-                        (caddr : Address)
-                        (s0 : ChainState)
-                       : Prop :=
-    forall (s: ChainState) (tr_s : trace(s0, s)) ,
-      let delta_actions := (delta s0 s tr_s addrs) in
-      ( readyToStepState contract caddr s0 s -> 
-        Forall (fun a => is_valid_action s a = true) delta_actions) /\
-      Forall (fun a => In (get_act_origin a) addrs)delta_actions.
-  
   (* delta 这些地址产生的动作中包含了所有的转换，其中包含空集的情况 *)
-  Definition is_complete_strategy  
-                  (delta : strat)
+  Definition is_complete_strategy 
                   (addrs : list Address)
+                  (delta : strat addrs)
                   (contract : Contract Setup Msg State Error)
                   (caddr : Address)
                   (s0 : ChainState) :=
-    wellStrat delta addrs contract caddr s0  /\ 
     (forall s s' tr a,
       transition s a = Ok s' ->
-      (* 包含了等待动作，主动选择 *)
-       In a (delta s0 s tr addrs)).
+       In a (delta s0 s tr)).
 
-  Definition is_empty_strat (delta : strat) (addrs : list Address): Prop :=
-    forall s0 s tr_s, delta s0 s tr_s addrs = [].
+  Definition is_empty_strat (addrs : list Address) (delta : strat addrs) : Prop :=
+    forall s0 s tr_s, delta s0 s tr_s = [].
 
   Definition incl {A : Type} (l1 l2 : list A) : Prop :=
     forall x, In x l1 -> In x l2.
 
-  Definition stratDrive (s0 : ChainState)
-                        (delta : strat)
-                        (addrs : list Address)
-                        (s : ChainState)
-                        (tr : trace(s0, s))
-                        (s' : ChainState)
-                        (tr' : trace(s0, s'))
-                        : Prop :=
+  Definition stratDrive 
+              (addrs : list Address)
+              (delta : strat addrs)
+              (s0 s : ChainState)
+              (tr : trace(s0, s))
+              (s' : ChainState)
+              (tr' : trace(s0, s'))
+              : Prop :=
     exists  (a : Action)
             (Hact : is_call_act a = true)
             (Htrans : transition s a = Ok s'),
-      In a (delta s0 s tr addrs) /\
+      In a (delta s0 s tr) /\
       tr' = snoc tr (step_trans a Hact Htrans).
 
-
   Local Open Scope nat.
-  (* MS_Refl 和 multiStratDrive_end并不清楚 *)
-  Inductive multiStratDrive (delta : strat) 
-                           (addrs : list Address)
-                           (s0 s : ChainState) 
-                           (tr : TransitionTrace s0 s) :
+  Inductive multiStratDrive
+            (addrs : list Address)
+            (delta : strat addrs) 
+            (s0 s : ChainState) 
+            (tr : TransitionTrace s0 s) :
     forall s', TransitionTrace s0 s' -> nat -> Prop :=
     | MS_Refl :
-        multiStratDrive delta addrs s0 s tr s tr 0
+        multiStratDrive addrs delta s0 s tr s tr 0
     | MS_Step :
         forall s' s'' tr' tr'' count ,
-          multiStratDrive delta addrs s0 s tr s' tr' count -> 
-          stratDrive s0 delta addrs s' tr' s'' tr''-> 
-          multiStratDrive delta addrs s0 s tr s'' tr'' (count + 1).
-
-  Definition maxMultiStratDrive (delta : strat) 
-                                (addrs : list Address)
-                                (s0 s : ChainState) 
-                                (tr : TransitionTrace s0 s)
-                                (s' : ChainState)
-                                (tr' : TransitionTrace s0 s')
-                                (n : nat) := 
-    multiStratDrive delta addrs s0 s tr s' tr' n /\ 
-    delta s0 s' tr' addrs = [].
-
-  (* 通过限制maxMultiStratDriveSteps限制环境的干扰能力 *)
-  Definition strat_finite (delta : strat) 
-                          (addrs : list Address)
-                          (maxMultiStratDriveSteps : nat) :=
-    forall (s0 s : ChainState) (tr : TransitionTrace s0 s) ,
-      exists (n : nat) (s' : ChainState) (tr' : TransitionTrace s0 s'),
-        ( n <= maxMultiStratDriveSteps /\
-          maxMultiStratDrive delta addrs s0 s tr s' tr' n).
+          multiStratDrive addrs delta  s0 s tr s' tr' count -> 
+          stratDrive addrs delta s0  s' tr' s'' tr''-> 
+          multiStratDrive addrs delta  s0 s tr s'' tr'' (count + 1).
 
   (* 表示该哪一方行动了 *)
   Inductive stratType :=
     | Tusr
     | Tenv.
 
-  Definition negate_stratType (t : stratType) : stratType :=
-    match t with
-    | Tusr => Tenv   (* If it's Tusr, return Tenv *)
-    | Tenv => Tusr   (* If it's Tenv, return Tusr *)
-    end.
-
-  Inductive interleavedExecution (delta_usr : strat)
-                                (addrs_usr : list Address)
-                                (delta_env : strat)
-                                (addrs_env : list Address)
-                                (s0 s : ChainState)
-                                (tr : trace(s0, s)) :
+  Inductive interleavedExecution 
+              (addrs_usr : list Address)
+              (delta_usr : strat addrs_usr)
+              (addrs_env : list Address)
+              (delta_env : strat addrs_env)
+              (s0 s : ChainState)
+              (tr : trace(s0, s)) :
     stratType -> forall s' : ChainState, trace(s0, s') -> Prop :=
     | IS_Refl : forall flag : stratType,
-        interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s tr flag s tr
+        interleavedExecution addrs_usr delta_usr addrs_env delta_env  s0 s tr flag s tr
     | ISE_Step : forall s' tr' s'' tr'' n,
-        interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s tr Tenv s' tr' ->
-        multiStratDrive delta_env addrs_env s0 s' tr' s'' tr'' n ->
-        interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s tr Tusr s'' tr''
+        interleavedExecution addrs_usr delta_usr addrs_env delta_env s0 s tr Tenv s' tr' ->
+        multiStratDrive addrs_env delta_env  s0 s' tr' s'' tr'' n ->
+        interleavedExecution addrs_usr delta_usr addrs_env delta_env s0 s tr Tusr s'' tr''
     | ISU_Step : forall s' s'' tr' tr'',
-        interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s tr Tusr s' tr' ->
-        stratDrive s0 delta_usr addrs_usr s' tr' s'' tr'' ->
-        interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s tr Tenv s'' tr''.
+        interleavedExecution addrs_usr delta_usr addrs_env delta_env s0 s tr Tusr s' tr' ->
+        stratDrive  addrs_usr delta_usr s0  s' tr' s'' tr'' ->
+        interleavedExecution addrs_usr delta_usr addrs_env delta_env s0 s tr Tenv s'' tr''.
 
   Local Open Scope nat.
 
-  Inductive UserLiquidatesNSteps (delta_usr : strat)
-                                (addrs_usr : list Address)
-                                (delta_env : strat)
-                                (addrs_env : list Address)
-                                (caddr : Address)
-                                (s0 s: ChainState)
-                                (tr : trace(s0, s)):
+  Inductive UserLiquidatesNSteps 
+              (addrs_usr : list Address)
+              (delta_usr : strat addrs_usr)
+              (addrs_env : list Address)
+              (delta_env : strat addrs_env)
+              (caddr: Address)
+              (s0 s : ChainState)
+              (tr : trace(s0, s)) :
     forall s' : ChainState, trace(s0, s') -> Prop :=
     | ULM_Base: 
       (funds s caddr = 0)%Z ->
-      UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr  s0 s tr s tr 
+      UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env caddr s0 s tr s tr 
     | ULM_Step : forall s' s'' tr' tr'',
-      stratDrive s0 delta_usr addrs_usr s tr s' tr' -> (* 用户执行一次策略 *)
-      envProgress_Mutual delta_usr addrs_usr delta_env addrs_env caddr s0 s' tr' s'' tr'' -> (* 时间减少 *)
-      UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr  s0 s tr  s'' tr'' 
-  with envProgress_Mutual (delta_usr : strat)
-                          (addrs_usr : list Address)
-                          (delta_env : strat)
-                          (addrs_env : list Address)
-                          (caddr: Address)
-                          (s0 s: ChainState)
-                          (tr : trace(s0, s)) :
+      stratDrive addrs_usr delta_usr  s0 s tr s' tr' -> (* 用户执行一次 *)
+      envProgress_Mutual addrs_usr delta_usr addrs_env delta_env caddr s0 s' tr' s'' tr'' -> 
+      UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env caddr  s0 s tr  s'' tr'' 
+  with envProgress_Mutual 
+        (addrs_usr : list Address)
+        (delta_usr : strat addrs_usr)
+        (addrs_env : list Address)
+        (delta_env : strat addrs_env)
+        (caddr: Address)
+        (s0 s : ChainState)
+        (tr : trace(s0, s)) :
     forall s' : ChainState, trace(s0, s') -> Prop :=
     | EPM_Base :
       (funds s caddr = 0)%Z ->
-      envProgress_Mutual delta_usr addrs_usr delta_env addrs_env caddr s0 s tr  s tr 
+      envProgress_Mutual addrs_usr delta_usr addrs_env delta_env caddr s0 s tr  s  tr 
     | EPM_Step: forall s'' tr'',
       (funds s caddr > 0)%Z ->
       ( forall s' tr' n,
-          multiStratDrive delta_env addrs_env s0 s tr s' tr' n -> 
-          UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr s0 s' tr'  s'' tr'' ) ->
-      envProgress_Mutual delta_usr addrs_usr delta_env addrs_env caddr s0 s tr s'' tr'' .
-
+          multiStratDrive addrs_env delta_env s0 s tr s' tr' n -> 
+          UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env caddr s0 s' tr'  s'' tr'' ) ->
+      envProgress_Mutual addrs_usr delta_usr addrs_env delta_env caddr s0 s tr s'' tr'' .
 
   Scheme ul_mut := Induction for envProgress_Mutual Sort Prop
     with env_mut := Induction for UserLiquidatesNSteps Sort Prop.
@@ -1028,45 +982,31 @@ Section strat_model.
 
   (* 由于下面的清零过程要用户先开始，那么此处需要是Tusr *)
   Definition isReachableUnderInterleavedExecution
-            (delta_usr delta_env : strat)
-            (addrs_usr addrs_env : list Address)
+            (addrs_usr : list Address)
+            (delta_usr : strat addrs_usr)
+            (addrs_env : list Address)
+            (delta_env : strat addrs_env)
             (s0 : ChainState)
             (tr : trace(s0,s0))
             (s' : ChainState)
             (tr' : trace(s0,s')) :=
-    interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s0 tr Tusr s' tr'.
+    interleavedExecution addrs_usr delta_usr addrs_env delta_env  s0 s0 tr Tusr s' tr'.
 
   Local Open Scope nat.
 
-  Definition maxMultiStratDriveSteps := 1024.
-
-  Definition wellDefinedSystem
-          (delta_usr : strat)
-          (addrs_usr : list Address)
-          (delta_env : strat)
-          (addrs_env : list Address)
-          (caddr : Address)
-          (c : Contract Setup Msg State Error)
-          (s0 : ChainState) :=
-    wellStrat delta_usr addrs_usr c caddr s0  /\
-    wellStrat delta_env addrs_env c caddr s0 /\
-    strat_finite delta_env addrs_env maxMultiStratDriveSteps /\
-    is_init_state c caddr s0.
-
-  (*  *)
   Definition strat_liquidity 
-            (delta_usr : strat)
             (addrs_usr : list Address)
-            (delta_env : strat)
+            (delta_usr : strat addrs_usr)
             (addrs_env : list Address)
-            (caddr : Address)
+            (delta_env : strat addrs_env)
             (c : Contract Setup Msg State Error)
+            (caddr : Address)
             (s0 : ChainState) :=
-    wellDefinedSystem delta_usr addrs_usr delta_env addrs_env caddr c s0 ->
+    is_init_state c caddr s0 ->
     forall tr s' tr',
-      isReachableUnderInterleavedExecution delta_usr delta_env addrs_usr addrs_env s0 tr s' tr' ->
+      isReachableUnderInterleavedExecution addrs_usr delta_usr addrs_env delta_env   s0 tr s' tr' ->
       (exists s'' tr'',
-        UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr  s0 s' tr' s'' tr'').
+        UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env caddr s0 s' tr' s'' tr'').
 
 End strat_model.
   
@@ -1076,41 +1016,6 @@ End strat_model.
                 let x := fresh "x" in
                 destruct H as [x H]
             end.
-
-  Ltac decompose_wellDefinedSystem H :=
-    match type of H with
-    | wellDefinedSystem ?delta_usr ?addrs_usr ?delta_env ?addrs_env ?caddr ?c ?s0 =>
-        unfold wellDefinedSystem in H;
-        let H_usr_strat := fresh "H_usr_strat" in
-        let H_env_strat := fresh "H_env_strat" in
-        let H_finite := fresh "H_finite" in
-        let H_init := fresh "H_init" in
-        destruct H as [H_usr_strat [H_env_strat [H_finite H_init]]]
-    | _ => fail "The hypothesis" H "is not of the form wellDefinedSystem."
-    end.
-
-  Ltac decompose_wellStrat H :=
-    unfold wellStrat in H;
-    let Hs0 := fresh "Hs0" in
-    let Hs := fresh "Hs" in
-    let Htr_s := fresh "Htr_s" in
-    intros Hs0 Hs Htr_s;
-    match type of H with
-    | context[let delta_actions := ?delta _ _ _ _ in _] =>
-        let Hda := fresh "Hda" in
-        set (delta_actions := delta _ _ _ _) in H;
-        unfold delta_actions in H
-    | _ => idtac
-    end;
-    match type of H with
-    | _ -> Forall _ _ =>
-        let Hq := fresh "Hq" in
-        intros Hq; specialize (H Hq)
-    | Forall _ ?l =>
-        let Ha := fresh "Ha" in
-        apply Forall_forall in H; intros Ha
-    | _ => idtac
-    end.
 
   Ltac decompose_transition_reachable H :=
     unfold transition_reachable in H;
@@ -1167,9 +1072,9 @@ End strat_model.
     | context[let header := get_valid_header ?state in _] =>
         let Hheader := fresh "Hheader" in
         remember (get_valid_header state) as header eqn:Hheader
-    | context[match add_block_exec ?mode ?state ?header ?acts with | Ok _ => _ | Err _ => _ end] =>
+    | context[match evaluate_action ?mode ?state ?header ?acts with | Ok _ => _ | Err _ => _ end] =>
         let Hexec := fresh "Hexec" in
-        destruct (add_block_exec mode state header acts) eqn:Hexec; try congruence
+        destruct (evaluate_action mode state header acts) eqn:Hexec; try congruence
     | context[match ?res with | Ok _ => _ | Err _ => _ end] =>
         let Hres := fresh "Hres" in
         destruct res eqn:Hres; try congruence
@@ -1179,7 +1084,7 @@ End strat_model.
     | Err _ = Err _ => inversion H; subst; clear H
     end.
 
-    Notation "trace( from , to )" := (TransitionTrace from to)(at level 10).
+  Notation "trace( from , to )" := (TransitionTrace from to)(at level 10).
 
 
   Section Monotonicity.
@@ -1187,47 +1092,48 @@ End strat_model.
     Definition addrs_subset (addrs1: list Address) (addrs2 : list Address) :=
       incl addrs1 addrs2.
   
-    Definition acts_subset_strict (acts1 acts2 : list Action) : Prop :=
+    Definition acts_subset (acts1 acts2 : list Action) : Prop :=
       incl acts1 acts2. 
   
-    Definition strat_subset_strict 
-      (delta1 : strat) (addrs1 : list Address)
-      (delta2 : strat) (addrs2 : list Address) 
+    Definition strat_subset 
+                (addrs1 : list Address)
+                (delta1 : strat addrs1) 
+                (addrs2 : list Address) 
+                (delta2 : strat addrs1) 
       s0: Prop :=
       forall s tr,
-          acts_subset_strict
-          (delta1 s0 s tr addrs1)
-          (delta2 s0 s tr addrs2).
+          acts_subset
+          (delta1 s0 s tr)
+          (delta2 s0 s tr).
   
-    Lemma in_empty_false : forall (A : Type) (x : A), ~ In x [].
-    Proof.
-      intros A x H4.
-      inversion H4. (* 空列表中不可能有元素，因此直接矛盾。 *)
-    Qed.
+      Lemma in_empty_false : forall (A : Type) (x : A), ~ In x [].
+      Proof.
+        intros A x H4.
+        inversion H4. (* 空列表中不可能有元素，因此直接矛盾。 *)
+      Qed.
+    
+      Lemma in_nonempty_to_empty_contradiction : forall (A : Type) (a : A) (l : list A),
+        (forall x, In x (a :: l) -> In x []) -> False.
+      Proof.
+        intros A a l H4.
+        (* 选择一个具体的元素 a，它在 a :: l 中。 *)
+        specialize (H4 a).
+        simpl in H4.
+        destruct H4.
+        eauto.
+      Qed.
   
-    Lemma in_nonempty_to_empty_contradiction : forall (A : Type) (a : A) (l : list A),
-      (forall x, In x (a :: l) -> In x []) -> False.
-    Proof.
-      intros A a l H4.
-      (* 选择一个具体的元素 a，它在 a :: l 中。 *)
-      specialize (H4 a).
-      simpl in H4.
-      destruct H4.
-      eauto.
-    Qed.
-  
-  
-    Lemma  strat_subset_strict_no_empty:
-      forall (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) s s' tr',
-        strat_subset_strict (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address)  s->
-        delta1 s s' tr' addrs1 <> [] ->
-        delta2 s s' tr' addrs2 <> [].
+    Lemma  strat_subset_no_empty:
+      forall (addrs1 : list Address)(delta1 : strat addrs1)  (addrs2 : list Address) (delta2 : strat addrs2) s s' tr',
+        strat_subset addrs1 delta1 addrs2 delta2 s->
+        delta1 s s' tr' <> [] ->
+        delta2 s s' tr' <> [].
     Proof.
       intros * Hsbt_delta H_delta.
-      unfold strat_subset_strict in Hsbt_delta.
+      unfold strat_subset in Hsbt_delta.
       specialize(Hsbt_delta s' tr').
-      unfold acts_subset_strict in Hsbt_delta.
-      destruct (delta1 s s' tr' addrs1) ;try congruence.
+      unfold acts_subset in Hsbt_delta.
+      destruct (delta1 s s' tr') ;try congruence.
       unfold incl in Hsbt_delta.
       intuition.
       rewrite H3 in Hsbt_delta.
@@ -1236,17 +1142,17 @@ End strat_model.
       eapply in_nonempty_to_empty_contradiction ;eauto.
     Qed.
   
-    Lemma  strat_subset_strict_empty_re:
-      forall (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address) s s' tr',
-        strat_subset_strict (delta1 : strat) (addrs1 : list Address) (delta2 : strat) (addrs2 : list Address)  s ->
-        delta2 s s' tr' addrs2 = [] ->
-        delta1 s s' tr' addrs1 = [].
+    Lemma strat_subset_empty_re:
+      forall (addrs1 : list Address)(delta1 : strat addrs1)  (addrs2 : list Address) (delta2 : strat addrs2) s s' tr',
+        strat_subset addrs1 delta1 addrs2 delta2 s->
+        delta2 s s' tr' = [] ->
+        delta1 s s' tr' = [].
     Proof.
       intros * Hsbt_delta H_delta.
-      unfold strat_subset_strict in Hsbt_delta.
-      unfold acts_subset_strict in Hsbt_delta.
+      unfold strat_subset in Hsbt_delta.
+      unfold acts_subset in Hsbt_delta.
       specialize(Hsbt_delta s' tr').
-      destruct (delta1 s s' tr' addrs1) ;try congruence.
+      destruct (delta1 s s' tr') ;try congruence.
       rewrite H_delta in Hsbt_delta.
       unfold incl in *.
       eapply in_nonempty_to_empty_contradiction in Hsbt_delta.
@@ -1254,31 +1160,31 @@ End strat_model.
     Qed.
   
   
-      Lemma stratDrive_subset:
-        forall s0 s s' tr tr' delta_usr1 addrs_usr1 delta_usr2 addrs_usr2,
-          strat_subset_strict delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 s0 ->
-          stratDrive s0 delta_usr2 addrs_usr2 s tr s' tr' ->
-          stratDrive s0 delta_usr1 addrs_usr1 s tr s' tr'.
-      Proof.
-        unfold stratDrive.
-        unfold strat_subset_strict.
-        unfold acts_subset_strict.
-        intros.
-        decompose_exists.
-        destruct_and_split. 
-        specialize(H3 s tr).
-        exists x, x0 , x1.
-        split.
-        eauto.
-        destruct (delta_usr2 s0 s tr addrs_usr2).
-        inversion H5.
-        eauto.
-        eauto.
-      Qed.
+    Lemma stratDrive_subset:
+      forall s0 s s' tr tr' delta_usr1 addrs_usr1 delta_usr2 addrs_usr2,
+        strat_subset addrs_usr2 delta_usr2 addrs_usr1 delta_usr1  s0 ->
+        stratDrive addrs_usr2 delta_usr2  s0 s tr s' tr' ->
+        stratDrive addrs_usr1 delta_usr1  s0 s tr s' tr'.
+    Proof.
+      unfold stratDrive.
+      unfold strat_subset.
+      unfold acts_subset.
+      intros.
+      decompose_exists.
+      destruct_and_split. 
+      specialize(H3 s tr).
+      exists x, x0 , x1.
+      split.
+      eauto.
+      destruct (delta_usr2 s0 s tr).
+      inversion H5.
+      eauto.
+      eauto.
+    Qed.
   
       Lemma multiStratDrive_subset:
         forall s0 s s' tr tr' delta_usr1 addrs_usr1 delta_usr2 addrs_usr2 n,
-          strat_subset_strict delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 s0 ->
+          strat_subset delta_usr2 addrs_usr2 delta_usr1 addrs_usr1 s0 ->
           multiStratDrive delta_usr2 addrs_usr2 s0 s tr s' tr' n ->
           multiStratDrive delta_usr1 addrs_usr1 s0 s tr s' tr' n.
       Proof.
@@ -1290,52 +1196,47 @@ End strat_model.
       Qed.
   
       (* 少的能到，多的也能到 *)
-      Lemma interleavedExecution_mono_incl_usr_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
+      Lemma interleavedExecution_mono_incl_usr_unchanging (addrs_usr: list Address) (delta_usr : strat addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat addrs_env1) (addrs_env2: list Address) (delta_env2 : strat addrs_env2) :
         forall s0 s' flag tr tr',
-          strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 s0 ->
-          interleavedExecution delta_usr addrs_usr delta_env1 addrs_env1 s0 s0 tr flag s' tr' ->
-          interleavedExecution delta_usr addrs_usr delta_env2 addrs_env2 s0 s0 tr flag s' tr'.
+          strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0 ->
+          interleavedExecution addrs_usr delta_usr addrs_env1 delta_env1  s0 s0 tr flag s' tr' ->
+          interleavedExecution addrs_usr delta_usr addrs_env2 delta_env2 s0 s0 tr flag s' tr'.
       Proof.
         intros * Hsbt_delta Hrc_itv.
         induction Hrc_itv;eauto;try intuition.
         - eapply IS_Refl.
         - eapply ISE_Step;eauto.
           pose proof Hsbt_delta as Hst.
-          unfold strat_subset_strict in Hsbt_delta.
+          unfold strat_subset in Hsbt_delta.
           specialize(Hsbt_delta  s' tr').
-          unfold acts_subset_strict in Hsbt_delta.
-          destruct (delta_env1 s0 s' tr' addrs_env1) eqn : He;try congruence.
+          unfold acts_subset in Hsbt_delta.
+          destruct (delta_env1 s0 s' tr') eqn : He;try congruence.
           intuition.
           eapply multiStratDrive_subset;eauto.
           eapply multiStratDrive_subset;eauto.
         - eapply ISU_Step;eauto.
       Qed.
   
-      Lemma userLiquidatesNSteps_incl_usr_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
+      Lemma userLiquidatesNSteps_incl_usr_unchanging (addrs_usr: list Address) (delta_usr : strat addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat addrs_env1) (addrs_env2: list Address) (delta_env2 : strat addrs_env2) :
         forall s0 s s' c caddr tr tr',
-          wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
-          wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
-          strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 s0->
-          UserLiquidatesNSteps delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 s tr s' tr'->
-          UserLiquidatesNSteps delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr s' tr'.
+          is_init_state c caddr s0 ->
+          strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0 ->
+          UserLiquidatesNSteps  addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 s tr s' tr'->
+          UserLiquidatesNSteps addrs_usr delta_usr addrs_env1 delta_env1  caddr s0 s tr s' tr'.
       Proof.
-        intros * Hwell_sys1 Hwell_sys2 Hsbt_delta_pro Hrc_itv.
-        decompose_wellDefinedSystem Hwell_sys1.
-        decompose_wellDefinedSystem Hwell_sys2.
-        rename H_finite0 into H_finite2.
-        rename H_finite into H_finite1.
-        eapply (env_mut delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 
-        (fun s tr  s' tr' (_ : envProgress_Mutual delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 s tr s' tr') =>  
-        envProgress_Mutual delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr s' tr')
-        (fun  s tr s' tr' (_ : UserLiquidatesNSteps delta_usr addrs_usr delta_env2 addrs_env2 caddr  s0 s tr s' tr') => 
-        UserLiquidatesNSteps delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr s' tr')
+        intros * Hinit Hsbt_delta_pro Hrc_itv.
+        eapply (env_mut addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 
+        (fun s tr  s' tr' (_ : envProgress_Mutual addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 s tr s' tr') =>  
+        envProgress_Mutual addrs_usr delta_usr addrs_env1 delta_env1  caddr s0 s tr s' tr')
+        (fun  s tr s' tr' (_ : UserLiquidatesNSteps addrs_usr delta_usr addrs_env2 delta_env2  caddr  s0 s tr s' tr') => 
+        UserLiquidatesNSteps addrs_usr delta_usr addrs_env1 delta_env1  caddr s0 s tr s' tr')
         );intros;subst;eauto.
         - apply EPM_Base. assumption.
         -  
           eapply EPM_Step.
           eauto.
           intros.
-          assert (multiStratDrive delta_env2 addrs_env2 s0 s1 tr0 s'0 tr'0 n).
+          assert (multiStratDrive addrs_env2 delta_env2  s0 s1 tr0 s'0 tr'0 n).
           {
             eapply multiStratDrive_subset;eauto.
           }
@@ -1347,34 +1248,29 @@ End strat_model.
       Qed.
   
       Lemma userLiquidatesNSteps_incl_usr_unchanging_empty 
-        (delta_usr : strat) (addrs_usr: list Address)
-        (delta_env1 : strat) (addrs_env1: list Address) 
-        (delta_env2 : strat) (addrs_env2: list Address) :
+      (addrs_usr: list Address) (delta_usr : strat addrs_usr) 
+      (addrs_env1: list Address)   (delta_env1 : strat addrs_env1) 
+      (addrs_env2: list Address)  (delta_env2 : strat addrs_env2) :
         forall s0 s s' c caddr tr tr',
-          wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
-          wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
-          is_empty_strat delta_env1 addrs_env1 ->
-          strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 s0->
-          UserLiquidatesNSteps delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 s tr s' tr'->
-          UserLiquidatesNSteps delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr s' tr'.
+          is_init_state c caddr s0 ->
+          is_empty_strat addrs_env1 delta_env1  ->
+          strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0->
+          UserLiquidatesNSteps addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 s tr s' tr'->
+          UserLiquidatesNSteps addrs_usr delta_usr addrs_env1 delta_env1  caddr s0 s tr s' tr'.
       Proof.
-        intros * Hwell_sys1 Hwell_sys2 Hsbt_delta Hrc_itv.
-        decompose_wellDefinedSystem Hwell_sys1.
-        decompose_wellDefinedSystem Hwell_sys2.
-        rename H_finite0 into H_finite2.
-        rename H_finite into H_finite1.
-        eapply (env_mut delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 
-        (fun s tr  s' tr' (_ : envProgress_Mutual delta_usr addrs_usr delta_env2 addrs_env2 caddr s0 s tr s' tr') =>  
-        envProgress_Mutual delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr  s' tr')
-        (fun  s tr s' tr' (_ : UserLiquidatesNSteps delta_usr addrs_usr delta_env2 addrs_env2 caddr  s0 s tr s' tr') => 
-        UserLiquidatesNSteps delta_usr addrs_usr delta_env1 addrs_env1 caddr s0 s tr  s' tr')
+        intros * Hinit Hsbt_delta Hrc_itv.
+        eapply (env_mut addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 
+        (fun s tr  s' tr' (_ : envProgress_Mutual addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 s tr s' tr') =>  
+        envProgress_Mutual addrs_usr delta_usr addrs_env1 delta_env1 caddr s0 s tr  s' tr')
+        (fun  s tr s' tr' (_ : UserLiquidatesNSteps addrs_usr delta_usr addrs_env2 delta_env2 caddr  s0 s tr s' tr') => 
+        UserLiquidatesNSteps addrs_usr delta_usr addrs_env1 delta_env1  caddr s0 s tr  s' tr')
         );intros;subst;eauto.
         - apply EPM_Base. assumption.
         - 
           eapply EPM_Step.
           eauto.
           intros.
-          assert (multiStratDrive delta_env2 addrs_env2 s0 s1 tr0 s'0 tr'0 n).
+          assert (multiStratDrive addrs_env2 delta_env2  s0 s1 tr0 s'0 tr'0 n).
           {
             eapply multiStratDrive_subset;eauto.
           }
@@ -1384,20 +1280,22 @@ End strat_model.
         - eapply ULM_Step;eauto.
       Qed.
   
-      Lemma strat_liquid_Mono_usr_unchanging (delta_usr : strat) (addrs_usr: list Address)  (delta_env1 : strat) (addrs_env1: list Address) (delta_env2 : strat) (addrs_env2: list Address) :
+      Lemma strat_liquid_Mono_usr_unchanging 
+      (addrs_usr: list Address) (delta_usr : strat addrs_usr) 
+      (addrs_env1: list Address)   (delta_env1 : strat addrs_env1) 
+      (addrs_env2: list Address)  (delta_env2 : strat addrs_env2) :
         forall s0 c caddr, 
-          wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
-          wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
-          strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 s0 -> 
-          strat_liquidity delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
-          strat_liquidity delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0.
+          is_init_state c caddr s0 ->
+          strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0->
+          strat_liquidity addrs_usr delta_usr  addrs_env2 delta_env2 c caddr  s0 ->
+          strat_liquidity addrs_usr delta_usr  addrs_env1 delta_env1 c caddr  s0.
       Proof.
-        intros * Hwell_sys1 Hwell_sys2 Hstrat_refines Hliq_delta2.
+        intros * Hinit Hstrat_refines Hliq_delta2.
         unfold strat_liquidity in *.
         intros Hwell_sys * Hrc_itv.
         unfold isReachableUnderInterleavedExecution in Hrc_itv.
-        specialize(Hliq_delta2 Hwell_sys2 tr s' tr').
-        assert (interleavedExecution delta_usr addrs_usr delta_env2 addrs_env2 s0 s0
+        specialize(Hliq_delta2 Hinit tr s' tr').
+        assert (interleavedExecution addrs_usr delta_usr addrs_env2 delta_env2  s0 s0
         tr Tusr s' tr').
         eapply interleavedExecution_mono_incl_usr_unchanging;eauto.
         unfold isReachableUnderInterleavedExecution in Hliq_delta2.
@@ -1408,23 +1306,22 @@ End strat_model.
       Qed.
   
       Lemma strat_liquidity_Mono_env_unchanging_empty 
-          (delta_usr : strat) (addrs_usr: list Address)  
-          (delta_env1 : strat) (addrs_env1: list Address) 
-          (delta_env2 : strat) (addrs_env2: list Address) :
+      (addrs_usr: list Address) (delta_usr : strat addrs_usr) 
+      (addrs_env1: list Address)   (delta_env1 : strat addrs_env1) 
+      (addrs_env2: list Address)  (delta_env2 : strat addrs_env2) :
         forall s0 c caddr, 
-          wellDefinedSystem delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0 ->
-          wellDefinedSystem delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
-          is_empty_strat delta_env1 addrs_env1 ->
-          strat_subset_strict delta_env1 addrs_env1 delta_env2 addrs_env2 s0 -> 
-          strat_liquidity delta_usr addrs_usr delta_env2 addrs_env2 caddr c s0 ->
-          strat_liquidity delta_usr addrs_usr delta_env1 addrs_env1 caddr c s0.
+          is_init_state c caddr s0 ->
+          is_empty_strat addrs_env1 delta_env1  ->
+          strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0->
+          strat_liquidity addrs_usr delta_usr  addrs_env2 delta_env2 c caddr  s0 ->
+          strat_liquidity addrs_usr delta_usr  addrs_env1 delta_env1 c caddr  s0.
       Proof.
-        intros * Hwell_sys1 Hwell_sys2 Hstrat_refines Hliq_delta2.
+        intros * Hinit Hstrat_refines Hliq_delta2.
         unfold strat_liquidity in *.
         intros.
         unfold isReachableUnderInterleavedExecution in H5.
-        specialize(H3 Hwell_sys2 tr s' tr').
-        assert (interleavedExecution delta_usr addrs_usr delta_env2 addrs_env2 s0 s0
+        specialize(H3 Hinit tr s' tr').
+        assert (interleavedExecution addrs_usr delta_usr addrs_env2 delta_env2  s0 s0
         tr Tusr s' tr').
         eapply interleavedExecution_mono_incl_usr_unchanging;eauto.
         unfold isReachableUnderInterleavedExecution in Hliq_delta2.
@@ -1517,7 +1414,6 @@ End strat_model.
     eapply ChainedList.clist_app;eauto.
   Qed.
 
-
   Lemma reachable_via_step : 
     forall c caddr init from to,
       transition_reachable c caddr init from -> 
@@ -1600,11 +1496,11 @@ End strat_model.
                 transition_trans_through 
                 init_ready: core.
 
-  Hint Unfold maxMultiStratDrive : core.
+  (* Hint Unfold maxMultiStratDrive : core. *)
 
   Local Open Scope nat.
 
-  Lemma delta_all_is_wellStrat:
+  (* Lemma delta_all_is_wellStrat:
     forall delta addrs contract caddr s0 ,
       is_init_state contract caddr s0 ->
       is_complete_strategy delta addrs contract caddr s0 ->
@@ -1612,7 +1508,7 @@ End strat_model.
     Proof.
       intros * H_init H_complete_strategy.
       edestruct H_complete_strategy;eauto.
-    Qed.
+    Qed. *)
 
     Lemma multiStratDrive_n_zero_s_eq:
       forall s0 s s' tr tr' n delta addrs,
@@ -1642,7 +1538,7 @@ End strat_model.
     lia. 
   Qed.
 
-
+(* 
   Lemma delta_empty_is_wellStrat delta addrs contract caddr s0 :
     is_empty_strat delta addrs -> 
     wellStrat delta addrs contract caddr s0.
@@ -1662,7 +1558,7 @@ End strat_model.
       specialize(H3 s0 s tr_s).
       rewrite H3 in H4.
       inversion H4.
-    Qed.
+    Qed. *)
 
 
     Lemma multiSuccTrace_delta_empty_refl_multr :
@@ -1713,9 +1609,9 @@ End strat_model.
   Qed.
 
     Lemma multiSuccTrace_delta_empty_refl_multr_s_tr :
-    forall (s0 s : ChainState) (tr : trace(s0,s)) (s' : ChainState) (tr' : trace(s0 ,s')) delta addrs n,
-      delta s0 s tr addrs = [] ->
-      multiStratDrive delta addrs s0 s tr s' tr' n ->
+    forall (s0 s : ChainState) (tr : trace(s0,s)) (s' : ChainState) (tr' : trace(s0 ,s')) addrs delta  n,
+      delta s0 s tr = [] ->
+      multiStratDrive addrs delta  s0 s tr s' tr' n ->
       s = s' /\ existT s tr = existT s' tr'.
     Proof.
       intros.
@@ -1725,7 +1621,7 @@ End strat_model.
       subst.
       unfold stratDrive in H5.
       do 4 destruct H5.
-      assert(delta s0 s' tr' addrs = []).
+      assert(delta s0 s' tr' = []).
       {
         inversion H7.
         eauto.
@@ -1765,12 +1661,12 @@ End strat_model.
 
     Lemma transition_reachable_can_Inter_usr_all:
       forall s0 s (tr:trace(s0,s0)) c caddr delta_usr delta_env addrs_usr addrs_env,
-        is_complete_strategy delta_usr addrs_usr c caddr s0->
-        is_empty_strat delta_env addrs_env ->
+        is_complete_strategy addrs_usr delta_usr  c caddr s0->
+        is_empty_strat addrs_env delta_env  ->
         is_init_state c caddr s0  ->
         transition_reachable c caddr s0 s ->
         exists (trace:trace(s0,s)),
-          interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s0 tr Tusr s trace.
+          interleavedExecution addrs_usr delta_usr addrs_env delta_env  s0 s0 tr Tusr s trace.
     Proof.
       intros s0 s tr c caddr delta_usr delta_env addrs_usr addrs_env
       H_complete_strategy H_empty_delta H_init_state H_transition_reachable.
@@ -1794,14 +1690,14 @@ End strat_model.
           {
             eauto.
           } *)
-          assert(In a (delta_usr from mid tr' addrs_usr)).
+          assert(In a (delta_usr from mid tr')).
           {
             unfold is_complete_strategy in H_complete_strategy.
             destruct_and_split.
-            specialize(H8 mid to tr' a H5).
+            specialize(H_complete_strategy mid to tr' a H5).
             eauto.
           }
-          assert(stratDrive from delta_usr addrs_usr mid tr' to tr'').
+          assert(stratDrive  addrs_usr delta_usr from mid tr' to tr'').
           {
             unfold stratDrive.
             exists a , H4, H5.
@@ -1810,7 +1706,7 @@ End strat_model.
             eauto.
           }
           eapply ISU_Step in H8;eauto.
-          assert (multiStratDrive delta_env addrs_env from to tr'' to tr'' 0).
+          assert (multiStratDrive addrs_env delta_env  from to tr'' to tr'' 0).
           eapply MS_Refl.
           eapply ISE_Step in H9;eauto.
         Qed.
@@ -1819,7 +1715,7 @@ End strat_model.
     Lemma stratDrive_reachable_via :
       forall (s0 s s' : ChainState) tr_s delta addrs c caddr tr_s' ,
         transition_reachable c caddr s0 s ->
-        stratDrive s0 delta addrs s tr_s s' tr_s' ->
+        stratDrive addrs delta  s0  s tr_s s' tr_s' ->
         reachable_via c caddr s0 s s'.
     Proof.
       intros s0 s s' tr_s delta addrs c caddr tr_s' H_transition_reachable H_stratDrive.
@@ -1831,15 +1727,15 @@ End strat_model.
   Lemma UserLiquidatesNSteps_can_reachable_via :
     forall delta_usr delta_env addrs_usr addrs_env c caddr s0 s s' tr_s tr_s' ,
       is_init_state c caddr s0 ->
-      wellStrat delta_usr addrs_usr c caddr s0 ->
-      wellStrat delta_env addrs_env c caddr s0->
-      UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr s0 s  tr_s s' tr_s' ->
+      (* wellStrat delta_usr addrs_usr c caddr s0 -> *)
+      (* wellStrat delta_env addrs_env c caddr s0-> *)
+      UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env caddr s0 s tr_s s' tr_s' ->
       reachable_via c caddr s0 s s'.
   Proof.
-    intros * Hinit Hwell_usr Hwell_env Husr_liq.
-    eapply (env_mut delta_usr addrs_usr delta_env addrs_env caddr s0 
-        (fun s tr_s  s' tr_s' (_ : envProgress_Mutual delta_usr addrs_usr delta_env addrs_env caddr  s0 s tr_s  s' tr_s') => is_init_state c caddr s0 -> reachable_via c caddr s0 s s')
-        (fun  s tr_s  s' tr_s' (_ : UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr  s0 s tr_s  s' tr_s') => is_init_state c caddr s0 -> reachable_via c caddr s0 s s')
+    intros * Hinit Husr_liq.
+    eapply (env_mut addrs_usr delta_usr addrs_env delta_env caddr s0  
+        (fun s tr_s  s' tr_s' (_ : envProgress_Mutual addrs_usr delta_usr addrs_env delta_env caddr s0 s tr_s  s' tr_s') => is_init_state c caddr s0 -> reachable_via c caddr s0 s s')
+        (fun  s tr_s  s' tr_s' (_ : UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env caddr s0 s tr_s  s' tr_s') => is_init_state c caddr s0 -> reachable_via c caddr s0 s s')
         );intros;eauto.
         - intros.
           specialize(H3 s1 tr 0).
@@ -1863,18 +1759,18 @@ End strat_model.
   Lemma UserLiquidatesNSteps_can_liquid :
     forall delta_usr delta_env addrs_usr addrs_env c caddr s0 s s' tr_s tr_s' ,
       is_init_state c caddr s0 ->
-      wellStrat delta_usr addrs_usr c caddr s0->
-      wellStrat delta_env addrs_env c caddr s0->
-      UserLiquidatesNSteps delta_usr addrs_usr delta_env  addrs_env  caddr s0 s tr_s  s' tr_s' ->
+      (* wellStrat delta_usr addrs_usr c caddr s0->
+      wellStrat delta_env addrs_env c caddr s0-> *)
+      UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env    caddr s0 s tr_s  s' tr_s' ->
       funds s' caddr = 0%Z.
   Proof.
-    intros * Hinit Hwell_usr Hwell_env Husr_liq.
-    eapply (env_mut delta_usr addrs_usr delta_env addrs_env caddr s0
+    intros * Hinit  Husr_liq.
+    eapply (env_mut addrs_usr delta_usr addrs_env delta_env caddr s0 
         (* P : For interleavedExecutionEnv *)
-        (fun s tr_s  s' tr_s' (_ : envProgress_Mutual delta_usr addrs_usr delta_env addrs_env caddr  s0 s tr_s  s' tr_s') =>
+        (fun s tr_s  s' tr_s' (_ : envProgress_Mutual addrs_usr delta_usr addrs_env delta_env caddr s0 s tr_s  s' tr_s') =>
         funds s' caddr = 0%Z)
         (* P0 : For interleavedExecutionUsr *)
-        (fun s tr_s  s' tr_s' (_ : UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr  s0 s tr_s  s' tr_s') =>
+        (fun s tr_s  s' tr_s' (_ : UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env caddr s0 s tr_s  s' tr_s') =>
         funds s' caddr = 0%Z)
         );eauto.
     - intros.
@@ -1885,9 +1781,9 @@ End strat_model.
 
 
   Lemma transition_reachable_stratDrive_transition_reachable_through:
-    forall s0 s tr_s  delta s' c  caddr tr' addrs,
+    forall s0 s tr_s addrs delta s' c caddr tr' ,
       transition_reachable c caddr s0 s ->
-      stratDrive s0 delta addrs s tr_s s' tr' ->
+      stratDrive addrs delta s0 s tr_s s' tr' ->
       reachable_via c caddr s0 s s'.
   Proof.
     intros * H_transition_reachable H_stratDrive.
@@ -1929,7 +1825,7 @@ End strat_model.
     unfold transition in H_transition.
     destruct (queue_isb_empty s) eqn : H_queue;try congruence.
     destruct (is_call_act a) eqn : H_call ;try congruence.
-    destruct (add_block_exec true s (get_valid_header s) [a]) eqn : H_exec;try congruence.
+    destruct (evaluate_action true s (get_valid_header s) [a]) eqn : H_exec;try congruence.
     eapply add_block_next_state_queue_empty in H_exec;eauto.
     inversion H_transition;subst. eauto.
   Qed.
@@ -2022,7 +1918,7 @@ End strat_model.
   Lemma readyToStepState_stratDrive_readyToStepState :
     forall (s0 s s' : ChainState) (tr_s : trace(s0,s)) contract caddr delta tr_s' addrs,
       readyToStepState  contract caddr s0 s  ->
-      stratDrive s0 delta addrs  s  tr_s s' tr_s' ->
+      stratDrive addrs delta  s0 s  tr_s s' tr_s' ->
       readyToStepState contract caddr s0 s'.
   Proof.
     intros.
@@ -2059,9 +1955,9 @@ End strat_model.
 
 
     Lemma readyToStepState_multiStratDrive_readyToStepState:
-      forall (s0 s s' : ChainState) (tr : trace(s0,s)) (delta : strat) addrs contract caddr tr' n,
+      forall (s0 s s' : ChainState) (tr : trace(s0,s)) delta addrs contract caddr tr' n,
         readyToStepState contract caddr s0 s  ->
-        multiStratDrive delta addrs s0 s tr s' tr' n ->
+        multiStratDrive addrs delta  s0 s tr s' tr' n ->
         readyToStepState contract caddr s0 s'  .
     Proof.
         intros.
@@ -2070,9 +1966,9 @@ End strat_model.
     Qed.
 
     Lemma readyToStepState_interleavedExecution_readyToStepState:
-      forall (delta_usr delta_env : strat) (addrs_usr addrs_env : list Address) (s0 s : ChainState) (tr : TransitionTrace s0 s) (s' : ChainState) (tr' : TransitionTrace s0 s') contract caddr flag,
+      forall delta_usr delta_env (addrs_usr addrs_env : list Address) (s0 s : ChainState) (tr : TransitionTrace s0 s) (s' : ChainState) (tr' : TransitionTrace s0 s') contract caddr flag,
         readyToStepState contract caddr s0 s ->
-        interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s tr flag s' tr' ->
+        interleavedExecution addrs_usr delta_usr addrs_env delta_env  s0 s tr flag s' tr' ->
         readyToStepState contract caddr s0 s'.
     Proof.
       intros delta_usr delta_env addrs_usr addrs_env s0 s tr s' tr' contract caddr flag H_readyToStepState H_interaction .
@@ -2083,7 +1979,7 @@ End strat_model.
       - eapply readyToStepState_stratDrive_readyToStepState in H3;eauto.
     Qed.
 
-    Lemma is_delta_empty_max_succ:
+    (* Lemma is_delta_empty_max_succ:
       forall delta addrs n,
         is_empty_strat delta addrs ->
         strat_finite delta addrs n.
@@ -2101,15 +1997,13 @@ End strat_model.
       split.
       eapply MS_Refl.
       eauto.
-
-
-    Qed.
+    Qed. *)
 
 
     Lemma readyToStepState_multiStratDrive_reachable_via:
-    forall (s0 s s' : ChainState) (delta : strat) addrs c caddr tr tr' n,
+    forall (s0 s s' : ChainState) delta  addrs c caddr tr tr' n,
       readyToStepState c caddr s0 s   ->
-      multiStratDrive delta addrs s0 s tr s' tr' n ->
+      multiStratDrive addrs delta  s0 s tr s' tr' n ->
       reachable_via c caddr s0 s s'.
     Proof.
         intros.
@@ -2123,7 +2017,7 @@ End strat_model.
           eauto.
           eauto.    
         }
-        assert(Hsss:stratDrive s0 delta addrs s'  tr' s''  tr'') by eauto.
+        assert(Hsss:stratDrive addrs delta  s0 s'  tr' s''  tr'') by eauto.
         unfold stratDrive in H7.
         destruct H7.
         destruct_and_split.
@@ -2168,9 +2062,9 @@ End strat_model.
     Qed.
 
     Lemma reachable_via_multiStratDrive_reachable_via:
-    forall (s0 s s' s'' : ChainState) (delta : strat) addrs c caddr tr' tr'' n,
+    forall (s0 s s' s'' : ChainState) delta  addrs c caddr tr' tr'' n,
       reachable_via c caddr s0 s s'  ->
-      multiStratDrive delta addrs s0 s' tr' s'' tr'' n ->
+      multiStratDrive addrs delta  s0 s' tr' s'' tr'' n ->
       reachable_via c caddr s0 s s''.
     Proof.
       intros * H_reachable_via H_multi.
@@ -2196,7 +2090,7 @@ End strat_model.
     Lemma reachable_via_stratDrive_reachable_via :
       forall s0 s s' s'' tr' tr'' delta addrs c caddr,
         reachable_via c caddr s0 s s' ->
-        stratDrive s0 delta addrs s'  tr' s''  tr'' ->
+        stratDrive  addrs delta  s0 s'  tr' s''  tr'' ->
         reachable_via c caddr s0 s s''.
     Proof.
       intros * H_reachable_via H_stratDrive.
@@ -2223,9 +2117,9 @@ End strat_model.
     Lemma BL_implies_SL_with_empty_env_and_complete_user:
       forall delta_usr delta_env addrs_usr addrs_env c caddr s0,
         is_init_state c caddr s0 ->
-        is_empty_strat delta_env addrs_env->
-        is_complete_strategy delta_usr addrs_usr c caddr s0->
-        strat_liquidity delta_usr addrs_usr delta_env addrs_env caddr c s0 ->
+        is_empty_strat addrs_env delta_env ->
+        is_complete_strategy addrs_usr delta_usr  c caddr s0->
+        strat_liquidity addrs_usr delta_usr addrs_env delta_env  c caddr s0 ->
         base_liquidity c caddr s0.
     Proof.
       intros * H_init H_empty H_complete H_liquidity.
@@ -2241,25 +2135,14 @@ End strat_model.
       eapply (transition_reachable_can_Inter_usr_all s0 s X c caddr delta_usr delta_env)in H';eauto.
       destruct H'.
       unfold strat_liquidity in H_liquidity.
-      assert(Hwell : wellDefinedSystem delta_usr addrs_usr delta_env addrs_env caddr c s0).
-      {
-        unfold wellDefinedSystem.
-        split.
-        eapply delta_all_is_wellStrat;eauto.
-        split.
-        eapply delta_empty_is_wellStrat;eauto.
-        split.
-        
-        eapply is_delta_empty_max_succ;eauto.
-        eauto.
-      }
+      pose proof H_init as Hwell.
       specialize(H_liquidity Hwell X s x).
       rename X into tr_s0.
       rename x into tr_s.
       unfold isReachableUnderInterleavedExecution in H_liquidity.
       specialize(H_liquidity H4).
       decompose_exists.
-      assert(UserLiquidatesNSteps delta_usr addrs_usr delta_env addrs_env caddr s0
+      assert(UserLiquidatesNSteps addrs_usr delta_usr addrs_env delta_env caddr s0
       s tr_s x x0) by eauto.
       eapply UserLiquidatesNSteps_can_reachable_via in H5;eauto.
       eapply UserLiquidatesNSteps_can_liquid in H_liquidity;eauto;eauto.
@@ -2268,10 +2151,6 @@ End strat_model.
       destruct_and_split.
       eauto.
       lia.
-      eapply delta_all_is_wellStrat;eauto.
-      eapply delta_empty_is_wellStrat;eauto.
-      eapply delta_all_is_wellStrat;eauto.
-      eapply delta_empty_is_wellStrat;eauto.
     Qed.
 
     Lemma activest_interactionSuccession_reachable_via delta_usr addrs_usr delta_env addrs_env c caddr:
@@ -2338,10 +2217,10 @@ Qed.
 
   Lemma SL_implies_BL_with_empty_env_and_complete_user:
     forall delta_usr delta_env addrs_usr addrs_env c caddr s0,
-      is_empty_strat delta_env addrs_env ->
-      is_complete_strategy delta_usr addrs_usr c caddr s0 ->
+      is_empty_strat addrs_env delta_env  ->
+      is_complete_strategy addrs_usr delta_usr  c caddr s0 ->
       base_liquidity c caddr s0 ->
-      strat_liquidity delta_usr addrs_usr delta_env addrs_env caddr c s0.
+      strat_liquidity addrs_usr delta_usr addrs_env delta_env  c caddr s0.
   Proof.
       intros * Henv_empty Husr_complete Hbase_liq.
       unfold base_liquidity in Hbase_liq.
@@ -2351,8 +2230,7 @@ Qed.
       rename tr into tr_s0_s0.
       rename tr' into tr_s0_s'.
       rename H4 into H_interleaved.
-      decompose_wellDefinedSystem Hwell_sys.
-      specialize(Hbase_liq s' H_init).
+      specialize(Hbase_liq s' Hwell_sys).
       assert(Hready_state_s':readyToStepState c caddr s0 s' ).
       {
         unfold readyToStepState.
@@ -2416,22 +2294,16 @@ Qed.
           decompose_TransitionStep tl.
           * set(tr_s0_mid:= snoc tr_s0_s' (step_trans a Hcall_to_caddr Htrans)).
             exists (tr_s0_mid).
-            eapply (ULM_Step delta_usr addrs_usr delta_env addrs_env caddr s0 from tr_s0_s' mid mid (snoc tr_s0_s' (step_trans a Hcall_to_caddr Htrans)) tr_s0_mid) ;eauto;try lia.
+            eapply (ULM_Step addrs_usr delta_usr addrs_env delta_env caddr s0 from tr_s0_s' mid mid (snoc tr_s0_s' (step_trans a Hcall_to_caddr Htrans)) tr_s0_mid) ;eauto;try lia.
             **  econstructor;eauto.
-                exists Hcall_to_caddr, Htrans.
-                split.
-                unfold is_complete_strategy in Husr_complete.
-                destruct Husr_complete as [Hwell_usr Hact_in].
-                specialize(Hact_in from mid tr_s0_s' a Htrans).
-                eauto.
-                eauto.
             **  eapply EPM_Base.
                 eauto.
         + assert(H_mid_funds_gt_zero : (funds mid caddr > 0)%Z ).
           {
             assert(tr_s0_mid :trace(s0,mid)) by eapply (snoc tr_s0_s' l).
             assert (H_t:is_init_state c caddr s0) by eauto.
-            decompose_is_init_state H_init.
+
+            decompose_is_init_state H_t.
             assert(tr_s0 : reachable s0) by eauto.
             destruct tr_s0 as [tr_s0].
             assert(Hrc_mid : reachable mid).
@@ -2479,9 +2351,9 @@ Qed.
           assert(tl:TransitionStep from mid) by eauto.
           decompose_TransitionStep tl.
           * set(sn_tr_s0_mid:= snoc tr_s0_s' (step_trans a Hcall_to_caddr Htrans)).
-            assert(Hinter:interleavedExecution delta_usr addrs_usr delta_env addrs_env s0 s0 tr_s0_s0 Tenv mid sn_tr_s0_mid).
+            assert(Hinter:interleavedExecution addrs_usr delta_usr addrs_env delta_env  s0 s0 tr_s0_s0 Tenv mid sn_tr_s0_mid).
             {
-              eapply (ISU_Step delta_usr addrs_usr delta_env addrs_env s0 s0 tr_s0_s0 from mid tr_s0_s' sn_tr_s0_mid).
+              eapply (ISU_Step addrs_usr delta_usr addrs_env delta_env  s0 s0 tr_s0_s0 from mid tr_s0_s' sn_tr_s0_mid).
               intuition.
               unfold stratDrive.
               exists a,Hcall_to_caddr, Htrans.
@@ -2489,22 +2361,17 @@ Qed.
 
               unfold is_complete_strategy in Husr_complete.
               destruct_and_split.
-              specialize(H4 from mid tr_s0_s' a Htrans).
+              specialize(Husr_complete from mid tr_s0_s' a Htrans).
               destruct_and_split.
               eauto.
               eauto.
             }
-            assert(His_r_inter:isReachableUnderInterleavedExecution delta_usr delta_env addrs_usr
-            addrs_env s0 tr_s0_s0 mid sn_tr_s0_mid).
+            assert(His_r_inter:isReachableUnderInterleavedExecution addrs_usr delta_usr addrs_env delta_env   s0 tr_s0_s0 mid sn_tr_s0_mid).
             {
               unfold isReachableUnderInterleavedExecution.
               eauto.
-              assert(multiStratDrive delta_env addrs_env s0 mid sn_tr_s0_mid mid sn_tr_s0_mid 0) by eapply MS_Refl.
+              assert(multiStratDrive addrs_env delta_env  s0 mid sn_tr_s0_mid mid sn_tr_s0_mid 0) by eapply MS_Refl.
               eapply ISE_Step;eauto.
-              (* eapply (empty_strat_passive s0 mid sn_tr_s0_mid)  in Henv_empty.
-              unfold passive_delta in Henv_empty.
-              rewrite  Henv_empty.
-              intuition. *)
             }
             assert(Hvia_mid_mid : reachable_via c caddr s0 mid mid).
             {
@@ -2526,13 +2393,13 @@ Qed.
             (* exists (n+1). *)
             exists x0, x1.
             rename tr_s0_s' into tr_s0_from.
-            eapply (ULM_Step delta_usr addrs_usr delta_env addrs_env caddr s0 from tr_s0_from mid x0 (snoc tr_s0_from (step_trans a Hcall_to_caddr Htrans)) x1) ;eauto;try lia.
+            eapply (ULM_Step addrs_usr delta_usr addrs_env delta_env caddr s0 from tr_s0_from mid x0 (snoc tr_s0_from (step_trans a Hcall_to_caddr Htrans)) x1) ;eauto;try lia.
             unfold stratDrive.
             exists a,Hcall_to_caddr, Htrans.
             intuition.
             unfold is_complete_strategy  in Husr_complete.
-            destruct Husr_complete.
-            specialize(H4 from mid tr_s0_from a Htrans).
+            (* destruct Husr_complete. *)
+            specialize(Husr_complete from mid tr_s0_from a Htrans).
             destruct_and_split.
             eauto.
             eauto.
@@ -2553,10 +2420,10 @@ Qed.
   Lemma SL_equiv_BL_with_empty_env_and_complete_user:
     forall delta_usr delta_env addrs_usr addrs_env c caddr s0,
       is_init_state c caddr s0 ->
-      is_empty_strat delta_env addrs_env ->
-      is_complete_strategy delta_usr addrs_usr c caddr s0 ->
-      base_liquidity c caddr s0 <->
-      strat_liquidity delta_usr addrs_usr delta_env addrs_env caddr c s0.
+      is_empty_strat addrs_env delta_env  ->
+      is_complete_strategy addrs_usr delta_usr  c caddr s0 ->
+      (base_liquidity c caddr s0 <->
+        strat_liquidity addrs_usr delta_usr addrs_env delta_env c caddr s0).
   Proof.
     intros.
     split.
@@ -2577,26 +2444,26 @@ Qed.
       ~(inhabited(trace(s ,s')) /\ funds s' caddr = 0)%Z).
 
 
-Lemma base_liquidity_equiv_not_base_liquidity :
-  forall c caddr s0,
-  is_init_state c caddr s0 ->
-  base_liquidity c caddr s0 ->
-    ~ not_base_liquidity c caddr s0 .
-Proof.
-  intros c caddr s0 Hbase Hnot_base.
-  unfold base_liquidity  in Hnot_base.
-  unfold not_base_liquidity .
-  unfold not.
-  intros.
-  specialize(H3 Hbase).
-  destruct_and_split.
-  specialize(Hnot_base x Hbase H3).
-  destruct_and_split.
-  specialize(H4 x0).
-  destruct_and_split.
-  eapply H4.
-  eauto.
-Qed.
+  Lemma base_liquidity_equiv_not_base_liquidity :
+    forall c caddr s0,
+    is_init_state c caddr s0 ->
+    base_liquidity c caddr s0 ->
+      ~ not_base_liquidity c caddr s0 .
+  Proof.
+    intros c caddr s0 Hbase Hnot_base.
+    unfold base_liquidity  in Hnot_base.
+    unfold not_base_liquidity .
+    unfold not.
+    intros.
+    specialize(H3 Hbase).
+    destruct_and_split.
+    specialize(Hnot_base x Hbase H3).
+    destruct_and_split.
+    specialize(H4 x0).
+    destruct_and_split.
+    eapply H4.
+    eauto.
+  Qed.
 
 Section normal.
 
@@ -2848,9 +2715,9 @@ Global Ltac decompose_transition H :=
   | context[let header := get_valid_header ?state in _] =>
       let Hheader := fresh "Hheader" in
       remember (get_valid_header state) as header eqn:Hheader
-  | context[match add_block_exec ?mode ?state ?header ?acts with | Ok _ => _ | Err _ => _ end] =>
+  | context[match evaluate_action ?mode ?state ?header ?acts with | Ok _ => _ | Err _ => _ end] =>
       let Hexec := fresh "Hexec" in
-      destruct (add_block_exec mode state header acts) eqn:Hexec; try congruence
+      destruct (evaluate_action mode state header acts) eqn:Hexec; try congruence
   | context[match ?res with | Ok _ => _ | Err _ => _ end] =>
       let Hres := fresh "Hres" in
       destruct res eqn:Hres; try congruence
@@ -2899,7 +2766,7 @@ Global Ltac decompose_exists :=
 
 Global  Ltac decompose_stratDrive H :=
     match type of H with
-    | stratDrive ?s0 ?delta ?addrs ?s ?tr ?s' ?tr' =>
+    | stratDrive ?addrs ?delta  ?s0 ?s ?tr ?s' ?tr' =>
         unfold stratDrive in H;
         let a := fresh "a" in
         let H_trans := fresh "H_transition" in
@@ -2928,26 +2795,3 @@ Global Ltac solve_facts :=
           cbn; subst
        ]
     ].
-
-Global Ltac decompose_wellStrat H :=
-    unfold wellStrat in H;
-    let Hs0 := fresh "Hs0" in
-    let Hs := fresh "Hs" in
-    let Htr_s := fresh "Htr_s" in
-    intros Hs0 Hs Htr_s;
-    match type of H with
-    | context[let delta_actions := ?delta _ _ _ _ in _] =>
-        let Hda := fresh "Hda" in
-        set (delta_actions := delta _ _ _ _) in H;
-        unfold delta_actions in H
-    | _ => idtac
-    end;
-    match type of H with
-    | _ -> Forall _ _ =>
-        let Hq := fresh "Hq" in
-        intros Hq; specialize (H Hq)
-    | Forall _ ?l =>
-        let Ha := fresh "Ha" in
-        apply Forall_forall in H; intros Ha
-    | _ => idtac
-    end.

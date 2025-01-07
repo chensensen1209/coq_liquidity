@@ -296,9 +296,57 @@ Section Liqiuidity.
   Hypothesis user1_eoa : address_not_contract user1 = true.
   Hypothesis user2_eoa : address_not_contract user2 = true.
 
+  Variable attacker : Address.
+  Variable honest : Address.
+
+  Hypothesis attacker_eoa : address_not_contract attacker = true.
+  Hypothesis honest_eoa : address_not_contract honest = true.
+
+  Variable attacker_pass : N.
+
+  Variable honest_pass : N.
+
+  Definition attacker_call_SetPass (state : State): Action :=
+    build_call attacker caddr 1 (SetPass (sha3 attacker_pass)).
+
+  Definition honest_call_SetPass (state : State): Action :=
+    build_call honest caddr 1 (SetPass (sha3 honest_pass)).
+
+  (* Definition m := (sha3 2%N).
+
+  Definition pass := 2%N.
+  
+  Goal m = sha3 pass.
+  Proof.
+    unfold m.
+    unfold pass.
+    eauto.
+  Qed.  *)
+
+  Definition honest_call_getGift (state : State): Action :=
+    build_call honest caddr 1 (GetGift honest_pass).
+
+  Definition attacker_strat : (strat miner [attacker]) :=
+    fun s0 s tr =>
+      match get_contract_state s caddr with
+      | Some state =>
+          if ((state.(hashPass) =? 0)%N) then
+            [attacker_call_SetPass state]
+          else
+            []
+      | None => []
+      end.
+  
+  Definition honest_strat : (strat miner [honest]) :=
+    fun s0 s tr =>
+      match get_contract_state s caddr with
+      | Some state =>
+        [honest_call_SetPass state;honest_call_getGift state]
+      | None => []
+      end.
+
   Definition user_call_GetGift (state : State): Action :=
     build_call user1 caddr 0 (GetGift correct_pass).
-
 
   Lemma address_not_contract_negb:
     forall addr,
@@ -483,7 +531,7 @@ Section Liqiuidity.
     destruct H as [Htrc_s Hqueue_s].
     rewrite Hqueue_s.
     rewrite user_call_GetGift_is_call_act.
-    unfold add_block_exec.
+    unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold user_call_GetGift .
     simpl.
@@ -765,9 +813,9 @@ Section Liqiuidity.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
     rewrite Hact_call in Htrans.
-    destruct (add_block_exec true s (get_valid_header miner s)
+    destruct (evaluate_action true s (get_valid_header miner s)
     [user_call_GetGift cstate ]) eqn : H_exec;try congruence.
-    unfold add_block_exec in H_exec.
+    unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [user_call_GetGift cstate]) ; try congruence.
     destruct (find_invalid_root_action [user_call_GetGift cstate]);try congruence.
@@ -1326,6 +1374,8 @@ Section Liqiuidity.
       intuition.
       eauto.
   Qed.
+
+
 
 End Liqiuidity.
 

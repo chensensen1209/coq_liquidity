@@ -950,7 +950,7 @@ Qed.
     destruct H as [Htrc_s Hqueue_s].
     rewrite Hqueue_s.
     rewrite seller_call_MarkAsShipped_is_call_act.
-    unfold add_block_exec.
+    unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold seller_call_MarkAsShipped .
     simpl.
@@ -1127,7 +1127,7 @@ Qed.
     destruct H as [Htrc_s Hqueue_s].
     rewrite Hqueue_s.
     rewrite buyer_call_AcceptItem_is_call_act.
-    unfold add_block_exec.
+    unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold buyer_call_AcceptItem .
     simpl.
@@ -1421,7 +1421,7 @@ Qed.
     destruct H as [Htrc_s Hqueue_s].
     rewrite Hqueue_s.
     rewrite buyer_call_RejectItem_is_call_act.
-    unfold add_block_exec.
+    unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold buyer_call_RejectItem .
     simpl.
@@ -1585,7 +1585,7 @@ Qed.
     destruct H as [Htrc_s Hqueue_s].
     rewrite Hqueue_s.
     rewrite buyer_call_RejectItem_is_call_act.
-    unfold add_block_exec.
+    unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold buyer_call_RejectItem .
     simpl.
@@ -1780,7 +1780,7 @@ Qed.
     destruct H as [Htrc_s Hqueue_s].
     rewrite Hqueue_s.
     rewrite seller_call_RejectItem_is_call_act.
-    unfold add_block_exec.
+    unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold seller_call_RejectItem .
     simpl.
@@ -1944,7 +1944,7 @@ Qed.
     destruct H as [Htrc_s Hqueue_s].
     rewrite Hqueue_s.
     rewrite seller_call_RejectItem_is_call_act.
-    unfold add_block_exec.
+    unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold seller_call_RejectItem .
     simpl.
@@ -2137,7 +2137,7 @@ Qed.
     destruct H as [Htrc_s Hqueue_s].
     rewrite Hqueue_s.
     rewrite arbitrator_call_Arbitrate_is_call_act.
-    unfold add_block_exec.
+    unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold arbitrator_call_Arbitrate .
     simpl.
@@ -2668,9 +2668,9 @@ Qed.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
     rewrite Hact_call in Htrans.
-    destruct (add_block_exec true s (get_valid_header miner s)
+    destruct (evaluate_action true s (get_valid_header miner s)
     [seller_call_MarkAsShipped cstate]) eqn : H_exec;try congruence.
-    unfold add_block_exec in H_exec.
+    unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [seller_call_MarkAsShipped cstate]) ; try congruence.
     destruct (find_invalid_root_action [seller_call_MarkAsShipped cstate]);try congruence.
@@ -3153,9 +3153,9 @@ Qed.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
     rewrite Hact_call in Htrans.
-    destruct (add_block_exec true s (get_valid_header miner s)
+    destruct (evaluate_action true s (get_valid_header miner s)
     [buyer_call_AcceptItem cstate ]) eqn : H_exec;try congruence.
-    unfold add_block_exec in H_exec.
+    unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [buyer_call_AcceptItem cstate]) ; try congruence.
     destruct (find_invalid_root_action [buyer_call_AcceptItem cstate]);try congruence.
@@ -3745,9 +3745,9 @@ Qed.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
     rewrite Hact_call in Htrans.
-    destruct (add_block_exec true s (get_valid_header miner s)
+    destruct (evaluate_action true s (get_valid_header miner s)
     [buyer_call_RejectItem cstate]) eqn : H_exec;try congruence.
-    unfold add_block_exec in H_exec.
+    unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [buyer_call_RejectItem cstate]) ; try congruence.
     destruct (find_invalid_root_action [buyer_call_RejectItem cstate]);try congruence.
@@ -4079,9 +4079,9 @@ Qed.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
     rewrite Hact_call in Htrans.
-    destruct (add_block_exec true s (get_valid_header miner s)
+    destruct (evaluate_action true s (get_valid_header miner s)
     [seller_call_RejectItem cstate]) eqn : H_exec;try congruence.
-    unfold add_block_exec in H_exec.
+    unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [seller_call_RejectItem cstate]) ; try congruence.
     destruct (find_invalid_root_action [seller_call_RejectItem cstate]);try congruence.
@@ -4416,9 +4416,9 @@ Qed.
       unfold queue_isb_empty in Htrans.
       rewrite Hqueue_s in Htrans.
       rewrite Hact_call in Htrans.
-      destruct (add_block_exec true s (get_valid_header miner s)
+      destruct (evaluate_action true s (get_valid_header miner s)
       [arbitrator_call_Arbitrate cstate true ]) eqn : H_exec;try congruence.
-      unfold add_block_exec in H_exec.
+      unfold evaluate_action in H_exec.
       rewrite get_valid_header_is_valid_header in H_exec.
       destruct (find_origin_neq_from [arbitrator_call_Arbitrate cstate true]) ; try congruence.
       destruct (find_invalid_root_action [arbitrator_call_Arbitrate cstate true]);try congruence.
@@ -4879,9 +4879,9 @@ Qed.
       unfold queue_isb_empty in Htrans.
       rewrite Hqueue_s in Htrans.
       rewrite Hact_call in Htrans.
-      destruct (add_block_exec true s (get_valid_header miner s)
+      destruct (evaluate_action true s (get_valid_header miner s)
       [arbitrator_call_Arbitrate cstate false ]) eqn : H_exec;try congruence.
-      unfold add_block_exec in H_exec.
+      unfold evaluate_action in H_exec.
       rewrite get_valid_header_is_valid_header in H_exec.
       destruct (find_origin_neq_from [arbitrator_call_Arbitrate cstate false]) ; try congruence.
       destruct (find_invalid_root_action [arbitrator_call_Arbitrate cstate false]);try congruence.
@@ -5710,8 +5710,10 @@ Qed.
       rewrite HcurrentPhase;eauto.
   Qed.
 
-  Definition good_seller : (strat miner) :=
-    fun s0 s tr addrs =>
+  Definition good_seller_addrs := [useller;uarbitrator].
+
+  Definition good_seller : (strat miner good_seller_addrs) :=
+    fun s0 s tr  =>
       match get_contract_state s caddr with
       | Some state =>
           match state.(currentPhase) with
@@ -5727,10 +5729,11 @@ Qed.
       | None => []
       end.
 
-  Definition good_seller_addrs := [useller;uarbitrator].
 
-  Definition bad_seller : (strat miner) :=
-    fun s0 s tr addrs =>
+  Definition bad_seller_addrs := [useller].
+
+  Definition bad_seller : (strat miner bad_seller_addrs) :=
+    fun s0 s tr =>
       match get_contract_state s caddr with
       | Some state =>
           match state.(currentPhase) with
@@ -5745,10 +5748,10 @@ Qed.
       | None => []
       end.
 
-  Definition bad_seller_addrs := [useller].
+  Definition good_buyer_addrs := [ubuyer;uarbitrator].
 
-  Definition good_buyer : (strat miner) :=
-    fun s0 s tr addrs =>
+  Definition good_buyer : (strat miner good_buyer_addrs) :=
+    fun s0 s tr =>
       match get_contract_state s caddr with
       | Some state =>
           match state.(currentPhase) with
@@ -5763,11 +5766,12 @@ Qed.
           end
       | None => []
       end.
+    
+  Definition bad_buyer_addrs := [ubuyer].
+    
 
-  Definition good_buyer_addrs := [ubuyer;uarbitrator].
-
-  Definition bad_buyer : (strat miner) :=
-    fun s0 s tr addrs =>
+  Definition bad_buyer : (strat miner bad_buyer_addrs) :=
+    fun s0 s tr =>
       match get_contract_state s caddr with
       | Some state =>
           match state.(currentPhase) with
@@ -5781,11 +5785,9 @@ Qed.
           end
       | None => []
       end.
-    
-  Definition bad_buyer_addrs := [ubuyer].
-    
+
   Lemma escrow_satisfy_strat_liquidity_with_good_buyer_bad_seller:
-    strat_liquidity miner good_buyer good_buyer_addrs bad_seller bad_seller_addrs caddr contract s0.
+    strat_liquidity miner good_buyer_addrs good_buyer bad_seller_addrs  bad_seller contract caddr  s0.
   Proof.
     unfold strat_liquidity.
     intros.
@@ -5840,7 +5842,7 @@ Qed.
         eapply buyer_call_RejectItem_is_call_act.
       }
       set(tr'':=(snoc tr' (step_trans miner (buyer_call_RejectItem cstate) Hact_call1 Htranss'))).
-      assert (Hsd1:stratDrive miner s0 good_buyer good_buyer_addrs s tr' s' tr'').
+      assert (Hsd1:stratDrive miner good_buyer_addrs good_buyer  s0 s tr' s' tr'').
       {
         econstructor.
         exists Hact_call1,Htranss'.
@@ -5899,7 +5901,7 @@ Qed.
         eapply arbitrator_call_Arbitrate_is_call_act.
       }
       set(tr''':=(snoc tr'' (step_trans miner (arbitrator_call_Arbitrate cstate' true) Hact_call2 Htranss''))).
-      assert (Hsd2:stratDrive miner s0 good_buyer good_buyer_addrs s' tr'' s'' tr''').
+      assert (Hsd2:stratDrive miner good_buyer_addrs good_buyer  s0 s' tr'' s'' tr''').
       {
         econstructor.
         exists Hact_call2,Htranss''.
@@ -6008,7 +6010,7 @@ Qed.
         eapply buyer_call_AcceptItem_is_call_act.
       }
       set(tr'':=(snoc tr' (step_trans miner (buyer_call_AcceptItem cstate) Hact_call1 Htranss'))).
-      assert (Hsd1:stratDrive miner s0 good_buyer good_buyer_addrs s tr' s' tr'').
+      assert (Hsd1:stratDrive miner good_buyer_addrs good_buyer  s0  s tr' s' tr'').
       {
         econstructor.
         exists Hact_call1,Htranss'.
@@ -6103,7 +6105,7 @@ Qed.
         eapply arbitrator_call_Arbitrate_is_call_act.
       }
       set(tr'':=(snoc tr' (step_trans miner (arbitrator_call_Arbitrate cstate true) Hact_call2 Htranss'))).
-      assert (Hsd2:stratDrive miner s0 good_buyer good_buyer_addrs s tr' s' tr'').
+      assert (Hsd2:stratDrive miner  good_buyer_addrs good_buyer s0  s tr' s' tr'').
       {
         econstructor.
         exists Hact_call2,Htranss'.
@@ -6171,7 +6173,7 @@ Qed.
   Qed.
 
   Lemma escrow_satisfy_strat_liquidity_with_good_seller_bad_buyer:
-    strat_liquidity miner good_seller good_seller_addrs bad_buyer bad_buyer_addrs caddr contract s0.
+    strat_liquidity miner good_seller_addrs good_seller bad_buyer_addrs  bad_buyer contract caddr  s0.
   Proof.
     unfold strat_liquidity.
     intros.
@@ -6226,7 +6228,7 @@ Qed.
         eapply seller_call_MarkAsShipped_is_call_act.
       }
       set(tr'':=(snoc tr' (step_trans miner (seller_call_MarkAsShipped cstate) Hact_call1 Htranss'))).
-      assert (Hsd1:stratDrive miner s0 good_seller good_seller_addrs s tr' s' tr'').
+      assert (Hsd1:stratDrive miner good_seller_addrs good_seller  s0 s tr' s' tr'').
       {
         econstructor.
         exists Hact_call1,Htranss'.
@@ -6285,7 +6287,7 @@ Qed.
         eapply seller_call_RejectItem_is_call_act.
       }
       set(tr''':=(snoc tr'' (step_trans miner (seller_call_RejectItem cstate') Hact_call2 Htranss''))).
-      assert (Hsd2:stratDrive miner s0 good_seller good_seller_addrs s' tr'' s'' tr''').
+      assert (Hsd2:stratDrive miner   good_seller_addrs good_seller s0 s' tr'' s'' tr''').
       {
         econstructor.
         exists Hact_call2,Htranss''.
@@ -6345,7 +6347,7 @@ Qed.
         eapply (seller_call_RejectItem_is_call_act cstate'').
       }
       set(tr'''':=(snoc tr''' (step_trans miner (arbitrator_call_Arbitrate cstate' true) Hact_call3 Htranss'''))).
-      assert (Hsd3:stratDrive miner s0 good_seller good_seller_addrs s'' tr''' s''' tr'''').
+      assert (Hsd3:stratDrive miner good_seller_addrs good_seller   s0 s'' tr''' s''' tr'''').
       {
         econstructor.
         exists Hact_call3,Htranss'''.
@@ -6488,7 +6490,7 @@ Qed.
         eapply seller_call_RejectItem_is_call_act.
       }
       set(tr'':=(snoc tr' (step_trans miner (seller_call_RejectItem cstate) Hact_call1 Htranss'))).
-      assert (Hsd1:stratDrive miner s0 good_seller good_seller_addrs s tr' s' tr'').
+      assert (Hsd1:stratDrive miner  good_seller_addrs good_seller s0 s tr' s' tr'').
       {
         econstructor.
         exists Hact_call1,Htranss'.
@@ -6547,7 +6549,7 @@ Qed.
         eapply arbitrator_call_Arbitrate_is_call_act.
       }
       set(tr''':=(snoc tr'' (step_trans miner (arbitrator_call_Arbitrate cstate' true) Hact_call2 Htranss''))).
-      assert (Hsd2:stratDrive miner s0 good_seller good_seller_addrs s' tr'' s'' tr''').
+      assert (Hsd2:stratDrive miner  good_seller_addrs good_seller s0 s' tr'' s'' tr''').
       {
         econstructor.
         exists Hact_call2,Htranss''.
@@ -6669,7 +6671,7 @@ Qed.
         eapply arbitrator_call_Arbitrate_is_call_act.
       }
       set(tr'':=(snoc tr' (step_trans miner (arbitrator_call_Arbitrate cstate true) Hact_call2 Htranss'))).
-      assert (Hsd2:stratDrive miner s0 good_seller good_seller_addrs s tr' s' tr'').
+      assert (Hsd2:stratDrive miner good_seller_addrs good_seller  s0 s tr' s' tr'').
       {
         econstructor.
         exists Hact_call2,Htranss'.

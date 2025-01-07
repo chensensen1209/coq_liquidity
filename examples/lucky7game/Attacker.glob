@@ -1,0 +1,169 @@
+DIGEST 46d2e257ddc0af7e89b48b039105d4a0
+FExample.lucky7game.Attacker
+R15:20 Theroies.Monads <> <> lib
+R38:47 Theroies.Blockchain <> <> lib
+R65:74 Theroies.Containers <> <> lib
+R92:103 Theroies.Serializable <> <> lib
+R121:126 Coq.PArith.PArith <> <> lib
+R144:149 Theroies.Extras <> <> lib
+R167:174 Theroies.BoundedN <> <> lib
+R192:201 Theroies.BuildUtils <> <> lib
+R219:226 Coq.FSets.FMapList <> <> lib
+R244:255 RecordUpdate.RecordUpdate <> <> lib
+R273:282 Theroies.Automation <> <> lib
+R300:313 Theroies.ContractCommon <> <> lib
+R331:341 Theroies.ResultMonad <> <> lib
+R359:384 Theroies.InterContractCommunication <> <> lib
+R402:412 Theroies.ChainedList <> <> lib
+R430:434 Theroies.Strat <> <> lib
+R452:460 Example.lucky7game.EtherGame <> <> lib
+R487:490 Coq.Lists.List <> <> lib
+R517:520 Coq.Bool.Bool <> <> lib
+R547:552 Coq.ZArith.ZArith <> <> lib
+R579:583 Coq.Arith.Arith <> <> lib
+R610:615 Coq.Strings.String <> <> lib
+R633:652 Coq.NArith.BinNatDef <> <> lib
+R670:685 Coq.Strings.Byte <> <> lib
+R703:725 Coq.Sorting.Permutation <> <> lib
+R735:747 Coq.Lists.List ListNotations <> mod
+R765:767 Coq.micromega.Lia <> <> lib
+R777:794 RecordUpdate.RecordSet RecordSetNotations <> mod
+R821:831 Coq.Sorting.Permutation <> <> lib
+sec 842:849 <> Attacker
+R961:969 Theroies.Blockchain <> ChainBase class
+binder 949:957 <> BaseTypes:1
+R1064:1064 Coq.Numbers.BinNums <> N ind
+binder 1053:1060 <> AddrSize:2
+def 1105:1109 <> ether
+R1113:1118 Theroies.Blockchain <> Amount def
+rec 1212:1216 <> State
+proj 1239:1244 <> target
+R1248:1254 Theroies.Blockchain <> Address meth
+inst 1273:1286 <> state_settable
+R1290:1297 RecordUpdate.RecordSet <> Settable class
+R1299:1303 Example.lucky7game.Attacker <> State rec
+R1310:1319 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R1331:1332 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R1339:1339 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R1320:1330 Example.lucky7game.Attacker <> build_state constr
+R1333:1338 Example.lucky7game.Attacker <> target proj
+R1320:1330 Example.lucky7game.Attacker <> build_state constr
+inst 1361:1378 <> State_serializable
+R1382:1393 Theroies.Serializable <> Serializable class
+R1395:1399 Example.lucky7game.Attacker <> State rec
+R1408:1427 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1438:1438 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1450:1450 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1428:1437 Example.lucky7game.Attacker <> State_rect scheme
+R1439:1449 Example.lucky7game.Attacker <> build_state constr
+rec 1463:1467 <> Setup
+proj 1492:1503 <> setup_target
+R1507:1513 Theroies.Blockchain <> Address meth
+inst 1532:1545 <> setup_settable
+R1549:1556 RecordUpdate.RecordSet <> Settable class
+R1558:1562 Example.lucky7game.Attacker <> Setup rec
+R1569:1578 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R1590:1591 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R1604:1604 RecordUpdate.RecordSet <> :::'settable!'_x_'<'_x_';'_'..'_';'_x_'>' not
+R1579:1589 Example.lucky7game.Attacker <> build_setup constr
+R1592:1603 Example.lucky7game.Attacker <> setup_target proj
+R1579:1589 Example.lucky7game.Attacker <> build_setup constr
+inst 1626:1643 <> Setup_serializable
+R1647:1658 Theroies.Serializable <> Serializable class
+R1660:1664 Example.lucky7game.Attacker <> Setup rec
+R1671:1690 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1701:1701 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1713:1713 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1691:1700 Example.lucky7game.Attacker <> Setup_rect scheme
+R1702:1712 Example.lucky7game.Attacker <> build_setup constr
+ind 1729:1731 <> Msg
+constr 1740:1751 <> SelfDestruct
+inst 1773:1788 <> Msg_serializable
+R1792:1803 Theroies.Serializable <> Serializable class
+R1805:1807 Example.lucky7game.Attacker <> Msg ind
+R1816:1835 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1844:1844 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1857:1857 Theroies.Serializable <> :::'Derive'_'Serializable'_x_'<'_x_','_'..'_','_x_'>' not
+R1836:1843 Example.lucky7game.Attacker <> Msg_rect scheme
+R1845:1856 Example.lucky7game.Attacker <> SelfDestruct constr
+def 1875:1879 <> Error
+R1891:1893 Coq.Init.Datatypes <> nat ind
+def 1909:1921 <> default_error
+R1925:1929 Example.lucky7game.Attacker <> Error def
+def 1957:1960 <> init
+R1984:1988 Theroies.Blockchain <> Chain rec
+binder 1976:1980 <> chain:9
+R2011:2029 Theroies.Blockchain <> ContractCallContext rec
+binder 2005:2007 <> ctx:10
+R2054:2058 Example.lucky7game.Attacker <> Setup rec
+binder 2046:2050 <> setup:11
+R2067:2072 Theroies.ResultMonad <> result ind
+R2074:2078 Example.lucky7game.Attacker <> State rec
+R2080:2084 Example.lucky7game.Attacker <> Error def
+R2103:2113 Example.lucky7game.Attacker <> build_state constr
+R2116:2127 Example.lucky7game.Attacker <> setup_target proj
+R2129:2133 Example.lucky7game.Attacker <> setup:11 var
+binder 2097:2098 <> st:12
+R2143:2144 Theroies.ResultMonad <> Ok constr
+R2146:2147 Example.lucky7game.Attacker <> st:12 var
+def 2164:2175 <> selfDestruct
+R2199:2203 Theroies.Blockchain <> Chain rec
+binder 2191:2195 <> chain:13
+R2226:2244 Theroies.Blockchain <> ContractCallContext rec
+binder 2220:2222 <> ctx:14
+R2266:2270 Example.lucky7game.Attacker <> State rec
+binder 2261:2262 <> st:15
+R2279:2284 Theroies.ResultMonad <> result ind
+R2292:2294 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R2287:2291 Example.lucky7game.Attacker <> State rec
+R2295:2298 Coq.Init.Datatypes <> list ind
+R2300:2309 Theroies.Blockchain <> ActionBody ind
+R2312:2316 Example.lucky7game.Attacker <> Error def
+R2325:2326 Theroies.ResultMonad <> Ok constr
+R2327:2327 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2330:2331 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2387:2387 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2328:2329 Example.lucky7game.Attacker <> st:15 var
+R2332:2332 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R2386:2386 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R2333:2340 Theroies.Blockchain <> act_call constr
+R2346:2351 Example.lucky7game.Attacker <> target proj
+R2342:2343 Example.lucky7game.Attacker <> st:15 var
+R2357:2365 Theroies.Serializable <> serialize meth
+R2367:2384 Example.lucky7game.EtherGame <> Fallback constr
+def 2404:2410 <> receive
+R2434:2438 Theroies.Blockchain <> Chain rec
+binder 2426:2430 <> chain:16
+R2461:2479 Theroies.Blockchain <> ContractCallContext rec
+binder 2455:2457 <> ctx:17
+R2501:2505 Example.lucky7game.Attacker <> State rec
+binder 2496:2497 <> st:18
+R2528:2533 Coq.Init.Datatypes <> option ind
+R2535:2537 Example.lucky7game.Attacker <> Msg ind
+binder 2522:2524 <> msg:19
+R2546:2551 Theroies.ResultMonad <> result ind
+R2559:2561 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R2554:2558 Example.lucky7game.Attacker <> State rec
+R2562:2565 Coq.Init.Datatypes <> list ind
+R2567:2576 Theroies.Blockchain <> ActionBody ind
+R2579:2583 Example.lucky7game.Attacker <> Error def
+R2600:2602 Example.lucky7game.Attacker <> msg:19 var
+R2617:2620 Coq.Init.Datatypes <> Some constr
+R2622:2633 Example.lucky7game.Attacker <> SelfDestruct constr
+R2639:2650 Example.lucky7game.Attacker <> selfDestruct def
+R2652:2656 Example.lucky7game.Attacker <> chain:16 var
+R2658:2660 Example.lucky7game.Attacker <> ctx:17 var
+R2662:2663 Example.lucky7game.Attacker <> st:18 var
+R2673:2676 Coq.Init.Datatypes <> None constr
+R2681:2683 Theroies.ResultMonad <> Err constr
+R2685:2697 Example.lucky7game.Attacker <> default_error def
+def 2724:2731 <> contract
+R2735:2742 Theroies.Blockchain <> Contract rec
+R2760:2764 Example.lucky7game.Attacker <> Error def
+R2754:2758 Example.lucky7game.Attacker <> State rec
+R2750:2752 Example.lucky7game.Attacker <> Msg ind
+R2744:2748 Example.lucky7game.Attacker <> Setup rec
+R2773:2786 Theroies.Blockchain <> build_contract constr
+R2793:2799 Example.lucky7game.Attacker <> receive def
+R2788:2791 Example.lucky7game.Attacker <> init def
+R2807:2814 Example.lucky7game.Attacker Attacker <> sec
