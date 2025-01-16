@@ -20,6 +20,10 @@ theories/OptionMonad.v
 theories/Serializable.v
 theories/Strat.v
 
+
+-R strat-liquid Model
+strat-liquid/StratModel.v
+
 -R record-update RecordUpdate
 record-update/RecordSet.v
 record-update/RecordUpdate.v
@@ -28,6 +32,10 @@ record-update/RecordUpdate.v
 examples/instrumentEscrow/InstrumentEscrow.v
 examples/honeypots/Honeypots.v
 examples/lucky7game/EtherGame.v
+
+-R time Time
+time/TimeStrat.v
+time/UniDirectionalPayChannel.v
 
 
 
