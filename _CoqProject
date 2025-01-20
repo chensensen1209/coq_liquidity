@@ -6,7 +6,6 @@ theories/Blockchain.v
 theories/BuildUtils.v
 theories/BoundedN.v
 theories/ChainedList.v
-theories/TChainedList.v
 theories/Circulation.v
 theories/Containers.v
 theories/ContractCommon.v
@@ -18,15 +17,26 @@ theories/Monads.v
 theories/ResultMonad.v
 theories/OptionMonad.v
 theories/Serializable.v
-theories/Strat.v
+theories/ModelBase.v
 
 -R record-update RecordUpdate
 record-update/RecordSet.v
 record-update/RecordUpdate.v
 
--R examples Example
-examples/payChannel/uniPayChannel.v
-examples/safeRemotePurchase/Purchase.v
+-R time_strat_liquidity TimeStratM
+time_strat_liquidity/TimeStratModel.v
+time_strat_liquidity/Monotonicity.v
+time_strat_liquidity/Equivalence.v
+time_strat_liquidity/examples/uniDirectionalPayChannel/UniDirectionalPayChannel.v
+
+-R strat_liquidity StratM
+strat_liquidity/StratModel.v
+strat_liquidity/Monotonicity.v
+strat_liquidity/Equivalence.v
+strat_liquidity/examples/honeypots/Honeypots.v
+strat_liquidity/examples/instrumentEscrow/InstrumentEscrow.v
+strat_liquidity/examples/lucky7game/EtherGame.v
+
 
 
 
