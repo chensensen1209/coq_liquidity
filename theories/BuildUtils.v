@@ -40,14 +40,6 @@ eauto.
 eauto.
 Qed.
 
-Ltac destruct_chain_step :=
-  match goal with
-  | [step: ChainStep _ _ |- _] =>
-    destruct step as
-        [?header ?queue_prev ?valid_header ?acts_from_accs ?origin_correct ?env_eq|
-         ?act ?acts ?new_acts ?queue_prev ?eval ?queue_new
-         ]
-  end.
 
   Hint Resolve reachable_empty_state
   reachable_trans
@@ -268,104 +260,6 @@ Ltac rewrite_balance :=
     [ try rewrite_environment_equiv; cbn; unfold H; destruct_address_eq; try congruence; lia |
     now rewrite <- new_to_balance_eq in *]
   end.
-
-
-  (* For any reachable state and an action it is decidable if it is
-    possible to evaluate the action in the state *)
-Open Scope Z_scope.
-Lemma action_evaluation_decidable : forall bstate act,
-  reachable bstate ->
-  decidable (exists bstate' new_acts, inhabited (ActionEvaluation bstate act bstate' new_acts)).
-Proof.
-(* intros * reach.
-  destruct act eqn:Hact.
-  destruct act_body;
-    (destruct (amount >=? 0) eqn:amount_positive;
-    [destruct (amount <=? env_account_balances bstate act_from) eqn:balance |
-      action_not_decidable; now rewrite Z.geb_leb, Z.leb_gt in amount_positive (* Eliminate cases where amount is negative *)];
-    [| action_not_decidable; rewrite Z.leb_gt in balance;eauto ]); (* Eliminate cases where sender does not have enough balance *)
-  try (destruct (address_is_contract to) eqn:to_is_contract;
-    [destruct (env_contracts bstate to) eqn:to_contract;
-    [destruct (env_contract_states bstate to) eqn:contract_state |] |]);
-  try now action_not_decidable. (* Eliminate cases with obvious contradictions *)
-  all : rewrite Z.geb_leb, <- Zge_is_le_bool in amount_positive.
-  all : try rewrite Z.leb_le in balance.
-  - (* act_body = act_transfer to amount *)
-    pose (new_to_balance := if (address_eqb act_from to)
-                         then (env_account_balances bstate to)
-                         else (env_account_balances bstate to) + amount).
-    destruct (wc_receive w
-        (transfer_balance act_from to amount bstate)
-        (build_ctx act_origin act_from to new_to_balance amount)
-        s None) eqn:receive.
-    + (* Case: act_transfer is evaluable by eval_call *)
-    destruct t.
-    pose (bstate' := (set_contract_state to s0
-                     (transfer_balance act_from to amount bstate))).
-    action_decidable.
-    assert (new_to_balance_eq : env_account_balances bstate' to = new_to_balance).
-    { cbn; unfold new_to_balance; destruct_address_eq; try congruence; lia.
-    } simpl.
-    cbn in *.
-    rewrite new_to_balance_eq. eauto.
-
-    + (* Case: act_transfer is not evaluable by eval_call
-          because wc_receive returned None *)
-
-          action_not_decidable.
-          assert (new_to_balance_eq : env_account_balances bstate_new to_addr = new_to_balance).
-          { try rewrite_environment_equiv; cbn; unfold new_to_balance; destruct_address_eq; try congruence; lia .
-      }
-
-      rewrite <- new_to_balance_eq in *. congruence.
-
-  - (* act_body = act_transfer to amount *)
-    (* Case: act_transfer is evaluable by eval_transfer *)
-    pose (bstate' := (transfer_balance act_from to amount bstate)).
-    action_decidable.
-    erewrite to_contract in contract_state.
-    
-  - (* act_body = act_call to amount msg *)
-    pose (new_to_balance := if (address_eqb act_from to)
-                         then (env_account_balances bstate to)
-                         else (env_account_balances bstate to) + amount).
-    destruct (wc_receive w
-        (transfer_balance act_from to amount bstate)
-        (build_ctx act_origin act_from to new_to_balance amount)
-        s (Some msg)) eqn:receive.
-    + (* Case: act_call is evaluable by eval_call *)
-      destruct p.
-      pose (bstate' := (set_contract_state to s0
-                       (transfer_balance act_from to amount bstate))).
-      action_decidable.
-      rewrite_balance.
-    + (* Case: act_call is not evaluable by eval_call
-          because wc_receive returned None *)
-      action_not_decidable.
-      rewrite_balance.
-  - (* act_body = act_call to amount msg *)
-    (* Case: contradiction *)
-    action_not_decidable.
-    now apply contract_addr_format in deployed; auto.
-  - (* act_body = act_deploy amount c setup *)
-    apply deployable_address_decidable
-      with (wc:=c) (setup:=setup) (act_origin:=act_origin)
-      (act_from:=act_from) (amount:=amount)
-      in reach.
-    destruct reach as [[to [state [to_is_contract_addr [to_not_deployed init]]]] | no_deployable_addr].
-    + (* Case: act_deploy is evaluable by eval_deploy *)
-      pose (bstate' := (set_contract_state to state
-                       (add_contract to c
-                       (transfer_balance act_from to amount bstate)))).
-      action_decidable.
-    + (* Case: act_deploy is not evaluable by eval_deploy
-          because no there is no available contract address
-          that this contract can be deployed to *)
-      action_not_decidable.
-      apply no_deployable_addr.
-      eauto. *)
-Admitted.
-Close Scope Z_scope.
 
 (* Property stating that an action does not produce any new action when evaluated *)
 Definition produces_no_new_acts act : Prop :=
@@ -714,6 +608,15 @@ Proof.
             rewrite address_eq_refl, address_eq_ne in contracts_eq;eauto.
             congruence.
       * destruct msg;eauto;try lia;try tauto;try congruence.
+    + exfalso. eapply no_eval.
+      rewrite queue in queue_prev.
+      inversion queue_prev.
+      eapply eval_deploy; eauto.
+      * apply wc_init_to_init in init_some;eauto.
+      * now constructor.
+    + rewrite <- env_eq in not_deployed.
+      cbn in not_deployed.
+      now destruct_address_eq.
 Qed.
 Close Scope Z_scope.
 
