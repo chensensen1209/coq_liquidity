@@ -651,6 +651,8 @@ End Attacker.
           rewrite_environment_equiv.
           cbn in *.
           destruct_address_eq;try congruence.
+      + try rewrite env_eq in *; try setoid_rewrite env_eq;eauto.
+      + try rewrite env_eq in *; try setoid_rewrite env_eq;eauto.
   Qed.
 
   Lemma contract_constants_reachable_through_forall :

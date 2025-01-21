@@ -1190,11 +1190,13 @@ Qed.
       try now rewrite_environment_equiv.
       assert( env_contracts mid addr = None).
       eapply IHtrace;eauto.
-    + 
-      rewrite_environment_equiv; cbn in *; destruct_address_eq; subst; auto.
-    +  destruct_action_eval; rewrite_environment_equiv; cbn in *;   
-        destruct_address_eq; subst; auto.
-        congruence.
+      + 
+        rewrite_environment_equiv; cbn in *; destruct_address_eq; subst; auto.
+      +  destruct_action_eval; rewrite_environment_equiv; cbn in *;   
+          destruct_address_eq; subst; auto.
+          congruence.
+      + rewrite_environment_equiv; cbn in *; destruct_address_eq; subst; auto.
+      + rewrite_environment_equiv; cbn in *; destruct_address_eq; subst; auto.
   Qed.
 
 
@@ -1283,24 +1285,3 @@ Global  Ltac decompose_stratDrive H :=
     | _ => fail "The hypothesis" H "is not of the form stratDrive s0 delta addrs s tr s' tr'."
     end.
 
-
-Global Ltac solve_facts :=
-  repeat match goal with
-    | H := ?f : nat -> nat -> nat -> nat -> nat -> nat -> Prop |- _ =>
-        is_evar f; instantiate (H := fun _ _ _ _ _ _ => Logic.True)
-    | H := ?f : _ -> ContractCallContext -> Prop |- _ =>
-        is_evar f; instantiate (H := fun _ _ => Logic.True)
-    | H := ?f : Chain -> ContractCallContext -> _ ->
-    list ActionBody -> option (list (ContractCallInfo _)) -> Prop |- _ =>
-        is_evar f; instantiate (H := fun _ _ _ _ _ => Logic.True)
-    end;
-    unset_all; subst;
-    destruct_chain_step; [
-       auto
-     | destruct_action_eval; [
-         auto
-       | auto
-       | auto; intros ?cstate ?deployed ?deployed_state;
-          cbn; subst
-       ]
-    ].

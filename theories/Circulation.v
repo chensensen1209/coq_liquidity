@@ -139,14 +139,7 @@ Proof.
   specialize (IH (proj2 not_in_suf)).
   lia.
 Qed.
-Ltac destruct_chain_step :=
-  match goal with
-  | [step: ChainStep _ _ |- _] =>
-    destruct step as
-        [?header ?queue_prev ?valid_header ?acts_from_accs ?origin_correct ?env_eq|
-         ?act ?acts ?new_acts ?queue_prev ?eval ?queue_new
-         ]
-  end.
+
 (* We then get a lemma over steps *)
 Lemma step_circulation {prev next} (step : ChainStep prev next) :
   circulation next =
@@ -161,6 +154,10 @@ Proof.
     now rewrite circulation_add_new_block.
   - (* New action *)
     erewrite eval_action_circulation_unchanged; eauto.
+    - (* Invalid User Action *)
+    intuition.
+  - (* Permute queue *)
+    intuition.
 Qed.
 
 (* And combining these gives the final result. *)

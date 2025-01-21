@@ -40,14 +40,6 @@ eauto.
 eauto.
 Qed.
 
-Ltac destruct_chain_step :=
-  match goal with
-  | [step: ChainStep _ _ |- _] =>
-    destruct step as
-        [?header ?queue_prev ?valid_header ?acts_from_accs ?origin_correct ?env_eq|
-         ?act ?acts ?new_acts ?queue_prev ?eval ?queue_new
-         ]
-  end.
 
   Hint Resolve reachable_empty_state
   reachable_trans
@@ -616,6 +608,15 @@ Proof.
             rewrite address_eq_refl, address_eq_ne in contracts_eq;eauto.
             congruence.
       * destruct msg;eauto;try lia;try tauto;try congruence.
+    + exfalso. eapply no_eval.
+      rewrite queue in queue_prev.
+      inversion queue_prev.
+      eapply eval_deploy; eauto.
+      * apply wc_init_to_init in init_some;eauto.
+      * now constructor.
+    + rewrite <- env_eq in not_deployed.
+      cbn in not_deployed.
+      now destruct_address_eq.
 Qed.
 Close Scope Z_scope.
 
