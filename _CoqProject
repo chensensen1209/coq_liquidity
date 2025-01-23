@@ -1,16 +1,12 @@
 -R theories Theroies
-theories/OptionMonad.v
 theories/LibTactics.v
 theories/Automation.v
 theories/Blockchain.v
 theories/BuildUtils.v
 theories/BoundedN.v
 theories/ChainedList.v
-theories/Circulation.v
 theories/Containers.v
 theories/ContractCommon.v
-theories/InterContractCommunication.v
-theories/ContractMonads.v
 theories/Extras.v
 theories/Finite.v
 theories/Monads.v

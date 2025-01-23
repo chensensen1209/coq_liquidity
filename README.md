@@ -18,10 +18,7 @@
 
 2. **编译项目**  
    - 打开 Cygwin，并切换到包含项目代码的目录。
-   - 执行以下命令以生成 `CoqMakefile` 文件：
-     ```bash
-     coq_makefile -f _CoqProject -o CoqMakefile
-     ```
+
    - 使用 `make` 命令完成项目编译：
      ```bash
      make
@@ -36,17 +33,13 @@
 
 ### 1. ConCert 框架
 以下文件为 ConCert 框架的源代码：
-- `theories/OptionMonad.v`
 - `theories/LibTactics.v`
 - `theories/Automation.v`
 - `theories/Blockchain.v`
 - `theories/BuildUtils.v`
 - `theories/BoundedN.v`
-- `theories/Circulation.v`
 - `theories/Containers.v`
 - `theories/ContractCommon.v`
-- `theories/InterContractCommunication.v`
-- `theories/ContractMonads.v`
 - `theories/Extras.v`
 - `theories/Finite.v`
 - `theories/Monads.v`
@@ -60,7 +53,7 @@
 
 ### 2. 模型基础
 - **文件**: `theories/ModelBase.v`  
-  本文件基于 ConCert 框架，定义了执行层的动作评估函数，并证明了一些用于后续模型验证的引理。
+  本文件基于 ConCert 框架，实现了执行层的动作评估规则，并证明了一些用于后续模型验证的引理。
 
 ---
 
