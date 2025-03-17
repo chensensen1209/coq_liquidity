@@ -78,7 +78,6 @@ Section PaymentChannel.
   (* 消息类型 *)
   Inductive Msg :=
   | Close (amount : Amount) (signature : Signature)
-  (* | Extend (new_expiration : nat)     扩展到期时间 *)
   | ClaimTimeout.
 
   (* 序列化 *)

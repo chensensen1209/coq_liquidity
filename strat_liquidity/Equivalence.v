@@ -38,11 +38,9 @@ Section equiv.
 
   Hypothesis miner_always_eoa : address_is_contract miner_address = false.
 
-  
   Notation "trace( from , to )" := (TransitionTrace miner_address from to)(at level 10).
 
-
-  Lemma multiSuccTrace_delta_empty_refl_multr :
+  Lemma multiStratDrive_empty_refl :
     forall (s0 s : ChainState) (tr : trace(s0,s)) (s' : ChainState) (tr' : trace(s0 ,s')) delta addrs n,
       is_empty_strat miner_address delta addrs ->
       multiStratDrive miner_address delta addrs s0 s tr s' tr' n ->
@@ -61,7 +59,7 @@ Section equiv.
       inversion H3.
   Qed.
 
-  Lemma multiSuccTrace_delta_empty_refl_multr_end :
+  Lemma multiStratDrive_empty_refl_end :
     forall (s0 s : ChainState) (tr : trace(s0,s)) (s' : ChainState) (tr' : trace(s0 ,s')) delta addrs n,
       is_empty_strat miner_address delta addrs ->
       multiStratDrive  miner_address delta addrs s0 s tr s' tr' n ->
@@ -89,7 +87,7 @@ Section equiv.
       inversion H3.
   Qed.
 
-   Lemma transition_reachable_can_Inter_usr_all:
+   Lemma interleaved_execution_reachable_with_complete_and_empty:
       forall s0 s (tr:trace(s0,s0)) c caddr delta_usr delta_env addrs_usr addrs_env,
         is_complete_strategy miner_address addrs_usr delta_usr  c caddr s0->
         is_empty_strat miner_address addrs_env delta_env  ->
@@ -158,7 +156,7 @@ Section equiv.
         eapply clnil.
       }
       assert(H':transition_reachable miner_address c caddr s0 s) by eauto.
-      eapply (transition_reachable_can_Inter_usr_all s0 s X c caddr delta_usr delta_env)in H';eauto.
+      eapply (interleaved_execution_reachable_with_complete_and_empty s0 s X c caddr delta_usr delta_env)in H';eauto.
       destruct H'.
       unfold strat_liquidity in H_liquidity.
       pose proof H_init as Hwell.
@@ -361,7 +359,7 @@ Section equiv.
             eauto.
             intros.
             pose proof H3.
-            eapply multiSuccTrace_delta_empty_refl_multr in H3;eauto.
+            eapply multiStratDrive_empty_refl in H3;eauto.
             destruct_and_split.
             eapply multiStratSucc_n_zero_s_eq in H4;eauto.
             destruct_and_split.

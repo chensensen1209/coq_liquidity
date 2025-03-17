@@ -21,7 +21,7 @@ Global Definition miner_reward := 10%Z.
 Notation "trace( from , to )" := (TransitionTrace miner_address from to)(at level 10).
 
     
-Lemma multiSuccTrace_delta_empty_refl_multr :
+Lemma multiStratDrive_empty_refl :
     forall (s0 s : ChainState) (tr : trace(s0,s)) (s' : ChainState) (tr' : trace(s0 ,s')) delta addrs n,
       is_empty_strat miner_address delta addrs ->
       multiStratDrive miner_address delta addrs s0 s tr s' tr' n ->
@@ -50,7 +50,7 @@ Proof.
     inversion H.
 Qed.
 
-Lemma transition_reachable_can_Inter_usr_all:
+Lemma interleaved_execution_reachable_with_complete_and_empty:
   forall s0 s (tr:trace(s0,s0)) c caddr delta_usr delta_env addrs_usr addrs_env,
     is_complete_strategy miner_address addrs_usr delta_usr c caddr s0->
     is_empty_strat miner_address addrs_env delta_env  ->
@@ -185,7 +185,7 @@ Proof.
     eapply clnil.
   }
   assert(H':transition_reachable miner_address c caddr s0 s) by eauto.
-  eapply (transition_reachable_can_Inter_usr_all s0 s X c caddr delta_usr delta_env)in H';eauto.
+  eapply (interleaved_execution_reachable_with_complete_and_empty s0 s X c caddr delta_usr delta_env)in H';eauto.
   destruct H'.
   unfold strat_liquidity in H_liquidity.
   pose proof H_init as Hwell.
@@ -426,7 +426,7 @@ Proof.
         eauto.
         intros.
         pose proof H.
-        eapply multiSuccTrace_delta_empty_refl_multr in H;eauto.
+        eapply multiStratDrive_empty_refl in H;eauto.
         destruct_and_split.
         eapply multiStratSucc_n_zero_s_eq in H0;eauto.
         destruct_and_split.
@@ -528,7 +528,7 @@ Proof.
         eauto.
         intros.
         pose proof H.
-        eapply multiSuccTrace_delta_empty_refl_multr in H;eauto.
+        eapply multiStratDrive_empty_refl in H;eauto.
         destruct_and_split.
         eapply multiStratSucc_n_zero_s_eq in H0;eauto.
         destruct_and_split.

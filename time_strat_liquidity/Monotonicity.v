@@ -138,7 +138,7 @@ Section Monotonicity.
       eapply MS_Step;eauto.
   Qed.
 
-  Lemma interleavedExecution_mono_incl_usr_unchanging (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
+  Lemma interleavedExecution_mono_incl_wrt_env (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
     forall s0 s' flag tr tr',
       strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0 ->
       interleavedExecution miner_address addrs_usr delta_usr addrs_env1 delta_env1  s0 s0 tr flag s' tr' ->
@@ -170,7 +170,7 @@ Section Monotonicity.
     - eapply ISU_Turn_Step;eauto.
   Qed.
 
-  Lemma interleavedExecution_mono_incl_usr_unchanging_time (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
+  Lemma interleavedExecution_mono_incl_wrt_env_time (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
     forall s0 s' flag tr tr',
       strat_subset_time addrs_env1 delta_env1 addrs_env2 delta_env2  s0 ->
       interleavedExecution miner_address addrs_usr delta_usr addrs_env1 delta_env1  s0 s0 tr flag s' tr' ->
@@ -208,7 +208,7 @@ Section Monotonicity.
     - eapply ISU_Turn_Step;eauto.
   Qed.
 
-  Lemma userLiquidatesNSteps_incl_usr_unchanging (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
+  Lemma userLiquidatesNSteps_incl_wrt_env (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
     forall s0 s  c caddr tr ,
       is_init_state c caddr s0 ->
       strat_subset_time addrs_env1 delta_env1 addrs_env2 delta_env2  s0 ->
@@ -261,7 +261,7 @@ Section Monotonicity.
     - eapply ULM_Turn;eauto.
   Qed.
 
-  Lemma strat_liquid_Mono_usr_unchanging 
+  Lemma strat_liquid_Mono_wrt_env 
       (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr) 
       (addrs_env1: list Address)  (delta_env1 : strat miner_address addrs_env1) 
       (addrs_env2: list Address)  (delta_env2 : strat miner_address addrs_env2) :
@@ -277,10 +277,10 @@ Section Monotonicity.
     specialize(Hliq_delta2 Hinit tr s' tr').
     assert (interleavedExecution miner_address addrs_usr delta_usr addrs_env2 delta_env2  s0 s0
     tr Tusr s' tr').
-    eapply interleavedExecution_mono_incl_usr_unchanging_time;eauto.
+    eapply interleavedExecution_mono_incl_wrt_env_time;eauto.
     specialize (Hliq_delta2 H).
     decompose_exists.
-    eapply userLiquidatesNSteps_incl_usr_unchanging in Hliq_delta2;eauto.
+    eapply userLiquidatesNSteps_incl_wrt_env in Hliq_delta2;eauto.
   Qed.
 
 End Monotonicity.

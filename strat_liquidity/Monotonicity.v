@@ -75,43 +75,6 @@ Definition strat_subset
     eauto.
   Qed.
 
-Lemma  strat_subset_no_empty:
-  forall (addrs1 : list Address)(delta1 : strat miner_address addrs1)  (addrs2 : list Address) (delta2 : strat miner_address addrs2) s s' tr',
-    strat_subset addrs1 delta1 addrs2 delta2 s->
-    delta1 s s' tr' <> [] ->
-    delta2 s s' tr' <> [].
-Proof.
-  intros * Hsbt_delta H_delta.
-  unfold strat_subset in Hsbt_delta.
-  specialize(Hsbt_delta s' tr').
-  unfold acts_subset in Hsbt_delta.
-  destruct (delta1 s s' tr') ;try congruence.
-  unfold incl in Hsbt_delta.
-  intuition.
-  rewrite H3 in Hsbt_delta.
-  destruct (a :: l ) eqn : Hqu.
-  intuition.
-  eapply in_nonempty_to_empty_contradiction ;eauto.
-Qed.
-
-Lemma strat_subset_empty_re:
-  forall (addrs1 : list Address)(delta1 : strat miner_address addrs1)  (addrs2 : list Address) (delta2 : strat miner_address addrs2) s s' tr',
-    strat_subset addrs1 delta1 addrs2 delta2 s->
-    delta2 s s' tr' = [] ->
-    delta1 s s' tr' = [].
-Proof.
-  intros * Hsbt_delta H_delta.
-  unfold strat_subset in Hsbt_delta.
-  unfold acts_subset in Hsbt_delta.
-  specialize(Hsbt_delta s' tr').
-  destruct (delta1 s s' tr') ;try congruence.
-  rewrite H_delta in Hsbt_delta.
-  unfold incl in *.
-  eapply in_nonempty_to_empty_contradiction in Hsbt_delta.
-  inversion Hsbt_delta.
-Qed.
-
-
 Lemma stratDrive_subset:
   forall s0 s s' tr tr' delta_usr1 addrs_usr1 delta_usr2 addrs_usr2,
     strat_subset addrs_usr2 delta_usr2 addrs_usr1 delta_usr1  s0 ->
@@ -148,7 +111,10 @@ Qed.
   Qed.
 
   (* 少的能到，多的也能到 *)
-  Lemma interleavedExecution_mono_incl_usr_unchanging (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
+  Lemma interleavedExecution_mono_incl_wrt_env 
+      (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  
+      (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) 
+      (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
     forall s0 s' flag tr tr',
       strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0 ->
       interleavedExecution miner_address addrs_usr delta_usr addrs_env1 delta_env1  s0 s0 tr flag s' tr' ->
@@ -169,7 +135,10 @@ Qed.
     - eapply ISU_Step;eauto.
   Qed.
 
-  Lemma userLiquidatesNSteps_incl_usr_unchanging (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
+  Lemma userLiquidatesNSteps_incl_wrt_env 
+  (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr)  
+  (addrs_env1: list Address) (delta_env1 : strat miner_address addrs_env1) 
+  (addrs_env2: list Address) (delta_env2 : strat miner_address addrs_env2) :
     forall s0 s  c caddr tr ,
       is_init_state c caddr s0 ->
       strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0 ->
@@ -199,40 +168,7 @@ Qed.
 
   Qed.   
 
-  Lemma userLiquidatesNSteps_incl_usr_unchanging_empty 
-  (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr) 
-  (addrs_env1: list Address)   (delta_env1 : strat miner_address addrs_env1) 
-  (addrs_env2: list Address)  (delta_env2 : strat miner_address addrs_env2) :
-    forall s0 s  c caddr tr ,
-      is_init_state c caddr s0 ->
-      is_empty_strat miner_address addrs_env1 delta_env1  ->
-      strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0->
-      UserLiquidatesNSteps miner_address addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 s tr ->
-      UserLiquidatesNSteps miner_address addrs_usr delta_usr addrs_env1 delta_env1  caddr s0 s tr .
-  Proof.
-    intros * Hinit Hsbt_delta Hrc_itv.
-    eapply (env_mut miner_address addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 
-    (fun s tr   (_ : envProgress_Mutual miner_address addrs_usr delta_usr addrs_env2 delta_env2  caddr s0 s tr ) =>  
-    envProgress_Mutual miner_address addrs_usr delta_usr  addrs_env1 delta_env1 caddr s0 s tr )
-    (fun  s tr  (_ : UserLiquidatesNSteps miner_address addrs_usr delta_usr addrs_env2 delta_env2 caddr  s0 s tr ) => 
-    UserLiquidatesNSteps miner_address addrs_usr delta_usr addrs_env1 delta_env1  caddr s0 s tr  )
-    );intros;subst;eauto.
-    - apply EPM_Base. assumption.
-    - 
-      eapply EPM_Step.
-      eauto.
-      intros.
-      assert (multiStratDrive miner_address addrs_env2 delta_env2  s0 s1 tr0 s' tr' n).
-      {
-        eapply multiStratDrive_subset;eauto.
-      }
-      specialize (H3 s' tr' n).
-      eapply H3;eauto.
-    - eapply ULM_Base;eauto.
-    - eapply ULM_Step;eauto.
-  Qed.
-
-  Lemma strat_liquid_Mono_usr_unchanging 
+  Lemma strat_liquid_Mono_wrt_env 
   (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr) 
   (addrs_env1: list Address)   (delta_env1 : strat miner_address addrs_env1) 
   (addrs_env2: list Address)  (delta_env2 : strat miner_address addrs_env2) :
@@ -249,32 +185,10 @@ Qed.
     specialize(Hliq_delta2 Hinit tr s' tr').
     assert (interleavedExecution miner_address addrs_usr delta_usr addrs_env2 delta_env2  s0 s0
     tr Tusr s' tr').
-    eapply interleavedExecution_mono_incl_usr_unchanging;eauto.
+    eapply interleavedExecution_mono_incl_wrt_env;eauto.
     specialize (Hliq_delta2 H3).
     decompose_exists.
-    eapply userLiquidatesNSteps_incl_usr_unchanging in Hliq_delta2;eauto.
-  Qed.
-
-  Lemma strat_liquidity_Mono_env_unchanging_empty 
-    (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr) 
-    (addrs_env1: list Address)   (delta_env1 : strat miner_address addrs_env1) 
-    (addrs_env2: list Address)  (delta_env2 : strat miner_address addrs_env2) :
-    forall s0 c caddr, 
-      is_init_state c caddr s0 ->
-      is_empty_strat miner_address addrs_env1 delta_env1  ->
-      strat_subset addrs_env1 delta_env1 addrs_env2 delta_env2  s0->
-      strat_liquidity miner_address addrs_usr delta_usr  addrs_env2 delta_env2 c caddr  s0 ->
-      strat_liquidity miner_address addrs_usr delta_usr  addrs_env1 delta_env1 c caddr  s0.
-  Proof.
-    intros * Hinit Hstrat_refines Hliq_delta2.
-    unfold strat_liquidity in *.
-    intros.
-    specialize(H3 Hinit tr s' tr').
-    assert (interleavedExecution miner_address addrs_usr delta_usr addrs_env2 delta_env2  s0 s0
-    tr Tusr s' tr').
-    eapply interleavedExecution_mono_incl_usr_unchanging;eauto.
-    specialize (H3 H6).
-    eapply userLiquidatesNSteps_incl_usr_unchanging_empty in Hliq_delta2;eauto.
+    eapply userLiquidatesNSteps_incl_wrt_env in Hliq_delta2;eauto.
   Qed.
 
 End Monotonicity.
