@@ -269,8 +269,11 @@ Section Attacker.
              (ctx : ContractCallContext)
              (setup : AttackerSetup)
     : result AttackerState Error :=
-    let st := build_attacker_state (setup_target setup) false
-    in Ok st.
+    if negb  (address_eqb (setup_target setup)  (ctx_contract_address ctx) )then
+      let st := build_attacker_state (setup_target setup) false
+      in Ok st
+    else
+      Err default_error.
 
   Definition selfDestruct
               (chain : Chain)
@@ -3202,6 +3205,860 @@ End Attacker.
       env_contracts s attacker_addr = Some (attacker_contract : WeakContract) /\
       contract_state s attacker_addr = Some attacker_state.
 
+  Lemma attacker_call_Fallback_transition_correct:
+  forall (s : ChainState) (cstate : State) (attacker_state : AttackerState),
+    contract_state s attacker_addr = Some attacker_state ->
+    contract_state s caddr = Some cstate ->
+    funds s attacker_addr >= 1 ->
+    transition_reachable miner contract caddr s0 s ->
+    close attacker_state = false -> 
+    exists s', 
+      transition miner s (attacker_call_Fallback cstate) = Ok s'.
+  Proof.
+    intros s cstate attacker_state Hattacker_s Hcs_s Hbal_state Htrc_s H_a_close.
+    eapply address_not_contract_negb in H_miner as H_miner_eoa.
+    unfold transition.
+    unfold queue_isb_empty.
+    eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
+    rewrite Hqueue_s.
+    rewrite attacker_call_Fallback_is_call_act.
+    unfold evaluate_action.
+    rewrite get_valid_header_is_valid_header;eauto.
+    unfold attacker_call_Fallback .
+    simpl.
+    destruct_address_eq;try congruence.
+    simpl.
+    assert (Hec_s:env_contracts s caddr = Some (contract:WeakContract)).
+    {
+      eapply transition_reachable_impl_reachable_through in Htrc_s.
+      eapply reachable_through_contract_deployed in Htrc_s;eauto.
+      decompose_is_init_state H_init.
+      eauto.
+      eauto.
+    }
+    assert(H_constans:cstate.(targetAmount) = init_cstate.(targetAmount) ).
+    {
+      eapply transition_reachable_impl_reachable in Htrc_s as H;eauto.
+      eapply transition_reachable_impl_reachable_through in Htrc_s.
+      eapply contract_constants_reachable_through in Htrc_s;eauto.
+      destruct_and_split.
+      intuition.
+      eauto.
+    }
+    assert(H_user_eoa : address_is_contract user = false).
+    {
+      
+      eapply address_not_contract_negb.
+      eauto.
+    }
+    eapply address_not_contract_negb in attacker_eoa.
+    rewrite attacker_eoa.
+    unfold send_or_call.
+    simpl.
+    assert( H_caddr_not_EOA : address_is_contract caddr = true).
+    {
+      eapply contract_addr_format in Hec_s;eauto.
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
+    }
+
+    assert(Hrc_s:reachable s).
+    {
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.
+    }
+    destruct_address_eq;cbn in *;try congruence.
+    + assert ((0 >? miner_reward + env_account_balances s attacker)%Z 
+                = false).
+      {
+        unfold miner_reward.
+        eapply (account_balance_nonnegative s attacker) in Hrc_s.
+        lia.
+      }
+      rewrite H.
+      assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+      specialize(H_attacker_cstate s cstate Hcs_s).
+      destruct H_attacker_cstate as [  Ht].
+      destruct H0.
+      eauto.
+    }
+      rewrite H_ec_s_a.
+      (* unfold contract_state in Hcs_s. *)
+      simpl in Hcs_s.
+
+      destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+      simpl.
+      rewrite Hattacker_s.
+      simpl.
+      setoid_rewrite deserialize_serialize.
+      simpl.
+      cbn in *.
+      unfold receive.
+      simpl.
+      unfold address_not_contract.
+      unfold require_no_self_call.
+      simpl.
+      destruct_address_eq;cbn in *;try congruence.
+      simpl.
+      cbn.
+      unfold require_ctx_from_eoa.
+      simpl.
+      unfold attacker_receive.
+      rewrite H_a_close.
+      simpl.
+      unfold send_or_call.
+      assert(0 + env_account_balances s caddr <? 0 = false).
+      {
+        eapply (account_balance_nonnegative s caddr) in Hrc_s.
+        propify.
+        lia.
+      }
+      (* rewrite H0. *)
+      simpl.
+      destruct_address_eq;cbn in *;try congruence;eauto.
+      (* 1 *)
+      assert( 1 >?
+      - 0 +
+      (0 +
+       (miner_reward + env_account_balances s attacker_addr)) = false)%Z.
+      {
+        simpl.
+        unfold miner_reward.
+        unfold funds in *.
+        intuition.
+      }
+      rewrite H1.
+      specialize(H_attacker_cstate s cstate).
+      destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+      rewrite Hcs_s in H_attacker_cstate.
+      
+      assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+      eapply H_attacker_cstate in Hcstate_eq  .
+      destruct_and_split.
+      (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+      specialize(Attacker_target_constant s Hrc_s).
+      destruct Attacker_target_constant.
+      destruct Attacker_target_constant.
+      rewrite Hecs_s_a in H5.
+      destruct H5.
+      rewrite Hattacker_s in *.
+      inversion H5.
+      rewrite <- H8 in *.
+      rewrite H_Attacker_init_cstate in H6.
+      rewrite H6 in e7.
+      intuition.
+
+
+      destruct_address_eq;cbn in *;try congruence;eauto.
+      (* 1 *)
+      assert( 1 >?
+      - 0 +
+      (0 +
+       (miner_reward + env_account_balances s attacker_addr)) = false)%Z.
+      {
+        simpl.
+        unfold miner_reward.
+        unfold funds in *.
+        intuition.
+      }
+      rewrite H1.
+      specialize(Attacker_target_constant s Hrc_s).
+      destruct Attacker_target_constant.
+      destruct Attacker_target_constant.
+      rewrite Hecs_s_a in H3.
+      destruct H3.
+      rewrite Hattacker_s in *.
+      inversion H3.
+      rewrite <- H6 in *.
+      rewrite H_Attacker_init_cstate in H4.
+      rewrite H4.
+      rewrite Hec_s.
+      destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+      simpl.
+      rewrite Hcs_s.
+      simpl.
+      setoid_rewrite deserialize_serialize.
+      simpl.
+      unfold receive.
+      unfold require_no_self_call.
+      simpl.
+      assert (address_neqb attacker_addr caddr = true).
+      {
+        destruct_address_eq;try congruence.
+        simpl.
+        eauto.
+      
+      }
+      rewrite H5.
+      unfold ether_receive.
+      simpl.
+      simpl.
+      exists {|
+      chain_state_env :=
+        set_contract_state caddr (serialize cstate)
+          (transfer_balance attacker_addr caddr 1
+             (set_contract_state attacker_addr
+                (serialize attacker_state)
+                (transfer_balance attacker attacker_addr 0
+                   (add_new_block_to_env
+                      (get_valid_header miner s) s))));
+      chain_state_queue := []
+    |}.
+    eauto.
+  + assert ((0 >? miner_reward + env_account_balances s attacker)%Z 
+  = false).
+    {
+    unfold miner_reward.
+    eapply (account_balance_nonnegative s attacker) in Hrc_s.
+    lia.
+    }
+    rewrite H.
+    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+    specialize(H_attacker_cstate s cstate Hcs_s).
+    destruct H_attacker_cstate as [  Ht].
+    destruct H0.
+    eauto.
+    }
+    rewrite H_ec_s_a.
+    (* unfold contract_state in Hcs_s. *)
+    simpl in Hcs_s.
+
+    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+    simpl.
+    rewrite Hattacker_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    cbn in *.
+    unfold receive.
+    simpl.
+    unfold address_not_contract.
+    unfold require_no_self_call.
+    simpl.
+    destruct_address_eq;cbn in *;try congruence.
+    simpl.
+    cbn.
+    unfold require_ctx_from_eoa.
+    simpl.
+    unfold attacker_receive.
+    rewrite H_a_close.
+    simpl.
+    unfold send_or_call.
+    assert(0 + env_account_balances s caddr <? 0 = false).
+    {
+    eapply (account_balance_nonnegative s caddr) in Hrc_s.
+    propify.
+    lia.
+    }
+    (* rewrite H0. *)
+    simpl.
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    (* 1 *)
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6 in e3.
+    intuition.
+
+
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    (* 1 *)
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H3.
+    destruct H3.
+    rewrite Hattacker_s in *.
+    inversion H3.
+    rewrite <- H6 in *.
+    rewrite H_Attacker_init_cstate in H4.
+    rewrite H4.
+    rewrite Hec_s.
+    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+    simpl.
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6.
+    rewrite Hec_s.
+    simpl.
+    rewrite H_es_c.
+    simpl.
+    rewrite Hcs_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    unfold receive.
+    unfold require_no_self_call.
+    simpl.
+    assert (address_neqb attacker_addr caddr = true).
+    {
+    destruct_address_eq;try congruence.
+    simpl.
+    eauto.
+
+    }
+    rewrite H7.
+    unfold ether_receive.
+    simpl.
+    simpl.
+    exists {|
+    chain_state_env :=
+    set_contract_state caddr (serialize cstate)
+    (transfer_balance attacker_addr caddr 1
+    (set_contract_state attacker_addr
+      (serialize attacker_state)
+      (transfer_balance attacker attacker_addr 0
+        (add_new_block_to_env
+            (get_valid_header miner s) s))));
+    chain_state_queue := []
+    |}.
+    eauto.
+  +
+  assert ((0 >? env_account_balances s attacker)%Z 
+  = false).
+    {
+    unfold miner_reward.
+    eapply (account_balance_nonnegative s attacker) in Hrc_s.
+    lia.
+    }
+    rewrite H.
+    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+    specialize(H_attacker_cstate s cstate Hcs_s).
+    destruct H_attacker_cstate as [  Ht].
+    destruct H0.
+    eauto.
+    }
+    rewrite H_ec_s_a.
+    (* unfold contract_state in Hcs_s. *)
+    simpl in Hcs_s.
+
+    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+    simpl.
+    rewrite Hattacker_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    cbn in *.
+    unfold receive.
+    simpl.
+    unfold address_not_contract.
+    unfold require_no_self_call.
+    simpl.
+    destruct_address_eq;cbn in *;try congruence.
+    simpl.
+    cbn.
+    unfold require_ctx_from_eoa.
+    simpl.
+    unfold attacker_receive.
+    rewrite H_a_close.
+    simpl.
+    unfold send_or_call.
+    assert(0 + env_account_balances s caddr <? 0 = false).
+    {
+    eapply (account_balance_nonnegative s caddr) in Hrc_s.
+    propify.
+    lia.
+    }
+    (* rewrite H0. *)
+    simpl.
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    (* 1 *)
+    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6 in e4.
+    intuition.
+    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H3.
+    destruct H3.
+    rewrite Hattacker_s in *.
+    inversion H3.
+    rewrite <- H6 in *.
+    rewrite H_Attacker_init_cstate in H4.
+    rewrite H4.
+    rewrite Hec_s.
+    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+    simpl.
+    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6.
+    rewrite Hec_s.
+    simpl.
+    rewrite H_es_c.
+    simpl.
+    rewrite Hcs_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    unfold receive.
+    unfold require_no_self_call.
+    simpl.
+    assert (address_neqb attacker_addr caddr = true).
+    {
+    destruct_address_eq;try congruence.
+    simpl.
+    eauto.
+
+    }
+    rewrite H7.
+    unfold ether_receive.
+    simpl.
+    simpl.
+    exists {|
+    chain_state_env :=
+    set_contract_state caddr (serialize cstate)
+    (transfer_balance attacker_addr caddr 1
+    (set_contract_state attacker_addr
+      (serialize attacker_state)
+      (transfer_balance attacker attacker_addr 0
+        (add_new_block_to_env
+            (get_valid_header miner s) s))));
+    chain_state_queue := []
+    |}.
+    eauto.
+  + assert ((0 >? env_account_balances s attacker)%Z 
+  = false).
+    {
+    unfold miner_reward.
+    eapply (account_balance_nonnegative s attacker) in Hrc_s.
+    lia.
+    }
+    rewrite H.
+    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+    specialize(H_attacker_cstate s cstate Hcs_s).
+    destruct H_attacker_cstate as [  Ht].
+    destruct H0.
+    eauto.
+    }
+    rewrite H_ec_s_a.
+    (* unfold contract_state in Hcs_s. *)
+    simpl in Hcs_s.
+
+    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+    simpl.
+    rewrite Hattacker_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    cbn in *.
+    unfold receive.
+    simpl.
+    unfold address_not_contract.
+    unfold require_no_self_call.
+    simpl.
+    destruct_address_eq;cbn in *;try congruence.
+    simpl.
+    cbn.
+    unfold require_ctx_from_eoa.
+    simpl.
+    unfold attacker_receive.
+    rewrite H_a_close.
+    simpl.
+    unfold send_or_call.
+    assert(0 + env_account_balances s caddr <? 0 = false).
+    {
+    eapply (account_balance_nonnegative s caddr) in Hrc_s.
+    propify.
+    lia.
+    }
+    (* rewrite H0. *)
+    simpl.
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    (* 1 *)
+    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6 in e4.
+    intuition.
+    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H3.
+    destruct H3.
+    rewrite Hattacker_s in *.
+    inversion H3.
+    rewrite <- H6 in *.
+    rewrite H_Attacker_init_cstate in H4.
+    rewrite H4.
+    rewrite Hec_s.
+    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+    simpl.
+    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6.
+    rewrite Hec_s.
+    simpl.
+    rewrite H_es_c.
+    simpl.
+    rewrite Hcs_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    unfold receive.
+    unfold require_no_self_call.
+    simpl.
+    assert (address_neqb attacker_addr caddr = true).
+    {
+    destruct_address_eq;try congruence.
+    simpl.
+    eauto.
+
+    }
+    rewrite H7.
+    unfold ether_receive.
+    simpl.
+    simpl.
+    exists {|
+    chain_state_env :=
+    set_contract_state caddr (serialize cstate)
+    (transfer_balance attacker_addr caddr 1
+    (set_contract_state attacker_addr
+      (serialize attacker_state)
+      (transfer_balance attacker attacker_addr 0
+        (add_new_block_to_env
+            (get_valid_header miner s) s))));
+    chain_state_queue := []
+    |}.
+    eauto.
+  + assert ((0 >? env_account_balances s attacker)%Z 
+  = false).
+    {
+    unfold miner_reward.
+    eapply (account_balance_nonnegative s attacker) in Hrc_s.
+    lia.
+    }
+    rewrite H.
+    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+    specialize(H_attacker_cstate s cstate Hcs_s).
+    destruct H_attacker_cstate as [  Ht].
+    destruct H0.
+    eauto.
+    }
+    rewrite H_ec_s_a.
+    (* unfold contract_state in Hcs_s. *)
+    simpl in Hcs_s.
+
+    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+    simpl.
+    rewrite Hattacker_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    cbn in *.
+    unfold receive.
+    simpl.
+    unfold address_not_contract.
+    unfold require_no_self_call.
+    simpl.
+    destruct_address_eq;cbn in *;try congruence.
+    simpl.
+    cbn.
+    unfold require_ctx_from_eoa.
+    simpl.
+    unfold attacker_receive.
+    rewrite H_a_close.
+    simpl.
+    unfold send_or_call.
+    assert(0 + env_account_balances s caddr <? 0 = false).
+    {
+    eapply (account_balance_nonnegative s caddr) in Hrc_s.
+    propify.
+    lia.
+    }
+    (* rewrite H0. *)
+    simpl.
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H2.
+    destruct H2.
+    rewrite Hattacker_s in *.
+    inversion H2.
+    rewrite <- H5 in *.
+    rewrite H_Attacker_init_cstate in H3.
+    rewrite H3 in e2.
+    intuition.
+
+
+    (* 1 *)
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6 in e2.
+    intuition.
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H3.
+    destruct H3.
+    rewrite Hattacker_s in *.
+    inversion H3.
+    rewrite <- H6 in *.
+    rewrite H_Attacker_init_cstate in H4.
+    rewrite H4.
+    rewrite Hec_s.
+    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+    simpl.
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6.
+    rewrite Hec_s.
+    simpl.
+    rewrite H_es_c.
+    simpl.
+    rewrite Hcs_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    unfold receive.
+    unfold require_no_self_call.
+    simpl.
+    assert (address_neqb attacker_addr caddr = true).
+    {
+    destruct_address_eq;try congruence.
+    simpl.
+    eauto.
+
+
+    }
+    rewrite H7.
+    unfold ether_receive.
+    simpl.
+    simpl.
+    exists {|
+    chain_state_env :=
+    set_contract_state caddr (serialize cstate)
+    (transfer_balance attacker_addr caddr 1
+    (set_contract_state attacker_addr
+      (serialize attacker_state)
+      (transfer_balance attacker attacker_addr 0
+        (add_new_block_to_env
+            (get_valid_header miner s) s))));
+    chain_state_queue := []
+    |}.
+    eauto.
+  + eauto.
+
+  Qed.
+
   Lemma attacker_call_Fallback_state_correct:
   forall (s s':ChainState) (cstate : State) (attacker_state : AttackerState),
     contract_state s attacker_addr = Some attacker_state ->
@@ -5219,8 +6076,7 @@ End Attacker.
 
   (* Require Import Coq.Logic.ProofIrrelevance. *)
 
-
-  Lemma game_hold_strat_liquidity:
+  Theorem game_satisfy_strat_liquidity:
     strat_liquidity miner [user] user_strat [attacker] attacker_strat contract caddr s0.
   Proof.
     unfold strat_liquidity.

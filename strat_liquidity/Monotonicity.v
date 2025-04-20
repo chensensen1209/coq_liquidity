@@ -168,7 +168,7 @@ Qed.
 
   Qed.   
 
-  Lemma strat_liquid_Mono_wrt_env 
+  Theorem strat_liquid_Mono_wrt_env 
   (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr) 
   (addrs_env1: list Address)   (delta_env1 : strat miner_address addrs_env1) 
   (addrs_env2: list Address)  (delta_env2 : strat miner_address addrs_env2) :
@@ -181,7 +181,6 @@ Qed.
     intros * Hinit Hstrat_refines Hliq_delta2.
     unfold strat_liquidity in *.
     intros Hwell_sys * Hrc_itv.
-
     specialize(Hliq_delta2 Hinit tr s' tr').
     assert (interleavedExecution miner_address addrs_usr delta_usr addrs_env2 delta_env2  s0 s0
     tr Tusr s' tr').

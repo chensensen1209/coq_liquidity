@@ -261,7 +261,7 @@ Section Monotonicity.
     - eapply ULM_Turn;eauto.
   Qed.
 
-  Lemma strat_liquid_Mono_wrt_env 
+  Theorem strat_liquid_Mono_wrt_env_time 
       (addrs_usr: list Address) (delta_usr : strat miner_address addrs_usr) 
       (addrs_env1: list Address)  (delta_env1 : strat miner_address addrs_env1) 
       (addrs_env2: list Address)  (delta_env2 : strat miner_address addrs_env2) :

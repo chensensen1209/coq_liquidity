@@ -537,7 +537,7 @@ Proof.
         eauto.
 Qed.
 
-Lemma SL_equiv_BL_with_empty_env_and_complete_user:
+Theorem SL_equiv_BL_with_empty_env_and_complete_user_time:
   forall delta_usr delta_env addrs_usr addrs_env c caddr s0,
     is_init_state c caddr s0 ->
     is_empty_strat miner_address addrs_env delta_env  ->

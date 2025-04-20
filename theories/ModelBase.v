@@ -406,16 +406,6 @@ Local Open Scope Z.
       destruct df eqn : H_df;try congruence.
       + (* depth-first case *)
         eauto.
-
-      (* + breadth-first case. Insert permute step.
-        assert (Permutation (new_acts ++ xs) (xs ++ new_acts)) by perm_simplify.
-        cut (ChainTrace
-              empty_state
-              (build_chain_state lc_after (new_acts ++ xs))); eauto.
-        intros.
-        econstructor; eauto.
-        constructor; eauto.
-        constructor; eauto. *)
   Qed.
   
   Lemma execute_actions_next_bstate_queue:

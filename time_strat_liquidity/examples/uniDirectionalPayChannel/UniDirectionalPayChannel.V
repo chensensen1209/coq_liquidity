@@ -1671,7 +1671,7 @@ Section PaymentChannel.
     eauto.
   Qed.
 
-  Lemma contract_satisfies_base_liquidity:
+  Theorem uniDP_satisfies_base_liquidity:
     base_liquidity miner contract caddr s0.
   Proof.
     unfold base_liquidity.
@@ -1921,15 +1921,9 @@ Section PaymentChannel.
     inversion H0.
   Qed.
 
-  Lemma contract_satisfies_bounded_liquidity :
-      strat_liquidity miner
-        [u_sender]
-        sender_strategy
-        [u_recipient]
-        recipient_strategy
-        contract
-        caddr
-        s0.
+  Theorem contract_satisfies_strat_liquidity :
+      strat_liquidity miner [u_sender] sender_strategy [u_recipient] recipient_strategy 
+      contract caddr s0.
   Proof.
     unfold strat_liquidity.
     intros.

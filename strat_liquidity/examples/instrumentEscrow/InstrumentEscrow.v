@@ -5315,7 +5315,7 @@ Qed.
     + eauto.
   Qed.
 
-  Lemma escrow_satisfy_base_liqudity:
+  Theorem escrow_satisfy_base_liqudity:
     base_liquidity miner contract caddr s0.
   Proof.
     unfold base_liquidity.
@@ -5700,7 +5700,8 @@ Qed.
       | None => []
       end.
 
-  Lemma escrow_satisfy_strat_liquidity_with_good_buyer_bad_seller:
+
+  Theorem escrow_satisfy_strat_liquidity_with_good_buyer_bad_seller:
     strat_liquidity miner good_buyer_addrs good_buyer bad_seller_addrs  bad_seller contract caddr  s0.
   Proof.
     unfold strat_liquidity.
@@ -6043,7 +6044,8 @@ Qed.
         lia.
   Qed.
 
-  Lemma escrow_satisfy_strat_liquidity_with_good_seller_bad_buyer:
+
+  Theorem escrow_satisfy_strat_liquidity_with_good_seller_bad_buyer:
     strat_liquidity miner good_seller_addrs good_seller bad_buyer_addrs  bad_buyer contract caddr  s0.
   Proof.
     unfold strat_liquidity.
