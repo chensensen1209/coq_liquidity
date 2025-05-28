@@ -557,7 +557,7 @@ Hint Unfold ChainTrace : core.
   Definition add_block
             (env : Environment)
             (header : BlockHeader)
-            (actions : list Action) : result ChainState Error :=
+            (actions : list Action) : r(*  *)esult ChainState Error :=
     (* 第一步：验证头部 *)
     match validate_header header env with
       | true =>

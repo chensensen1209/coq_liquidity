@@ -129,7 +129,7 @@ Section transition_trace.
               (caddr :Address)
               (s0 s : ChainState) :=
     is_init_state contract caddr s0  /\
-    inhabited (trace(s0, s)).
+    inhabited (trace(s0, s)).(*  *)
 
   Definition reachable_via 
               (contract : Contract Setup Msg State Error)
@@ -648,7 +648,7 @@ End strat_model.
     eapply add_block_reachable_through_aux in Hexec;eauto.
     (* eapply add_block_reachable_through_aux in Hexec;eauto. *)
   Qed.
-
+(*  *)
 
   Lemma ttrace_with_trace:
     forall s (tr_s:trace(s))  s',

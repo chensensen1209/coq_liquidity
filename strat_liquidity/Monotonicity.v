@@ -51,7 +51,7 @@ Definition strat_subset
             (addrs1 : list Address)
             (delta1 : strat miner_address addrs1) 
             (addrs2 : list Address) 
-            (delta2 : strat miner_address addrs1) 
+            (delta2 : strat miner_address addrs2) 
   s0: Prop :=
   forall s tr,
       acts_subset
