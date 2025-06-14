@@ -6,7 +6,7 @@ Require Import Automation.
 From Coq Require Import List.
 Import ListNotations.
 Section ChainedList.
-(* ChainStep实例化 *)
+
 Context {Point : Type} {Link : Point -> Point -> Type}.
 
 Inductive ChainedList : Point -> Point -> Type :=
@@ -87,11 +87,11 @@ Infix "`suffix_of`" := clist_suffix (at level 70).
 
 Fixpoint extract_points {from to : Point} (lst : ChainedList from to) : list Point :=
   match lst with
-  | clnil => []  (* 空链表情况：返回空列表 *)
+  | clnil => []  
   | snoc sublist link =>
     match sublist with
-    | clnil => [to]  (* 只有一个数据点的情况：返回包含该点的列表 *)
-    | _ => extract_points sublist ++ [to]  (* 递归处理子链表并添加当前点到列表末尾 *)
+    | clnil => [to] 
+    | _ => extract_points sublist ++ [to] 
     end
   end.
 

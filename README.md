@@ -1,105 +1,134 @@
-# Coq 流动性验证项目
-
-### 研究生项目：Coq 流动性验证代码
-
----
-
-## 环境要求
-- **操作系统**: Windows 11
-- **Coq 版本**: 8.16.1 或 8.16.0
+# Technical Development in the Coq Proof Assistant  
+**For the Paper:**  
+*Proving Strategy-aware Liquidity for Smart Contracts*  
+**Authors:** Sensen Chen, Ximeng Li, Qianying Zhang, Guohui Wang, Zhiping Shi, Yong Guan  
 
 ---
 
-## 使用说明
+## 🖥️ System Requirements
 
-1. **安装 Cygwin 和 Coq**  
-   - 请确保已安装 Cygwin，并在其环境中安装 Coq，版本需为 8.16.1 或 8.16.0。
-   - 配置 Cygwin，使其能够正常执行 Coq 相关命令。
-
-2. **编译项目**  
-   - 打开 Cygwin，并切换到包含项目代码的目录。
-
-   - 使用 `make` 命令完成项目编译：
-     ```bash
-     make
-     ```
-
-3. **代码分支**  
-   - 确保切换到最新的 **`main` 分支** 以获取最新代码和功能。
+- **Operating System:** Preferably Windows 11  
+- **Coq Version:** 8.16.1 or 8.16.0  
 
 ---
 
-## 项目模块
+## ⚙️ Setup and Compilation Instructions
 
-### 1. ConCert 框架
-以下文件为 ConCert 框架的源代码：
-- `theories/LibTactics.v`
-- `theories/Automation.v`
-- `theories/Blockchain.v`
-- `theories/BuildUtils.v`
-- `theories/BoundedN.v`
-- `theories/Containers.v`
-- `theories/ContractCommon.v`
-- `theories/Extras.v`
-- `theories/Finite.v`
-- `theories/Monads.v`
-- `theories/ResultMonad.v`
-- `theories/Serializable.v`
-- `theories/ChainedList.v`
+### 1. Install Cygwin and Coq
 
-> **注意**: 在 `ChainedList.v` 文件中新增了定义 `prefixTrace`，该定义在等价性证明中会被使用。
+- Install **Coq** (version 8.16.1 or 8.16.0).
+- Set up **Cygwin** so that the `make` and `coqc` commands are available.
 
----
+### 2. Compile the Code
 
-### 2. 模型基础
-- **文件**: `theories/ModelBase.v`  
-  本文件基于 ConCert 框架，实现了执行层的动作评估规则，并证明了一些用于后续模型验证的引理。
+1. Open the **Cygwin terminal**.
+2. Navigate (`cd`) to the **top-level directory** of the Coq project.
+3. Generate the Makefile:
+
+   ```bash
+   coq_makefile -f _CoqProject -o Makefile
+   ```
+
+4. Compile the code using:
+
+   ```bash
+   make
+   ```
 
 ---
 
-### 3. 流动性验证模块
+## 📂 Main Coq Files in This Development
 
-#### 3.1 StratModel.v
-包含以下内容：
-- **基本流动性** (`base_liquidity`): 定义合约在策略交互下是否能达到目标状态。
-- **完备策略** (`is_complete_strategy`): 可推动系统达到目标状态的策略。
-- **空策略** (`is_empty_strat`): 不执行任何操作的策略。
-- **单步策略驱动** (`stratDrive`) 与 **多步策略驱动** (`multiStratDrive`)。
-- **用户与环境交错执行** (`interleavedExecution`): 定义用户策略和环境策略的交互过程。
-- **用户与环境的互归纳定义**:
-  - `UserLiquidatesNSteps`: 用户在有限步内达成流动性。
-  - `envProgress_Mutual`: 环境策略推动系统状态变化。
-- **策略流动性** (`strat_liquidity`): 描述策略驱动下的流动性特性。
+### 1.  ConCert Framework Dependencies  
+*From:* [ConCert GitHub Repository](https://github.com/AU-COBRA/ConCert)
 
-#### 3.2 Monotonicity.v
-证明了在一定条件下，策略流动性具备单调性。
+These files are located in the `theories/` directory:
 
-#### 3.3 Equivalence.v
-证明了在特定条件下，策略流动性和基本流动性之间的等价性。
-
-#### 3.4 示例代码
-- **蜜罐合约** (`examples/honeypots/Honeypots.v`):  
-  包含对典型蜜罐合约的建模及其基本流动性性质的证明。
-- **托管合约** (`examples/instrumentEscrow/InstrumentEscrow.v`):  
-  自定义托管合约的建模与基本流动性证明。文件还包括在特定用户-环境策略下的策略流动性证明及部分合约正确性验证。
-- **以太坊游戏合约** (`examples/lucky7game/EtherGame.v`):  
-  包含经典以太坊游戏合约的建模与基本流动性证明，以及在给定用户-环境策略下的策略流动性验证。
+- `LibTactics.v`
+- `Automation.v`
+- `Blockchain.v`
+- `BuildUtils.v`
+- `BoundedN.v`
+- `Containers.v`
+- `ContractCommon.v`
+- `Extras.v`
+- `Finite.v`
+- `Monads.v`
+- `ResultMonad.v`
+- `Serializable.v`
+- `ChainedList.v`  
+  > 🔹 Includes an added definition: `prefixTrace`, used to connect strategy-aware liquidity and basic liquidity.
 
 ---
 
-### 4. 时间扩展模块
+### 2.  Extension of ConCert’s Execution Model
 
-#### 4.1 TimeStratModel.v
-- 在 `transition` 函数中增加了时间处理能力。
-- 新增 `timeDrive` 表示一次时间相关的动作迁移。
-- 更新了以下定义以加入时间处理：
-  - `interleavedExecution`
-  - `UserLiquidatesNSteps`
-  - `envProgress_Mutual`
-
-#### 4.2 示例代码
-- **单项支付渠道合约** (`examples/uniDirectionalPayChannel/UniDirectionalPayChannel.v`):  
-  包含单项支付渠道合约的建模及流动性性质证明。文件还包括时间相关动作的用户-环境策略流动性证明。
+- `ModelBase.v`  
+  > Defines `evaluate_action`, the computational evaluation of a list of actions.  
+  > Includes theoretical results about this execution model.
 
 ---
 
+### 3.  Liquidity Properties, Meta-Theory, and Contract Verification
+
+#### 3.1 `StratModel.v`
+
+Defines key properties and predicates:
+
+- `strategy_aware_liquidity` — the formal property definition.
+- `basic_liquidity` — basic liquidity formalization.
+- `is_complete_strategy`, `is_empty_strat` — predicates for strategy completeness.
+- `stratDrive`, `multiStratDrive` — execution semantics of transactions under a strategy.
+- `interleavedExecution` — execution with honest users and adversary actions.
+- `userLiquidates`, `envProgress`, `usl`, `asl` — formal liquidity predicates.
+- `strat_liquidity` — strategy-aware liquidity requiring contract balance to zero.
+- `strat_liq_inst`, `basic_liq_inst` — show specialization relations between these properties.
+
+#### 3.2 `Mono.v`
+
+- Proves the **monotonicity** relation:  
+  A stronger adversary strategy strengthens the implications of strategy-aware liquidity.
+
+#### 3.3 `Equivalence.v`
+
+- Establishes formal **equivalence** (or lack thereof) between strategy-aware liquidity and basic liquidity.
+
+---
+
+##  Liquidity Proofs for Example Smart Contracts
+
+### 📁 `examples/fundsManagement`
+
+#### 🔴 Flawed Version (`FundsManagement_error.v`)
+- Demonstrates a contract with re-initialization vulnerability.
+- Violates **strategy-aware liquidity** under adversarial re-initialization.
+- Still satisfies **basic liquidity**.
+
+####  Corrected Version (`FundsManagement_correct.v`)
+- Removes re-initialization vulnerability.
+- Satisfies **both** strategy-aware and basic liquidity under all adversary strategies.
+
+---
+
+###  `examples/lucky7game/EtherGame.v`
+
+- Models a gaming contract.
+- Proves strategy-aware liquidity holds even under self-destruct attack attempts.
+- Satisfies basic liquidity.
+
+---
+
+###  `examples/honeypots/Honeypots.v`
+
+- Models a honeypot contract.
+- **Violates** strategy-aware liquidity.
+- **Satisfies** basic liquidity.
+
+---
+
+## 👩‍💻 Code Contributors
+
+**Main authors of this Coq development:**  
+Sensen Chen and Ximeng Li
+
+---

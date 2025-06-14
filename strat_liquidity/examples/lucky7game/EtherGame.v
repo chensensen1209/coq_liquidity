@@ -9,6 +9,7 @@ Require Import ResultMonad.
 Require Import ChainedList.
 Require Import ModelBase.
 Require Import StratModel.
+Require Import ProofLib. 
 From Coq Require Import List.
 From Coq Require Import Bool.
 From Coq Require Import ZArith.
@@ -20,8 +21,7 @@ Import RecordSetNotations.
 
 Section EtherGame.
 
-  (** 环境依赖：区块、上下文、地址类型等由外部框架提供。 *)
-  Context {BaseTypes : ChainBase}.
+  (* Context {BaseTypes : ChainBase}. *)
   Set Primitive Projections.
   Set Nonrecursive Elimination Schemes.
   Context {AddrSize : N}.
@@ -29,38 +29,36 @@ Section EtherGame.
   Local Open Scope Z.
 
   (***********************************************************)
-  (** * 1. 定义合约内部用到的类型与状态                     *)
+  (** * 1. basic types and states of the contract                           *)
   (***********************************************************)
 
-  (** 定义以 ether 为单位的常量 *)
   Definition ether : Amount := 1.
-
   
   Variable zero_addr : Address.
 
   Hypothesis H_zero_addr : forall addr, address_neqb zero_addr addr = true.
 
-  (** 合约状态记录 [State]，对应 Solidity 里的存储变量。 *)
+  (** data state of the contract, corresponding to storage states in Solidity *)
   Record State := build_state {
-    targetAmount : Amount;      (* 筹款目标金额，以 ether 为单位，固定为 7 ether *)
-    balance      : Amount;      (* 当前筹集的总金额，以 ether 为单位 *)
-    winner       : Address      (* 达到目标金额的赢家地址 *)
+    targetAmount : Amount;      (* target amount (7 ether) *)
+    balance      : Amount;      (* current amount *)
+    winner       : Address      (* address of winner *)
   }.
 
   Definition Setup : Type := unit.
 
   (***********************************************************)
-  (** * 2. 为 Record 添加 Settable/Serializable 实例        *)
+  (** * 2. create settable and serializable instances for states   *)
   (***********************************************************)
 
-  (* 使用框架提供的 Derive 语法进行序列化实例的自动生成。 *)
+  (*  *)
 
   Instance state_settable : Settable State :=
     settable! build_state
       <targetAmount; balance; winner>.
 
 
-  (** 序列化定义 *)
+  (**  *)
   Section Serialization.
     Global Instance State_serializable : Serializable State :=
       Derive Serializable State_rect<build_state>.
@@ -68,10 +66,10 @@ Section EtherGame.
   End Serialization.
 
   (***********************************************************)
-  (** * 3. 定义消息类型                                     *)
+  (** * 3. messages accepted by the contract                              *)
   (***********************************************************)
 
-  (** Solidity 中对应的函数调用：
+  (** corresponds to Solidity interfaces: 
       - deposit()
       - claimReward()
   *)
@@ -84,7 +82,7 @@ Section EtherGame.
     Derive Serializable Msg_rect<Deposit, ClaimReward, Fallback>.
 
   (***********************************************************)
-  (** * 4. 定义错误类型及常量                               *)
+  (** * 4. error codes                                                                      *)
   (***********************************************************)
 
   Definition Error : Type := nat.
@@ -95,16 +93,15 @@ Section EtherGame.
   Definition transfer_failed_error : Error := 5%nat.
 
   (***********************************************************)
-  (** * 5. 合约初始化函数 (init)                             *)
+  (** * 5. initialization function (init)                                             *)
   (***********************************************************)
 
-  (** 对应 Solidity 构造函数:
+  (** corresponds to constructor in Solidity :
         constructor() {
             targetAmount = 7 ether;
             balance = 0;
             winner = address(0);
         }
-    在 Coq 中，通过 [init] 模拟此逻辑。
    *)
 
      
@@ -115,15 +112,15 @@ Section EtherGame.
     : result State Error :=
     let st := build_state
                 7              (* 7 ether *)
-                0             (* balance 初始为0 *)
-                zero_addr    (* winner 初始为空地址 *)
+                0             (* balance is initially 0 *)
+                zero_addr    (* winner is initially the zero addr. *)
     in Ok st.
 
   (***********************************************************)
-  (** * 6. 具体操作函数                                     *)
+  (** * 6. the methods of the smart contract                                *)
   (***********************************************************)
 
-  (** 检查调用者是否为 winner *)
+  (** require that the caller should be winner *)
   Definition require_winner (ctx : ContractCallContext) (st : State) : bool :=
     address_eqb (ctx_from ctx) st.(winner).
 
@@ -133,7 +130,7 @@ Section EtherGame.
   Definition require_ctx_from_eoa (ctx : ContractCallContext) : bool :=
     (address_not_contract (ctx.(ctx_from))).
 
-  (** ** 贡献资金 (deposit) *)
+  (** ** deposit of funds (deposit) *)
   Definition deposit
              (chain : Chain)
              (ctx : ContractCallContext)
@@ -142,14 +139,14 @@ Section EtherGame.
     let sender := ctx_from ctx in
     let amt    := ctx_amount ctx in
     if require_ctx_from_eoa ctx then
-    (* 要求每次存入1 ether *)
+    (* requires that "1 ether" should be deposited *)
     if (amt =? ether)%Z
     then
       let new_balance := st.(balance) + amt in
-      (* 要求新的余额不超过目标金额 *)
+      (* requires that the new balance does not exceed the target amount *)
       if (new_balance <=? st.(targetAmount))
       then
-        (* 如果新的余额等于目标金额，则设置 winner *)
+        (* if the new balance is equal to the target amount, then set winner *)
         let new_winner :=
           if (new_balance =? st.(targetAmount))
           then sender
@@ -167,7 +164,7 @@ Section EtherGame.
     else
       Err invalid_deposit_error.
 
-  (** ** 提取奖励 (claimReward) *)
+  (** ** withdraw the reward (claimReward) *)
   Definition claimReward
              (chain : Chain)
              (ctx : ContractCallContext)
@@ -175,15 +172,15 @@ Section EtherGame.
     : result (State * list ActionBody) Error :=
     let sender := ctx_from ctx in
     let msg_value := ctx_amount ctx in
-    (* 要求调用者是 winner *)
+    (* requires that the caller should be winner *)
     if require_winner ctx st then
       if (msg_value =? 0) then
-        (* 尝试转移所有余额给 winner *)
+        (* attempts to transfer all funds to winner *)
         let actions := [ act_transfer sender (ctx_contract_balance ctx) ] in
         let new_st := build_state
                         st.(targetAmount)
                         st.(balance)
-                        st.(winner)   (* winner 保持不变 *)
+                        st.(winner)   (* winner remains unchanged *)
         in
         Ok (new_st, actions)
       else Err default_error
@@ -202,10 +199,9 @@ Section EtherGame.
       Err default_error.
 
   (***********************************************************)
-  (** * 7. 合约主接收函数 (receive)                          *)
+  (** * 7. message-dispatching function (receive)                       *)
   (***********************************************************)
 
-  (** 根据消息类型调用相应的操作函数。 *)
   Definition receive
              (chain : Chain)
              (ctx : ContractCallContext)
@@ -223,7 +219,7 @@ Section EtherGame.
       Err default_error.
 
   (***********************************************************)
-  (** * 8. 最终合约定义                                       *)
+  (** * 8. Def. of the contract                                                         *)
   (***********************************************************)
 
   Definition contract : Contract Setup Msg State Error :=
@@ -235,7 +231,7 @@ Section Attacker.
 
 
 
-  (** 合约状态记录 [State]，对应 Solidity 里的存储变量。 *)
+  (* storage state of the attacker contract *)
   Record AttackerState := build_attacker_state {
     target : Address;
     close : bool
@@ -265,9 +261,9 @@ Section Attacker.
     Derive Serializable AttackerMsg_rect<SelfDestruct>.
 
   Definition attacker_init
-             (chain : Chain)
-             (ctx : ContractCallContext)
-             (setup : AttackerSetup)
+    (chain : Chain)
+    (ctx : ContractCallContext)
+    (setup : AttackerSetup)
     : result AttackerState Error :=
     if negb  (address_eqb (setup_target setup)  (ctx_contract_address ctx) )then
       let st := build_attacker_state (setup_target setup) false
@@ -304,16 +300,13 @@ End Attacker.
   Ltac reduce_init :=
     match goal with
     | H : init ?chain ?ctx ?setup = Ok ?state |- _ =>
-        (* 1. 展开 init 函数 *)
         unfold init in H;
         simpl in H
     end.
 
   Ltac reduce_receive :=
     match goal with
-    | H : receive ?chain ?ctx ?st ?msg = Ok (?new_st, ?acts) |- _ =>
-        
-        (* 1. 展开 receive 函数 *)
+    | H : receive ?chain ?ctx ?st ?msg = Ok (?new_st, ?acts) |- _ =>        
         unfold receive in H;
         destruct (require_no_self_call ctx) eqn : Hself;try congruence;
         simpl in H
@@ -323,20 +316,15 @@ End Attacker.
     match goal with
     | H : deposit ?chain ?ctx ?st = Ok (?new_st, ?acts) |- _ =>
         unfold deposit in H;
-        (* 提取当前交易金额 *)
         let amt := fresh "amt" in
         remember (ctx_amount ctx) as amt eqn:Eamt;
-        (* 检查交易金额是否为 1 ether *)
         destruct (amt =? ether)%Z eqn:EisEther in H;
         try discriminate;
-        (* 计算新余额 *)
         let new_balance := fresh "new_balance" in
         remember (st.(balance) + amt) as new_balance eqn:Ebalance;
-        (* 检查新余额是否不超过目标金额 *)
         destruct (require_ctx_from_eoa ctx) eqn : Heoa in H ;try congruence ;
         destruct (new_balance <=? st.(targetAmount))%Z eqn:EwithinTarget in H;
         try discriminate;
-        (* 检查新余额是否等于目标金额 *)
         destruct (new_balance =? st.(targetAmount)) eqn:EisTarget in H;
         simpl in H
     end.
@@ -345,15 +333,12 @@ End Attacker.
     match goal with
     | H : claimReward ?chain ?ctx ?st = Ok (?new_st, ?acts) |- _ =>
         unfold claimReward in H;
-        (* 提取调用者地址和交易金额 *)
         let sender := fresh "sender" in
         remember (ctx_from ctx) as sender eqn:Esender;
         let msg_value := fresh "msg_value" in
         remember (ctx_amount ctx) as msg_value eqn:Emsg_value;
-        (* 检查调用者是否是赢家 *)
         destruct (require_winner ctx st) eqn:EsenderIsWinner in H;
         try discriminate;
-        (* 检查交易金额是否为 0 *)
         destruct (msg_value =? 0)%Z eqn:EzeroValue in H;
         try discriminate;
         simpl in H
@@ -364,10 +349,8 @@ End Attacker.
     match goal with
     | H : ether_receive ?chain ?ctx ?st = Ok (?new_st, ?acts) |- _ =>
         unfold ether_receive in H;
-        (* 提取当前交易金额 *)
         let msg_value := fresh "msg_value" in
         remember (ctx_amount ctx) as msg_value eqn:Emsg_value;
-        (* 检查交易金额是否非负 *)
         destruct (msg_value >=? 0)%Z eqn:EnonNegative in H;
         try discriminate;
         simpl in H
@@ -415,18 +398,6 @@ End Attacker.
   Hypothesis H_Attacker_init: is_init_state attacker_contract attacker_addr Attacker_s0.
 
   Hypothesis H_miner : address_not_contract miner= true.
-
-  Lemma get_contract_state_correct :
-    exists cstate, get_contract_state s0 caddr = Some cstate.
-  Proof.
-    intros.
-    decompose_is_init_state H_init.
-    exists state.
-    unfold get_contract_state .
-    rewrite H_env_states.
-    setoid_rewrite deserialize_serialize.
-    reflexivity.
-  Qed.
   
   Variable init_cstate : State.
 
@@ -562,7 +533,6 @@ End Attacker.
       lia.
   Qed.
 
-  (* concert没办法再一个文件中验证两个合约的不变量，并且无法循环依赖库 *)
   Hypothesis Attacker_target_constant :
     forall s,
     reachable s ->
@@ -657,39 +627,6 @@ End Attacker.
     intros.
     eapply contract_constants_reachable_through in H.
     destruct H.
-    destruct_and_split.
-    intuition.
-  Qed.
-
-  Lemma contract_constants_transition_via :forall s,
-  transition_reachable miner contract caddr s0 s ->
-  exists cstate, 
-    contract_state s caddr = Some cstate /\
-    cstate.(targetAmount) = init_cstate.(targetAmount).
-  Proof.
-    intros.
-    assert(ttrace : transition_reachable miner contract caddr s0 s) by eauto.
-    unfold transition_reachable in ttrace.
-    destruct ttrace as [_ [ttrace]].
-    decompose_is_init_state H_init.
-    assert(reachable s0) by eauto.
-    destruct H0 as [trace].
-    eapply ttrace_with_trace in ttrace;eauto.
-    assert(reachable_through s0 s).
-    {
-      econstructor;eauto.
-    }
-    eapply contract_constants_reachable_through in H0.
-    intuition.
-  Qed.
-
-  Lemma contract_constants_transition_via_forall :forall s cstate,
-    transition_reachable miner contract caddr s0 s ->
-    contract_state s caddr = Some cstate ->
-    cstate.(targetAmount) = init_cstate.(targetAmount).
-  Proof.
-    intros.
-    eapply contract_constants_transition_via in H.
     destruct_and_split.
     intuition.
   Qed.
@@ -1099,60 +1036,13 @@ End Attacker.
     eauto.
   Qed.
 
-  Lemma user_call_Deposit_is_call_act cstate:
-    is_call_act (user_call_Deposit cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold user_call_Deposit.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
-
-  Lemma winner_call_ClaimReward_is_call_act cstate:
-    is_call_act (winner_call_ClaimReward cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold winner_call_ClaimReward.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
-
-  Lemma user_call_ClaimReward_is_call_act cstate:
-    is_call_act (user_call_ClaimReward cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold user_call_ClaimReward.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
-
-  Lemma attacker_call_Fallback_is_call_act cstate:
-    is_call_act (attacker_call_Fallback cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold attacker_call_Fallback.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
-
-  Lemma address_not_contract_negb:
-  forall addr,
-    address_not_contract addr= true -> address_is_contract addr = false.
-  Proof.
-    intros.
-    unfold address_not_contract in H.
-    destruct ((address_is_contract addr)) eqn : H'; try congruence.
-    simpl in H.
-    congruence.
-  Qed.
-
   Lemma winner_call_Claim_transition_correct:
     forall (s:ChainState) cstate,
       contract_state s caddr = Some cstate ->
       cstate.(balance) >= cstate.(targetAmount) ->
       transition_reachable miner contract caddr s0 s ->
       exists s', 
-        transition miner s (winner_call_ClaimReward cstate) = Ok s'.
+        transition miner 5 s (winner_call_ClaimReward cstate) = Ok s'.
   Proof.
     intros * Hcs_s Hbal_state Htrc_s.
     eexists.
@@ -1161,7 +1051,7 @@ End Attacker.
     unfold queue_isb_empty.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
     rewrite Hqueue_s.
-    rewrite winner_call_ClaimReward_is_call_act.
+    (* rewrite winner_call_ClaimReward_is_call_act. *)
     unfold evaluate_action.
     rewrite get_valid_header_is_valid_header;eauto.
     unfold winner_call_ClaimReward .
@@ -1351,25 +1241,17 @@ End Attacker.
       contract_state s caddr = Some cstate ->
       cstate.(balance) >= cstate.(targetAmount) ->
       transition_reachable miner contract caddr s0 s ->
-      transition miner s (winner_call_ClaimReward cstate) = Ok s' ->
+      transition miner 5 s (winner_call_ClaimReward cstate) = Ok s' ->
       funds s' caddr = 0.
   Proof.
     intros * Hcs_s Hbal Htrc_s Htrans.
     pose proof Htrc_s.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
-    assert (Hact_call : is_call_act ((winner_call_ClaimReward cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold winner_call_ClaimReward.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
       econstructor;eauto.
       eapply step_trans;eauto.
-
     }
     assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
     {
@@ -1422,8 +1304,8 @@ End Attacker.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
     [winner_call_ClaimReward cstate ]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec;eauto.
@@ -1935,7 +1817,7 @@ End Attacker.
     cstate.(balance) < cstate.(targetAmount) ->
     transition_reachable miner contract caddr s0 s ->
     exists s', 
-      transition miner s (user_call_Deposit cstate) = Ok s'.
+      transition miner 5 s (user_call_Deposit cstate) = Ok s'.
   Proof.
     intros * Hcs_s Hbal_state Htrc_s.
     eapply address_not_contract_negb in H_miner as H_miner_eoa.
@@ -1943,7 +1825,7 @@ End Attacker.
     unfold queue_isb_empty.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
     rewrite Hqueue_s.
-    rewrite user_call_Deposit_is_call_act.
+    (* rewrite user_call_Deposit_is_call_act. *)
     unfold evaluate_action.
     rewrite get_valid_header_is_valid_header;eauto.
     unfold user_call_Deposit .
@@ -2073,20 +1955,13 @@ End Attacker.
       contract_state s caddr = Some cstate ->
       cstate.(balance) < cstate.(targetAmount) ->
       transition_reachable miner contract caddr s0 s ->
-      transition miner s (user_call_Deposit cstate) = Ok s' ->
+      transition miner 5 s (user_call_Deposit cstate) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
         cstate'.(balance) = cstate.(balance) + 1.
   Proof.
     intros * Hcs_s Hbal Htrc_s Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
-    assert (Hact_call : is_call_act ((user_call_Deposit cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold user_call_Deposit.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -2134,8 +2009,8 @@ End Attacker.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
     [user_call_Deposit cstate]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec;eauto.
@@ -2391,18 +2266,11 @@ End Attacker.
       contract_state s caddr = Some cstate ->
       cstate.(balance) < cstate.(targetAmount) ->
       transition_reachable miner contract caddr s0 s ->
-      transition miner s (user_call_Deposit cstate) = Ok s' ->
+      transition miner 5 s (user_call_Deposit cstate) = Ok s' ->
       funds s' caddr = funds s caddr + 1.
   Proof.
     intros * Hcs_s Hbal Htrc_s Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
-    assert (Hact_call : is_call_act ((user_call_Deposit cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold user_call_Deposit.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -2448,8 +2316,8 @@ End Attacker.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
     [user_call_Deposit cstate]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec;eauto.
@@ -2677,7 +2545,7 @@ End Attacker.
       contract_state s caddr = Some cstate ->
       cstate.(balance) < cstate.(targetAmount) ->
       transition_reachable miner contract caddr s0 s ->
-      transition miner s (user_call_Deposit cstate) = Ok s' ->
+      transition miner 5 s (user_call_Deposit cstate) = Ok s' ->
       funds s' caddr = funds s caddr + 1 /\
       (exists cstate',
         contract_state s' caddr = Some cstate' /\
@@ -2694,7 +2562,7 @@ End Attacker.
       contract_state s caddr = Some cstate ->
       cstate.(balance) < cstate.(targetAmount) ->
       transition_reachable miner contract caddr s0 s ->
-      transition miner s (user_call_Deposit cstate) = Ok s' ->
+      transition miner 5 s (user_call_Deposit cstate) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
         (cstate'.(balance) >= cstate'.(targetAmount) -> 
@@ -2702,13 +2570,6 @@ End Attacker.
   Proof.
     intros * Hcs_s Hbal Htrc_s Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-    assert (Hact_call : is_call_act ((user_call_Deposit cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold user_call_Deposit.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -2756,8 +2617,8 @@ End Attacker.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
     [user_call_Deposit cstate]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec;eauto.
@@ -3018,7 +2879,7 @@ End Attacker.
     (user = cstate.(winner))%address ->
     transition_reachable miner contract caddr s0 s ->
     exists s', 
-      transition miner s (user_call_ClaimReward cstate) = Ok s'.
+      transition miner 5 s (user_call_ClaimReward cstate) = Ok s'.
   Proof.
     intros * Hcs_s Hbal_state Htrc_s.
     eapply address_not_contract_negb in H_miner as H_miner_eoa.
@@ -3026,7 +2887,7 @@ End Attacker.
     unfold queue_isb_empty.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
     rewrite Hqueue_s.
-    rewrite user_call_ClaimReward_is_call_act.
+    (* rewrite user_call_ClaimReward_is_call_act. *)
     unfold evaluate_action.
     rewrite get_valid_header_is_valid_header;eauto.
     unfold user_call_ClaimReward .
@@ -3198,887 +3059,27 @@ End Attacker.
     + eauto.
   Qed.
 
-  (* 假设当住合约部署好的时候，攻击合约也部署了 *)
+  (* Assume that the attacker contract is already deployed  *)
+  (* upon the deployment of the main contract *) 
   Hypothesis H_attacker_cstate : forall (s:ChainState) (cstate : State), 
     contract_state s caddr = Some cstate -> 
     exists (attacker_state : AttackerState),
       env_contracts s attacker_addr = Some (attacker_contract : WeakContract) /\
       contract_state s attacker_addr = Some attacker_state.
 
-  Lemma attacker_call_Fallback_transition_correct:
-  forall (s : ChainState) (cstate : State) (attacker_state : AttackerState),
-    contract_state s attacker_addr = Some attacker_state ->
-    contract_state s caddr = Some cstate ->
-    funds s attacker_addr >= 1 ->
-    transition_reachable miner contract caddr s0 s ->
-    close attacker_state = false -> 
-    exists s', 
-      transition miner s (attacker_call_Fallback cstate) = Ok s'.
-  Proof.
-    intros s cstate attacker_state Hattacker_s Hcs_s Hbal_state Htrc_s H_a_close.
-    eapply address_not_contract_negb in H_miner as H_miner_eoa.
-    unfold transition.
-    unfold queue_isb_empty.
-    eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
-    rewrite Hqueue_s.
-    rewrite attacker_call_Fallback_is_call_act.
-    unfold evaluate_action.
-    rewrite get_valid_header_is_valid_header;eauto.
-    unfold attacker_call_Fallback .
-    simpl.
-    destruct_address_eq;try congruence.
-    simpl.
-    assert (Hec_s:env_contracts s caddr = Some (contract:WeakContract)).
-    {
-      eapply transition_reachable_impl_reachable_through in Htrc_s.
-      eapply reachable_through_contract_deployed in Htrc_s;eauto.
-      decompose_is_init_state H_init.
-      eauto.
-      eauto.
-    }
-    assert(H_constans:cstate.(targetAmount) = init_cstate.(targetAmount) ).
-    {
-      eapply transition_reachable_impl_reachable in Htrc_s as H;eauto.
-      eapply transition_reachable_impl_reachable_through in Htrc_s.
-      eapply contract_constants_reachable_through in Htrc_s;eauto.
-      destruct_and_split.
-      intuition.
-      eauto.
-    }
-    assert(H_user_eoa : address_is_contract user = false).
-    {
-      
-      eapply address_not_contract_negb.
-      eauto.
-    }
-    eapply address_not_contract_negb in attacker_eoa.
-    rewrite attacker_eoa.
-    unfold send_or_call.
-    simpl.
-    assert( H_caddr_not_EOA : address_is_contract caddr = true).
-    {
-      eapply contract_addr_format in Hec_s;eauto.
-      eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
-    }
-
-    assert(Hrc_s:reachable s).
-    {
-      eapply transition_reachable_impl_reachable in Htrc_s;eauto.
-    }
-    destruct_address_eq;cbn in *;try congruence.
-    + assert ((0 >? miner_reward + env_account_balances s attacker)%Z 
-                = false).
-      {
-        unfold miner_reward.
-        eapply (account_balance_nonnegative s attacker) in Hrc_s.
-        lia.
-      }
-      rewrite H.
-      assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
-    {
-      specialize(H_attacker_cstate s cstate Hcs_s).
-      destruct H_attacker_cstate as [  Ht].
-      destruct H0.
-      eauto.
-    }
-      rewrite H_ec_s_a.
-      (* unfold contract_state in Hcs_s. *)
-      simpl in Hcs_s.
-
-      destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
-      simpl.
-      rewrite Hattacker_s.
-      simpl.
-      setoid_rewrite deserialize_serialize.
-      simpl.
-      cbn in *.
-      unfold receive.
-      simpl.
-      unfold address_not_contract.
-      unfold require_no_self_call.
-      simpl.
-      destruct_address_eq;cbn in *;try congruence.
-      simpl.
-      cbn.
-      unfold require_ctx_from_eoa.
-      simpl.
-      unfold attacker_receive.
-      rewrite H_a_close.
-      simpl.
-      unfold send_or_call.
-      assert(0 + env_account_balances s caddr <? 0 = false).
-      {
-        eapply (account_balance_nonnegative s caddr) in Hrc_s.
-        propify.
-        lia.
-      }
-      (* rewrite H0. *)
-      simpl.
-      destruct_address_eq;cbn in *;try congruence;eauto.
-      (* 1 *)
-      assert( 1 >?
-      - 0 +
-      (0 +
-       (miner_reward + env_account_balances s attacker_addr)) = false)%Z.
-      {
-        simpl.
-        unfold miner_reward.
-        unfold funds in *.
-        intuition.
-      }
-      rewrite H1.
-      specialize(H_attacker_cstate s cstate).
-      destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-      rewrite Hcs_s in H_attacker_cstate.
-      
-      assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-      eapply H_attacker_cstate in Hcstate_eq  .
-      destruct_and_split.
-      (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-      specialize(Attacker_target_constant s Hrc_s).
-      destruct Attacker_target_constant.
-      destruct Attacker_target_constant.
-      rewrite Hecs_s_a in H5.
-      destruct H5.
-      rewrite Hattacker_s in *.
-      inversion H5.
-      rewrite <- H8 in *.
-      rewrite H_Attacker_init_cstate in H6.
-      rewrite H6 in e7.
-      intuition.
-
-
-      destruct_address_eq;cbn in *;try congruence;eauto.
-      (* 1 *)
-      assert( 1 >?
-      - 0 +
-      (0 +
-       (miner_reward + env_account_balances s attacker_addr)) = false)%Z.
-      {
-        simpl.
-        unfold miner_reward.
-        unfold funds in *.
-        intuition.
-      }
-      rewrite H1.
-      specialize(Attacker_target_constant s Hrc_s).
-      destruct Attacker_target_constant.
-      destruct Attacker_target_constant.
-      rewrite Hecs_s_a in H3.
-      destruct H3.
-      rewrite Hattacker_s in *.
-      inversion H3.
-      rewrite <- H6 in *.
-      rewrite H_Attacker_init_cstate in H4.
-      rewrite H4.
-      rewrite Hec_s.
-      destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
-      simpl.
-      rewrite Hcs_s.
-      simpl.
-      setoid_rewrite deserialize_serialize.
-      simpl.
-      unfold receive.
-      unfold require_no_self_call.
-      simpl.
-      assert (address_neqb attacker_addr caddr = true).
-      {
-        destruct_address_eq;try congruence.
-        simpl.
-        eauto.
-      
-      }
-      rewrite H5.
-      unfold ether_receive.
-      simpl.
-      simpl.
-      exists {|
-      chain_state_env :=
-        set_contract_state caddr (serialize cstate)
-          (transfer_balance attacker_addr caddr 1
-             (set_contract_state attacker_addr
-                (serialize attacker_state)
-                (transfer_balance attacker attacker_addr 0
-                   (add_new_block_to_env
-                      (get_valid_header miner s) s))));
-      chain_state_queue := []
-    |}.
-    eauto.
-  + assert ((0 >? miner_reward + env_account_balances s attacker)%Z 
-  = false).
-    {
-    unfold miner_reward.
-    eapply (account_balance_nonnegative s attacker) in Hrc_s.
-    lia.
-    }
-    rewrite H.
-    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
-    {
-    specialize(H_attacker_cstate s cstate Hcs_s).
-    destruct H_attacker_cstate as [  Ht].
-    destruct H0.
-    eauto.
-    }
-    rewrite H_ec_s_a.
-    (* unfold contract_state in Hcs_s. *)
-    simpl in Hcs_s.
-
-    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
-    simpl.
-    rewrite Hattacker_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    cbn in *.
-    unfold receive.
-    simpl.
-    unfold address_not_contract.
-    unfold require_no_self_call.
-    simpl.
-    destruct_address_eq;cbn in *;try congruence.
-    simpl.
-    cbn.
-    unfold require_ctx_from_eoa.
-    simpl.
-    unfold attacker_receive.
-    rewrite H_a_close.
-    simpl.
-    unfold send_or_call.
-    assert(0 + env_account_balances s caddr <? 0 = false).
-    {
-    eapply (account_balance_nonnegative s caddr) in Hrc_s.
-    propify.
-    lia.
-    }
-    (* rewrite H0. *)
-    simpl.
-    destruct_address_eq;cbn in *;try congruence;eauto.
-    (* 1 *)
-    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(H_attacker_cstate s cstate).
-    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-    rewrite Hcs_s in H_attacker_cstate.
-
-    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-    eapply H_attacker_cstate in Hcstate_eq  .
-    destruct_and_split.
-    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H5.
-    destruct H5.
-    rewrite Hattacker_s in *.
-    inversion H5.
-    rewrite <- H8 in *.
-    rewrite H_Attacker_init_cstate in H6.
-    rewrite H6 in e3.
-    intuition.
-
-
-    destruct_address_eq;cbn in *;try congruence;eauto.
-    (* 1 *)
-    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H3.
-    destruct H3.
-    rewrite Hattacker_s in *.
-    inversion H3.
-    rewrite <- H6 in *.
-    rewrite H_Attacker_init_cstate in H4.
-    rewrite H4.
-    rewrite Hec_s.
-    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
-    simpl.
-    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(H_attacker_cstate s cstate).
-    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-    rewrite Hcs_s in H_attacker_cstate.
-
-    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-    eapply H_attacker_cstate in Hcstate_eq  .
-    destruct_and_split.
-    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H5.
-    destruct H5.
-    rewrite Hattacker_s in *.
-    inversion H5.
-    rewrite <- H8 in *.
-    rewrite H_Attacker_init_cstate in H6.
-    rewrite H6.
-    rewrite Hec_s.
-    simpl.
-    rewrite H_es_c.
-    simpl.
-    rewrite Hcs_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    unfold receive.
-    unfold require_no_self_call.
-    simpl.
-    assert (address_neqb attacker_addr caddr = true).
-    {
-    destruct_address_eq;try congruence.
-    simpl.
-    eauto.
-
-    }
-    rewrite H7.
-    unfold ether_receive.
-    simpl.
-    simpl.
-    exists {|
-    chain_state_env :=
-    set_contract_state caddr (serialize cstate)
-    (transfer_balance attacker_addr caddr 1
-    (set_contract_state attacker_addr
-      (serialize attacker_state)
-      (transfer_balance attacker attacker_addr 0
-        (add_new_block_to_env
-            (get_valid_header miner s) s))));
-    chain_state_queue := []
-    |}.
-    eauto.
-  +
-  assert ((0 >? env_account_balances s attacker)%Z 
-  = false).
-    {
-    unfold miner_reward.
-    eapply (account_balance_nonnegative s attacker) in Hrc_s.
-    lia.
-    }
-    rewrite H.
-    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
-    {
-    specialize(H_attacker_cstate s cstate Hcs_s).
-    destruct H_attacker_cstate as [  Ht].
-    destruct H0.
-    eauto.
-    }
-    rewrite H_ec_s_a.
-    (* unfold contract_state in Hcs_s. *)
-    simpl in Hcs_s.
-
-    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
-    simpl.
-    rewrite Hattacker_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    cbn in *.
-    unfold receive.
-    simpl.
-    unfold address_not_contract.
-    unfold require_no_self_call.
-    simpl.
-    destruct_address_eq;cbn in *;try congruence.
-    simpl.
-    cbn.
-    unfold require_ctx_from_eoa.
-    simpl.
-    unfold attacker_receive.
-    rewrite H_a_close.
-    simpl.
-    unfold send_or_call.
-    assert(0 + env_account_balances s caddr <? 0 = false).
-    {
-    eapply (account_balance_nonnegative s caddr) in Hrc_s.
-    propify.
-    lia.
-    }
-    (* rewrite H0. *)
-    simpl.
-    destruct_address_eq;cbn in *;try congruence;eauto.
-    (* 1 *)
-    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(H_attacker_cstate s cstate).
-    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-    rewrite Hcs_s in H_attacker_cstate.
-
-    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-    eapply H_attacker_cstate in Hcstate_eq  .
-    destruct_and_split.
-    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H5.
-    destruct H5.
-    rewrite Hattacker_s in *.
-    inversion H5.
-    rewrite <- H8 in *.
-    rewrite H_Attacker_init_cstate in H6.
-    rewrite H6 in e4.
-    intuition.
-    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H3.
-    destruct H3.
-    rewrite Hattacker_s in *.
-    inversion H3.
-    rewrite <- H6 in *.
-    rewrite H_Attacker_init_cstate in H4.
-    rewrite H4.
-    rewrite Hec_s.
-    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
-    simpl.
-    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(H_attacker_cstate s cstate).
-    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-    rewrite Hcs_s in H_attacker_cstate.
-
-    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-    eapply H_attacker_cstate in Hcstate_eq  .
-    destruct_and_split.
-    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H5.
-    destruct H5.
-    rewrite Hattacker_s in *.
-    inversion H5.
-    rewrite <- H8 in *.
-    rewrite H_Attacker_init_cstate in H6.
-    rewrite H6.
-    rewrite Hec_s.
-    simpl.
-    rewrite H_es_c.
-    simpl.
-    rewrite Hcs_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    unfold receive.
-    unfold require_no_self_call.
-    simpl.
-    assert (address_neqb attacker_addr caddr = true).
-    {
-    destruct_address_eq;try congruence.
-    simpl.
-    eauto.
-
-    }
-    rewrite H7.
-    unfold ether_receive.
-    simpl.
-    simpl.
-    exists {|
-    chain_state_env :=
-    set_contract_state caddr (serialize cstate)
-    (transfer_balance attacker_addr caddr 1
-    (set_contract_state attacker_addr
-      (serialize attacker_state)
-      (transfer_balance attacker attacker_addr 0
-        (add_new_block_to_env
-            (get_valid_header miner s) s))));
-    chain_state_queue := []
-    |}.
-    eauto.
-  + assert ((0 >? env_account_balances s attacker)%Z 
-  = false).
-    {
-    unfold miner_reward.
-    eapply (account_balance_nonnegative s attacker) in Hrc_s.
-    lia.
-    }
-    rewrite H.
-    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
-    {
-    specialize(H_attacker_cstate s cstate Hcs_s).
-    destruct H_attacker_cstate as [  Ht].
-    destruct H0.
-    eauto.
-    }
-    rewrite H_ec_s_a.
-    (* unfold contract_state in Hcs_s. *)
-    simpl in Hcs_s.
-
-    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
-    simpl.
-    rewrite Hattacker_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    cbn in *.
-    unfold receive.
-    simpl.
-    unfold address_not_contract.
-    unfold require_no_self_call.
-    simpl.
-    destruct_address_eq;cbn in *;try congruence.
-    simpl.
-    cbn.
-    unfold require_ctx_from_eoa.
-    simpl.
-    unfold attacker_receive.
-    rewrite H_a_close.
-    simpl.
-    unfold send_or_call.
-    assert(0 + env_account_balances s caddr <? 0 = false).
-    {
-    eapply (account_balance_nonnegative s caddr) in Hrc_s.
-    propify.
-    lia.
-    }
-    (* rewrite H0. *)
-    simpl.
-    destruct_address_eq;cbn in *;try congruence;eauto.
-    (* 1 *)
-    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(H_attacker_cstate s cstate).
-    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-    rewrite Hcs_s in H_attacker_cstate.
-
-    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-    eapply H_attacker_cstate in Hcstate_eq  .
-    destruct_and_split.
-    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H5.
-    destruct H5.
-    rewrite Hattacker_s in *.
-    inversion H5.
-    rewrite <- H8 in *.
-    rewrite H_Attacker_init_cstate in H6.
-    rewrite H6 in e4.
-    intuition.
-    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H3.
-    destruct H3.
-    rewrite Hattacker_s in *.
-    inversion H3.
-    rewrite <- H6 in *.
-    rewrite H_Attacker_init_cstate in H4.
-    rewrite H4.
-    rewrite Hec_s.
-    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
-    simpl.
-    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(H_attacker_cstate s cstate).
-    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-    rewrite Hcs_s in H_attacker_cstate.
-
-    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-    eapply H_attacker_cstate in Hcstate_eq  .
-    destruct_and_split.
-    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H5.
-    destruct H5.
-    rewrite Hattacker_s in *.
-    inversion H5.
-    rewrite <- H8 in *.
-    rewrite H_Attacker_init_cstate in H6.
-    rewrite H6.
-    rewrite Hec_s.
-    simpl.
-    rewrite H_es_c.
-    simpl.
-    rewrite Hcs_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    unfold receive.
-    unfold require_no_self_call.
-    simpl.
-    assert (address_neqb attacker_addr caddr = true).
-    {
-    destruct_address_eq;try congruence.
-    simpl.
-    eauto.
-
-    }
-    rewrite H7.
-    unfold ether_receive.
-    simpl.
-    simpl.
-    exists {|
-    chain_state_env :=
-    set_contract_state caddr (serialize cstate)
-    (transfer_balance attacker_addr caddr 1
-    (set_contract_state attacker_addr
-      (serialize attacker_state)
-      (transfer_balance attacker attacker_addr 0
-        (add_new_block_to_env
-            (get_valid_header miner s) s))));
-    chain_state_queue := []
-    |}.
-    eauto.
-  + assert ((0 >? env_account_balances s attacker)%Z 
-  = false).
-    {
-    unfold miner_reward.
-    eapply (account_balance_nonnegative s attacker) in Hrc_s.
-    lia.
-    }
-    rewrite H.
-    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
-    {
-    specialize(H_attacker_cstate s cstate Hcs_s).
-    destruct H_attacker_cstate as [  Ht].
-    destruct H0.
-    eauto.
-    }
-    rewrite H_ec_s_a.
-    (* unfold contract_state in Hcs_s. *)
-    simpl in Hcs_s.
-
-    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
-    simpl.
-    rewrite Hattacker_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    cbn in *.
-    unfold receive.
-    simpl.
-    unfold address_not_contract.
-    unfold require_no_self_call.
-    simpl.
-    destruct_address_eq;cbn in *;try congruence.
-    simpl.
-    cbn.
-    unfold require_ctx_from_eoa.
-    simpl.
-    unfold attacker_receive.
-    rewrite H_a_close.
-    simpl.
-    unfold send_or_call.
-    assert(0 + env_account_balances s caddr <? 0 = false).
-    {
-    eapply (account_balance_nonnegative s caddr) in Hrc_s.
-    propify.
-    lia.
-    }
-    (* rewrite H0. *)
-    simpl.
-    destruct_address_eq;cbn in *;try congruence;eauto.
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H2.
-    destruct H2.
-    rewrite Hattacker_s in *.
-    inversion H2.
-    rewrite <- H5 in *.
-    rewrite H_Attacker_init_cstate in H3.
-    rewrite H3 in e2.
-    intuition.
-
-
-    (* 1 *)
-    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(H_attacker_cstate s cstate).
-    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-    rewrite Hcs_s in H_attacker_cstate.
-
-    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-    eapply H_attacker_cstate in Hcstate_eq  .
-    destruct_and_split.
-    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H5.
-    destruct H5.
-    rewrite Hattacker_s in *.
-    inversion H5.
-    rewrite <- H8 in *.
-    rewrite H_Attacker_init_cstate in H6.
-    rewrite H6 in e2.
-    intuition.
-    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H3.
-    destruct H3.
-    rewrite Hattacker_s in *.
-    inversion H3.
-    rewrite <- H6 in *.
-    rewrite H_Attacker_init_cstate in H4.
-    rewrite H4.
-    rewrite Hec_s.
-    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
-    simpl.
-    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
-    {
-    simpl.
-    unfold miner_reward.
-    unfold funds in *.
-    intuition.
-    }
-    rewrite H1.
-    specialize(H_attacker_cstate s cstate).
-    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
-    rewrite Hcs_s in H_attacker_cstate.
-
-    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
-    eapply H_attacker_cstate in Hcstate_eq  .
-    destruct_and_split.
-    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
-    specialize(Attacker_target_constant s Hrc_s).
-    destruct Attacker_target_constant.
-    destruct Attacker_target_constant.
-    rewrite Hecs_s_a in H5.
-    destruct H5.
-    rewrite Hattacker_s in *.
-    inversion H5.
-    rewrite <- H8 in *.
-    rewrite H_Attacker_init_cstate in H6.
-    rewrite H6.
-    rewrite Hec_s.
-    simpl.
-    rewrite H_es_c.
-    simpl.
-    rewrite Hcs_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    unfold receive.
-    unfold require_no_self_call.
-    simpl.
-    assert (address_neqb attacker_addr caddr = true).
-    {
-    destruct_address_eq;try congruence.
-    simpl.
-    eauto.
-
-
-    }
-    rewrite H7.
-    unfold ether_receive.
-    simpl.
-    simpl.
-    exists {|
-    chain_state_env :=
-    set_contract_state caddr (serialize cstate)
-    (transfer_balance attacker_addr caddr 1
-    (set_contract_state attacker_addr
-      (serialize attacker_state)
-      (transfer_balance attacker attacker_addr 0
-        (add_new_block_to_env
-            (get_valid_header miner s) s))));
-    chain_state_queue := []
-    |}.
-    eauto.
-  + eauto.
-
-  Qed.
-
   Lemma attacker_call_Fallback_state_correct:
-  forall (s s':ChainState) (cstate : State) (attacker_state : AttackerState),
+  forall (* (n:nat) *) (s s':ChainState) (cstate : State) (attacker_state : AttackerState),
     contract_state s attacker_addr = Some attacker_state ->
     contract_state s caddr = Some cstate ->
     funds s attacker_addr >= 1 ->
     transition_reachable miner contract caddr s0 s ->
-    transition miner s (attacker_call_Fallback cstate) = Ok s' ->
+    transition miner 5 s (attacker_call_Fallback cstate) = Ok s' ->
     exists cstate' ,
       contract_state s' caddr = Some cstate' /\
-      cstate' = cstate.
+        cstate' = cstate.
   Proof.
     intros * Hcs_s_a Hcs_s Hbal_a Htrc_s Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-    assert (Hact_call : is_call_act ((attacker_call_Fallback cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold user_call_Deposit.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -4147,8 +3148,8 @@ End Attacker.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
     [attacker_call_Fallback cstate]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec;eauto.
@@ -4838,18 +3839,11 @@ End Attacker.
       contract_state s caddr = Some cstate ->
       funds s attacker_addr >= 1 ->
       transition_reachable miner contract caddr s0 s ->
-      transition miner s (attacker_call_Fallback cstate) = Ok s' ->
+      transition miner 5 s (attacker_call_Fallback cstate) = Ok s' ->
       funds s' caddr = (funds s caddr + 1).
   Proof.
     intros * Hcs_s_a Hcs_s Hbal_a Htrc_s Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-    assert (Hact_call : is_call_act ((attacker_call_Fallback cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold user_call_Deposit.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -4915,8 +3909,8 @@ End Attacker.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
     [attacker_call_Fallback cstate]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec;eauto.
@@ -5606,8 +4600,6 @@ End Attacker.
   Qed.
 
 
-
-
   Lemma game_hold_base_liquidity:
     base_liquidity miner contract caddr s0.
   Proof.
@@ -5646,12 +4638,8 @@ End Attacker.
       assert (trace_s_s' :inhabited(TransitionTrace miner s s1)).
       {
         assert (TransitionTrace miner s s) by eapply clnil.
-        assert(Hcall_act : is_call_act (winner_call_ClaimReward cstate) = true).
-        {
-          eapply (winner_call_ClaimReward_is_call_act cstate).
-        }
         econstructor;eauto.
-        eapply (snoc X (step_trans miner (winner_call_ClaimReward cstate) Hcall_act  Htrans1)).
+        eapply (snoc X (step_trans miner (winner_call_ClaimReward cstate) 5 (* Hcall_act *)  Htrans1)).
       }
       exists s1.
       split.
@@ -5665,13 +4653,9 @@ End Attacker.
       eapply transition_reachable_transition_transition_reachable in Htrc_s as Htrc_s1;eauto.
       assert (trace_s_s1 :inhabited(TransitionTrace miner s s1)).
       {
-        assert(Hcall_act : is_call_act (winner_call_ClaimReward cstate1) = true).
-        {
-          eapply (winner_call_ClaimReward_is_call_act cstate).
-        }
         assert (TransitionTrace miner s s) by eapply clnil.
         econstructor;eauto.
-        eapply (snoc X (step_trans miner (user_call_Deposit cstate) Hcall_act Htrans1)).
+        eapply (snoc X (step_trans miner (user_call_Deposit cstate) 5 (* Hcall_act *) Htrans1)).
       }
       destruct (cstate1.(balance) >=? cstate1.(targetAmount)) eqn : Hcstate_bal1.
       + propify.
@@ -5680,14 +4664,10 @@ End Attacker.
         eapply winner_call_Claim_transition_state_correct in Htrans2 as Ht;eauto;try lia.
         assert (trace_s_s2 :inhabited(TransitionTrace miner s s2)).
         {
-          assert(Hcall_act1 : is_call_act (winner_call_ClaimReward cstate1) = true).
-          {
-            eapply (winner_call_ClaimReward_is_call_act cstate1).
-          }
           destruct trace_s_s1 as [trace_s_s1].
           assert (TransitionTrace miner s s2).
           {
-            eapply (snoc trace_s_s1 (step_trans miner (winner_call_ClaimReward cstate1) Hcall_act1  Htrans2)).
+            eapply (snoc trace_s_s1 (step_trans miner (winner_call_ClaimReward cstate1) 5 (* Hcall_act1 *)  Htrans2)).
           }
           econstructor;eauto.
         }
@@ -5703,13 +4683,9 @@ End Attacker.
         eapply transition_reachable_transition_transition_reachable in Htrc_s1 as Htrc_s2;eauto.
         assert (trace_s_s2 :inhabited(TransitionTrace miner s s2)).
         {
-          assert(Hcall_act : is_call_act (user_call_Deposit cstate2) = true).
-          {
-            eapply (user_call_Deposit_is_call_act cstate2).
-          }
           destruct trace_s_s1 as [trace_s_s1].
           econstructor;eauto.
-          eapply (snoc trace_s_s1 (step_trans miner (user_call_Deposit cstate1) Hcall_act Htrans2)).
+          eapply (snoc trace_s_s1 (step_trans miner (user_call_Deposit cstate1) 5 (* Hcall_act *) Htrans2)).
         }
         destruct (cstate2.(balance) >=? cstate2.(targetAmount)) eqn : Hcstate_bal2.
         * propify.
@@ -5718,14 +4694,10 @@ End Attacker.
           eapply winner_call_Claim_transition_state_correct in Htrans3 as Ht;eauto;try lia.
           assert (trace_s_s3 :inhabited(TransitionTrace miner s s3)).
           {
-            assert(Hcall_act : is_call_act (winner_call_ClaimReward cstate2) = true).
-            {
-              eapply (winner_call_ClaimReward_is_call_act cstate2).
-            }
             destruct trace_s_s2 as [trace_s_s2].
             assert (TransitionTrace miner s s3).
             {
-              eapply (snoc trace_s_s2 (step_trans miner (winner_call_ClaimReward cstate2) Hcall_act  Htrans3)).
+              eapply (snoc trace_s_s2 (step_trans miner (winner_call_ClaimReward cstate2) 5 (* Hcall_act *)  Htrans3)).
             }
             econstructor;eauto.
           }
@@ -5741,13 +4713,9 @@ End Attacker.
           eapply transition_reachable_transition_transition_reachable in Htrc_s2 as Htrc_s3;eauto.
           assert (trace_s_s3 :inhabited(TransitionTrace miner s s3)).
           {
-            assert(Hcall_act : is_call_act (user_call_Deposit cstate3) = true).
-            {
-              eapply (user_call_Deposit_is_call_act cstate3).
-            }
             destruct trace_s_s2 as [trace_s_s2].
             econstructor;eauto.
-            eapply (snoc trace_s_s2 (step_trans miner (user_call_Deposit cstate2) Hcall_act Htrans3)).
+            eapply (snoc trace_s_s2 (step_trans miner (user_call_Deposit cstate2) 5 (* Hcall_act *) Htrans3)).
           }
           destruct (cstate3.(balance) >=? cstate3.(targetAmount)) eqn : Hcstate_bal3.
           **  propify.
@@ -5756,14 +4724,10 @@ End Attacker.
               eapply winner_call_Claim_transition_state_correct in Htrans4 as Ht;eauto;try lia.
               assert (trace_s_s4 :inhabited(TransitionTrace miner s s4)).
               {
-                assert(Hcall_act : is_call_act (winner_call_ClaimReward cstate3) = true).
-                {
-                  eapply (winner_call_ClaimReward_is_call_act cstate2).
-                }
                 destruct trace_s_s3 as [trace_s_s3].
                 assert (TransitionTrace miner s s4).
                 {
-                  eapply (snoc trace_s_s3 (step_trans miner (winner_call_ClaimReward cstate3) Hcall_act  Htrans4)).
+                  eapply (snoc trace_s_s3 (step_trans miner (winner_call_ClaimReward cstate3) 5 (* Hcall_act *)  Htrans4)).
                 }
                 econstructor;eauto.
               }
@@ -5779,13 +4743,9 @@ End Attacker.
               eapply transition_reachable_transition_transition_reachable in Htrc_s3 as Htrc_s4;eauto.
               assert (trace_s_s4 :inhabited(TransitionTrace miner s s4)).
               {
-                assert(Hcall_act : is_call_act (user_call_Deposit cstate4) = true).
-                {
-                  eapply (user_call_Deposit_is_call_act cstate3).
-                }
                 destruct trace_s_s3 as [trace_s_s3].
                 econstructor;eauto.
-                eapply (snoc trace_s_s3 (step_trans miner (user_call_Deposit cstate2) Hcall_act Htrans4)).
+                eapply (snoc trace_s_s3 (step_trans miner (user_call_Deposit cstate2) 5 (* Hcall_act *) Htrans4)).
               }
               destruct (cstate4.(balance) >=? cstate4.(targetAmount)) eqn : Hcstate_bal4.
               --  propify.
@@ -5794,14 +4754,10 @@ End Attacker.
                   eapply winner_call_Claim_transition_state_correct in Htrans5 as Ht;eauto;try lia.
                   assert (trace_s_s5 :inhabited(TransitionTrace miner s s5)).
                   {
-                    assert(Hcall_act : is_call_act (winner_call_ClaimReward cstate3) = true).
-                    {
-                      eapply (winner_call_ClaimReward_is_call_act cstate2).
-                    }
                     destruct trace_s_s4 as [trace_s_s4].
                     assert (TransitionTrace miner s s5).
                     {
-                      eapply (snoc trace_s_s4 (step_trans miner (winner_call_ClaimReward cstate4) Hcall_act  Htrans5)).
+                      eapply (snoc trace_s_s4 (step_trans miner (winner_call_ClaimReward cstate4) 5 (* Hcall_act *)  Htrans5)).
                     }
                     econstructor;eauto.
                   }
@@ -5817,13 +4773,9 @@ End Attacker.
                   eapply transition_reachable_transition_transition_reachable in Htrc_s4 as Htrc_s5;eauto.
                   assert (trace_s_s5 :inhabited(TransitionTrace miner s s5)).
                   {
-                    assert(Hcall_act : is_call_act (user_call_Deposit cstate5) = true).
-                    {
-                      eapply (user_call_Deposit_is_call_act cstate3).
-                    }
                     destruct trace_s_s4 as [trace_s_s4].
                     econstructor;eauto.
-                    eapply (snoc trace_s_s4 (step_trans miner (user_call_Deposit cstate5) Hcall_act Htrans5)).
+                    eapply (snoc trace_s_s4 (step_trans miner (user_call_Deposit cstate5) 5 (* Hcall_act *) Htrans5)).
                   }
                   destruct (cstate5.(balance) >=? cstate5.(targetAmount)) eqn : Hcstate_bal5;propify.
                     ++  eapply winner_call_Claim_transition_correct in Htrc_s5 as Ht;
@@ -5832,14 +4784,10 @@ End Attacker.
                         eapply winner_call_Claim_transition_state_correct in Htrans6 as Ht;eauto;try lia.
                         assert (trace_s_s6 :inhabited(TransitionTrace miner s s6)).
                         {
-                          assert(Hcall_act : is_call_act (winner_call_ClaimReward cstate3) = true).
-                          {
-                            eapply (winner_call_ClaimReward_is_call_act cstate2).
-                          }
                           destruct trace_s_s5 as [trace_s_s5].
                           assert (TransitionTrace miner s s6).
                           {
-                            eapply (snoc trace_s_s5 (step_trans miner (winner_call_ClaimReward cstate5) Hcall_act Htrans6)).
+                            eapply (snoc trace_s_s5 (step_trans miner (winner_call_ClaimReward cstate5) 5 (* Hcall_act *) Htrans6)).
                           }
                           econstructor;eauto.
                         }
@@ -5855,13 +4803,9 @@ End Attacker.
                         eapply transition_reachable_transition_transition_reachable in Htrc_s5 as Htrc_s6;eauto.
                         assert (trace_s_s6 :inhabited(TransitionTrace miner s s6)).
                         {
-                          assert(Hcall_act : is_call_act (user_call_Deposit cstate6) = true).
-                          {
-                            eapply (user_call_Deposit_is_call_act cstate3).
-                          }
                           destruct trace_s_s5 as [trace_s_s5].
                           econstructor;eauto.
-                          eapply (snoc trace_s_s5 (step_trans miner (user_call_Deposit cstate5) Hcall_act Htrans6)).
+                          eapply (snoc trace_s_s5 (step_trans miner (user_call_Deposit cstate5) 5 (* Hcall_act *) Htrans6)).
                         }
                         destruct (cstate6.(balance) >=? cstate6.(targetAmount)) eqn : Hcstate_bal6;propify.
                         *** eapply winner_call_Claim_transition_correct 
@@ -5871,14 +4815,10 @@ End Attacker.
                             eapply winner_call_Claim_transition_state_correct in Htrans7 as Ht;eauto;try lia.
                             assert (trace_s_s7 :inhabited(TransitionTrace miner s s7)).
                             {
-                              assert(Hcall_act : is_call_act (winner_call_ClaimReward cstate6) = true).
-                              {
-                                eapply (winner_call_ClaimReward_is_call_act cstate2).
-                              }
                               destruct trace_s_s6 as [trace_s_s6].
                               assert (TransitionTrace miner s s7).
                               {
-                                eapply (snoc trace_s_s6 (step_trans miner (winner_call_ClaimReward cstate6) Hcall_act Htrans7)).
+                                eapply (snoc trace_s_s6 (step_trans miner (winner_call_ClaimReward cstate6) 5 (* Hcall_act *) Htrans7)).
                               }
                               econstructor;eauto.
                             }
@@ -5895,13 +4835,9 @@ End Attacker.
                             eapply transition_reachable_transition_transition_reachable in Htrc_s6 as Htrc_s7;eauto.
                             assert (trace_s_s7 :inhabited(TransitionTrace miner s s7)).
                             {
-                              assert(Hcall_act : is_call_act (user_call_Deposit cstate6) = true).
-                              {
-                                eapply (user_call_Deposit_is_call_act cstate3).
-                              }
                               destruct trace_s_s6 as [trace_s_s6].
                               econstructor;eauto.
-                              eapply (snoc trace_s_s6 (step_trans miner (user_call_Deposit cstate7) Hcall_act Htrans7)).
+                              eapply (snoc trace_s_s6 (step_trans miner (user_call_Deposit cstate7) 5 (* Hcall_act *) Htrans7)).
                             }
                             destruct (cstate7.(balance) >=? cstate7.(targetAmount)) eqn : Hcstate_bal7;propify;try congruence.
                             ----  eapply winner_call_Claim_transition_correct 
@@ -5911,14 +4847,10 @@ End Attacker.
                                   eapply winner_call_Claim_transition_state_correct in Htrans8 as Ht;eauto;try lia.
                                   assert (trace_s_s8 :inhabited(TransitionTrace miner s s8)).
                                   {
-                                    assert(Hcall_act : is_call_act (winner_call_ClaimReward cstate6) = true).
-                                    {
-                                      eapply (winner_call_ClaimReward_is_call_act cstate2).
-                                    }
                                     destruct trace_s_s7 as [trace_s_s7].
                                     assert (TransitionTrace miner s s8).
                                     {
-                                      eapply (snoc trace_s_s7 (step_trans miner (winner_call_ClaimReward cstate7) Hcall_act Htrans8)).
+                                      eapply (snoc trace_s_s7 (step_trans miner (winner_call_ClaimReward cstate7) 5 (* Hcall_act *) Htrans8)).
                                     }
                                     econstructor;eauto.
                                   }
@@ -5963,14 +4895,875 @@ End Attacker.
 
   Ltac decompose_stratDrive H :=
     match type of H with
-    | stratDrive ?miner ?addrs ?delta ?s0 ?s ?tr ?s' ?tr' =>
+    | stratDrive ?s0 ?ads ?delta ?addrs ?s ?tr ?s' ?tr' =>
         unfold stratDrive in H;
         let a := fresh "a" in
+        let n := fresh "n" in 
+        (* let H_act := fresh "H_act" in  *)
         let H_trans := fresh "H_transition" in
-        destruct H as [a [Ha_call [H_trans [H_in H_trace]]]]
-    | _ => fail "The hypothesis" H "is not of the form stratDrive  addrs delta s0 s tr s' tr'."
+        destruct H as (a & n & (* H_act &  *)H_trans & H_in & H_trace) (* [a [_ [H_trans [H_in H_trace]]]] *)
+    | _ => fail "The hypothesis" H "is not of the form stratDrive s0 delta addrs s tr s' tr'."
     end.
 
+  Lemma attacker_call_Fallback_transition_correct:
+  forall (s : ChainState) (cstate : State) (attacker_state : AttackerState),
+    contract_state s attacker_addr = Some attacker_state ->
+    contract_state s caddr = Some cstate ->
+    funds s attacker_addr >= 1 ->
+    transition_reachable miner contract caddr s0 s ->
+    close attacker_state = false -> 
+    exists s', 
+      transition miner 5 s (attacker_call_Fallback cstate) = Ok s'.
+  Proof.
+    intros s cstate attacker_state Hattacker_s Hcs_s Hbal_state Htrc_s H_a_close.
+    eapply address_not_contract_negb in H_miner as H_miner_eoa.
+    unfold transition.
+    unfold queue_isb_empty.
+    eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s.
+    rewrite Hqueue_s.
+    (* rewrite attacker_call_Fallback_is_call_act. *)
+    unfold evaluate_action.
+    rewrite get_valid_header_is_valid_header;eauto.
+    unfold attacker_call_Fallback .
+    simpl.
+    destruct_address_eq;try congruence.
+    simpl.
+    assert (Hec_s:env_contracts s caddr = Some (contract:WeakContract)).
+    {
+      eapply transition_reachable_impl_reachable_through in Htrc_s.
+      eapply reachable_through_contract_deployed in Htrc_s;eauto.
+      decompose_is_init_state H_init.
+      eauto.
+      eauto.
+    }
+    assert(H_constans:cstate.(targetAmount) = init_cstate.(targetAmount) ).
+    {
+      eapply transition_reachable_impl_reachable in Htrc_s as H;eauto.
+      eapply transition_reachable_impl_reachable_through in Htrc_s.
+      eapply contract_constants_reachable_through in Htrc_s;eauto.
+      destruct_and_split.
+      intuition.
+      eauto.
+    }
+    assert(H_user_eoa : address_is_contract user = false).
+    {      
+      eapply address_not_contract_negb.
+      eauto.
+    }
+    eapply address_not_contract_negb in attacker_eoa.
+    rewrite attacker_eoa.
+    unfold send_or_call.
+    simpl.
+    assert( H_caddr_not_EOA : address_is_contract caddr = true).
+    {
+      eapply contract_addr_format in Hec_s;eauto.
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
+    }
+
+    assert(Hrc_s:reachable s).
+    {
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.
+    }
+    destruct_address_eq;cbn in *;try congruence.
+    + assert ((0 >? miner_reward + env_account_balances s attacker)%Z 
+                = false).
+      {
+        unfold miner_reward.
+        eapply (account_balance_nonnegative s attacker) in Hrc_s.
+        lia.
+      }
+      rewrite H.
+      assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+      specialize(H_attacker_cstate s cstate Hcs_s).
+      destruct H_attacker_cstate as [  Ht].
+      destruct H0.
+      eauto.
+    }
+      rewrite H_ec_s_a.
+      (* unfold contract_state in Hcs_s. *)
+      simpl in Hcs_s.
+
+      destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+      simpl.
+      rewrite Hattacker_s.
+      simpl.
+      setoid_rewrite deserialize_serialize.
+      simpl.
+      cbn in *.
+      unfold receive.
+      simpl.
+      unfold address_not_contract.
+      unfold require_no_self_call.
+      simpl.
+      destruct_address_eq;cbn in *;try congruence.
+      simpl.
+      cbn.
+      unfold require_ctx_from_eoa.
+      simpl.
+      unfold attacker_receive.
+      rewrite H_a_close.
+      simpl.
+      unfold send_or_call.
+      assert(0 + env_account_balances s caddr <? 0 = false).
+      {
+        eapply (account_balance_nonnegative s caddr) in Hrc_s.
+        propify.
+        lia.
+      }
+      (* rewrite H0. *)
+      simpl.
+      destruct_address_eq;cbn in *;try congruence;eauto.
+      (* 1 *)
+      assert( 1 >?
+      - 0 +
+      (0 +
+       (miner_reward + env_account_balances s attacker_addr)) = false)%Z.
+      {
+        simpl.
+        unfold miner_reward.
+        unfold funds in *.
+        intuition.
+      }
+      rewrite H1.
+      specialize(H_attacker_cstate s cstate).
+      destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+      rewrite Hcs_s in H_attacker_cstate.
+      
+      assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+      eapply H_attacker_cstate in Hcstate_eq  .
+      destruct_and_split.
+      
+      (* target address of attack is invariant *)
+      specialize(Attacker_target_constant s Hrc_s).
+      destruct Attacker_target_constant.
+      destruct Attacker_target_constant.
+      rewrite Hecs_s_a in H5.
+      destruct H5.
+      rewrite Hattacker_s in *.
+      inversion H5.
+      rewrite <- H8 in *.
+      rewrite H_Attacker_init_cstate in H6.
+      rewrite H6 in e7.
+      intuition.
+
+
+      destruct_address_eq;cbn in *;try congruence;eauto.
+      (* 1 *)
+      assert( 1 >?
+      - 0 +
+      (0 +
+       (miner_reward + env_account_balances s attacker_addr)) = false)%Z.
+      {
+        simpl.
+        unfold miner_reward.
+        unfold funds in *.
+        intuition.
+      }
+      rewrite H1.
+      specialize(Attacker_target_constant s Hrc_s).
+      destruct Attacker_target_constant.
+      destruct Attacker_target_constant.
+      rewrite Hecs_s_a in H3.
+      destruct H3.
+      rewrite Hattacker_s in *.
+      inversion H3.
+      rewrite <- H6 in *.
+      rewrite H_Attacker_init_cstate in H4.
+      rewrite H4.
+      rewrite Hec_s.
+      destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+      simpl.
+      rewrite Hcs_s.
+      simpl.
+      setoid_rewrite deserialize_serialize.
+      simpl.
+      unfold receive.
+      unfold require_no_self_call.
+      simpl.
+      assert (address_neqb attacker_addr caddr = true).
+      {
+        destruct_address_eq;try congruence.
+        simpl.
+        eauto.
+      
+      }
+      rewrite H5.
+      unfold ether_receive.
+      simpl.
+      simpl.
+      exists {|
+      chain_state_env :=
+        set_contract_state caddr (serialize cstate)
+          (transfer_balance attacker_addr caddr 1
+             (set_contract_state attacker_addr
+                (serialize attacker_state)
+                (transfer_balance attacker attacker_addr 0
+                   (add_new_block_to_env
+                      (get_valid_header miner s) s))));
+      chain_state_queue := []
+    |}.
+    eauto.
+  + assert ((0 >? miner_reward + env_account_balances s attacker)%Z 
+  = false).
+    {
+    unfold miner_reward.
+    eapply (account_balance_nonnegative s attacker) in Hrc_s.
+    lia.
+    }
+    rewrite H.
+    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+    specialize(H_attacker_cstate s cstate Hcs_s).
+    destruct H_attacker_cstate as [  Ht].
+    destruct H0.
+    eauto.
+    }
+    rewrite H_ec_s_a.
+    (* unfold contract_state in Hcs_s. *)
+    simpl in Hcs_s.
+
+    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+    simpl.
+    rewrite Hattacker_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    cbn in *.
+    unfold receive.
+    simpl.
+    unfold address_not_contract.
+    unfold require_no_self_call.
+    simpl.
+    destruct_address_eq;cbn in *;try congruence.
+    simpl.
+    cbn.
+    unfold require_ctx_from_eoa.
+    simpl.
+    unfold attacker_receive.
+    rewrite H_a_close.
+    simpl.
+    unfold send_or_call.
+    assert(0 + env_account_balances s caddr <? 0 = false).
+    {
+    eapply (account_balance_nonnegative s caddr) in Hrc_s.
+    propify.
+    lia.
+    }
+    (* rewrite H0. *)
+    simpl.
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    (* 1 *)
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+
+    (* target address of attack is invariant *) 
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6 in e3.
+    intuition.
+
+
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    (* 1 *)
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H3.
+    destruct H3.
+    rewrite Hattacker_s in *.
+    inversion H3.
+    rewrite <- H6 in *.
+    rewrite H_Attacker_init_cstate in H4.
+    rewrite H4.
+    rewrite Hec_s.
+    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+    simpl.
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+
+    (* target address of attack is invariant *) 
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6.
+    rewrite Hec_s.
+    simpl.
+    rewrite H_es_c.
+    simpl.
+    rewrite Hcs_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    unfold receive.
+    unfold require_no_self_call.
+    simpl.
+    assert (address_neqb attacker_addr caddr = true).
+    {
+    destruct_address_eq;try congruence.
+    simpl.
+    eauto.
+
+    }
+    rewrite H7.
+    unfold ether_receive.
+    simpl.
+    simpl.
+    exists {|
+    chain_state_env :=
+    set_contract_state caddr (serialize cstate)
+    (transfer_balance attacker_addr caddr 1
+    (set_contract_state attacker_addr
+      (serialize attacker_state)
+      (transfer_balance attacker attacker_addr 0
+        (add_new_block_to_env
+            (get_valid_header miner s) s))));
+    chain_state_queue := []
+    |}.
+    eauto.
+  +
+  assert ((0 >? env_account_balances s attacker)%Z 
+  = false).
+    {
+    unfold miner_reward.
+    eapply (account_balance_nonnegative s attacker) in Hrc_s.
+    lia.
+    }
+    rewrite H.
+    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+    specialize(H_attacker_cstate s cstate Hcs_s).
+    destruct H_attacker_cstate as [  Ht].
+    destruct H0.
+    eauto.
+    }
+    rewrite H_ec_s_a.
+    (* unfold contract_state in Hcs_s. *)
+    simpl in Hcs_s.
+
+    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+    simpl.
+    rewrite Hattacker_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    cbn in *.
+    unfold receive.
+    simpl.
+    unfold address_not_contract.
+    unfold require_no_self_call.
+    simpl.
+    destruct_address_eq;cbn in *;try congruence.
+    simpl.
+    cbn.
+    unfold require_ctx_from_eoa.
+    simpl.
+    unfold attacker_receive.
+    rewrite H_a_close.
+    simpl.
+    unfold send_or_call.
+    assert(0 + env_account_balances s caddr <? 0 = false).
+    {
+    eapply (account_balance_nonnegative s caddr) in Hrc_s.
+    propify.
+    lia.
+    }
+    (* rewrite H0. *)
+    simpl.
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    (* 1 *)
+    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+
+    (* target address of attack is invariant *) 
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6 in e4.
+    intuition.
+    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H3.
+    destruct H3.
+    rewrite Hattacker_s in *.
+    inversion H3.
+    rewrite <- H6 in *.
+    rewrite H_Attacker_init_cstate in H4.
+    rewrite H4.
+    rewrite Hec_s.
+    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+    simpl.
+    assert( 1 >? - 0 + (0 + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+
+    (* target address of attack is invariant *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6.
+    rewrite Hec_s.
+    simpl.
+    rewrite H_es_c.
+    simpl.
+    rewrite Hcs_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    unfold receive.
+    unfold require_no_self_call.
+    simpl.
+    assert (address_neqb attacker_addr caddr = true).
+    {
+    destruct_address_eq;try congruence.
+    simpl.
+    eauto.
+
+    }
+    rewrite H7.
+    unfold ether_receive.
+    simpl.
+    simpl.
+    exists {|
+    chain_state_env :=
+    set_contract_state caddr (serialize cstate)
+    (transfer_balance attacker_addr caddr 1
+    (set_contract_state attacker_addr
+      (serialize attacker_state)
+      (transfer_balance attacker attacker_addr 0
+        (add_new_block_to_env
+            (get_valid_header miner s) s))));
+    chain_state_queue := []
+    |}.
+    eauto.
+  + assert ((0 >? env_account_balances s attacker)%Z 
+  = false).
+    {
+    unfold miner_reward.
+    eapply (account_balance_nonnegative s attacker) in Hrc_s.
+    lia.
+    }
+    rewrite H.
+    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+    specialize(H_attacker_cstate s cstate Hcs_s).
+    destruct H_attacker_cstate as [  Ht].
+    destruct H0.
+    eauto.
+    }
+    rewrite H_ec_s_a.
+    (* unfold contract_state in Hcs_s. *)
+    simpl in Hcs_s.
+
+    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+    simpl.
+    rewrite Hattacker_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    cbn in *.
+    unfold receive.
+    simpl.
+    unfold address_not_contract.
+    unfold require_no_self_call.
+    simpl.
+    destruct_address_eq;cbn in *;try congruence.
+    simpl.
+    cbn.
+    unfold require_ctx_from_eoa.
+    simpl.
+    unfold attacker_receive.
+    rewrite H_a_close.
+    simpl.
+    unfold send_or_call.
+    assert(0 + env_account_balances s caddr <? 0 = false).
+    {
+    eapply (account_balance_nonnegative s caddr) in Hrc_s.
+    propify.
+    lia.
+    }
+    (* rewrite H0. *)
+    simpl.
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    (* 1 *)
+    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+    (* todo 不变量：攻击合约攻击目标合约地址不变 *)
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6 in e4.
+    intuition.
+    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H3.
+    destruct H3.
+    rewrite Hattacker_s in *.
+    inversion H3.
+    rewrite <- H6 in *.
+    rewrite H_Attacker_init_cstate in H4.
+    rewrite H4.
+    rewrite Hec_s.
+    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+    simpl.
+    assert( 1 >? 0 + (miner_reward + env_account_balances s attacker_addr) = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+
+    (* target address of attack is invariant *) 
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6.
+    rewrite Hec_s.
+    simpl.
+    rewrite H_es_c.
+    simpl.
+    rewrite Hcs_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    unfold receive.
+    unfold require_no_self_call.
+    simpl.
+    assert (address_neqb attacker_addr caddr = true).
+    {
+    destruct_address_eq;try congruence.
+    simpl.
+    eauto.
+
+    }
+    rewrite H7.
+    unfold ether_receive.
+    simpl.
+    simpl.
+    exists {|
+    chain_state_env :=
+    set_contract_state caddr (serialize cstate)
+    (transfer_balance attacker_addr caddr 1
+    (set_contract_state attacker_addr
+      (serialize attacker_state)
+      (transfer_balance attacker attacker_addr 0
+        (add_new_block_to_env
+            (get_valid_header miner s) s))));
+    chain_state_queue := []
+    |}.
+    eauto.
+  + assert ((0 >? env_account_balances s attacker)%Z 
+  = false).
+    {
+    unfold miner_reward.
+    eapply (account_balance_nonnegative s attacker) in Hrc_s.
+    lia.
+    }
+    rewrite H.
+    assert( H_ec_s_a : env_contracts s attacker_addr = Some (attacker_contract : WeakContract)).
+    {
+    specialize(H_attacker_cstate s cstate Hcs_s).
+    destruct H_attacker_cstate as [  Ht].
+    destruct H0.
+    eauto.
+    }
+    rewrite H_ec_s_a.
+    (* unfold contract_state in Hcs_s. *)
+    simpl in Hcs_s.
+
+    destruct (env_contract_states s attacker_addr) eqn : Hecs_s_a;try congruence.
+    simpl.
+    rewrite Hattacker_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    cbn in *.
+    unfold receive.
+    simpl.
+    unfold address_not_contract.
+    unfold require_no_self_call.
+    simpl.
+    destruct_address_eq;cbn in *;try congruence.
+    simpl.
+    cbn.
+    unfold require_ctx_from_eoa.
+    simpl.
+    unfold attacker_receive.
+    rewrite H_a_close.
+    simpl.
+    unfold send_or_call.
+    assert(0 + env_account_balances s caddr <? 0 = false).
+    {
+    eapply (account_balance_nonnegative s caddr) in Hrc_s.
+    propify.
+    lia.
+    }
+    (* rewrite H0. *)
+    simpl.
+    destruct_address_eq;cbn in *;try congruence;eauto.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H2.
+    destruct H2.
+    rewrite Hattacker_s in *.
+    inversion H2.
+    rewrite <- H5 in *.
+    rewrite H_Attacker_init_cstate in H3.
+    rewrite H3 in e2.
+    intuition.
+
+
+    (* 1 *)
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+
+    (* target address of attack is invariant *) 
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6 in e2.
+    intuition.
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H3.
+    destruct H3.
+    rewrite Hattacker_s in *.
+    inversion H3.
+    rewrite <- H6 in *.
+    rewrite H_Attacker_init_cstate in H4.
+    rewrite H4.
+    rewrite Hec_s.
+    destruct (env_contract_states s caddr) eqn : Hcs_s_der; try try congruence.
+    simpl.
+    assert( 1 >? 0 + env_account_balances s attacker_addr = false)%Z.
+    {
+    simpl.
+    unfold miner_reward.
+    unfold funds in *.
+    intuition.
+    }
+    rewrite H1.
+    specialize(H_attacker_cstate s cstate).
+    destruct (env_contract_states s caddr) eqn : H_es_c ;try congruence.
+    rewrite Hcs_s in H_attacker_cstate.
+
+    assert (Hcstate_eq : Some cstate = Some cstate) by intuition.
+    eapply H_attacker_cstate in Hcstate_eq  .
+    destruct_and_split.
+
+    (* target address of attack is invariant *) 
+    specialize(Attacker_target_constant s Hrc_s).
+    destruct Attacker_target_constant.
+    destruct Attacker_target_constant.
+    rewrite Hecs_s_a in H5.
+    destruct H5.
+    rewrite Hattacker_s in *.
+    inversion H5.
+    rewrite <- H8 in *.
+    rewrite H_Attacker_init_cstate in H6.
+    rewrite H6.
+    rewrite Hec_s.
+    simpl.
+    rewrite H_es_c.
+    simpl.
+    rewrite Hcs_s.
+    simpl.
+    setoid_rewrite deserialize_serialize.
+    simpl.
+    unfold receive.
+    unfold require_no_self_call.
+    simpl.
+    assert (address_neqb attacker_addr caddr = true).
+    {
+    destruct_address_eq;try congruence.
+    simpl.
+    eauto.
+    }
+    rewrite H7.
+    unfold ether_receive.
+    simpl.
+    simpl.
+    exists {|
+    chain_state_env :=
+    set_contract_state caddr (serialize cstate)
+    (transfer_balance attacker_addr caddr 1
+    (set_contract_state attacker_addr
+      (serialize attacker_state)
+      (transfer_balance attacker attacker_addr 0
+        (add_new_block_to_env
+            (get_valid_header miner s) s))));
+    chain_state_queue := []
+    |}.
+    eauto.
+  + eauto.
+
+  Qed.
+   
   Lemma attacker_strat_not_change_balance:
     forall s s' tr tr',
       stratDrive miner [attacker] attacker_strat s0 s tr s' tr' ->
@@ -5985,7 +5778,7 @@ End Attacker.
     unfold attacker_strat in H_in_t.
     destruct (get_contract_state s caddr) eqn : Hs;try congruence.
     rename s1 into cstate.
-    destruct ( get_attacker_contract_state s attacker_addr) eqn : Hs2;try congruence.
+    destruct (get_attacker_contract_state s attacker_addr) eqn : Hs2;try congruence.
     rename a0 into acstate.
     destruct ((balance cstate =? 6) &&
     (funds s caddr =? balance cstate) &&
@@ -5996,7 +5789,24 @@ End Attacker.
     inversion H_in_t.
     pose proof H_transition.
     rewrite <- H3 in H4.
+
+    assert (Hex: exists s', transition miner 5 s (attacker_call_Fallback cstate) = Ok s').
+    {
+      eapply attacker_call_Fallback_transition_correct; eauto.
+      lia.
+      eapply transition_reachable_trans; eauto.
+      apply transition_reachable_init_state; auto.
+    }
+    destruct Hex as (s'_ & Htrs5).
+    assert (Heqs: s'_ = s').
+    {
+      eapply transition_deterministic; eauto.
+    }
+    subst s'_.
+    clear H4.
+    rename Htrs5 into H4.
     eapply attacker_call_Fallback_state_correct in H4;eauto;try lia.
+
     destruct H4 as [cstate' [Hcs' Heq]].
     exists cstate,cstate'.
     intuition.
@@ -6032,6 +5842,21 @@ End Attacker.
     inversion H_in_t.
     pose proof H_transition.
     rewrite <- H3 in H4.
+
+    assert (Hex: exists s', transition miner 5 s (attacker_call_Fallback cstate) = Ok s').
+    {
+      eapply attacker_call_Fallback_transition_correct; eauto.
+      lia.
+      eapply transition_reachable_trans; eauto.
+      apply transition_reachable_init_state; auto.
+    }
+    destruct Hex as (s'_ & Htrs5).
+    assert (Heqs: s'_ = s').
+    {
+      eapply transition_deterministic; eauto.
+    }
+    subst s'_.    
+    clear H4. rename Htrs5 into H4.
     eapply attacker_call_Fallback_fund_correct in H4;eauto;try lia.
     econstructor;eauto.
     inversion H3.
@@ -6076,7 +5901,8 @@ End Attacker.
 
   (* Require Import Coq.Logic.ProofIrrelevance. *)
 
-  Theorem game_satisfy_strat_liquidity:
+
+  Lemma game_hold_strat_liquidity:
     strat_liquidity miner [user] user_strat [attacker] attacker_strat contract caddr s0.
   Proof.
     unfold strat_liquidity.
@@ -6148,15 +5974,11 @@ End Attacker.
       eauto;try lia.
       destruct Ht as [s1 Htrans1].
       eapply winner_call_Claim_transition_state_correct in Htrans1 as Ht;eauto;try lia.
-      assert(Hcall_act_winner : is_call_act (winner_call_ClaimReward cstate) = true).
-      {
-        eapply (winner_call_ClaimReward_is_call_act cstate).
-      }
-      set (tr_s0_s1 := (snoc tr_s0_s (step_trans miner (winner_call_ClaimReward cstate) Hcall_act_winner Htrans1))).
+      set (tr_s0_s1 := (snoc tr_s0_s (step_trans miner (winner_call_ClaimReward cstate) 5 (* Hcall_act_winner *) Htrans1))).
       assert(Hstrat : stratDrive miner participants user_strat s0 s tr_s0_s s1 tr_s0_s1).
       {
         unfold stratDrive.
-        exists (winner_call_ClaimReward cstate),Hcall_act_winner,Htrans1.
+        exists (winner_call_ClaimReward cstate). eexists.  exists (* Hcall_act_winner, *)Htrans1.
         split.
         unfold user_strat .
         unfold get_contract_state.
@@ -6181,15 +6003,11 @@ End Attacker.
       eauto;try lia.
       destruct Ht as [s1 Htrans1].
       eapply user_call_Deposit_state_correct in Htrans1 as Ht;eauto;try lia.
-      assert(Hcall_act_user : is_call_act (user_call_Deposit cstate) = true).
-      {
-        eapply (user_call_Deposit_is_call_act cstate).
-      }
-      set (tr_s0_s1 := (snoc tr_s0_s (step_trans miner (user_call_Deposit cstate) Hcall_act_user Htrans1))).
+      set (tr_s0_s1 := (snoc tr_s0_s (step_trans miner (user_call_Deposit cstate) 5 (* Hcall_act_user *) Htrans1))).
       assert(Hstrat1 : stratDrive miner participants user_strat s0 s tr_s0_s s1 tr_s0_s1).
       {
         unfold stratDrive.
-        exists (user_call_Deposit cstate),Hcall_act_user,Htrans1.
+        exists (user_call_Deposit cstate). eexists. exists (* Hcall_act_user, *)Htrans1.
         split.
         unfold user_strat .
         unfold get_contract_state.
@@ -6263,15 +6081,11 @@ End Attacker.
           eauto;try lia.
           destruct Ht as [s3 Htrans3].
           eapply winner_call_Claim_transition_state_correct in Htrans3 as Ht;eauto;try lia.
-          assert(Hcall_act_winner : is_call_act (winner_call_ClaimReward cstate2) = true).
-          {
-            eapply (winner_call_ClaimReward_is_call_act cstate).
-          }
-          set (tr_s0_s3 := (snoc tr_s0_s2 (step_trans miner (winner_call_ClaimReward cstate2) Hcall_act_winner Htrans3))).
+          set (tr_s0_s3 := (snoc tr_s0_s2 (step_trans miner (winner_call_ClaimReward cstate2) 5 (* Hcall_act_winner *) Htrans3))).
           assert(Hstrat : stratDrive miner participants user_strat s0 s2 tr_s0_s2 s3 tr_s0_s3).
           {
             unfold stratDrive.
-            exists (winner_call_ClaimReward cstate2),Hcall_act_winner,Htrans3.
+            exists (winner_call_ClaimReward cstate2). eexists. exists (* Hcall_act_winner, *)Htrans3.
             split.
             unfold user_strat .
             unfold get_contract_state.
@@ -6298,15 +6112,11 @@ End Attacker.
           eauto;try lia.
           destruct Ht as [s3 Htrans3].
           eapply user_call_Deposit_state_correct in Htrans3 as Ht;eauto;try lia.
-          assert(Hcall_act_user2 : is_call_act (user_call_Deposit cstate2) = true).
-          {
-            eapply (user_call_Deposit_is_call_act cstate).
-          }
-          set (tr_s0_s3 := (snoc tr_s0_s2 (step_trans miner (user_call_Deposit cstate2) Hcall_act_user2 Htrans3))).
+          set (tr_s0_s3 := (snoc tr_s0_s2 (step_trans miner (user_call_Deposit cstate2) 5 (* Hcall_act_user2 *) Htrans3))).
           assert(Hstrat3 : stratDrive miner participants user_strat s0 s2 tr_s0_s2 s3 tr_s0_s3).
           {
             unfold stratDrive.
-            exists (user_call_Deposit cstate2),Hcall_act_user2,Htrans3.
+            exists (user_call_Deposit cstate2). eexists. exists (* Hcall_act_user2, *)Htrans3.
             split.
             unfold user_strat .
             unfold get_contract_state.
@@ -6381,15 +6191,11 @@ End Attacker.
               eauto;try lia.
               destruct Ht as [s5 Htrans5].
               eapply winner_call_Claim_transition_state_correct in Htrans5 as Ht;eauto;try lia.
-              assert(Hcall_act_winner4 : is_call_act (winner_call_ClaimReward cstate4) = true).
-              {
-                eapply (winner_call_ClaimReward_is_call_act cstate4).
-              }
-              set (tr_s0_s5 := (snoc tr_s0_s4 (step_trans miner (winner_call_ClaimReward cstate4) Hcall_act_winner4 Htrans5))).
+              set (tr_s0_s5 := (snoc tr_s0_s4 (step_trans miner (winner_call_ClaimReward cstate4) 5 (* Hcall_act_winner4 *) Htrans5))).
               assert(Hstrat : stratDrive miner participants user_strat s0 s4 tr_s0_s4 s5 tr_s0_s5).
               {
                 unfold stratDrive.
-                exists (winner_call_ClaimReward cstate4),Hcall_act_winner4,Htrans5.
+                exists (winner_call_ClaimReward cstate4). eexists. exists (* Hcall_act_winner4, *)Htrans5.
                 split.
                 unfold user_strat .
                 unfold get_contract_state.
@@ -6414,15 +6220,11 @@ End Attacker.
               eauto;try lia.
               destruct Ht as [s5 Htrans5].
               eapply user_call_Deposit_state_correct in Htrans5 as Ht;eauto;try lia.
-              assert(Hcall_act_user4 : is_call_act (user_call_Deposit cstate4) = true).
-              {
-                eapply (user_call_Deposit_is_call_act cstate4).
-              }
-              set (tr_s0_s5 := (snoc tr_s0_s4 (step_trans miner (user_call_Deposit cstate4) Hcall_act_user4 Htrans5))).
+              set (tr_s0_s5 := (snoc tr_s0_s4 (step_trans miner (user_call_Deposit cstate4) 5 (* Hcall_act_user4 *) Htrans5))).
               assert(Hstrat5 : stratDrive miner participants user_strat s0 s4 tr_s0_s4 s5 tr_s0_s5).
               {
                 unfold stratDrive.
-                exists (user_call_Deposit cstate4),Hcall_act_user4,Htrans5.
+                exists (user_call_Deposit cstate4). eexists. exists (* Hcall_act_user4, *)Htrans5.
                 split.
                 unfold user_strat .
                 unfold get_contract_state.
@@ -6497,15 +6299,11 @@ End Attacker.
                   eauto;try lia.
                   destruct Ht as [s7 Htrans7].
                   eapply winner_call_Claim_transition_state_correct in Htrans7 as Ht;eauto;try lia.
-                  assert(Hcall_act_winner7 : is_call_act (winner_call_ClaimReward cstate6) = true).
-                  {
-                    eapply (winner_call_ClaimReward_is_call_act cstate6).
-                  }
-                  set (tr_s0_s7 := (snoc tr_s0_s6 (step_trans miner (winner_call_ClaimReward cstate6) Hcall_act_winner7 Htrans7))).
+                  set (tr_s0_s7 := (snoc tr_s0_s6 (step_trans miner (winner_call_ClaimReward cstate6) 5 (* Hcall_act_winner7 *) Htrans7))).
                   assert(Hstrat : stratDrive miner participants user_strat s0 s6 tr_s0_s6 s7 tr_s0_s7).
                   {
                     unfold stratDrive.
-                    exists (winner_call_ClaimReward cstate6),Hcall_act_winner7,Htrans7.
+                    exists (winner_call_ClaimReward cstate6). eexists. exists (* Hcall_act_winner7, *)Htrans7.
                     split.
                     unfold user_strat .
                     unfold get_contract_state.
@@ -6530,15 +6328,11 @@ End Attacker.
                   eauto;try lia.
                   destruct Ht as [s7 Htrans7].
                   eapply user_call_Deposit_state_correct in Htrans7 as Ht;eauto;try lia.
-                  assert(Hcall_act_user7 : is_call_act (user_call_Deposit cstate6) = true).
-                  {
-                    eapply (user_call_Deposit_is_call_act cstate6).
-                  }
-                  set (tr_s0_s7 := (snoc tr_s0_s6 (step_trans miner (user_call_Deposit cstate6) Hcall_act_user7 Htrans7))).
+                  set (tr_s0_s7 := (snoc tr_s0_s6 (step_trans miner (user_call_Deposit cstate6) 5 (* Hcall_act_user7 *) Htrans7))).
                   assert(Hstrat7 : stratDrive miner participants user_strat s0 s6 tr_s0_s6 s7 tr_s0_s7).
                   {
                     unfold stratDrive.
-                    exists (user_call_Deposit cstate6),Hcall_act_user7,Htrans7.
+                    exists (user_call_Deposit cstate6). eexists. exists (* Hcall_act_user7, *)Htrans7.
                     split.
                     unfold user_strat .
                     unfold get_contract_state.
@@ -6612,15 +6406,12 @@ End Attacker.
                     + eapply winner_call_Claim_transition_correct in Htrc_s8 as Ht; eauto; try lia.
                       destruct Ht as [s9 Htrans9].
                       eapply winner_call_Claim_transition_state_correct in Htrans9 as Ht; eauto; try lia.
-                      assert (Hcall_act_winner8 : is_call_act (winner_call_ClaimReward cstate8) = true).
-                      {
-                        eapply (winner_call_ClaimReward_is_call_act cstate8).
-                      }
-                      set (tr_s0_s9 := (snoc tr_s0_s8 (step_trans miner (winner_call_ClaimReward cstate8) Hcall_act_winner8 Htrans9))).
+                      set (tr_s0_s9 := (snoc tr_s0_s8 (step_trans miner (winner_call_ClaimReward cstate8) 5 (* Hcall_act_winner8 *) Htrans9))).
                       assert (Hstrat : stratDrive miner participants user_strat s0 s8 tr_s0_s8 s9 tr_s0_s9).
                       {
                         unfold stratDrive.
-                        exists (winner_call_ClaimReward cstate8), Hcall_act_winner8, Htrans9.
+                        exists (winner_call_ClaimReward cstate8). eexists.
+                        exists (* Hcall_act_winner8, *) Htrans9.
                         split.
                         unfold user_strat.
                         unfold get_contract_state.
@@ -6644,15 +6435,11 @@ End Attacker.
                     + eapply user_call_Deposit_transition_correct in Htrc_s8 as Ht; eauto; try lia.
                       destruct Ht as [s9 Htrans9].
                       eapply user_call_Deposit_state_correct in Htrans9 as Ht; eauto; try lia.
-                      assert (Hcall_act_user8 : is_call_act (user_call_Deposit cstate8) = true).
-                      {
-                        eapply (user_call_Deposit_is_call_act cstate8).
-                      }
-                      set (tr_s0_s9 := (snoc tr_s0_s8 (step_trans miner (user_call_Deposit cstate8) Hcall_act_user8 Htrans9))).
+                      set (tr_s0_s9 := (snoc tr_s0_s8 (step_trans miner (user_call_Deposit cstate8) 5 (* Hcall_act_user8 *) Htrans9))).
                       assert (Hstrat9 : stratDrive miner participants user_strat s0 s8 tr_s0_s8 s9 tr_s0_s9).
                       {
                         unfold stratDrive.
-                        exists (user_call_Deposit cstate8), Hcall_act_user8, Htrans9.
+                        exists (user_call_Deposit cstate8). eexists. exists (* Hcall_act_user8, *) Htrans9.
                         split.
                         unfold user_strat.
                         unfold get_contract_state.
@@ -6722,15 +6509,11 @@ End Attacker.
                         + eapply winner_call_Claim_transition_correct in Htrc_s10 as Ht; eauto; try lia.
                           destruct Ht as [s11 Htrans11].
                           eapply winner_call_Claim_transition_state_correct in Htrans11 as Ht; eauto; try lia.
-                          assert (Hcall_act_winner10 : is_call_act (winner_call_ClaimReward cstate10) = true).
-                          {
-                            eapply (winner_call_ClaimReward_is_call_act cstate10).
-                          }
-                          set (tr_s0_s11 := (snoc tr_s0_s10 (step_trans miner (winner_call_ClaimReward cstate10) Hcall_act_winner10 Htrans11))).
+                          set (tr_s0_s11 := (snoc tr_s0_s10 (step_trans miner (winner_call_ClaimReward cstate10) 5 (* Hcall_act_winner10 *) Htrans11))).
                           assert (Hstrat : stratDrive miner participants user_strat s0 s10 tr_s0_s10 s11 tr_s0_s11).
                           {
                             unfold stratDrive.
-                            exists (winner_call_ClaimReward cstate10), Hcall_act_winner10, Htrans11.
+                            exists (winner_call_ClaimReward cstate10). eexists. exists (* Hcall_act_winner10, *) Htrans11.
                             split.
                             unfold user_strat.
                             unfold get_contract_state.
@@ -6754,15 +6537,11 @@ End Attacker.
                         + eapply user_call_Deposit_transition_correct in Htrc_s10 as Ht; eauto; try lia.
                           destruct Ht as [s11 Htrans11].
                           eapply user_call_Deposit_state_correct in Htrans11 as Ht; eauto; try lia.
-                          assert (Hcall_act_user10 : is_call_act (user_call_Deposit cstate10) = true).
-                          {
-                            eapply (user_call_Deposit_is_call_act cstate10).
-                          }
-                          set (tr_s0_s11 := (snoc tr_s0_s10 (step_trans miner (user_call_Deposit cstate10) Hcall_act_user10 Htrans11))).
+                          set (tr_s0_s11 := (snoc tr_s0_s10 (step_trans miner (user_call_Deposit cstate10) 5 (* Hcall_act_user10 *) Htrans11))).
                           assert (Hstrat11 : stratDrive miner participants user_strat s0 s10 tr_s0_s10 s11 tr_s0_s11).
                           {
                             unfold stratDrive.
-                            exists (user_call_Deposit cstate10), Hcall_act_user10, Htrans11.
+                            exists (user_call_Deposit cstate10). eexists. exists (* Hcall_act_user10, *) Htrans11.
                             split.
                             unfold user_strat.
                             unfold get_contract_state.
@@ -6832,15 +6611,11 @@ End Attacker.
                             + eapply winner_call_Claim_transition_correct in Htrc_s12 as Ht; eauto; try lia.
                               destruct Ht as [s13 Htrans13].
                               eapply winner_call_Claim_transition_state_correct in Htrans13 as Ht; eauto; try lia.
-                              assert (Hcall_act_winner12 : is_call_act (winner_call_ClaimReward cstate12) = true).
-                              {
-                                eapply (winner_call_ClaimReward_is_call_act cstate12).
-                              }
-                              set (tr_s0_s13 := (snoc tr_s0_s12 (step_trans miner (winner_call_ClaimReward cstate12) Hcall_act_winner12 Htrans13))).
+                              set (tr_s0_s13 := (snoc tr_s0_s12 (step_trans miner (winner_call_ClaimReward cstate12) 5 (* Hcall_act_winner12 *) Htrans13))).
                               assert (Hstrat : stratDrive miner participants user_strat s0 s12 tr_s0_s12 s13 tr_s0_s13).
                               {
                                 unfold stratDrive.
-                                exists (winner_call_ClaimReward cstate12), Hcall_act_winner12, Htrans13.
+                                exists (winner_call_ClaimReward cstate12). eexists. exists (* Hcall_act_winner12, *) Htrans13.
                                 split.
                                 unfold user_strat.
                                 unfold get_contract_state.
@@ -6864,15 +6639,11 @@ End Attacker.
                             + eapply user_call_Deposit_transition_correct in Htrc_s12 as Ht; eauto; try lia.
                               destruct Ht as [s13 Htrans13].
                               eapply user_call_Deposit_state_correct in Htrans13 as Ht; eauto; try lia.
-                              assert (Hcall_act_user12 : is_call_act (user_call_Deposit cstate12) = true).
-                              {
-                                eapply (user_call_Deposit_is_call_act cstate12).
-                              }
-                              set (tr_s0_s13 := (snoc tr_s0_s12 (step_trans miner (user_call_Deposit cstate12) Hcall_act_user12 Htrans13))).
+                              set (tr_s0_s13 := (snoc tr_s0_s12 (step_trans miner (user_call_Deposit cstate12) 5 (* Hcall_act_user12 *) Htrans13))).
                               assert (Hstrat13 : stratDrive miner participants user_strat s0 s12 tr_s0_s12 s13 tr_s0_s13).
                               {
                                 unfold stratDrive.
-                                exists (user_call_Deposit cstate12), Hcall_act_user12, Htrans13.
+                                exists (user_call_Deposit cstate12). eexists. exists (* Hcall_act_user12, *) Htrans13.
                                 split.
                                 unfold user_strat.
                                 unfold get_contract_state.
@@ -6942,15 +6713,11 @@ End Attacker.
                                 + eapply winner_call_Claim_transition_correct in Htrc_s14 as Ht; eauto; try lia.
                                   destruct Ht as [s15 Htrans15].
                                   eapply winner_call_Claim_transition_state_correct in Htrans15 as Ht; eauto; try lia.
-                                  assert (Hcall_act_winner14 : is_call_act (winner_call_ClaimReward cstate14) = true).
-                                  {
-                                    eapply (winner_call_ClaimReward_is_call_act cstate14).
-                                  }
-                                  set (tr_s0_s15 := (snoc tr_s0_s14 (step_trans miner (winner_call_ClaimReward cstate14) Hcall_act_winner14 Htrans15))).
+                                  set (tr_s0_s15 := (snoc tr_s0_s14 (step_trans miner (winner_call_ClaimReward cstate14) 5 (* Hcall_act_winner14 *) Htrans15))).
                                   assert (Hstrat : stratDrive miner participants user_strat s0 s14 tr_s0_s14 s15 tr_s0_s15).
                                   {
                                     unfold stratDrive.
-                                    exists (winner_call_ClaimReward cstate14), Hcall_act_winner14, Htrans15.
+                                    exists (winner_call_ClaimReward cstate14). eexists. exists (* Hcall_act_winner14,  *)Htrans15.
                                     split.
                                     unfold user_strat.
                                     unfold get_contract_state.
@@ -6974,15 +6741,11 @@ End Attacker.
                                 + eapply user_call_Deposit_transition_correct in Htrc_s14 as Ht; eauto; try lia.
                                   destruct Ht as [s15 Htrans15].
                                   eapply user_call_Deposit_state_correct in Htrans15 as Ht; eauto; try lia.
-                                  assert (Hcall_act_user14 : is_call_act (user_call_Deposit cstate14) = true).
-                                  {
-                                    eapply (user_call_Deposit_is_call_act cstate14).
-                                  }
-                                  set (tr_s0_s15 := (snoc tr_s0_s14 (step_trans miner (user_call_Deposit cstate14) Hcall_act_user14 Htrans15))).
+                                  set (tr_s0_s15 := (snoc tr_s0_s14 (step_trans miner (user_call_Deposit cstate14) 5 (* Hcall_act_user14 *) Htrans15))).
                                   assert (Hstrat15 : stratDrive miner participants user_strat s0 s14 tr_s0_s14 s15 tr_s0_s15).
                                   {
                                     unfold stratDrive.
-                                    exists (user_call_Deposit cstate14), Hcall_act_user14, Htrans15.
+                                    exists (user_call_Deposit cstate14). eexists. exists (* Hcall_act_user14,  *)Htrans15.
                                     split.
                                     unfold user_strat.
                                     unfold get_contract_state.
@@ -7053,15 +6816,11 @@ End Attacker.
                                     + eapply winner_call_Claim_transition_correct in Htrc_s16 as Ht; eauto; try lia.
                                       destruct Ht as [s17 Htrans17].
                                       eapply winner_call_Claim_transition_state_correct in Htrans17 as Ht; eauto; try lia.
-                                      assert (Hcall_act_winner16 : is_call_act (winner_call_ClaimReward cstate16) = true).
-                                      {
-                                        eapply (winner_call_ClaimReward_is_call_act cstate16).
-                                      }
-                                      set (tr_s0_s17 := (snoc tr_s0_s16 (step_trans miner (winner_call_ClaimReward cstate16) Hcall_act_winner16 Htrans17))).
+                                      set (tr_s0_s17 := (snoc tr_s0_s16 (step_trans miner (winner_call_ClaimReward cstate16) 5 (* Hcall_act_winner16 *) Htrans17))).
                                       assert (Hstrat : stratDrive miner participants user_strat s0 s16 tr_s0_s16 s17 tr_s0_s17).
                                       {
                                         unfold stratDrive.
-                                        exists (winner_call_ClaimReward cstate16), Hcall_act_winner16, Htrans17.
+                                        exists (winner_call_ClaimReward cstate16). eexists. exists (* Hcall_act_winner16, *) Htrans17.
                                         split.
                                         unfold user_strat.
                                         unfold get_contract_state.
@@ -7097,7 +6856,7 @@ End Attacker.
                                       assert (balance cstate16 = balance cstate + 8) as Heq.
                                       {
                                         rewrite <- Hbal16.
-                                        (* 先处理 cstate15 = cstate14 + 1 *)
+                                        (* cstate15 = cstate14 + 1 *)
                                         rewrite Hbal15.      (* b15 = b14 + 1 *)
                                         (* cstate14 = cstate13 *)
                                         rewrite <- Hbal14.      (* b14 = b13 *)
@@ -7114,7 +6873,7 @@ End Attacker.
                                         rewrite Hbal3.       (* b3  = b2 + 1 *)
                                         rewrite <- Hbal2.       (* b2  = b1 *)
                                         rewrite Hbal1.       (* b1  = b0 + 1 *)
-                                        simpl. lia.          (* 得到 balance cstate + 8 *)
+                                        simpl. lia.          (* yielding balance cstate + 8 *)
                                       }
                                       rewrite Heq in H_bal16.
                                       intuition.

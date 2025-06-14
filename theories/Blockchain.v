@@ -250,16 +250,13 @@ act_deploy amount contract (serialize setup).
 
 Record ContractInterface {Msg : Type} :=
 build_contract_interface {
-(* 表示被接口化的合约的地址。这个字段用于标识与之交互的合约的地址 *)
 contract_address : Address;
 (** Make an action sending money and optionally a message to the contract *)
-(* 合约交互使用send进行，send可以带消息或单纯地转账 *)
 send : Amount -> option Msg -> ActionBody;
 }.
 
 Global Arguments ContractInterface _ : clear implicits.
 
-(* 获取接口，接口的消息 *)
 Definition get_contract_interface
 (chain : Chain)
 (addr : Address)
@@ -268,12 +265,9 @@ Definition get_contract_interface
 : option (ContractInterface Msg) :=
 let ifc_send amount msg :=
 match msg with
-(* 如果没有消息，则创建一个仅发送金额的动作 act_transfer *)
 | None => act_transfer addr amount
-(* 如果有消息，则先将消息序列化，然后创建一个带消息的调用动作 act_call *)
 | Some msg => act_call addr amount (serialize msg)
 end in
-(* 返回一个包含合约地址和发送函数的 ContractInterface 实例 *)
 Some {| contract_address := addr; send := ifc_send; |}.
 
 Section Semantics.
@@ -282,7 +276,6 @@ Definition add_balance
 (addr : Address)
 (amount : Amount)
 (map : Address -> Amount)
-(* 返回一个新的地址到余额的映射 *)
 : Address -> Amount :=
 fun a => if (a =? addr)%address
 then (amount + map a)%Z
@@ -320,7 +313,6 @@ forall addr, env_contract_states e1 addr = env_contract_states e2 addr;
 }.
 
 (** Strongly typed version of contract state *)
-(* contract_state 函数用于从 Environment 中获取特定地址的合约状态，并尝试将其反序列化为指定的类型 A *)
 Definition contract_state
 {A : Type}
 `{Serializable A}
@@ -335,26 +327,23 @@ intros e.
 constructor; intros ;reflexivity.
 Qed.
 Next Obligation.
-intros e1 e2 H. (* 介入环境 e1 和 e2 之间的等价关系 H *)
-(* 根据等价关系 H，交换 e1 和 e2 的属性 *)
+intros e1 e2 H. 
 destruct H as [chain_eq account_balances_eq contracts_eq contract_states_eq].
 constructor; intros.
-- symmetry. apply chain_eq. (* 链相等是对称的 *)
-- symmetry. apply account_balances_eq. (* 账户余额相等是对称的 *)
-- symmetry. apply contracts_eq. (* 合约相等是对称的 *)
-- symmetry. apply contract_states_eq. (* 合约状态相等是对称的 *)
+- symmetry. apply chain_eq. 
+- symmetry. apply account_balances_eq. 
+- symmetry. apply contracts_eq. 
+- symmetry. apply contract_states_eq. 
 Qed.
 Next Obligation.
-intros e1 e2 e3 H12 H23. (* 介入环境 e1、e2 和 e3 之间的等价关系 H12 和 H23 *)
-(* 根据等价关系 H12 和 H23，提取 e1、e2 和 e3 的属性 *)
+intros e1 e2 e3 H12 H23. 
 destruct H12 as [chain_eq12 account_balances_eq12 contracts_eq12 contract_states_eq12].
 destruct H23 as [chain_eq23 account_balances_eq23 contracts_eq23 contract_states_eq23].
-(* 证明 EnvironmentEquiv e1 e3 的每一个组成部分都是成立的 *)
 constructor; intros.
-- transitivity (env_chain e2); [apply chain_eq12 | apply chain_eq23]. (* 链的等价是传递的 *)
-- transitivity (env_account_balances e2 a); [apply account_balances_eq12 | apply account_balances_eq23]. (* 账户余额的等价是传递的 *)
-- transitivity (env_contracts e2 a); [apply contracts_eq12 | apply contracts_eq23]. (* 合约的等价是传递的 *)
-- transitivity (env_contract_states e2 addr); [apply contract_states_eq12 | apply contract_states_eq23]. (* 合约状态的等价是传递的 *)
+- transitivity (env_chain e2); [apply chain_eq12 | apply chain_eq23]. 
+- transitivity (env_account_balances e2 a); [apply account_balances_eq12 | apply account_balances_eq23]. 
+- transitivity (env_contracts e2 a); [apply contracts_eq12 | apply contracts_eq23]. 
+- transitivity (env_contract_states e2 addr); [apply contract_states_eq12 | apply contract_states_eq23]. 
 Qed.
 
 Global Instance environment_equiv_env_account_balances_proper :
@@ -450,26 +439,20 @@ changes an environment and which external actions to execute after it.
 Note that there can be multiple ways to execute an action. For example, if
 the action says to deploy a contract, the implementation is responsible for
 selecting which address the new contract should get. *)
-(* Environment自动视为chain类型 *)
 Inductive ActionEvaluation
 (prev_env : Environment) (act : Action)
 (new_env : Environment) (new_acts : list Action) : Type :=
-(* transfer接收方是eoa地址 *)
 | eval_transfer :
 forall (origin from_addr to_addr : Address)
  (amount : Amount),
 amount >= 0 ->
 amount <= env_account_balances prev_env from_addr ->
-(* 合约不能转移，只能call *)
 address_is_contract to_addr = false ->
 act = build_act origin from_addr (act_transfer to_addr amount) ->
-(* 确保执行转账后的新环境 new_env 等价于通过 transfer_balance 函数计算得到的环境。 transfer_balance返回是环境类型*)
 EnvironmentEquiv
-(* new_env等于transfer才行，所以认为new_env是他 *)
 new_env
 (transfer_balance from_addr to_addr amount prev_env) ->
 new_acts = [] ->
-(* 在所有条件满足时，构造一个 ActionEvaluation 值，表示该转账动作的评估结果。 *)
 ActionEvaluation prev_env act new_env new_acts
 | eval_deploy :
 forall (origin from_addr to_addr : Address)
@@ -479,12 +462,9 @@ forall (origin from_addr to_addr : Address)
  (state : SerializedValue),
 amount >= 0 ->
 amount <= env_account_balances prev_env from_addr ->
-(* 确保目标地址是一个合约地址 *)
 address_is_contract to_addr = true ->
-(* 确保目标地址上没有已存在的合约 *)
 env_contracts prev_env to_addr = None ->
 act = build_act origin from_addr (act_deploy amount wc setup) ->
-(* wc_init 是对合约 wc 的初始化函数的调用 *)
 (* Chain ->
 ContractCallContext ->
 SerializedValue (* setup *) ->
@@ -504,21 +484,15 @@ ActionEvaluation prev_env act new_env new_acts
 | eval_call :
 forall (origin from_addr to_addr : Address)
  (amount : Amount)
- (* 是接收地址对应的弱合约。 *)
  (wc : WeakContract)
- (*  是动作中的可选消息 *)
  (msg : option SerializedValue)
  (prev_state : SerializedValue)
  (new_state : SerializedValue)
- (* 动作执行后可能产生的响应动作列表 *)
  (resp_acts : list ActionBody),
-(* 确保金额非负且不超过发送者地址的余额 *)
 amount >= 0 ->
 amount <= env_account_balances prev_env from_addr ->
-(* 验证接收地址 to_addr 在执行动作前是否有对应的合约 wc 和状态 prev_state *)
 env_contracts prev_env to_addr = Some wc ->
 env_contract_states prev_env to_addr = Some prev_state ->
-(* 这行表示动作 act 的构造，根据 msg 的存在与否，动作可以是 act_transfer 或 act_call *)
 act = build_act origin from_addr
           (match msg with
            | None => act_transfer to_addr amount
@@ -527,7 +501,6 @@ act = build_act origin from_addr
 wc_receive
 wc
 (transfer_balance from_addr to_addr amount prev_env)
-(* 表示构建了一个上下文（context） *)
 (build_ctx origin from_addr to_addr (env_account_balances new_env to_addr) amount)
 prev_state
 msg = Ok (new_state, resp_acts) ->
@@ -710,10 +683,6 @@ Record ChainState :=
   Global Instance chain_state_settable : Settable _ :=
   settable! build_chain_state <chain_state_env; chain_state_queue>.
 
-
-  (* 两个区块状态之前是如何变化的(σ, l)是一个区块状态，   (σ, l) → (σ ′ , l′ )的定义
-    小步语义   每一步执行的细节，如何处理单个动作，以及如何更新动作队列
-  *)
 
 Inductive ChainStep (prev_bstate : ChainState) (next_bstate : ChainState) :=
 | step_block :
@@ -2009,22 +1978,18 @@ Inductive AddBlockError :=
     (act : Action)
     (err : ActionEvaluationError).
 
-(* 构建区块链状态的抽象接口 *)
 Class ChainBuilderType :=
   build_builder {
     builder_type : Type;
 
     builder_initial : builder_type;
-    (* 从构建器实例获取环境（区块链状态） *)
     builder_env : builder_type -> Environment;
-    (* 向构建器添加区块 *)
     builder_add_block
       (builder : builder_type)
       (header : BlockHeader)
       (actions : list Action) :
       result builder_type AddBlockError;
 
-      (* 获取构建器的区块链状态轨迹 *)
     builder_trace (builder : builder_type) :
       ChainTrace empty_state (build_chain_state (builder_env builder) []);
   }.

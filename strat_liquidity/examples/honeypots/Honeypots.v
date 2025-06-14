@@ -10,6 +10,7 @@ Require Import ResultMonad.
 Require Import ChainedList.
 Require Import ModelBase.
 Require Import StratModel.
+Require Import ProofLib. 
 From Coq Require Import List.
 From Coq Require Import Bool.
 From Coq Require Import ZArith.
@@ -19,6 +20,7 @@ Import ListNotations.
 Require Import Lia.
 Import RecordSetNotations.
 
+Require Import LibTactics. 
 
 Section Gift1ETH.
   Context {BaseTypes : ChainBase}.
@@ -46,24 +48,24 @@ Section Gift1ETH.
 
 
   Global Instance Msg_serializable : Serializable Msg :=
-  Derive Serializable Msg_rect<SetPass, GetGift, PassHasBeenSetMsg>.
+    Derive Serializable Msg_rect<SetPass, GetGift, PassHasBeenSetMsg>.
 
   Record State := build_state {
-    passHasBeenSet : bool;
-    hashPass       : N;
-    balance        : Z
-  }.
+                      passHasBeenSet : bool;
+                      hashPass       : N;
+                      balance        : Z
+                    }.
 
   Record Setup := build_setup {
-    setup_passHasBeenSet : bool
-  }.
+                      setup_passHasBeenSet : bool
+                    }.
 
   Instance state_settable : Settable State :=
-  settable! build_state
+    settable! build_state
     <passHasBeenSet; hashPass; balance>.
 
   Instance setup_settable : Settable Setup :=
-  settable! build_setup
+    settable! build_setup
     <setup_passHasBeenSet>.
 
 
@@ -75,11 +77,11 @@ Section Gift1ETH.
       Derive Serializable Setup_rect<build_setup>.
   End Serialization.
 
-  (* 初始化 *)
+  (* initialization of contract *)
   Definition init
-             (chain : Chain)
-             (ctx : ContractCallContext)
-             (setup : Setup)
+    (chain : Chain)
+    (ctx : ContractCallContext)
+    (setup : Setup)
     : result State Error :=
     if ( negb (setup_passHasBeenSet setup)) then
       Ok (build_state (setup_passHasBeenSet setup) 0 ctx.(ctx_amount))
@@ -91,34 +93,32 @@ Section Gift1ETH.
   Definition require_zero (ctx : ContractCallContext) : bool :=
     (ctx_amount ctx =? 0) .
 
-  (* fallback函数 *)
+  (* fallback method *)
   Definition fallback_handler
-             (ctx : ContractCallContext)
-             (st : State)
+    (ctx : ContractCallContext)
+    (st : State)
     : State :=
     st <| balance := st.(balance) + ctx.(ctx_amount) |>.
 
-  (* 设置密码，如果没人有设置密码 *)
-  (* h是自己的hash密码，转入1eth后有资格设置 *)
+  (* update the password if the password has not been locked *) 
   Definition setPass
-             (ctx : ContractCallContext)
-             (st : State)
-             (h : bytes32)
+    (ctx : ContractCallContext)
+    (st : State)
+    (h : bytes32)
     : result (State * list ActionBody) Error :=
-    if negb st.(passHasBeenSet) && (ctx.(ctx_amount) >=? one_ether)
+    if (negb st.(passHasBeenSet)) && (ctx.(ctx_amount) >=? one_ether)
     then
-      Ok ( st <| hashPass := h|> 
-              <| balance  := st.(balance) + ctx.(ctx_amount) |>
-         , [])
+      Ok ( st <| hashPass := h|> <| balance  := st.(balance) + ctx.(ctx_amount) |>
+             , [])
     else
       Ok ( st <| balance  := st.(balance) + ctx.(ctx_amount) |>
-          , []).
+             , []).
 
-  (* pass普通密码 *)
+  (* get the funds in the contract *)
   Definition getGift
-             (ctx : ContractCallContext)
-             (st : State)
-             (pass : bytes)
+    (ctx : ContractCallContext)
+    (st : State)
+    (pass : bytes)
     : result (State * list ActionBody) Error :=
     if (require_zero ctx) then
       if (st.(hashPass) =? (sha3 pass))%N
@@ -130,10 +130,11 @@ Section Gift1ETH.
     else
       Err default_error.
 
+  (* lock the current password *) 
   Definition passHasBeenSet_fn
-             (ctx : ContractCallContext)
-             (st : State)
-             (h : bytes32)
+    (ctx : ContractCallContext)
+    (st : State)
+    (h : bytes32)
     : result (State * list ActionBody) Error :=
     if (require_zero ctx) then
       if (h =? st.(hashPass))%N 
@@ -143,10 +144,10 @@ Section Gift1ETH.
       Err default_error.
 
   Definition receive
-             (chain : Chain)
-             (ctx : ContractCallContext)
-             (st : State)
-             (msg : option Msg)
+    (chain : Chain)
+    (ctx : ContractCallContext)
+    (st : State)
+    (msg : option Msg)
     : result (State * list ActionBody) Error :=
     match msg with
     | Some (SetPass h) =>
@@ -156,19 +157,18 @@ Section Gift1ETH.
     | Some (PassHasBeenSetMsg h) =>
         passHasBeenSet_fn ctx st h
     | None =>
-        (* 无消息可处理，可视需求处理，执行 fallback。 *)
         let new_st := fallback_handler ctx st in
         Ok (new_st, [])
     end.
 
   Definition contract : Contract Setup Msg State Error :=
     build_contract init receive.
-    
+  
 End Gift1ETH.
 
 Section Liqiuidity.
   
-  Context {BaseTypes : ChainBase}.
+  (* Context {BaseTypes : ChainBase}. *)
   Set Primitive Projections.
   Set Nonrecursive Elimination Schemes.
   Context {AddrSize : N}.
@@ -176,60 +176,59 @@ Section Liqiuidity.
   Ltac reduce_init :=
     match goal with
     | H: init ?chain ?ctx ?setup = Ok ?st |- _ =>
-      unfold init in H;
-      (* 这里的 'if (negb (setup_passHasBeenSet setup)) then ... else ...' *)
-      destruct (negb (setup_passHasBeenSet setup)) eqn:Einit in H;
-      try discriminate;
-      simpl in H
+        unfold init in H;
+        destruct (negb (setup_passHasBeenSet setup)) eqn:Einit in H;
+        try discriminate;
+        simpl in H
     end.
 
   Ltac reduce_fallback_handler :=
     match goal with
     | H: fallback_handler ?ctx ?st = ?st' |- _ =>
-      unfold fallback_handler in H;
-      simpl in H
+        unfold fallback_handler in H;
+        simpl in H
     end.
 
   Ltac reduce_setPass :=
     match goal with
     | H: setPass ?ctx ?st ?h = Ok (?new_st, ?acts) |- _ =>
-      unfold setPass in H;
-      destruct (negb (passHasBeenSet st) && (ctx_amount ctx >=? one_ether)%Z) eqn:EsetPass in H;
-      try discriminate;
-      simpl in H
+        unfold setPass in H;
+        destruct (negb (passHasBeenSet st) && (ctx_amount ctx >=? one_ether)%Z) eqn:EsetPass in H;
+        try discriminate;
+        simpl in H
     end.
 
   Ltac reduce_getGift :=
     match goal with
     | H: getGift ?ctx ?st ?pass = Ok (?new_st, ?acts) |- _ =>
-      unfold getGift in H;
-      destruct ((require_zero ctx)) eqn : Ezero in H;
-      try discriminate;
-      (* 'if N.eqb st.(hashPass) (sha3 pass) then ... else ...' *)
-      destruct ((st.(hashPass) =? (sha3 pass))%N) eqn:EgetGift in H;
-      try discriminate;
-      simpl in H
+        unfold getGift in H;
+        destruct ((require_zero ctx)) eqn : Ezero in H;
+        try discriminate;
+        (* 'if N.eqb st.(hashPass) (sha3 pass) then ... else ...' *)
+        destruct ((st.(hashPass) =? (sha3 pass))%N) eqn:EgetGift in H;
+        try discriminate;
+        simpl in H
     end.
 
   Ltac reduce_passHasBeenSet_fn :=
     match goal with
     | H: passHasBeenSet_fn ?ctx ?st ?h = Ok (?new_st, ?acts) |- _ =>
-      unfold passHasBeenSet_fn in H;
-      (* 'if N.eqb h st.(hashPass) then ... else ...' *)
-      destruct ((require_zero ctx)) eqn : Ezero in H;
-      try discriminate;
-      destruct ( (h  =? (hashPass st))%N) eqn:Ephs in H;
-      try discriminate;
-      simpl in H
+        unfold passHasBeenSet_fn in H;
+        (* 'if N.eqb h st.(hashPass) then ... else ...' *)
+        destruct ((require_zero ctx)) eqn : Ezero in H;
+        try discriminate;
+        destruct ( (h  =? (hashPass st))%N) eqn:Ephs in H;
+        try discriminate;
+        simpl in H
     end.
 
   Ltac reduce_receive :=
     match goal with
     | H: receive ?chain ?ctx ?st ?msg = Ok (?new_st, ?acts) |- _ =>
-      unfold receive in H;
-      destruct msg eqn:Emsg in H;
-      try discriminate;
-      simpl in H
+        unfold receive in H;
+        destruct msg eqn:Emsg in H;
+        try discriminate;
+        simpl in H
     end.
 
   Tactic Notation "contract_simpl" := contract_simpl @receive @init.
@@ -247,7 +246,7 @@ Section Liqiuidity.
   Definition get_contract_state (state : ChainState) (addr : Address) : option State :=
     match env_contract_states state addr with
     | Some serialized_state =>
-      deserialize serialized_state
+        deserialize serialized_state
     | None => None
     end.
 
@@ -259,18 +258,6 @@ Section Liqiuidity.
 
   Hypothesis H_miner : address_not_contract miner= true.
 
-  Lemma get_contract_state_correct :
-    exists cstate, get_contract_state s0 caddr = Some cstate.
-  Proof.
-    intros.
-    decompose_is_init_state H_init.
-    exists state.
-    unfold get_contract_state .
-    rewrite H_env_states.
-    setoid_rewrite deserialize_serialize.
-    reflexivity.
-  Qed.
-
   Variable init_cstate : State.
 
   Hypothesis H_state : get_contract_state s0 caddr = Some init_cstate.
@@ -280,7 +267,7 @@ Section Liqiuidity.
 
   Variable correct_pass : N.
 
-  (* 一个假设，每个状态中正确的密码 *)
+  (*  *)
   Hypothesis hashPass_kown_all_state :
     forall (s:ChainState) (cstate : State),
       contract_state s caddr = Some cstate ->
@@ -309,28 +296,28 @@ Section Liqiuidity.
 
   Section sha3_coorect.
 
-  Lemma pos_inj : forall p q : positive, N.pos p = N.pos q -> p = q.
-  Proof.
-    intros p q H. inversion H. reflexivity.
-  Qed.
+    Lemma pos_inj : forall p q : positive, N.pos p = N.pos q -> p = q.
+    Proof.
+      intros p q H. inversion H. reflexivity.
+    Qed.
 
     
-  Require  Coq.NArith.NArith.
-  Require  stdpp.countable.
+    Require  Coq.NArith.NArith.
+    Require  stdpp.countable.
 
 
-  Lemma sha3_pass_neq :sha3 attacker_pass <> sha3 honest_pass.
-  Proof.
-    intros H.
-    eauto.
-    
-    unfold sha3.
-    apply pos_inj in H.
-    eapply stdpp.countable.encode_inj in H.
-    unfold countable.encode in H.
-    simpl in H.
-    intuition.
-  Qed.
+    Lemma sha3_pass_neq :sha3 attacker_pass <> sha3 honest_pass.
+    Proof.
+      intros H.
+      eauto.
+      
+      unfold sha3.
+      apply pos_inj in H.
+      eapply stdpp.countable.encode_inj in H.
+      unfold countable.encode in H.
+      simpl in H.
+      intuition.
+    Qed.
 
   End sha3_coorect.
 
@@ -347,7 +334,7 @@ Section Liqiuidity.
     build_call honest caddr 0 (GetGift honest_pass).
 
   Definition honest_call_PassHasBeenSetMsg  (state : State): Action :=
-      build_call honest caddr 0 (PassHasBeenSetMsg  (sha3 honest_pass)).
+    build_call honest caddr 0 (PassHasBeenSetMsg  (sha3 honest_pass)).
 
   Definition attacker_strat : (strat miner [attacker]) :=
     fun s0 s tr =>
@@ -356,9 +343,9 @@ Section Liqiuidity.
           if ((state.(hashPass) =? sha3 attacker_pass)%N) then
             [attacker_call_PassHasBeenSetMsg state]
           else if (negb state.(passHasBeenSet)) then
-            [attacker_call_SetPass state]
-          else 
-            []
+                 [attacker_call_SetPass state]
+               else 
+                 []
       | None => []
       end.
   
@@ -366,24 +353,12 @@ Section Liqiuidity.
     fun s0 s tr =>
       match get_contract_state s caddr with
       | Some state =>
-        [honest_call_SetPass state;honest_call_GetGift state;honest_call_PassHasBeenSetMsg state]
+          [honest_call_SetPass state;honest_call_GetGift state;honest_call_PassHasBeenSetMsg state]
       | None => []
       end.
 
   Definition user_call_GetGift (state : State): Action :=
-    build_call user1 caddr 0 (GetGift correct_pass).
-
-  Lemma address_not_contract_negb:
-    forall addr,
-      address_not_contract addr= true -> address_is_contract addr = false.
-  Proof.
-    intros.
-    unfold address_not_contract in H.
-    destruct ((address_is_contract addr)) eqn : H'; try congruence.
-    simpl in H.
-    congruence.
-  Qed.
-  
+    build_call user1 caddr 0 (GetGift correct_pass).  
 
   Lemma balance_on_chain' :
     forall bstate caddr,
@@ -392,7 +367,7 @@ Section Liqiuidity.
       env_contracts bstate caddr = Some (contract : WeakContract) ->
       exists cstate,
         contract_state bstate caddr = Some cstate /\
-        effective_balance = cstate.(balance).
+          effective_balance = cstate.(balance).
   Proof.
     intros.
     unfold effective_balance.
@@ -468,7 +443,7 @@ Section Liqiuidity.
       outgoing_acts bstate caddr = [] ->
       exists cstate,
         contract_state bstate caddr = Some cstate /\
-        env_account_balances bstate caddr = cstate.(balance).
+          env_account_balances bstate caddr = cstate.(balance).
   Proof.
     intros * reach deployed.
     specialize balance_on_chain' as (cstate & balance); eauto.
@@ -491,10 +466,10 @@ Section Liqiuidity.
     intros.
     eapply balance_on_chain in H;eauto.
     destruct H;
-    destruct_and_split.
+      destruct_and_split.
     rewrite H2 in H.
     inversion H; subst;
-    eauto.
+      eauto.
   Qed.
 
   Lemma get_valid_header_is_valid_header s:
@@ -509,60 +484,60 @@ Section Liqiuidity.
     lia.
   Qed.
 
-  Lemma user_call_GetGift_is_call_act cstate:
-    is_call_act (user_call_GetGift cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold user_call_GetGift.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
+  (* Lemma user_call_GetGift_is_call_act cstate: *)
+  (*   is_call_act (user_call_GetGift cstate) = true . *)
+  (* Proof. *)
+  (*   unfold is_call_act. *)
+  (*   unfold user_call_GetGift. *)
+  (*   simpl. *)
+  (*   destruct_address_eq;eauto. *)
+  (* Qed. *)
 
-  Lemma honest_call_GetGift_is_call_act cstate:
-    is_call_act (honest_call_GetGift cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold honest_call_GetGift.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
+  (* Lemma honest_call_GetGift_is_call_act cstate: *)
+  (*   is_call_act (honest_call_GetGift cstate) = true . *)
+  (* Proof. *)
+  (*   unfold is_call_act. *)
+  (*   unfold honest_call_GetGift. *)
+  (*   simpl. *)
+  (*   destruct_address_eq;eauto. *)
+  (* Qed. *)
 
-  Lemma attacker_call_SetPass_is_call_act cstate:
-    is_call_act (attacker_call_SetPass cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold attacker_call_SetPass.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
+  (* Lemma attacker_call_SetPass_is_call_act cstate: *)
+  (*   is_call_act (attacker_call_SetPass cstate) = true . *)
+  (* Proof. *)
+  (*   unfold is_call_act. *)
+  (*   unfold attacker_call_SetPass. *)
+  (*   simpl. *)
+  (*   destruct_address_eq;eauto. *)
+  (* Qed. *)
 
-  Lemma attacker_call_PassHasBeenSetMsg_is_call_act cstate:
-    is_call_act (attacker_call_PassHasBeenSetMsg cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold attacker_call_PassHasBeenSetMsg.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
+  (* Lemma attacker_call_PassHasBeenSetMsg_is_call_act cstate: *)
+  (*   is_call_act (attacker_call_PassHasBeenSetMsg cstate) = true . *)
+  (* Proof. *)
+  (*   unfold is_call_act. *)
+  (*   unfold attacker_call_PassHasBeenSetMsg. *)
+  (*   simpl. *)
+  (*   destruct_address_eq;eauto. *)
+  (* Qed. *)
 
   
-  Lemma honest_call_SetPass_is_call_act cstate:
-    is_call_act (honest_call_SetPass cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold honest_call_SetPass.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
+  (* Lemma honest_call_SetPass_is_call_act cstate: *)
+  (*   is_call_act (honest_call_SetPass cstate) = true . *)
+  (* Proof. *)
+  (*   unfold is_call_act. *)
+  (*   unfold honest_call_SetPass. *)
+  (*   simpl. *)
+  (*   destruct_address_eq;eauto. *)
+  (* Qed. *)
 
-  Lemma honest_call_PassHasBeenSetMsg_is_call_act cstate:
-    is_call_act ( honest_call_PassHasBeenSetMsg cstate) = true .
-  Proof.
-    unfold is_call_act.
-    unfold honest_call_PassHasBeenSetMsg.
-    simpl.
-    destruct_address_eq;eauto.
-  Qed.
+  (* Lemma honest_call_PassHasBeenSetMsg_is_call_act cstate: *)
+  (*   is_call_act ( honest_call_PassHasBeenSetMsg cstate) = true . *)
+  (* Proof. *)
+  (*   unfold is_call_act. *)
+  (*   unfold honest_call_PassHasBeenSetMsg. *)
+  (*   simpl. *)
+  (*   destruct_address_eq;eauto. *)
+  (* Qed. *)
 
   Local Open Scope Z.
 
@@ -571,7 +546,7 @@ Section Liqiuidity.
       contract_state s caddr = Some cstate ->
       transition_reachable miner contract caddr s0 s ->
       exists s', 
-        transition miner s (user_call_GetGift cstate) = Ok s'.
+        transition miner 5 s (user_call_GetGift cstate) = Ok s'.
   Proof.
     intros * Hcs_s Htrc_s.
     eexists.
@@ -579,7 +554,7 @@ Section Liqiuidity.
     unfold queue_isb_empty.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
     rewrite Hqueue_s.
-    rewrite user_call_GetGift_is_call_act.
+    (* rewrite user_call_GetGift_is_call_act. *)
     unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold user_call_GetGift .
@@ -598,7 +573,7 @@ Section Liqiuidity.
     rewrite user1_eoa.
     unfold send_or_call.
     simpl.
-    assert( H_caddr_not_EOA : address_is_contract caddr = true).
+    assert(H_caddr_not_EOA : address_is_contract caddr = true).
     {
       eapply contract_addr_format in Hec_s;eauto.
       eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
@@ -617,7 +592,7 @@ Section Liqiuidity.
     }
     destruct_address_eq;try congruence.
     + assert ((0 >? miner_reward + env_account_balances s user1 )%Z 
-                = false).
+              = false).
       {
         unfold miner_reward.
         eapply (account_balance_nonnegative s user1) in Hrc_s.
@@ -677,8 +652,7 @@ Section Liqiuidity.
       rewrite user1_eoa.
       simpl.
       eauto.
-    + assert ((0 >?  env_account_balances s user1 )%Z 
-                = false).
+    + assert ((0 >?  env_account_balances s user1 )%Z = false).
       {
         unfold miner_reward.
         eapply (account_balance_nonnegative s user1) in Hrc_s.
@@ -738,8 +712,7 @@ Section Liqiuidity.
       rewrite user1_eoa.
       simpl.
       eauto.
-    + assert ((0 >?  env_account_balances s user1 )%Z 
-                = false).
+    + assert ((0 >?  env_account_balances s user1 )%Z = false).
       {
         unfold miner_reward.
         eapply (account_balance_nonnegative s user1) in Hrc_s.
@@ -802,29 +775,21 @@ Section Liqiuidity.
   Qed.
 
   Lemma user_call_GetGift_is_call_act_state_correct:
-   forall (s s':ChainState) cstate,
+    forall (s s':ChainState) cstate,
       contract_state s caddr = Some cstate ->
       transition_reachable miner contract caddr s0 s ->
-      transition miner s (user_call_GetGift cstate) = Ok s' ->
+      transition miner 5 s (user_call_GetGift cstate) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
-        cstate'.(balance) = 0.
+          cstate'.(balance) = 0.
   Proof.
     intros * Hcs_s Htrc_s Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-    assert (Hact_call : is_call_act ((user_call_GetGift cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold user_call_GetGift.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
       econstructor;eauto.
       eapply step_trans;eauto.
-
     }
     assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
     {
@@ -860,21 +825,21 @@ Section Liqiuidity.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
-    [user_call_GetGift cstate ]) eqn : H_exec;try congruence.
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
+                [user_call_GetGift cstate ]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [user_call_GetGift cstate]) ; try congruence.
     destruct (find_invalid_root_action [user_call_GetGift cstate]);try congruence.
     set (mid_state := {|
-      chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
-      chain_state_queue := [user_call_GetGift cstate]
-    |}) in H_exec.
+                       chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
+                       chain_state_queue := [user_call_GetGift cstate]
+                     |}) in H_exec.
     simpl in *.
     destruct(send_or_call user1 user1 caddr 0
-    (Some (serialize (GetGift correct_pass)))
-    (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
+               (Some (serialize (GetGift correct_pass)))
+               (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
     unfold send_or_call in  H_send_or_call_GetGift.
     simpl in H_send_or_call_GetGift.
     eapply address_not_contract_negb in H_miner.
@@ -890,7 +855,7 @@ Section Liqiuidity.
       n: caddr <> sender cstate
       e0: caddr = caddr
       n0: caddr <> miner 
-    *)
+     *)
     destruct(0 >? miner_reward + env_account_balances s user1)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
     assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
@@ -898,48 +863,48 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-        (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-        {|
-          ctx_origin := user1;
-          ctx_from := user1;
-          ctx_contract_address := caddr;
-          ctx_contract_balance := 0 + env_account_balances s caddr;
-          ctx_amount := 0
-        |} s1 (Some (serialize (GetGift correct_pass))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := user1;
+                     ctx_from := user1;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance := 0 + env_account_balances s caddr;
+                     ctx_amount := 0
+                   |} s1 (Some (serialize (GetGift correct_pass))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot :=
-      (current_slot s + 1)%nat |> <| finalized_height :=
-      finalized_height s |>)
-    {|
-      ctx_origin := user1;
-      ctx_from := user1;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 0 + env_account_balances s caddr;
-      ctx_amount := 0
-    |} s1 (Some (serialize (GetGift correct_pass))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot :=
+                   (current_slot s + 1)%nat |> <| finalized_height :=
+                     finalized_height s |>)
+                {|
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |} s1 (Some (serialize (GetGift correct_pass))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -957,45 +922,45 @@ Section Liqiuidity.
     inversion H_send_or_call_GetGift;subst.
     simpl in H_exec.
     destruct (  send_or_call (user1) caddr ((user1))
-    (balance prev_state_strong) None
-    (set_contract_state caddr
-       (serialize
-          (prev_state_strong <| balance := 0 |>))
-       (transfer_balance (user1) caddr 0
-          (add_new_block_to_env (get_valid_header (user1) s) s)))) eqn : H_send_or_call_None;try congruence.
+                  (balance prev_state_strong) None
+                  (set_contract_state caddr
+                     (serialize
+                        (prev_state_strong <| balance := 0 |>))
+                     (transfer_balance (user1) caddr 0
+                        (add_new_block_to_env (get_valid_header (user1) s) s)))) eqn : H_send_or_call_None;try congruence.
     unfold send_or_call in H_send_or_call_None.
     destruct_match in H_send_or_call_None;try congruence.
     destruct_match in H_send_or_call_None;try congruence.
     destruct (
-      env_contracts
-      (set_contract_state caddr
-         (serialize
-            (prev_state_strong <| balance := 0 |>))
-         (transfer_balance (user1) caddr 0
-            (add_new_block_to_env
-               (get_valid_header (user1) s) s)))
-      ((user1)) ) 
-    eqn : H_none_wc.
+        env_contracts
+          (set_contract_state caddr
+             (serialize
+                (prev_state_strong <| balance := 0 |>))
+             (transfer_balance (user1) caddr 0
+                (add_new_block_to_env
+                   (get_valid_header (user1) s) s)))
+          ((user1)) ) 
+      eqn : H_none_wc.
     set (
         mid_env:=(set_contract_state caddr
-          (serialize (prev_state_strong <| balance := 0 |>))
-          (transfer_balance (user1) caddr 0
-              (add_new_block_to_env (get_valid_header (user1) s) s)))) 
-    in H_none_wc.
+                    (serialize (prev_state_strong <| balance := 0 |>))
+                    (transfer_balance (user1) caddr 0
+                       (add_new_block_to_env (get_valid_header (user1) s) s)))) 
+      in H_none_wc.
     set (
-      mid_mid_end_state := {|
-      chain_state_env :=
-      mid_env;
-      chain_state_queue :=
-        [{|
-            act_origin := user1;
-            act_from := caddr;
-            act_body :=
-              act_transfer ((user1))
-                (balance prev_state_strong)
-          |}]
-      |}
-    ).
+        mid_mid_end_state := {|
+                              chain_state_env :=
+                                mid_env;
+                              chain_state_queue :=
+                                [{|
+                                    act_origin := user1;
+                                    act_from := caddr;
+                                    act_body :=
+                                      act_transfer ((user1))
+                                        (balance prev_state_strong)
+                                  |}]
+                            |}
+      ).
     assert(Hreachable_through_s'_mid_mid_end_state : reachable_through s mid_mid_end_state).
     {
       assert(step_s'_mid : ChainStep s mid_state).
@@ -1037,18 +1002,18 @@ Section Liqiuidity.
       assert(step_mid_end : ChainStep mid_state mid_mid_end_state).
       {
         eapply (step_action mid_state mid_mid_end_state (user_call_GetGift cstate) [] 
-        [{|
-          act_origin := user1;
-          act_from := caddr;
-          act_body :=
-            act_transfer ((user1))
-              (balance prev_state_strong)
-        |}] )
+                  [{|
+                      act_origin := user1;
+                      act_from := caddr;
+                      act_body :=
+                        act_transfer ((user1))
+                          (balance prev_state_strong)
+                    |}] )
         ;eauto.
         eapply (eval_call (user1) (user1) caddr 0 
-          (contract:WeakContract) (Some (serialize (GetGift correct_pass)))
-          ( s1) (serialize (prev_state_strong <| balance := 0 |>)) 
-          [act_transfer ((user1)) (balance prev_state_strong)]);eauto;intuition.
+                  (contract:WeakContract) (Some (serialize (GetGift correct_pass)))
+                  ( s1) (serialize (prev_state_strong <| balance := 0 |>)) 
+                  [act_transfer ((user1)) (balance prev_state_strong)]);eauto;intuition.
         eapply reachable_through_reachable in H.
         eapply (account_balance_nonnegative mid_state (user1)) in H.
         lia.
@@ -1110,7 +1075,7 @@ Section Liqiuidity.
       n0: caddr <> sender cstate
       e: caddr = caddr
       n1: caddr <> miner
-    *)
+     *)
     destruct(0 >? env_account_balances s user1)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
     assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
@@ -1118,48 +1083,48 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-        (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-        {|
-          ctx_origin := user1;
-          ctx_from := user1;
-          ctx_contract_address := caddr;
-          ctx_contract_balance := 0 + env_account_balances s caddr;
-          ctx_amount := 0
-        |} s1 (Some (serialize (GetGift correct_pass))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := user1;
+                     ctx_from := user1;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance := 0 + env_account_balances s caddr;
+                     ctx_amount := 0
+                   |} s1 (Some (serialize (GetGift correct_pass))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot :=
-      (current_slot s + 1)%nat |> <| finalized_height :=
-      finalized_height s |>)
-    {|
-      ctx_origin := user1;
-      ctx_from := user1;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 0 + env_account_balances s caddr;
-      ctx_amount := 0
-    |} s1 (Some (serialize (GetGift correct_pass))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot :=
+                   (current_slot s + 1)%nat |> <| finalized_height :=
+                     finalized_height s |>)
+                {|
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |} s1 (Some (serialize (GetGift correct_pass))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -1177,45 +1142,45 @@ Section Liqiuidity.
     inversion H_send_or_call_GetGift;subst.
     simpl in H_exec.
     destruct (  send_or_call (user1) caddr ((user1))
-    (balance prev_state_strong) None
-    (set_contract_state caddr
-       (serialize
-          (prev_state_strong <| balance := 0 |>))
-       (transfer_balance (user1) caddr 0
-          (add_new_block_to_env (get_valid_header (miner) s) s)))) eqn : H_send_or_call_None;try congruence.
+                  (balance prev_state_strong) None
+                  (set_contract_state caddr
+                     (serialize
+                        (prev_state_strong <| balance := 0 |>))
+                     (transfer_balance (user1) caddr 0
+                        (add_new_block_to_env (get_valid_header (miner) s) s)))) eqn : H_send_or_call_None;try congruence.
     unfold send_or_call in H_send_or_call_None.
     destruct_match in H_send_or_call_None;try congruence.
     destruct_match in H_send_or_call_None;try congruence.
     destruct (
-      env_contracts
-      (set_contract_state caddr
-         (serialize
-            (prev_state_strong <| balance := 0 |>))
-         (transfer_balance (user1) caddr 0
-            (add_new_block_to_env
-               (get_valid_header (miner) s) s)))
-      ((user1)) ) 
-    eqn : H_none_wc.
+        env_contracts
+          (set_contract_state caddr
+             (serialize
+                (prev_state_strong <| balance := 0 |>))
+             (transfer_balance (user1) caddr 0
+                (add_new_block_to_env
+                   (get_valid_header (miner) s) s)))
+          ((user1)) ) 
+      eqn : H_none_wc.
     set (
         mid_env:=(set_contract_state caddr
-          (serialize (prev_state_strong <| balance := 0 |>))
-          (transfer_balance (user1) caddr 0
-              (add_new_block_to_env (get_valid_header (miner) s) s)))) 
-    in H_none_wc.
+                    (serialize (prev_state_strong <| balance := 0 |>))
+                    (transfer_balance (user1) caddr 0
+                       (add_new_block_to_env (get_valid_header (miner) s) s)))) 
+      in H_none_wc.
     set (
-      mid_mid_end_state := {|
-      chain_state_env :=
-      mid_env;
-      chain_state_queue :=
-        [{|
-            act_origin := user1;
-            act_from := caddr;
-            act_body :=
-              act_transfer ((user1))
-                (balance prev_state_strong)
-          |}]
-      |}
-    ).
+        mid_mid_end_state := {|
+                              chain_state_env :=
+                                mid_env;
+                              chain_state_queue :=
+                                [{|
+                                    act_origin := user1;
+                                    act_from := caddr;
+                                    act_body :=
+                                      act_transfer ((user1))
+                                        (balance prev_state_strong)
+                                  |}]
+                            |}
+      ).
     assert(Hreachable_through_s'_mid_mid_end_state : reachable_through s mid_mid_end_state).
     {
       assert(step_s'_mid : ChainStep s mid_state).
@@ -1260,18 +1225,18 @@ Section Liqiuidity.
       assert(step_mid_end : ChainStep mid_state mid_mid_end_state).
       {
         eapply (step_action mid_state mid_mid_end_state (user_call_GetGift cstate) [] 
-        [{|
-          act_origin := user1;
-          act_from := caddr;
-          act_body :=
-            act_transfer ((user1))
-              (balance prev_state_strong)
-        |}] )
+                  [{|
+                      act_origin := user1;
+                      act_from := caddr;
+                      act_body :=
+                        act_transfer ((user1))
+                          (balance prev_state_strong)
+                    |}] )
         ;eauto.
         eapply (eval_call (user1) (user1) caddr 0 
-          (contract:WeakContract) (Some (serialize (GetGift correct_pass)))
-          ( s1) (serialize (prev_state_strong <| balance := 0 |>)) 
-          [act_transfer ((user1)) (balance prev_state_strong)]);eauto;intuition.
+                  (contract:WeakContract) (Some (serialize (GetGift correct_pass)))
+                  ( s1) (serialize (prev_state_strong <| balance := 0 |>)) 
+                  [act_transfer ((user1)) (balance prev_state_strong)]);eauto;intuition.
         eapply reachable_through_reachable in H.
         eapply (account_balance_nonnegative mid_state (user1)) in H.
         lia.
@@ -1321,7 +1286,7 @@ Section Liqiuidity.
     intuition.
   Qed.
 
-  Lemma honeypot_satisfy_base_liquidity:
+  Theorem honeypot_satisfy_base_liquidity:
     base_liquidity miner contract caddr s0.
   Proof.
     unfold base_liquidity.
@@ -1369,23 +1334,14 @@ Section Liqiuidity.
       econstructor;eauto.
       decompose_transition_reachable Htrc_s.
       econstructor;eauto.
-      assert(is_call_act (user_call_GetGift cstate') = true).
-      {
-        eapply (user_call_GetGift_is_call_act cstate').
-      }
-      
-      eapply (snoc trace (step_trans miner (user_call_GetGift cstate') H  Htrans)).
+      eapply (snoc trace (step_trans miner (user_call_GetGift cstate') _ (* H  *)Htrans)).
     }
     assert (trace_s_s' :inhabited(TransitionTrace miner s s')).
     {
       decompose_transition_reachable Htrc_s.
       assert (TransitionTrace miner s s) by eapply clnil.
-      assert(is_call_act (user_call_GetGift cstate) = true).
-      {
-        eapply (user_call_GetGift_is_call_act cstate).
-      }
       econstructor;eauto.
-      eapply (snoc X (step_trans miner (user_call_GetGift  cstate) H  Htrans)).
+      eapply (snoc X (step_trans miner (user_call_GetGift  cstate) _ (* H  *)Htrans)).
     }
     eapply transition_reachable_impl_reachable in Htrc_s' as H.
     eapply balance_on_chain_forall in H;eauto.
@@ -1406,19 +1362,19 @@ Section Liqiuidity.
   Qed.
 
   Lemma honest_call_GetGift_is_call_act_transition_correct_nopass:
-  forall (s:ChainState) cstate,
-    contract_state s caddr = Some cstate ->
-    transition_reachable miner contract caddr s0 s ->
-    cstate.(passHasBeenSet) = true ->
-    cstate.(hashPass) <> sha3 honest_pass ->
-    transition miner s (honest_call_GetGift cstate) = Err StratModel.default_error.
+    forall (s:ChainState) cstate,
+      contract_state s caddr = Some cstate ->
+      transition_reachable miner contract caddr s0 s ->
+      cstate.(passHasBeenSet) = true ->
+      cstate.(hashPass) <> sha3 honest_pass ->
+      transition miner 5 s (honest_call_GetGift cstate) = Err StratModel.default_error.
   Proof.
     intros * Hcs_s Htrc_s H_passB H_neq.
     unfold transition.
     unfold queue_isb_empty.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
     rewrite Hqueue_s.
-    rewrite honest_call_GetGift_is_call_act.
+    (* rewrite honest_call_GetGift_is_call_act. *)
     unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold user_call_GetGift .
@@ -1456,7 +1412,7 @@ Section Liqiuidity.
     }
     destruct_address_eq;try congruence.
     + assert ((0 >? miner_reward + env_account_balances s honest )%Z 
-                = false).
+              = false).
       {
         unfold miner_reward.
         eapply (account_balance_nonnegative s honest) in Hrc_s.
@@ -1477,64 +1433,208 @@ Section Liqiuidity.
       simpl.
       simpl.
       destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
+    - propify. intuition.
+    - propify. 
+      simpl.
+      
+      eauto.
+      + assert ((0 >?  env_account_balances s honest )%Z 
+                = false).
+        {
+          unfold miner_reward.
+          eapply (account_balance_nonnegative s honest) in Hrc_s.
+          lia.
+        }
+        rewrite H.
+        rewrite Hec_s.
+        unfold contract_state in Hcs_s.
+        simpl in Hcs_s.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+        simpl.
+        rewrite Hcs_s.
+        simpl.
+        setoid_rewrite deserialize_serialize.
+        simpl.
+        cbn in *.
+        unfold receive.
+        simpl.
+        unfold address_not_contract.
+        destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
+    - propify. intuition.
+    - propify. 
+      simpl.
+      
+      eauto.
+      + assert ((0 >?  env_account_balances s honest )%Z 
+                = false).
+        {
+          unfold miner_reward.
+          eapply (account_balance_nonnegative s honest) in Hrc_s.
+          lia.
+        }
+        rewrite H.
+        rewrite Hec_s.
+        unfold contract_state in Hcs_s.
+        simpl in Hcs_s.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+        simpl.
+        rewrite Hcs_s.
+        simpl.
+        setoid_rewrite deserialize_serialize.
+        simpl.
+        cbn in *.
+        unfold receive.
+        simpl.
+        unfold address_not_contract.
+        destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
+    - propify. intuition.
+    - propify. 
+      simpl.
+      eauto.
+  Qed.
+
+  Lemma honest_call_GetGift_is_call_act_transition_correct_nopass':
+    forall n (s:ChainState) cstate,
+      contract_state s caddr = Some cstate ->
+      transition_reachable miner contract caddr s0 s ->
+      cstate.(passHasBeenSet) = true ->
+      cstate.(hashPass) <> sha3 honest_pass ->
+      transition miner n s (honest_call_GetGift cstate) = Err StratModel.default_error.
+  Proof.
+    intros * Hcs_s Htrc_s H_passB H_neq.
+    unfold transition.
+    unfold queue_isb_empty.
+    eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
+    rewrite Hqueue_s.
+    (* rewrite honest_call_GetGift_is_call_act. *)
+    unfold evaluate_action.
+    rewrite get_valid_header_is_valid_header.
+    unfold user_call_GetGift .
+    simpl.
+    destruct_address_eq;try congruence.
+    simpl.
+    assert (Hec_s:env_contracts s caddr = Some (contract:WeakContract)).
+    {
+      eapply transition_reachable_impl_reachable_through in Htrc_s.
+      eapply reachable_through_contract_deployed in Htrc_s;eauto.
+      decompose_is_init_state H_init.
+      eauto.
+      eauto.
+    }
+    eapply address_not_contract_negb in honest_eoa.
+    rewrite honest_eoa.
+    unfold send_or_call.
+    simpl.
+    assert( H_caddr_not_EOA : address_is_contract caddr = true).
+    {
+      eapply contract_addr_format in Hec_s;eauto.
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
+    }
+    assert(Hrc_s:reachable s).
+    {
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.
+    }
+    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    {
+      eapply balance_on_chain_forall;eauto.
+      unfold outgoing_acts.
+      rewrite Hqueue_s.
+      simpl.
+      eauto.
+    }
+
+    induction n.
+    { (* n = 0 *)
+      simpl.
+      auto.
+    }
+    { (* n = S _ *)
+      simpl.
+      unfold send_or_call.
+      simpl.
+      destruct_address_eq;try congruence.
+      + assert ((0 >? miner_reward + env_account_balances s honest )%Z 
+                = false).
+        {
+          unfold miner_reward.
+          eapply (account_balance_nonnegative s honest) in Hrc_s.
+          lia.
+        }
+        rewrite H.
+        rewrite Hec_s.
+        unfold contract_state in Hcs_s.
+        simpl in Hcs_s.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+        simpl.
+        rewrite Hcs_s.
+        simpl.
+        setoid_rewrite deserialize_serialize.
+        simpl.
+        cbn in *.
+        unfold receive.
+        simpl.
+        simpl.
+        destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
       - propify. intuition.
       - propify. 
         simpl.
         
         eauto.
-    + assert ((0 >?  env_account_balances s honest )%Z 
-                = false).
-      {
-        unfold miner_reward.
-        eapply (account_balance_nonnegative s honest) in Hrc_s.
-        lia.
-      }
-      rewrite H.
-      rewrite Hec_s.
-      unfold contract_state in Hcs_s.
-      simpl in Hcs_s.
-      destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
-      simpl.
-      rewrite Hcs_s.
-      simpl.
-      setoid_rewrite deserialize_serialize.
-      simpl.
-      cbn in *.
-      unfold receive.
-      simpl.
-      unfold address_not_contract.
-      destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
+        + assert ((0 >?  env_account_balances s honest )%Z 
+                  = false).
+          {
+            unfold miner_reward.
+            eapply (account_balance_nonnegative s honest) in Hrc_s.
+            lia.
+          }
+          rewrite H.
+          rewrite Hec_s.
+          unfold contract_state in Hcs_s.
+          simpl in Hcs_s.
+          destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+          simpl.
+          rewrite Hcs_s.
+          simpl.
+          setoid_rewrite deserialize_serialize.
+          simpl.
+          cbn in *.
+          unfold receive.
+          simpl.
+          unfold address_not_contract.
+          destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
       - propify. intuition.
       - propify. 
         simpl.
         
         eauto.
-    + assert ((0 >?  env_account_balances s honest )%Z 
-                = false).
-      {
-        unfold miner_reward.
-        eapply (account_balance_nonnegative s honest) in Hrc_s.
-        lia.
-      }
-      rewrite H.
-      rewrite Hec_s.
-      unfold contract_state in Hcs_s.
-      simpl in Hcs_s.
-      destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
-      simpl.
-      rewrite Hcs_s.
-      simpl.
-      setoid_rewrite deserialize_serialize.
-      simpl.
-      cbn in *.
-      unfold receive.
-      simpl.
-      unfold address_not_contract.
-      destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
+        + assert ((0 >?  env_account_balances s honest )%Z 
+                  = false).
+          {
+            unfold miner_reward.
+            eapply (account_balance_nonnegative s honest) in Hrc_s.
+            lia.
+          }
+          rewrite H.
+          rewrite Hec_s.
+          unfold contract_state in Hcs_s.
+          simpl in Hcs_s.
+          destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+          simpl.
+          rewrite Hcs_s.
+          simpl.
+          setoid_rewrite deserialize_serialize.
+          simpl.
+          cbn in *.
+          unfold receive.
+          simpl.
+          unfold address_not_contract.
+          destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
       - propify. intuition.
       - propify. 
         simpl.
         eauto.
+    }
+    
   Qed.
 
   Lemma honest_call_SetPass_is_call_act_transition_correct_nopass:
@@ -1544,7 +1644,7 @@ Section Liqiuidity.
       cstate.(passHasBeenSet) = true ->
       cstate.(hashPass) <> sha3 honest_pass ->
       exists s',
-      transition miner s (honest_call_SetPass cstate) = Ok s'.
+        transition miner 5 s (honest_call_SetPass cstate) = Ok s'.
   Proof.
     intros * Hcs_s Htrc_s H_passB H_pass .
     eexists.
@@ -1552,7 +1652,7 @@ Section Liqiuidity.
     unfold queue_isb_empty.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
     rewrite Hqueue_s.
-    rewrite honest_call_SetPass_is_call_act.
+    (* rewrite honest_call_SetPass_is_call_act. *)
     unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold user_call_GetGift .
@@ -1590,7 +1690,7 @@ Section Liqiuidity.
     }
     destruct_address_eq;try congruence.
     + assert ((1 >? miner_reward + env_account_balances s honest )%Z 
-                = false).
+              = false).
       {
         unfold miner_reward.
         eapply (account_balance_nonnegative s honest) in Hrc_s.
@@ -1611,365 +1711,818 @@ Section Liqiuidity.
       simpl.
       unfold address_not_contract.
       destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
-      - propify. intuition.
-      - propify. 
-        simpl.
-        unfold  setPass.
-        simpl.
-        rewrite H_passB.
-        unfold  one_ether.
-        simpl.
-        eauto.
+    - propify. intuition.
+    - propify. 
+      simpl.
+      unfold  setPass.
+      simpl.
+      rewrite H_passB.
+      unfold  one_ether.
+      simpl.
+      eauto.
       
-    + eapply address_not_contract_negb in H_miner.
-      rewrite e1 in *.
-      intuition.
-    + assert ((1 >?  env_account_balances s honest )%Z 
+      + eapply address_not_contract_negb in H_miner.
+        rewrite e1 in *.
+        intuition.
+      + assert ((1 >?  env_account_balances s honest )%Z 
                 = false).
-      {
-        unfold miner_reward.
-        eapply (account_balance_nonnegative s honest) in Hrc_s.
-        specialize (H_honest_bal_ge_1 s).
-        unfold funds in *.
+        {
+          unfold miner_reward.
+          eapply (account_balance_nonnegative s honest) in Hrc_s.
+          specialize (H_honest_bal_ge_1 s).
+          unfold funds in *.
 
-        lia.
-      }
-      rewrite H.
-      rewrite Hec_s.
-      unfold contract_state in Hcs_s.
-      simpl in Hcs_s.
-      destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
-      simpl.
-      rewrite Hcs_s.
-      simpl.
-      setoid_rewrite deserialize_serialize.
-      simpl.
-      cbn in *.
-      unfold receive.
-      simpl.
-      unfold address_not_contract.
-      destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
-      - propify. intuition.
-      - propify. 
+          lia.
+        }
+        rewrite H.
+        rewrite Hec_s.
+        unfold contract_state in Hcs_s.
+        simpl in Hcs_s.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
         simpl.
-        unfold  setPass.
+        rewrite Hcs_s.
         simpl.
-        rewrite H_passB.
-        unfold  one_ether.
+        setoid_rewrite deserialize_serialize.
         simpl.
-        eauto.
+        cbn in *.
+        unfold receive.
+        simpl.
+        unfold address_not_contract.
+        destruct (hashPass cstate =? sha3 honest_pass)%N eqn : N.
+    - propify. intuition.
+    - propify. 
+      simpl.
+      unfold  setPass.
+      simpl.
+      rewrite H_passB.
+      unfold  one_ether.
+      simpl.
+      eauto.
   Qed.
 
   Lemma honest_call_SetPass_is_call_act_state_correct:
-  forall (s s':ChainState) cstate,
-     contract_state s caddr = Some cstate ->
-     transition_reachable miner contract caddr s0 s ->
-     transition miner s (honest_call_SetPass cstate) = Ok s' ->
-     funds s' caddr  >= funds s caddr.
- Proof.
-   intros * Hcs_s Htrc_s Htrans.
-   eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-   assert (Hact_call : is_call_act ((honest_call_SetPass cstate)) = true).
-   {
-     unfold is_call_act.
-     unfold honest_call_SetPass.
-     unfold build_call.
-     destruct_address_eq;eauto.
-   }
-   assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
-   assert(ttrace_s_s' : TransitionTrace miner s s').
-   {
-     econstructor;eauto.
-     eapply step_trans;eauto.
+    forall (s s':ChainState) cstate,
+      contract_state s caddr = Some cstate ->
+      transition_reachable miner contract caddr s0 s ->
+      transition miner 5 s (honest_call_SetPass cstate) = Ok s' ->
+      funds s' caddr  >= funds s caddr.
+  Proof.
+    intros * Hcs_s Htrc_s Htrans.
+    eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
+    assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
+    assert(ttrace_s_s' : TransitionTrace miner s s').
+    {
+      econstructor;eauto.
+      eapply step_trans;eauto.
+    }
+    assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
+    {
+      econstructor;eauto.
+    }
+    assert(Hrt : reachable_through s s').
+    {
+      eapply reachable_via_impl_reachable_through in Htrct_s_s';eauto.
+    }
+    assert(H_t: reachable s') by eauto.
+    destruct H_t as [trace].
+    assert (Hec_s : env_contracts s caddr = Some ((contract : WeakContract))).
+    {
+      pose proof H_init.
+      decompose_is_init_state H_init.
+      eapply reachable_through_contract_deployed in H_env_contracts.
+      eauto.
+      eapply transition_reachable_impl_reachable_through in Htrc_s;eauto.
+    }
+    assert (Hec_s' : env_contracts s' caddr = Some ((contract : WeakContract))).
+    {
+      pose proof H_init.
+      decompose_is_init_state H_init.
+      eapply reachable_through_contract_deployed in H_env_contracts.
+      eauto.
+      eapply transition_reachable_impl_reachable_through in Htrc_s;eauto.
+    }
+    eapply deployed_contract_state_typed in Hec_s';eauto.
+    destruct Hec_s' as [cstate_s' Hcs_s'].
 
-   }
-   assert(Htrct_s_s' : reachable_via miner contract caddr s0 s s').
-   {
-     econstructor;eauto.
-   }
-   assert(Hrt : reachable_through s s').
-   {
-     eapply reachable_via_impl_reachable_through in Htrct_s_s';eauto.
-   }
-   assert(H_t: reachable s') by eauto.
-   destruct H_t as [trace].
-   assert (Hec_s : env_contracts s caddr = Some ((contract : WeakContract))).
-   {
-     pose proof H_init.
-     decompose_is_init_state H_init.
-     eapply reachable_through_contract_deployed in H_env_contracts.
-     eauto.
-     eapply transition_reachable_impl_reachable_through in Htrc_s;eauto.
-   }
-   assert (Hec_s' : env_contracts s' caddr = Some ((contract : WeakContract))).
-   {
-     pose proof H_init.
-     decompose_is_init_state H_init.
-     eapply reachable_through_contract_deployed in H_env_contracts.
-     eauto.
-     eapply transition_reachable_impl_reachable_through in Htrc_s;eauto.
-   }
-   eapply deployed_contract_state_typed in Hec_s';eauto.
-   destruct Hec_s' as [cstate_s' Hcs_s'].
-
-   eauto.
-   unfold transition in Htrans.
-   unfold queue_isb_empty in Htrans.
-   rewrite Hqueue_s in Htrans.
-   rewrite Hact_call in Htrans.
-   destruct (evaluate_action true s (get_valid_header miner s)
-   [honest_call_SetPass cstate ]) eqn : H_exec;try congruence.
-   unfold evaluate_action in H_exec.
-   rewrite get_valid_header_is_valid_header in H_exec.
-   destruct (find_origin_neq_from [honest_call_SetPass cstate]) ; try congruence.
-   destruct (find_invalid_root_action [honest_call_SetPass cstate]);try congruence.
-   set (mid_state := {|
-     chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
-     chain_state_queue := [user_call_GetGift cstate]
-   |}) in H_exec.
-   simpl in *.
-   destruct_address_eq;try congruence.
-   simpl in *.
-   destruct(send_or_call honest honest caddr 1
-   (Some (serialize (SetPass (sha3 honest_pass))))
-   (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
-   unfold send_or_call in  H_send_or_call_GetGift.
-   simpl in H_send_or_call_GetGift.
-   eapply address_not_contract_negb in H_miner.
-   assert( H_caddr_not_EOA : address_is_contract caddr = true).
-   {
-     eapply contract_addr_format in Hec_s;eauto.
-     eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
-   }
-   destruct_address_eq;simpl in *;try congruence.
-   
-   (* 
+    eauto.
+    unfold transition in Htrans.
+    unfold queue_isb_empty in Htrans.
+    rewrite Hqueue_s in Htrans.
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
+                [honest_call_SetPass cstate ]) eqn : H_exec;try congruence.
+    unfold evaluate_action in H_exec.
+    rewrite get_valid_header_is_valid_header in H_exec.
+    destruct (find_origin_neq_from [honest_call_SetPass cstate]) ; try congruence.
+    destruct (find_invalid_root_action [honest_call_SetPass cstate]);try congruence.
+    set (mid_state := {|
+                       chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
+                       chain_state_queue := [user_call_GetGift cstate]
+                     |}) in H_exec.
+    simpl in *.
+    destruct_address_eq;try congruence.
+    simpl in *.
+    destruct(send_or_call honest honest caddr 1
+               (Some (serialize (SetPass (sha3 honest_pass))))
+               (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
+    unfold send_or_call in  H_send_or_call_GetGift.
+    simpl in H_send_or_call_GetGift.
+    eapply address_not_contract_negb in H_miner.
+    assert( H_caddr_not_EOA : address_is_contract caddr = true).
+    {
+      eapply contract_addr_format in Hec_s;eauto.
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
+    }
+    destruct_address_eq;simpl in *;try congruence.
+    
+    (* 
      e: sender cstate = miner
      n: caddr <> sender cstate
      e0: caddr = caddr
      n0: caddr <> miner 
-   *)
-   destruct(1 >? miner_reward + env_account_balances s honest)%Z;try congruence.
-   rewrite Hec_s in H_send_or_call_GetGift.
-   assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
-   unfold contract_state in Hcstate_s_t0.
-   simpl in Hcstate_s_t0.
-   destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
-   destruct (weak_error_to_error_receive
-   (wc_receive contract
-      (s <| chain_height := S (chain_height s) |> <|
-       current_slot := (current_slot s + 1)%nat |> <|
-       finalized_height := finalized_height s |>)
-      {|
-        ctx_origin := honest;
-        ctx_from := honest;
-        ctx_contract_address := caddr;
-        ctx_contract_balance :=
-          1 + env_account_balances s caddr;
-        ctx_amount := 1
-      |} s1
-      (Some (serialize (SetPass (sha3 honest_pass)))))) eqn : H_wc_receive_s1;try congruence.
-   unfold weak_error_to_error_receive in H_wc_receive_s1.
-   unfold bind_error in H_wc_receive_s1.
-   destruct (wc_receive contract
-   (s <| chain_height := S (chain_height s) |> <| current_slot
-    := (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>)
-   {|
-     ctx_origin := honest;
-     ctx_from := honest;
-     ctx_contract_address := caddr;
-     ctx_contract_balance := 1 + env_account_balances s caddr;
-     ctx_amount := 1
-   |} s1 (Some (serialize (SetPass (sha3 honest_pass)))))
-     eqn : H_wc_receive_s1';try congruence.
-   
-   set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-   (current_slot s + 1)%nat |> <| finalized_height :=
-   finalized_height s |>) in H_wc_receive_s1'.
-   set (cctx := {|
-   ctx_origin := honest;
-   ctx_from := honest;
-   ctx_contract_address := caddr;
-   ctx_contract_balance := 1 + env_account_balances s caddr;
-   ctx_amount := 1
-  |}) in H_wc_receive_s1'.
-   
-   destruct t2 as [new_state new_acts].
+     *)
+    destruct(1 >? miner_reward + env_account_balances s honest)%Z;try congruence.
+    rewrite Hec_s in H_send_or_call_GetGift.
+    assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
+    unfold contract_state in Hcstate_s_t0.
+    simpl in Hcstate_s_t0.
+    destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
+    destruct (weak_error_to_error_receive
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := honest;
+                     ctx_from := honest;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       1 + env_account_balances s caddr;
+                     ctx_amount := 1
+                   |} s1
+                   (Some (serialize (SetPass (sha3 honest_pass)))))) eqn : H_wc_receive_s1;try congruence.
+    unfold weak_error_to_error_receive in H_wc_receive_s1.
+    unfold bind_error in H_wc_receive_s1.
+    destruct (wc_receive contract
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := honest;
+                  ctx_from := honest;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 1 + env_account_balances s caddr;
+                  ctx_amount := 1
+                |} s1 (Some (serialize (SetPass (sha3 honest_pass)))))
+      eqn : H_wc_receive_s1';try congruence.
+    
+    set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
+    set (cctx := {|
+                  ctx_origin := honest;
+                  ctx_from := honest;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 1 + env_account_balances s caddr;
+                  ctx_amount := 1
+                |}) in H_wc_receive_s1'.
+    
+    destruct t2 as [new_state new_acts].
 
-   destruct (wc_receive_strong ltac:(try eassumption))
-   as (prev_state_strong & msg_strong & resp_state_strong &
-     deser_state & deser_msg & <- & receive).
+    destruct (wc_receive_strong ltac:(try eassumption))
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
-   simpl in deser_msg.
-   destruct (msg_strong) eqn : H_msg;try congruence.
-   rewrite deserialize_serialize in deser_msg.
-   rewrite <- deser_msg in receive.
-   rewrite deser_state in Hcstate_s_t0.
-   simpl in receive.
-   rename receive into receive_some.
-   unfold receive in receive_some.
-   reduce_setPass.
-   propify.
-   destruct_and_split.
+    simpl in deser_msg.
+    destruct (msg_strong) eqn : H_msg;try congruence.
+    rewrite deserialize_serialize in deser_msg.
+    rewrite <- deser_msg in receive.
+    rewrite deser_state in Hcstate_s_t0.
+    simpl in receive.
+    rename receive into receive_some.
+    unfold receive in receive_some.
+    reduce_setPass.
+    propify.
+    destruct_and_split.
 
-   (* 111 *)
-   inversion receive_some.
-   subst.
-   inversion H_wc_receive_s1;subst.
-   inversion H_send_or_call_GetGift;subst.
-   simpl in H_exec.
-   inversion H_exec;subst.
-   inversion Htrans;subst.
-   simpl.
-   unfold funds.
-   simpl.
-   destruct_address_eq;try congruence.
-   lia.
+    (* 111 *)
+    inversion receive_some.
+    subst.
+    inversion H_wc_receive_s1;subst.
+    inversion H_send_or_call_GetGift;subst.
+    simpl in H_exec.
+    inversion H_exec;subst.
+    inversion Htrans;subst.
+    simpl.
+    unfold funds.
+    simpl.
+    destruct_address_eq;try congruence.
+    lia.
 
-   inversion receive_some.
-   subst.
-   inversion H_wc_receive_s1;subst.
-   inversion H_send_or_call_GetGift;subst.
-   simpl in H_exec.
-   inversion H_exec;subst.
-   inversion Htrans;subst.
-   simpl.
-   unfold funds.
-   simpl.
-   destruct_address_eq;try congruence.
-   lia.
-   
+    inversion receive_some.
+    subst.
+    inversion H_wc_receive_s1;subst.
+    inversion H_send_or_call_GetGift;subst.
+    simpl in H_exec.
+    inversion H_exec;subst.
+    inversion Htrans;subst.
+    simpl.
+    unfold funds.
+    simpl.
+    destruct_address_eq;try congruence.
+    lia.
+    
 
-   (* caddr = miner *)
-   eapply address_not_contract_negb in honest_eoa.
-   rewrite e in *.
-   intuition.
-   (* 
+    (* caddr = miner *)
+    eapply address_not_contract_negb in honest_eoa.
+    rewrite e in *.
+    intuition.
+    (* 
      n: sender cstate <> miner
      n0: caddr <> sender cstate
      e: caddr = caddr
      n1: caddr <> miner
-   *)
-   destruct(1 >? env_account_balances s honest)%Z;try congruence.
-   rewrite Hec_s in H_send_or_call_GetGift.
-   assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
-   unfold contract_state in Hcstate_s_t0.
-   simpl in Hcstate_s_t0.
-   destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
-   destruct (weak_error_to_error_receive
-   (wc_receive contract
-      (s <| chain_height := S (chain_height s) |> <|
-       current_slot := (current_slot s + 1)%nat |> <|
-       finalized_height := finalized_height s |>)
-      {|
-        ctx_origin := honest;
-        ctx_from := honest;
-        ctx_contract_address := caddr;
-        ctx_contract_balance :=
-          1 + env_account_balances s caddr;
-        ctx_amount := 1
-      |} s1
-      (Some (serialize (SetPass (sha3 honest_pass)))))) eqn : H_wc_receive_s1;try congruence.
-   unfold weak_error_to_error_receive in H_wc_receive_s1.
-   unfold bind_error in H_wc_receive_s1.
-   destruct (wc_receive contract
-   (s <| chain_height := S (chain_height s) |> <| current_slot
-    := (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>)
-   {|
-     ctx_origin := honest;
-     ctx_from := honest;
-     ctx_contract_address := caddr;
-     ctx_contract_balance := 1 + env_account_balances s caddr;
-     ctx_amount := 1
-   |} s1 (Some (serialize (SetPass (sha3 honest_pass)))))
-     eqn : H_wc_receive_s1';try congruence.
-   
-   set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot
-   := (current_slot s + 1)%nat |> <| finalized_height :=
-   finalized_height s |>) in H_wc_receive_s1'.
-   set (cctx := {|
-   ctx_origin := honest;
-   ctx_from := honest;
-   ctx_contract_address := caddr;
-   ctx_contract_balance := 1 + env_account_balances s caddr;
-   ctx_amount := 1
-  |}) in H_wc_receive_s1'.
-   
-   destruct t2 as [new_state new_acts].
+     *)
+    destruct(1 >? env_account_balances s honest)%Z;try congruence.
+    rewrite Hec_s in H_send_or_call_GetGift.
+    assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
+    unfold contract_state in Hcstate_s_t0.
+    simpl in Hcstate_s_t0.
+    destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
+    destruct (weak_error_to_error_receive
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := honest;
+                     ctx_from := honest;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       1 + env_account_balances s caddr;
+                     ctx_amount := 1
+                   |} s1
+                   (Some (serialize (SetPass (sha3 honest_pass)))))) eqn : H_wc_receive_s1;try congruence.
+    unfold weak_error_to_error_receive in H_wc_receive_s1.
+    unfold bind_error in H_wc_receive_s1.
+    destruct (wc_receive contract
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := honest;
+                  ctx_from := honest;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 1 + env_account_balances s caddr;
+                  ctx_amount := 1
+                |} s1 (Some (serialize (SetPass (sha3 honest_pass)))))
+      eqn : H_wc_receive_s1';try congruence.
+    
+    set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot
+         := (current_slot s + 1)%nat |> <| finalized_height :=
+           finalized_height s |>) in H_wc_receive_s1'.
+    set (cctx := {|
+                  ctx_origin := honest;
+                  ctx_from := honest;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 1 + env_account_balances s caddr;
+                  ctx_amount := 1
+                |}) in H_wc_receive_s1'.
+    
+    destruct t2 as [new_state new_acts].
 
-   destruct (wc_receive_strong ltac:(try eassumption))
-   as (prev_state_strong & msg_strong & resp_state_strong &
-     deser_state & deser_msg & <- & receive).
+    destruct (wc_receive_strong ltac:(try eassumption))
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
-   simpl in deser_msg.
-   destruct (msg_strong) eqn : H_msg;try congruence.
-   rewrite deserialize_serialize in deser_msg.
-   rewrite <- deser_msg in receive.
-   rewrite deser_state in Hcstate_s_t0.
-   simpl in receive.
-   rename receive into receive_some.
-   unfold receive in receive_some.
-   reduce_setPass.
-   (* 111 *)
-   inversion receive_some.
-   subst.
-   inversion H_wc_receive_s1;subst.
-   inversion H_send_or_call_GetGift;subst.
-   simpl in H_exec.
-   inversion H_exec;subst.
-   inversion Htrans;subst.
-   simpl.
-   unfold funds.
-   simpl.
-   destruct_address_eq;try congruence.
-   lia.
+    simpl in deser_msg.
+    destruct (msg_strong) eqn : H_msg;try congruence.
+    rewrite deserialize_serialize in deser_msg.
+    rewrite <- deser_msg in receive.
+    rewrite deser_state in Hcstate_s_t0.
+    simpl in receive.
+    rename receive into receive_some.
+    unfold receive in receive_some.
+    reduce_setPass.
+    (* 111 *)
+    inversion receive_some.
+    subst.
+    inversion H_wc_receive_s1;subst.
+    inversion H_send_or_call_GetGift;subst.
+    simpl in H_exec.
+    inversion H_exec;subst.
+    inversion Htrans;subst.
+    simpl.
+    unfold funds.
+    simpl.
+    destruct_address_eq;try congruence.
+    lia.
 
-   inversion receive_some.
-   subst.
-   inversion H_wc_receive_s1;subst.
-   inversion H_send_or_call_GetGift;subst.
-   simpl in H_exec.
-   inversion H_exec;subst.
-   inversion Htrans;subst.
-   simpl.
-   unfold funds.
-   simpl.
-   destruct_address_eq;try congruence.
-   lia.
- Qed.
+    inversion receive_some.
+    subst.
+    inversion H_wc_receive_s1;subst.
+    inversion H_send_or_call_GetGift;subst.
+    simpl in H_exec.
+    inversion H_exec;subst.
+    inversion Htrans;subst.
+    simpl.
+    unfold funds.
+    simpl.
+    destruct_address_eq;try congruence.
+    lia.
+  Qed.
+
+  Lemma honest_call_SetPass_is_call_act_state_correct':
+    forall n (s s':ChainState) cstate,
+      contract_state s caddr = Some cstate ->
+      transition_reachable miner contract caddr s0 s ->
+      cstate.(passHasBeenSet) = true -> 
+      transition miner n s (honest_call_SetPass cstate) = Ok s' ->
+      funds s' caddr  >= funds s caddr /\
+        exists cs,
+          contract_state s' caddr = Some cs /\
+            cs.(hashPass) = cstate.(hashPass) /\
+            cs.(passHasBeenSet) = true. 
+  Proof.
+    introv Hcs_s Htrc_s HpassB Htrans.
+    unfold transition in Htrans.
+    unfold queue_isb_empty in Htrans.
+    eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
+    rewrite Hqueue_s in Htrans.
+    (* rewrite honest_call_SetPass_is_call_act in Htrans.   *)
+    unfold evaluate_action in Htrans.
+    rewrite get_valid_header_is_valid_header in Htrans.
+    unfold honest_call_SetPass in Htrans.
+    simpl in Htrans.
+    destruct_address_eq;try congruence.
+    simpl in Htrans.
+    assert (Hec_s:env_contracts s caddr = Some (contract:WeakContract)).
+    {
+      eapply transition_reachable_impl_reachable_through in Htrc_s.
+      eapply reachable_through_contract_deployed in Htrc_s;eauto.
+      decompose_is_init_state H_init.
+      eauto.
+      eauto.
+    }
+    eapply address_not_contract_negb in honest_eoa.
+    rewrite honest_eoa in Htrans.
+    destruct n.
+    simpl in Htrans; false.
+    simpl in Htrans.
+    {
+      unfold send_or_call in Htrans.
+      simpl in Htrans.
+      assert(H_caddr_not_EOA : address_is_contract caddr = true).
+      {
+        eapply contract_addr_format in Hec_s;eauto.
+        eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
+      }
+      assert(Hrc_s:reachable s).
+      {
+        eapply transition_reachable_impl_reachable in Htrc_s;eauto.
+      }
+      assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+      {
+        eapply balance_on_chain_forall;eauto.
+        unfold outgoing_acts.
+        rewrite Hqueue_s.
+        simpl.
+        eauto.
+      }
+      
+      destruct_address_eq;try congruence.
+
+      + assert ((1 >? miner_reward + env_account_balances s honest)%Z 
+                = false).
+        {
+          unfold miner_reward.
+          eapply (account_balance_nonnegative s honest) in Hrc_s.
+          lia.
+        }
+        rewrite H in Htrans.
+        simpl in Htrans.
+        rewrite Hec_s in Htrans.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+        simpl in Htrans.
+        unfold deser_error in Htrans.
+        unfold result_of_option in Htrans.
+        simpl in Htrans.
+        destruct (deserialize s1) eqn: EE; try congruence.
+        * 
+          setoid_rewrite deserialize_serialize in Htrans.          
+          destruct(negb (passHasBeenSet s2) && (1 >=? one_ether)) eqn: E_; try congruence. 
+          { (* contra *)
+            unfolds in Hcs_s.
+            unfolds in Hecs_s.
+            destruct (chain_state_env s) eqn: EEE.
+            simpl in Hcs_s.
+            destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+            inverts Hecs_s.
+            rewrite Hcs_s in EE.
+            inverts EE.
+            rewrite HpassB in E_.
+            simpl in E_.
+            clear -E_.
+            false.
+          }
+          {
+            unfold setPass in Htrans.
+            simpl in Htrans.
+            rewrite E_ in Htrans.
+            simpl in Htrans.
+            destruct n; simpl in Htrans; tryfalse.
+
+            inverts Htrans.
+            simpl.
+            split.
+            unfold funds.
+            simpl.
+            destruct_address_eq;try congruence.
+            lia.
+            unfold set_contract_state; unfold contract_state.
+            simpl.
+            destruct_address_eq;try congruence.
+            setoid_rewrite deserialize_serialize.
+            unfolds in Hcs_s.
+            unfolds in Hecs_s.
+            destruct (chain_state_env s) eqn: EEE.
+            simpl in Hcs_s.
+            destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+            inverts Hecs_s.
+            rewrite Hcs_s in EE.
+            inverts EE.
+            eexists; splits; simpl; eauto.
+            
+            inverts Htrans.
+            simpl.
+            split.
+            unfold funds.
+            simpl.
+            destruct_address_eq;try congruence.
+            lia.
+            unfold set_contract_state; unfold contract_state.
+            simpl.
+            destruct_address_eq;try congruence.
+            setoid_rewrite deserialize_serialize.
+            unfolds in Hcs_s.
+            unfolds in Hecs_s.
+            destruct (chain_state_env s) eqn: EEE.
+            simpl in Hcs_s.
+            destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+            inverts Hecs_s.
+            rewrite Hcs_s in EE.
+            inverts EE.
+            eexists; splits; simpl; eauto.
+          }
+          
+        *
+          simpl in Htrans.
+          false.
+
+      +
+        destruct (1 >? env_account_balances s honest) eqn: E; tryfalse.
+        rewrite Hec_s in Htrans.
+        simpl in Htrans.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.        
+        destruct (deserialize s1) eqn: EE; try congruence; tryfalse. 
+        simpl in Htrans.
+        setoid_rewrite deserialize_serialize in Htrans.
+        simpl in Htrans.
+        unfold setPass in Htrans.
+        simpl in Htrans.
+        destruct (negb (passHasBeenSet s2) && (1 >=? one_ether)) eqn: Eb.
+        { (* contra *)
+          unfolds in Hcs_s.
+          unfolds in Hecs_s.
+          destruct (chain_state_env s) eqn: EEE.
+          simpl in Hcs_s.
+          destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+          inverts Hecs_s.
+          rewrite Hcs_s in EE.
+          inverts EE.
+          rewrite HpassB in Eb.
+          simpl in Eb.
+          false.
+        }
+
+        simpl in Htrans.
+        destruct n; tryfalse.
+        {
+          simpl in Htrans.
+          inverts Htrans.
+          unfold funds.
+          simpl.
+          destruct_address_eq;try congruence.
+          split.
+          unfold miner_reward.
+          lia.
+          unfolds in Hcs_s.
+          unfolds in Hecs_s.
+          destruct (chain_state_env s) eqn: EEE.
+          simpl in Hcs_s.
+          destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+          inverts Hecs_s.
+          rewrite Hcs_s in EE.
+          inverts EE.
+          simpl.
+          unfold contract_state. unfold set_contract_state.
+          simpl.
+          destruct_address_eq;try congruence.          
+          setoid_rewrite deserialize_serialize.
+          eexists; splits; eauto.
+        }
+        simpl in Htrans.
+        inverts Htrans.
+
+        unfold funds.
+        simpl.
+        destruct_address_eq;try congruence.
+        split.
+        unfold miner_reward.
+        lia.
+        unfolds in Hcs_s.
+        unfolds in Hecs_s.
+        destruct (chain_state_env s) eqn: EEE.
+        simpl in Hcs_s.
+        destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+        inverts Hecs_s.
+        rewrite Hcs_s in EE.
+        inverts EE.
+        simpl.
+        unfold contract_state. unfold set_contract_state.
+        simpl.
+        destruct_address_eq;try congruence.          
+        setoid_rewrite deserialize_serialize.
+        eexists; splits; eauto.
+        
+      +
+        destruct (1 >? env_account_balances s honest) eqn: E; tryfalse.
+        rewrite Hec_s in Htrans.
+        simpl in Htrans.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.        
+        destruct (deserialize s1) eqn: EE; try congruence; tryfalse. 
+        simpl in Htrans.
+        setoid_rewrite deserialize_serialize in Htrans.
+        simpl in Htrans.
+        unfold setPass in Htrans.
+        simpl in Htrans.
+        destruct (negb (passHasBeenSet s2) && (1 >=? one_ether)) eqn: Eb.
+        { (* contra *)
+          unfolds in Hcs_s.
+          unfolds in Hecs_s.
+          destruct (chain_state_env s) eqn: EEE.
+          simpl in Hcs_s.
+          destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+          inverts Hecs_s.
+          rewrite Hcs_s in EE.
+          inverts EE.
+          rewrite HpassB in Eb.
+          simpl in Eb.
+          false.
+        }
+
+        simpl in Htrans.
+        destruct n; tryfalse.
+        {
+          simpl in Htrans.
+          inverts Htrans.
+          unfold funds.
+          simpl.
+          destruct_address_eq;try congruence.
+          split.
+          unfold miner_reward.
+          lia.
+          unfolds in Hcs_s.
+          unfolds in Hecs_s.
+          destruct (chain_state_env s) eqn: EEE.
+          simpl in Hcs_s.
+          destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+          inverts Hecs_s.
+          rewrite Hcs_s in EE.
+          inverts EE.
+          simpl.
+          unfold contract_state. unfold set_contract_state.
+          simpl.
+          destruct_address_eq;try congruence.          
+          setoid_rewrite deserialize_serialize.
+          eexists; splits; eauto.
+        }
+        simpl in Htrans.
+        inverts Htrans.
+
+        unfold funds.
+        simpl.
+        destruct_address_eq;try congruence.
+        split.
+        unfold miner_reward.
+        lia.
+        unfolds in Hcs_s.
+        unfolds in Hecs_s.
+        destruct (chain_state_env s) eqn: EEE.
+        simpl in Hcs_s.
+        destruct (env_contract_states caddr) eqn: EEE'; tryfalse.
+        inverts Hecs_s.
+        rewrite Hcs_s in EE.
+        inverts EE.
+        simpl.
+        unfold contract_state. unfold set_contract_state.
+        simpl.
+        destruct_address_eq;try congruence.          
+        setoid_rewrite deserialize_serialize.
+        eexists; splits; eauto.
+    }
+    
+  Qed.        
 
   Lemma honest_call_PassHasBeenSetMsg_is_call_act_transition_correct_nopass:
-  forall (s:ChainState) cstate,
+    forall (s:ChainState) cstate,
       contract_state s caddr = Some cstate ->
       transition_reachable miner contract caddr s0 s ->
       cstate.(passHasBeenSet) = true ->
       cstate.(hashPass) <> (sha3 honest_pass) ->
-      transition miner s (honest_call_PassHasBeenSetMsg cstate) = Err StratModel.default_error.
+      transition miner 5 s (honest_call_PassHasBeenSetMsg cstate) = Err StratModel.default_error.
   Proof.
-      intros * Hcs_s Htrc_s H_passB H_neq.
-      unfold transition.
-      unfold queue_isb_empty.
-      eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
+    intros * Hcs_s Htrc_s H_passB H_neq.
+    unfold transition.
+    unfold queue_isb_empty.
+    eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
+    rewrite Hqueue_s.
+    (* rewrite honest_call_PassHasBeenSetMsg_is_call_act. *)
+    unfold evaluate_action.
+    rewrite get_valid_header_is_valid_header.
+    unfold honest_call_PassHasBeenSetMsg .
+    simpl.
+    destruct_address_eq;try congruence.
+    simpl.
+    assert (Hec_s:env_contracts s caddr = Some (contract:WeakContract)).
+    {
+      eapply transition_reachable_impl_reachable_through in Htrc_s.
+      eapply reachable_through_contract_deployed in Htrc_s;eauto.
+      decompose_is_init_state H_init.
+      eauto.
+      eauto.
+    }
+    eapply address_not_contract_negb in honest_eoa.
+    rewrite honest_eoa.
+    unfold send_or_call.
+    simpl.
+    assert( H_caddr_not_EOA : address_is_contract caddr = true).
+    {
+      eapply contract_addr_format in Hec_s;eauto.
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.  
+    }
+    assert(Hrc_s:reachable s).
+    {
+      eapply transition_reachable_impl_reachable in Htrc_s;eauto.
+    }
+    assert(Hbal:env_account_balances s caddr = cstate.(balance)).
+    {
+      eapply balance_on_chain_forall;eauto.
+      unfold outgoing_acts.
       rewrite Hqueue_s.
-      rewrite honest_call_PassHasBeenSetMsg_is_call_act.
-      unfold evaluate_action.
-      rewrite get_valid_header_is_valid_header.
-      unfold honest_call_PassHasBeenSetMsg .
       simpl.
-      destruct_address_eq;try congruence.
-      simpl.
-      assert (Hec_s:env_contracts s caddr = Some (contract:WeakContract)).
+      eauto.
+    }
+    destruct_address_eq;try congruence.
+    + assert ((0 >? miner_reward + env_account_balances s honest )%Z 
+              = false).
       {
-        eapply transition_reachable_impl_reachable_through in Htrc_s.
-        eapply reachable_through_contract_deployed in Htrc_s;eauto.
-        decompose_is_init_state H_init.
-        eauto.
-        eauto.
+        unfold miner_reward.
+        eapply (account_balance_nonnegative s honest) in Hrc_s.
+        lia.
       }
-      eapply address_not_contract_negb in honest_eoa.
-      rewrite honest_eoa.
+      rewrite H.
+      rewrite Hec_s.
+      unfold contract_state in Hcs_s.
+      simpl in Hcs_s.
+      destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+      simpl.
+      rewrite Hcs_s.
+      simpl.
+      setoid_rewrite deserialize_serialize.
+      simpl.
+      cbn in *.
+      unfold receive.
+      destruct (hashPass cstate)%N eqn : HH.
+    - propify.  intuition.
+    - propify. 
+      unfold sha3 in H_neq.
+      destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
+      propify.
+      eapply Pos.eqb_eq in h'.
+      rewrite <- h' in H_neq.
+      intuition.
+      setoid_rewrite h'.
+      simpl.
+      eauto.
+      
+      + assert ((0 >?  env_account_balances s honest )%Z 
+                = false).
+        {
+          unfold miner_reward.
+          eapply (account_balance_nonnegative s honest) in Hrc_s.
+          lia.
+        }
+        rewrite H.
+        rewrite Hec_s.
+        unfold contract_state in Hcs_s.
+        simpl in Hcs_s.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+        simpl.
+        rewrite Hcs_s.
+        simpl.
+        setoid_rewrite deserialize_serialize.
+        simpl.
+        cbn in *.
+        unfold receive.
+        simpl.
+        unfold address_not_contract.
+        destruct (hashPass cstate)%N eqn : HH.
+    - propify.  intuition.
+    - propify. 
+      unfold sha3 in H_neq.
+      destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
+      propify.
+      eapply Pos.eqb_eq in h'.
+      rewrite <- h' in H_neq.
+      intuition.
+      setoid_rewrite h'.
+      simpl.
+      eauto.
+      + assert ((0 >?  env_account_balances s honest )%Z 
+                = false).
+        {
+          unfold miner_reward.
+          eapply (account_balance_nonnegative s honest) in Hrc_s.
+          lia.
+        }
+        rewrite H.
+        rewrite Hec_s.
+        unfold contract_state in Hcs_s.
+        simpl in Hcs_s.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+        simpl.
+        rewrite Hcs_s.
+        simpl.
+        setoid_rewrite deserialize_serialize.
+        simpl.
+        cbn in *.
+        unfold receive.
+        simpl.
+        unfold address_not_contract.
+        destruct (hashPass cstate)%N eqn : HH.
+    - propify.  intuition.
+    - propify. 
+      unfold sha3 in H_neq.
+      destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
+      propify.
+      eapply Pos.eqb_eq in h'.
+      rewrite <- h' in H_neq.
+      intuition.
+      setoid_rewrite h'.
+      simpl.
+      eauto.
+  Qed.
+
+  Lemma honest_call_PassHasBeenSetMsg_is_call_act_transition_correct_nopass':
+    forall n (s:ChainState) cstate,
+      contract_state s caddr = Some cstate ->
+      transition_reachable miner contract caddr s0 s ->
+      cstate.(passHasBeenSet) = true ->
+      cstate.(hashPass) <> (sha3 honest_pass) ->
+      transition miner n s (honest_call_PassHasBeenSetMsg cstate) = Err StratModel.default_error.
+  Proof.
+    intros * Hcs_s Htrc_s H_passB H_neq.
+    unfold transition.
+    unfold queue_isb_empty.
+    eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
+    rewrite Hqueue_s.
+    (* rewrite honest_call_PassHasBeenSetMsg_is_call_act. *)
+    unfold evaluate_action.
+    rewrite get_valid_header_is_valid_header.
+    unfold honest_call_PassHasBeenSetMsg.
+    simpl.
+    destruct_address_eq;try congruence.
+    simpl.
+    assert (Hec_s:env_contracts s caddr = Some (contract:WeakContract)).
+    {
+      eapply transition_reachable_impl_reachable_through in Htrc_s.
+      eapply reachable_through_contract_deployed in Htrc_s;eauto.
+      decompose_is_init_state H_init.
+      eauto.
+      eauto.
+    }
+    eapply address_not_contract_negb in honest_eoa.
+    rewrite honest_eoa.
+
+    induction n. 
+
+    { (* n = 0 *) 
+      simpl; auto.
+    }
+
+    { (* n = S _ *)
+      simpl.
       unfold send_or_call.
       simpl.
       assert( H_caddr_not_EOA : address_is_contract caddr = true).
@@ -1991,7 +2544,7 @@ Section Liqiuidity.
       }
       destruct_address_eq;try congruence.
       + assert ((0 >? miner_reward + env_account_balances s honest )%Z 
-                  = false).
+                = false).
         {
           unfold miner_reward.
           eapply (account_balance_nonnegative s honest) in Hrc_s.
@@ -2010,95 +2563,98 @@ Section Liqiuidity.
         cbn in *.
         unfold receive.
         destruct (hashPass cstate)%N eqn : HH.
-        - propify.  intuition.
-        - propify. 
-          unfold sha3 in H_neq.
-          destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
-          propify.
-          eapply Pos.eqb_eq in h'.
-          rewrite <- h' in H_neq.
-          intuition.
-          setoid_rewrite h'.
-          simpl.
-          eauto.
-      
-      + assert ((0 >?  env_account_balances s honest )%Z 
+      - propify.  intuition.
+      - propify. 
+        unfold sha3 in H_neq.
+        destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
+        propify.
+        eapply Pos.eqb_eq in h'.
+        rewrite <- h' in H_neq.
+        intuition.
+        setoid_rewrite h'.
+        simpl.
+        eauto.
+        
+        + assert ((0 >?  env_account_balances s honest )%Z 
                   = false).
-        {
-          unfold miner_reward.
-          eapply (account_balance_nonnegative s honest) in Hrc_s.
-          lia.
-        }
-        rewrite H.
-        rewrite Hec_s.
-        unfold contract_state in Hcs_s.
-        simpl in Hcs_s.
-        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
-        simpl.
-        rewrite Hcs_s.
-        simpl.
-        setoid_rewrite deserialize_serialize.
-        simpl.
-        cbn in *.
-        unfold receive.
-        simpl.
-        unfold address_not_contract.
-        destruct (hashPass cstate)%N eqn : HH.
-        - propify.  intuition.
-        - propify. 
-          unfold sha3 in H_neq.
-          destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
-          propify.
-          eapply Pos.eqb_eq in h'.
-          rewrite <- h' in H_neq.
-          intuition.
-          setoid_rewrite h'.
+          {
+            unfold miner_reward.
+            eapply (account_balance_nonnegative s honest) in Hrc_s.
+            lia.
+          }
+          rewrite H.
+          rewrite Hec_s.
+          unfold contract_state in Hcs_s.
+          simpl in Hcs_s.
+          destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
           simpl.
-          eauto.
-      + assert ((0 >?  env_account_balances s honest )%Z 
+          rewrite Hcs_s.
+          simpl.
+          setoid_rewrite deserialize_serialize.
+          simpl.
+          cbn in *.
+          unfold receive.
+          simpl.
+          unfold address_not_contract.
+          destruct (hashPass cstate)%N eqn : HH.
+      - propify.  intuition.
+      - propify. 
+        unfold sha3 in H_neq.
+        destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
+        propify.
+        eapply Pos.eqb_eq in h'.
+        rewrite <- h' in H_neq.
+        intuition.
+        setoid_rewrite h'.
+        simpl.
+        eauto.
+        + assert ((0 >?  env_account_balances s honest )%Z 
                   = false).
-        {
-          unfold miner_reward.
-          eapply (account_balance_nonnegative s honest) in Hrc_s.
-          lia.
-        }
-        rewrite H.
-        rewrite Hec_s.
-        unfold contract_state in Hcs_s.
-        simpl in Hcs_s.
-        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
-        simpl.
-        rewrite Hcs_s.
-        simpl.
-        setoid_rewrite deserialize_serialize.
-        simpl.
-        cbn in *.
-        unfold receive.
-        simpl.
-        unfold address_not_contract.
-        destruct (hashPass cstate)%N eqn : HH.
-        - propify.  intuition.
-        - propify. 
-          unfold sha3 in H_neq.
-          destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
-          propify.
-          eapply Pos.eqb_eq in h'.
-          rewrite <- h' in H_neq.
-          intuition.
-          setoid_rewrite h'.
+          {
+            unfold miner_reward.
+            eapply (account_balance_nonnegative s honest) in Hrc_s.
+            lia.
+          }
+          rewrite H.
+          rewrite Hec_s.
+          unfold contract_state in Hcs_s.
+          simpl in Hcs_s.
+          destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
           simpl.
-          eauto.
+          rewrite Hcs_s.
+          simpl.
+          setoid_rewrite deserialize_serialize.
+          simpl.
+          cbn in *.
+          unfold receive.
+          simpl.
+          unfold address_not_contract.
+          destruct (hashPass cstate)%N eqn : HH.
+      - propify.  intuition.
+      - propify. 
+        unfold sha3 in H_neq.
+        destruct ((countable.encode honest_pass =? p)%positive) eqn :  h';try congruence .
+        propify.
+        eapply Pos.eqb_eq in h'.
+        rewrite <- h' in H_neq.
+        intuition.
+        setoid_rewrite h'.
+        simpl.
+        eauto.
+    }
   Qed.
-
+  
+  Require stdpp.countable.  
+  
   Lemma honest_strat_correct_nopass:
     forall (s s':ChainState) cstate a (tr : TransitionTrace miner s0 s) ,
-        contract_state s caddr = Some cstate ->
-        transition_reachable miner contract caddr s0 s ->
-        cstate.(passHasBeenSet) = true ->
-        cstate.(hashPass) <> (sha3 honest_pass) ->
-        In a (honest_strat s0 s tr) ->
-        transition miner s a = Ok s' ->
-        funds s' caddr >= funds s caddr.
+      contract_state s caddr = Some cstate ->
+      transition_reachable miner contract caddr s0 s ->
+      cstate.(passHasBeenSet) = true ->
+      cstate.(hashPass) <> (sha3 honest_pass) ->
+      In a (honest_strat s0 s tr) ->
+      transition miner 5 s a = Ok s' ->
+      funds s' caddr >= funds s caddr.
   Proof.
     intros.
     unfold honest_strat in *.
@@ -2125,11 +2681,11 @@ Section Liqiuidity.
 
   Lemma attacker_call_SetPass_is_call_act_transition_correct:
     forall (s:ChainState) cstate,
-        contract_state s caddr = Some cstate ->
-        transition_reachable miner contract caddr s0 s ->
-        cstate.(passHasBeenSet) = false ->
-        exists s',
-        transition miner s (attacker_call_SetPass cstate) = Ok s'.
+      contract_state s caddr = Some cstate ->
+      transition_reachable miner contract caddr s0 s ->
+      cstate.(passHasBeenSet) = false ->
+      exists s',
+        transition miner 5 s (attacker_call_SetPass cstate) = Ok s'.
   Proof.
     intros * Hcs_s Htrc_s H_passB  .
     eexists.
@@ -2137,7 +2693,7 @@ Section Liqiuidity.
     unfold queue_isb_empty.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
     rewrite Hqueue_s.
-    rewrite attacker_call_SetPass_is_call_act.
+    (* rewrite attacker_call_SetPass_is_call_act. *)
     unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold attacker_call_SetPass .
@@ -2197,29 +2753,6 @@ Section Liqiuidity.
       eauto.
       
     + assert ((1 >? env_account_balances s attacker )%Z = false).
-    {
-      unfold miner_reward.
-      eapply (account_balance_nonnegative s attacker) in Hrc_s.
-      specialize (H_attack_bal_ge_1 s).
-      unfold funds in *.
-      lia.
-    }
-    rewrite H.
-    rewrite Hec_s.
-    unfold contract_state in Hcs_s.
-    simpl in Hcs_s.
-    destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
-    simpl.
-    rewrite Hcs_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    unfold setPass.
-    rewrite H_passB.
-    simpl.
-    eauto.
-    + assert ((1 >? env_account_balances s attacker )%Z 
-                = false).
       {
         unfold miner_reward.
         eapply (account_balance_nonnegative s attacker) in Hrc_s.
@@ -2228,19 +2761,42 @@ Section Liqiuidity.
         lia.
       }
       rewrite H.
-    rewrite Hec_s.
-    unfold contract_state in Hcs_s.
-    simpl in Hcs_s.
-    destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
-    simpl.
-    rewrite Hcs_s.
-    simpl.
-    setoid_rewrite deserialize_serialize.
-    simpl.
-    unfold setPass.
-    rewrite H_passB.
-    simpl.
-    eauto.
+      rewrite Hec_s.
+      unfold contract_state in Hcs_s.
+      simpl in Hcs_s.
+      destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+      simpl.
+      rewrite Hcs_s.
+      simpl.
+      setoid_rewrite deserialize_serialize.
+      simpl.
+      unfold setPass.
+      rewrite H_passB.
+      simpl.
+      eauto.
+    + assert ((1 >? env_account_balances s attacker )%Z 
+              = false).
+      {
+        unfold miner_reward.
+        eapply (account_balance_nonnegative s attacker) in Hrc_s.
+        specialize (H_attack_bal_ge_1 s).
+        unfold funds in *.
+        lia.
+      }
+      rewrite H.
+      rewrite Hec_s.
+      unfold contract_state in Hcs_s.
+      simpl in Hcs_s.
+      destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+      simpl.
+      rewrite Hcs_s.
+      simpl.
+      setoid_rewrite deserialize_serialize.
+      simpl.
+      unfold setPass.
+      rewrite H_passB.
+      simpl.
+      eauto.
   Qed.
 
   Lemma attacker_call_PassHasBeenSetMsg_is_call_act_transition_correct:
@@ -2250,7 +2806,7 @@ Section Liqiuidity.
       cstate.(passHasBeenSet) = false ->
       cstate.(hashPass) = sha3 attacker_pass ->
       exists s',
-      transition miner s (attacker_call_PassHasBeenSetMsg cstate) = Ok s'.
+        transition miner 5 s (attacker_call_PassHasBeenSetMsg cstate) = Ok s'.
   Proof.
     intros * Hcs_s Htrc_s H_passB H_pass .
     eexists.
@@ -2258,7 +2814,7 @@ Section Liqiuidity.
     unfold queue_isb_empty.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
     rewrite Hqueue_s.
-    rewrite attacker_call_PassHasBeenSetMsg_is_call_act.
+    (* rewrite attacker_call_PassHasBeenSetMsg_is_call_act. *)
     unfold evaluate_action.
     rewrite get_valid_header_is_valid_header.
     unfold attacker_call_PassHasBeenSetMsg .
@@ -2296,7 +2852,7 @@ Section Liqiuidity.
     }
     destruct_address_eq;try congruence.
     + assert ((0 >? miner_reward + env_account_balances s attacker )%Z 
-                = false).
+              = false).
       {
         unfold miner_reward.
         eapply (account_balance_nonnegative s attacker) in Hrc_s.
@@ -2318,85 +2874,78 @@ Section Liqiuidity.
       unfold address_not_contract.
       rewrite H_pass.
       destruct (hashPass cstate =? sha3 attacker_pass)%N eqn : N.
-      - propify. 
-        destruct (sha3 attacker_pass) eqn : h'; try congruence.
-        destruct ((countable.encode attacker_pass =? p)%positive) eqn : h''; try congruence.
-        ++ propify.
-           setoid_rewrite h''.
-           simpl.
-           eauto.
-        ++ eapply Pos.eqb_neq in h''.
-            unfold sha3 in h'.
-            eapply pos_inj in h'.
-            intuition.
-      - eapply N.eqb_neq in N.
-         rewrite H_pass in N.
-          intuition.
-      
-    + eapply address_not_contract_negb in H_miner.
-      rewrite e1 in *.
+    - propify. 
+      destruct (sha3 attacker_pass) eqn : h'; try congruence.
+      destruct ((countable.encode attacker_pass =? p)%positive) eqn : h''; try congruence.
+      ++ propify.
+         setoid_rewrite h''.
+         simpl.
+         eauto.
+      ++ eapply Pos.eqb_neq in h''.
+         unfold sha3 in h'.
+         eapply pos_inj in h'.
+         intuition.
+    - eapply N.eqb_neq in N.
+      rewrite H_pass in N.
       intuition.
-    + assert ((0 >?  env_account_balances s attacker )%Z 
+      
+      + eapply address_not_contract_negb in H_miner.
+        rewrite e1 in *.
+        intuition.
+      + assert ((0 >?  env_account_balances s attacker )%Z 
                 = false).
-      {
-        unfold miner_reward.
-        eapply (account_balance_nonnegative s attacker) in Hrc_s.
-        specialize (H_honest_bal_ge_1 s).
-        unfold funds in *.
-        lia.
-      }
-      rewrite H.
-      rewrite Hec_s.
-      unfold contract_state in Hcs_s.
-      simpl in Hcs_s.
-      destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
-      simpl.
-      rewrite Hcs_s.
-      simpl.
-      setoid_rewrite deserialize_serialize.
-      simpl.
-      cbn in *.
-      unfold receive.
-      simpl.
-      unfold address_not_contract.
-      rewrite H_pass.
-      destruct (hashPass cstate =? sha3 attacker_pass)%N eqn : N.
-      - propify. 
-        destruct (sha3 attacker_pass) eqn : h'; try congruence.
-        destruct ((countable.encode attacker_pass =? p)%positive) eqn : h''; try congruence.
-        ++ propify.
-           setoid_rewrite h''.
-           simpl.
-           eauto.
-        ++ eapply Pos.eqb_neq in h''.
-            unfold sha3 in h'.
-            eapply pos_inj in h'.
-            intuition.
-      - eapply N.eqb_neq in N.
-         rewrite H_pass in N.
-          intuition.
+        {
+          unfold miner_reward.
+          eapply (account_balance_nonnegative s attacker) in Hrc_s.
+          specialize (H_honest_bal_ge_1 s).
+          unfold funds in *.
+          lia.
+        }
+        rewrite H.
+        rewrite Hec_s.
+        unfold contract_state in Hcs_s.
+        simpl in Hcs_s.
+        destruct (env_contract_states s caddr) eqn : Hecs_s;try congruence.
+        simpl.
+        rewrite Hcs_s.
+        simpl.
+        setoid_rewrite deserialize_serialize.
+        simpl.
+        cbn in *.
+        unfold receive.
+        simpl.
+        unfold address_not_contract.
+        rewrite H_pass.
+        destruct (hashPass cstate =? sha3 attacker_pass)%N eqn : N.
+    - propify. 
+      destruct (sha3 attacker_pass) eqn : h'; try congruence.
+      destruct ((countable.encode attacker_pass =? p)%positive) eqn : h''; try congruence.
+      ++ propify.
+         setoid_rewrite h''.
+         simpl.
+         eauto.
+      ++ eapply Pos.eqb_neq in h''.
+         unfold sha3 in h'.
+         eapply pos_inj in h'.
+         intuition.
+    - eapply N.eqb_neq in N.
+      rewrite H_pass in N.
+      intuition.
   Qed.
 
   Lemma attacker_call_SetPass_is_call_act_state_correct:
-   forall (s s':ChainState) cstate,
+    forall (s s':ChainState) cstate,
       contract_state s caddr = Some cstate ->
       transition_reachable miner contract caddr s0 s ->
       cstate.(passHasBeenSet) = false ->
-      transition miner s (attacker_call_SetPass cstate) = Ok s' ->
+      transition miner 5 s (attacker_call_SetPass cstate) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
-        cstate'.(hashPass) = sha3 attacker_pass /\
-        cstate'.(passHasBeenSet ) = false.
+          cstate'.(hashPass) = sha3 attacker_pass /\
+          cstate'.(passHasBeenSet ) = false.
   Proof.
     intros * Hcs_s Htrc_s H_passB Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-    assert (Hact_call : is_call_act ((attacker_call_SetPass cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold attacker_call_SetPass.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -2438,22 +2987,22 @@ Section Liqiuidity.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
-    [attacker_call_SetPass cstate ]) eqn : H_exec;try congruence.
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
+                [attacker_call_SetPass cstate ]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [attacker_call_SetPass cstate]) ; try congruence.
     destruct (find_invalid_root_action [attacker_call_SetPass cstate]);try congruence.
     set (mid_state := {|
-      chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
-      chain_state_queue := [attacker_call_SetPass cstate]
-    |}) in H_exec.
+                       chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
+                       chain_state_queue := [attacker_call_SetPass cstate]
+                     |}) in H_exec.
     simpl in *.
     destruct(
-    send_or_call attacker attacker caddr 1
-      (Some (serialize (SetPass (sha3 attacker_pass))))
-      (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
+        send_or_call attacker attacker caddr 1
+          (Some (serialize (SetPass (sha3 attacker_pass))))
+          (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
     unfold send_or_call in  H_send_or_call_GetGift.
     simpl in H_send_or_call_GetGift.
     eapply address_not_contract_negb in H_miner.
@@ -2469,7 +3018,7 @@ Section Liqiuidity.
       n: caddr <> sender cstate
       e0: caddr = caddr
       n0: caddr <> miner 
-    *)
+     *)
 
     destruct(1 >? miner_reward + env_account_balances s attacker)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
@@ -2478,50 +3027,50 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-       (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-       {|
-         ctx_origin := attacker;
-         ctx_from := attacker;
-         ctx_contract_address := caddr;
-         ctx_contract_balance :=
-           1 + env_account_balances s caddr;
-         ctx_amount := 1
-       |} s1
-       (Some (serialize (SetPass (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := attacker;
+                     ctx_from := attacker;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       1 + env_account_balances s caddr;
+                     ctx_amount := 1
+                   |} s1
+                   (Some (serialize (SetPass (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot
-     := (current_slot s + 1)%nat |> <| finalized_height :=
-     finalized_height s |>)
-    {|
-      ctx_origin := attacker;
-      ctx_from := attacker;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 1 + env_account_balances s caddr;
-      ctx_amount := 1
-    |} s1 (Some (serialize (SetPass (sha3 attacker_pass)))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := attacker;
+                  ctx_from := attacker;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 1 + env_account_balances s caddr;
+                  ctx_amount := 1
+                |} s1 (Some (serialize (SetPass (sha3 attacker_pass)))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -2574,7 +3123,7 @@ Section Liqiuidity.
     e: caddr = caddr
     n1: caddr <> miner
     
-    *)
+     *)
     destruct(1 >?  env_account_balances s attacker)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
     assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
@@ -2582,50 +3131,50 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-       (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-       {|
-         ctx_origin := attacker;
-         ctx_from := attacker;
-         ctx_contract_address := caddr;
-         ctx_contract_balance :=
-           1 + env_account_balances s caddr;
-         ctx_amount := 1
-       |} s1
-       (Some (serialize (SetPass (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := attacker;
+                     ctx_from := attacker;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       1 + env_account_balances s caddr;
+                     ctx_amount := 1
+                   |} s1
+                   (Some (serialize (SetPass (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot
-     := (current_slot s + 1)%nat |> <| finalized_height :=
-     finalized_height s |>)
-    {|
-      ctx_origin := attacker;
-      ctx_from := attacker;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 1 + env_account_balances s caddr;
-      ctx_amount := 1
-    |} s1 (Some (serialize (SetPass (sha3 attacker_pass)))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := attacker;
+                  ctx_from := attacker;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 1 + env_account_balances s caddr;
+                  ctx_amount := 1
+                |} s1 (Some (serialize (SetPass (sha3 attacker_pass)))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -2665,21 +3214,14 @@ Section Liqiuidity.
 
   Lemma attacker_call_SetPass_is_call_act_state_correct_funds:
     forall (s s':ChainState) cstate,
-     contract_state s caddr = Some cstate ->
-     transition_reachable miner contract caddr s0 s ->
-     cstate.(passHasBeenSet) = false ->
-     transition miner s (attacker_call_SetPass cstate) = Ok s' ->
-     funds s' caddr > 0.
+      contract_state s caddr = Some cstate ->
+      transition_reachable miner contract caddr s0 s ->
+      cstate.(passHasBeenSet) = false ->
+      transition miner 5 s (attacker_call_SetPass cstate) = Ok s' ->
+      funds s' caddr > 0.
   Proof.
     intros * Hcs_s Htrc_s H_passB Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-    assert (Hact_call : is_call_act ((attacker_call_SetPass cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold attacker_call_SetPass.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -2718,22 +3260,22 @@ Section Liqiuidity.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
-    [attacker_call_SetPass cstate ]) eqn : H_exec;try congruence.
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
+                [attacker_call_SetPass cstate ]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [attacker_call_SetPass cstate]) ; try congruence.
     destruct (find_invalid_root_action [attacker_call_SetPass cstate]);try congruence.
     set (mid_state := {|
-      chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
-      chain_state_queue := [attacker_call_SetPass cstate]
-    |}) in H_exec.
+                       chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
+                       chain_state_queue := [attacker_call_SetPass cstate]
+                     |}) in H_exec.
     simpl in *.
     destruct(
-    send_or_call attacker attacker caddr 1
-      (Some (serialize (SetPass (sha3 attacker_pass))))
-      (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
+        send_or_call attacker attacker caddr 1
+          (Some (serialize (SetPass (sha3 attacker_pass))))
+          (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
     unfold send_or_call in  H_send_or_call_GetGift.
     simpl in H_send_or_call_GetGift.
     eapply address_not_contract_negb in H_miner.
@@ -2749,7 +3291,7 @@ Section Liqiuidity.
       n: caddr <> sender cstate
       e0: caddr = caddr
       n0: caddr <> miner 
-    *)
+     *)
 
     destruct(1 >? miner_reward + env_account_balances s attacker)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
@@ -2758,50 +3300,50 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-       (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-       {|
-         ctx_origin := attacker;
-         ctx_from := attacker;
-         ctx_contract_address := caddr;
-         ctx_contract_balance :=
-           1 + env_account_balances s caddr;
-         ctx_amount := 1
-       |} s1
-       (Some (serialize (SetPass (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := attacker;
+                     ctx_from := attacker;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       1 + env_account_balances s caddr;
+                     ctx_amount := 1
+                   |} s1
+                   (Some (serialize (SetPass (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot
-     := (current_slot s + 1)%nat |> <| finalized_height :=
-     finalized_height s |>)
-    {|
-      ctx_origin := attacker;
-      ctx_from := attacker;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 1 + env_account_balances s caddr;
-      ctx_amount := 1
-    |} s1 (Some (serialize (SetPass (sha3 attacker_pass)))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := attacker;
+                  ctx_from := attacker;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 1 + env_account_balances s caddr;
+                  ctx_amount := 1
+                |} s1 (Some (serialize (SetPass (sha3 attacker_pass)))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -2853,7 +3395,7 @@ Section Liqiuidity.
     e: caddr = caddr
     n1: caddr <> miner
     
-    *)
+     *)
     destruct(1 >?  env_account_balances s attacker)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
     assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
@@ -2861,50 +3403,50 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-       (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-       {|
-         ctx_origin := attacker;
-         ctx_from := attacker;
-         ctx_contract_address := caddr;
-         ctx_contract_balance :=
-           1 + env_account_balances s caddr;
-         ctx_amount := 1
-       |} s1
-       (Some (serialize (SetPass (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := attacker;
+                     ctx_from := attacker;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       1 + env_account_balances s caddr;
+                     ctx_amount := 1
+                   |} s1
+                   (Some (serialize (SetPass (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot
-     := (current_slot s + 1)%nat |> <| finalized_height :=
-     finalized_height s |>)
-    {|
-      ctx_origin := attacker;
-      ctx_from := attacker;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 1 + env_account_balances s caddr;
-      ctx_amount := 1
-    |} s1 (Some (serialize (SetPass (sha3 attacker_pass)))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := attacker;
+                  ctx_from := attacker;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 1 + env_account_balances s caddr;
+                  ctx_amount := 1
+                |} s1 (Some (serialize (SetPass (sha3 attacker_pass)))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -2941,23 +3483,16 @@ Section Liqiuidity.
   Qed.
 
   Lemma attacker_call_PassHasBeenSetMsg_is_call_act_state_correct_funds:
-  forall (s s':ChainState) cstate,
+    forall (s s':ChainState) cstate,
       contract_state s caddr = Some cstate ->
       transition_reachable miner contract caddr s0 s ->
       cstate.(passHasBeenSet) = false ->
       cstate.(hashPass) = sha3 attacker_pass ->
-      transition miner s (attacker_call_PassHasBeenSetMsg cstate) = Ok s' ->
+      transition miner 5 s (attacker_call_PassHasBeenSetMsg cstate) = Ok s' ->
       funds s' caddr = funds s caddr.
   Proof.
     intros * Hcs_s Htrc_s H_passB H_pass Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-    assert (Hact_call : is_call_act ((attacker_call_PassHasBeenSetMsg cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold attacker_call_PassHasBeenSetMsg.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -2997,22 +3532,22 @@ Section Liqiuidity.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
-    [attacker_call_PassHasBeenSetMsg cstate ]) eqn : H_exec;try congruence.
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
+                [attacker_call_PassHasBeenSetMsg cstate ]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [attacker_call_PassHasBeenSetMsg cstate]) ; try congruence.
     destruct (find_invalid_root_action [attacker_call_PassHasBeenSetMsg cstate]);try congruence.
     set (mid_state := {|
-      chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
-      chain_state_queue := [attacker_call_PassHasBeenSetMsg cstate]
-    |}) in H_exec.
+                       chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
+                       chain_state_queue := [attacker_call_PassHasBeenSetMsg cstate]
+                     |}) in H_exec.
     simpl in *.
     destruct(
-      send_or_call attacker attacker caddr 0
-      (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass))))
-      (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
+        send_or_call attacker attacker caddr 0
+          (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass))))
+          (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
     unfold send_or_call in  H_send_or_call_GetGift.
     simpl in H_send_or_call_GetGift.
     eapply address_not_contract_negb in H_miner.
@@ -3028,7 +3563,7 @@ Section Liqiuidity.
       n: caddr <> sender cstate
       e0: caddr = caddr
       n0: caddr <> miner 
-    *)
+     *)
 
     destruct(0 >? miner_reward + env_account_balances s attacker)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
@@ -3037,53 +3572,53 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-       (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-       {|
-         ctx_origin := attacker;
-         ctx_from := attacker;
-         ctx_contract_address := caddr;
-         ctx_contract_balance :=
-           0 + env_account_balances s caddr;
-         ctx_amount := 0
-       |} s1
-       (Some
-          (serialize
-             (PassHasBeenSetMsg (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := attacker;
+                     ctx_from := attacker;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       0 + env_account_balances s caddr;
+                     ctx_amount := 0
+                   |} s1
+                   (Some
+                      (serialize
+                         (PassHasBeenSetMsg (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot
-     := (current_slot s + 1)%nat |> <| finalized_height :=
-     finalized_height s |>)
-    {|
-      ctx_origin := attacker;
-      ctx_from := attacker;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 0 + env_account_balances s caddr;
-      ctx_amount := 0
-    |} s1
-    (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass)))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := attacker;
+                  ctx_from := attacker;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |} s1
+                (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass)))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -3132,7 +3667,7 @@ Section Liqiuidity.
     e: caddr = caddr
     n1: caddr <> miner
     
-    *)
+     *)
     destruct(0 >?  env_account_balances s attacker)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
     assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
@@ -3140,53 +3675,53 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-       (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-       {|
-         ctx_origin := attacker;
-         ctx_from := attacker;
-         ctx_contract_address := caddr;
-         ctx_contract_balance :=
-           0 + env_account_balances s caddr;
-         ctx_amount := 0
-       |} s1
-       (Some
-          (serialize
-             (PassHasBeenSetMsg (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := attacker;
+                     ctx_from := attacker;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       0 + env_account_balances s caddr;
+                     ctx_amount := 0
+                   |} s1
+                   (Some
+                      (serialize
+                         (PassHasBeenSetMsg (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot
-     := (current_slot s + 1)%nat |> <| finalized_height :=
-     finalized_height s |>)
-    {|
-      ctx_origin := attacker;
-      ctx_from := attacker;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 0 + env_account_balances s caddr;
-      ctx_amount := 0
-    |} s1
-    (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass)))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := attacker;
+                  ctx_from := attacker;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |} s1
+                (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass)))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -3224,26 +3759,19 @@ Section Liqiuidity.
   Qed.
 
   Lemma attacker_call_PassHasBeenSetMsg_is_call_act_state_correct:
-  forall (s s':ChainState) cstate,
+    forall (s s':ChainState) cstate,
       contract_state s caddr = Some cstate ->
       transition_reachable miner contract caddr s0 s ->
       cstate.(passHasBeenSet) = false ->
       cstate.(hashPass) = sha3 attacker_pass ->
-      transition miner s (attacker_call_PassHasBeenSetMsg cstate) = Ok s' ->
+      transition miner 5 s (attacker_call_PassHasBeenSetMsg cstate) = Ok s' ->
       exists cstate',
         contract_state s' caddr = Some cstate' /\
-        cstate'.(hashPass) = sha3 attacker_pass /\
-        cstate'.(passHasBeenSet) = true.
+          cstate'.(hashPass) = sha3 attacker_pass /\
+          cstate'.(passHasBeenSet) = true.
   Proof.
     intros * Hcs_s Htrc_s H_passB H_pass Htrans.
     eapply transition_reachable_queue_is_empty in Htrc_s as Hqueue_s;eauto.
-    assert (Hact_call : is_call_act ((attacker_call_PassHasBeenSetMsg cstate)) = true).
-    {
-      unfold is_call_act.
-      unfold attacker_call_PassHasBeenSetMsg.
-      unfold build_call.
-      destruct_address_eq;eauto.
-    }
     assert(ttrace_s_s : TransitionTrace miner s s) by eapply clnil.
     assert(ttrace_s_s' : TransitionTrace miner s s').
     {
@@ -3284,22 +3812,22 @@ Section Liqiuidity.
     unfold transition in Htrans.
     unfold queue_isb_empty in Htrans.
     rewrite Hqueue_s in Htrans.
-    rewrite Hact_call in Htrans.
-    destruct (evaluate_action true s (get_valid_header miner s)
-    [attacker_call_PassHasBeenSetMsg cstate ]) eqn : H_exec;try congruence.
+    (* rewrite Hact_call in Htrans. *)
+    destruct (evaluate_action 5 s (get_valid_header miner s)
+                [attacker_call_PassHasBeenSetMsg cstate ]) eqn : H_exec;try congruence.
     unfold evaluate_action in H_exec.
     rewrite get_valid_header_is_valid_header in H_exec.
     destruct (find_origin_neq_from [attacker_call_PassHasBeenSetMsg cstate]) ; try congruence.
     destruct (find_invalid_root_action [attacker_call_PassHasBeenSetMsg cstate]);try congruence.
     set (mid_state := {|
-      chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
-      chain_state_queue := [attacker_call_PassHasBeenSetMsg cstate]
-    |}) in H_exec.
+                       chain_state_env := add_new_block_to_env (get_valid_header miner s) s;
+                       chain_state_queue := [attacker_call_PassHasBeenSetMsg cstate]
+                     |}) in H_exec.
     simpl in *.
     destruct(
-      send_or_call attacker attacker caddr 0
-      (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass))))
-      (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
+        send_or_call attacker attacker caddr 0
+          (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass))))
+          (add_new_block_to_env (get_valid_header miner s) s)) eqn : H_send_or_call_GetGift;try congruence.
     unfold send_or_call in  H_send_or_call_GetGift.
     simpl in H_send_or_call_GetGift.
     eapply address_not_contract_negb in H_miner.
@@ -3310,13 +3838,6 @@ Section Liqiuidity.
     }
     destruct_address_eq;simpl in *;try congruence.
     
-    (* 
-      e: sender cstate = miner
-      n: caddr <> sender cstate
-      e0: caddr = caddr
-      n0: caddr <> miner 
-    *)
-
     destruct(0 >? miner_reward + env_account_balances s attacker)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
     assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
@@ -3324,53 +3845,53 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-       (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-       {|
-         ctx_origin := attacker;
-         ctx_from := attacker;
-         ctx_contract_address := caddr;
-         ctx_contract_balance :=
-           0 + env_account_balances s caddr;
-         ctx_amount := 0
-       |} s1
-       (Some
-          (serialize
-             (PassHasBeenSetMsg (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := attacker;
+                     ctx_from := attacker;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       0 + env_account_balances s caddr;
+                     ctx_amount := 0
+                   |} s1
+                   (Some
+                      (serialize
+                         (PassHasBeenSetMsg (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot
-     := (current_slot s + 1)%nat |> <| finalized_height :=
-     finalized_height s |>)
-    {|
-      ctx_origin := attacker;
-      ctx_from := attacker;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 0 + env_account_balances s caddr;
-      ctx_amount := 0
-    |} s1
-    (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass)))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := attacker;
+                  ctx_from := attacker;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |} s1
+                (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass)))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -3419,7 +3940,7 @@ Section Liqiuidity.
     e: caddr = caddr
     n1: caddr <> miner
     
-    *)
+     *)
     destruct(0 >?  env_account_balances s attacker)%Z;try congruence.
     rewrite Hec_s in H_send_or_call_GetGift.
     assert(Hcstate_s_t0:contract_state s caddr = Some cstate) by eauto.
@@ -3427,53 +3948,53 @@ Section Liqiuidity.
     simpl in Hcstate_s_t0.
     destruct (env_contract_states s caddr) eqn : Hcstate_s_t0';try congruence.
     destruct (weak_error_to_error_receive
-    (wc_receive contract
-       (s <| chain_height := S (chain_height s) |> <|
-        current_slot := (current_slot s + 1)%nat |> <|
-        finalized_height := finalized_height s |>)
-       {|
-         ctx_origin := attacker;
-         ctx_from := attacker;
-         ctx_contract_address := caddr;
-         ctx_contract_balance :=
-           0 + env_account_balances s caddr;
-         ctx_amount := 0
-       |} s1
-       (Some
-          (serialize
-             (PassHasBeenSetMsg (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
+                (wc_receive contract
+                   (s <| chain_height := S (chain_height s) |> <|
+                                           current_slot := (current_slot s + 1)%nat |> <|
+                                                             finalized_height := finalized_height s |>)
+                   {|
+                     ctx_origin := attacker;
+                     ctx_from := attacker;
+                     ctx_contract_address := caddr;
+                     ctx_contract_balance :=
+                       0 + env_account_balances s caddr;
+                     ctx_amount := 0
+                   |} s1
+                   (Some
+                      (serialize
+                         (PassHasBeenSetMsg (sha3 attacker_pass)))))) eqn : H_wc_receive_s1;try congruence.
     unfold weak_error_to_error_receive in H_wc_receive_s1.
     unfold bind_error in H_wc_receive_s1.
     destruct (wc_receive contract
-    (s <| chain_height := S (chain_height s) |> <| current_slot
-     := (current_slot s + 1)%nat |> <| finalized_height :=
-     finalized_height s |>)
-    {|
-      ctx_origin := attacker;
-      ctx_from := attacker;
-      ctx_contract_address := caddr;
-      ctx_contract_balance := 0 + env_account_balances s caddr;
-      ctx_amount := 0
-    |} s1
-    (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass)))))
+                (s <| chain_height := S (chain_height s) |> <| current_slot
+                 := (current_slot s + 1)%nat |> <| finalized_height :=
+                   finalized_height s |>)
+                {|
+                  ctx_origin := attacker;
+                  ctx_from := attacker;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |} s1
+                (Some (serialize (PassHasBeenSetMsg (sha3 attacker_pass)))))
       eqn : H_wc_receive_s1';try congruence.
     
     set (cchain := s <| chain_height := S (chain_height s) |> <| current_slot :=
-    (current_slot s + 1)%nat |> <| finalized_height :=
-    finalized_height s |>) in H_wc_receive_s1'.
+           (current_slot s + 1)%nat |> <| finalized_height :=
+             finalized_height s |>) in H_wc_receive_s1'.
     set (cctx := {|
-    ctx_origin := user1;
-    ctx_from := user1;
-    ctx_contract_address := caddr;
-    ctx_contract_balance := 0 + env_account_balances s caddr;
-    ctx_amount := 0
-    |}) in H_wc_receive_s1'.
+                  ctx_origin := user1;
+                  ctx_from := user1;
+                  ctx_contract_address := caddr;
+                  ctx_contract_balance := 0 + env_account_balances s caddr;
+                  ctx_amount := 0
+                |}) in H_wc_receive_s1'.
     
     destruct t2 as [new_state new_acts].
 
     destruct (wc_receive_strong ltac:(try eassumption))
-    as (prev_state_strong & msg_strong & resp_state_strong &
-      deser_state & deser_msg & <- & receive).
+      as (prev_state_strong & msg_strong & resp_state_strong &
+            deser_state & deser_msg & <- & receive).
 
     simpl in deser_msg.
     destruct (msg_strong) eqn : H_msg;try congruence.
@@ -3506,15 +4027,14 @@ Section Liqiuidity.
     destruct_address_eq;try congruence.
   Qed.
 
-  Require stdpp.countable.
-
-  Lemma tmp:
-    exists tr s (tr' : TransitionTrace miner s0 s)  cstate,
-    interleavedExecution miner [honest] honest_strat [attacker] attacker_strat s0 s0 tr Tusr s tr' /\
-    contract_state s caddr = Some cstate /\
-    cstate.(passHasBeenSet) = true /\
-    cstate.(hashPass) <> sha3 honest_pass /\
-    funds s caddr > 0.
+(* (tr' : TransitionTrace miner s0 s) *)
+  Lemma tmp: 
+    exists tr s tr' cstate,
+      interleavedExecution miner [honest] honest_strat [attacker] attacker_strat s0 s0 tr Tusr s tr' /\
+        contract_state s caddr = Some cstate /\
+        cstate.(passHasBeenSet) = true /\
+        cstate.(hashPass) <> sha3 honest_pass /\
+        funds s caddr > 0.
   Proof.
     assert (tr0 : TransitionTrace miner s0 s0) by eapply clnil.
     decompose_is_init_state H_init.
@@ -3522,7 +4042,7 @@ Section Liqiuidity.
     reduce_init.
     unfold negb in Einit.
     destruct (setup_passHasBeenSet setup) eqn : H_passBset;try congruence.
-    assert (exists s' , transition miner s0 (attacker_call_SetPass state) = Ok s').
+    assert (exists s' , transition miner 5 s0 (attacker_call_SetPass state) = Ok s').
     {
       eapply attacker_call_SetPass_is_call_act_transition_correct.
       unfold contract_state.
@@ -3541,14 +4061,10 @@ Section Liqiuidity.
     destruct H as [s' Htrans].
     eapply attacker_call_SetPass_is_call_act_state_correct in Htrans as Ht.
     destruct Ht as [Hcs_s' [Hhash Hset]].
-    assert (Hcall : is_call_act (attacker_call_SetPass state) = true).
-    {
-      eapply attacker_call_SetPass_is_call_act.
-    }
 
-    set (tr_s' := snoc tr0 (step_trans miner (attacker_call_SetPass state) Hcall Htrans) ).
+    set (tr_s' := snoc tr0 (step_trans miner (attacker_call_SetPass state) 5 (* Hcall *) Htrans) ).
 
-    assert (exists s'' , transition miner s' (attacker_call_PassHasBeenSetMsg Hcs_s') = Ok s'').
+    assert (exists s'' , transition miner 5 s' (attacker_call_PassHasBeenSetMsg Hcs_s') = Ok s'').
     {
       eapply attacker_call_PassHasBeenSetMsg_is_call_act_transition_correct.
       eauto.
@@ -3568,18 +4084,14 @@ Section Liqiuidity.
     destruct H as [s'' Htrans''].
     eapply attacker_call_PassHasBeenSetMsg_is_call_act_state_correct in Htrans'' as Ht'.
     destruct Ht' as [Hcs_s'' [Hhash' Hset']].
-    assert (Hcall' : is_call_act (attacker_call_PassHasBeenSetMsg Hcs_s') = true).
-    {
-      eapply attacker_call_PassHasBeenSetMsg_is_call_act.
-    }
-    set (tr_s'' := snoc tr_s' (step_trans miner (attacker_call_PassHasBeenSetMsg Hcs_s') Hcall' Htrans'') ).
+    set (tr_s'' := snoc tr_s' (step_trans miner (attacker_call_PassHasBeenSetMsg Hcs_s') 5 (* Hcall' *) Htrans'') ).
     exists tr0.
     exists s''.
     exists tr_s''.
     exists Hcs_s''.
     split.
     assert (interleavedExecution miner [honest] honest_strat [attacker] attacker_strat s0
-    s0 tr0 Tenv s0 tr0).
+              s0 tr0 Tenv s0 tr0).
     {
       eapply IS_Refl.
     }
@@ -3588,7 +4100,8 @@ Section Liqiuidity.
     {
       unfold stratDrive.
       exists (attacker_call_SetPass state).
-      exists Hcall.
+      eexists.
+      (* exists Hcall. *)
       exists Htrans.
       split;eauto.
       unfold attacker_strat.
@@ -3601,17 +4114,18 @@ Section Liqiuidity.
         simpl in *.
         congruence.
       + destruct (passHasBeenSet state) eqn : Ht'.
-        - inversion H_init0;subst.
-          simpl in *.
-          congruence.
-        - simpl.
-          eauto.
+      - inversion H_init0;subst.
+        simpl in *.
+        congruence.
+      - simpl.
+        eauto.
     }
     assert (stratDrive miner [attacker] attacker_strat s0 s' tr_s' s'' tr_s'').
     {
       unfold stratDrive.
       exists (attacker_call_PassHasBeenSetMsg Hcs_s').
-      exists Hcall'.
+      eexists. 
+      (* exists Hcall'. *)
       exists Htrans''.
       split;eauto.
       unfold attacker_strat.
@@ -3625,14 +4139,14 @@ Section Liqiuidity.
       rewrite H1.
       destruct ((sha3 attacker_pass =? sha3 attacker_pass)%N) eqn : Ht;try congruence.
       +  eauto.
-        simpl.
-        eauto.
+         simpl.
+         eauto.
       + eapply Pos.eqb_neq in Ht.
         unfold not in Ht.
         assert (countable.encode attacker_pass = countable.encode attacker_pass).
         {
-        eapply stdpp.countable.encode_inj.
-        eauto.
+          eapply stdpp.countable.encode_inj.
+          eauto.
         }
         intuition.
       + simpl in  Hhash.
@@ -3713,5 +4227,174 @@ Section Liqiuidity.
     eauto.
   Qed.
   
+
+  Lemma pos_funds_preserved_honest_trans:
+    forall s tr s' tr', 
+      transition_reachable miner contract caddr s0 s -> 
+      stratDrive miner [honest] honest_strat s0 s tr s' tr' ->
+      (funds s caddr > 0 /\ 
+         exists cstate,
+           contract_state s caddr = Some cstate
+           /\ cstate.(passHasBeenSet) = true 
+           /\ cstate.(hashPass) <> (sha3 honest_pass)) ->
+      (funds s' caddr > 0 /\ 
+         exists cstate,
+           contract_state s' caddr = Some cstate
+           /\ cstate.(passHasBeenSet) = true 
+           /\ cstate.(hashPass) <> (sha3 honest_pass)). 
+  Proof.
+    introv Hrc Hsd Hex.
+    destruct Hex as (Hpos & cs & Hcs & Hpb & Hhp).
+    inverts Hsd.
+    destruct H as (n & (* Hact & *) Htrans & Hin & Htr').
+    unfold honest_strat in Hin.
+    destruct (get_contract_state s caddr) eqn: E; tryfalse. 
+    assert (Hsteq: cs = s1).
+    {
+      unfolds in Hcs; simpl in Hcs.
+      unfolds in E; simpl in E.
+      destruct (env_contract_states s caddr) eqn: EE.
+      congruence.
+      false.
+    }    
+    destruct Hin as [Hsetpass | [Hgetgift | [Hpassset | Hf]]]; tryfalse;
+      subst x.
+    - subst s1.
+      lets H__: honest_call_SetPass_is_call_act_state_correct' Hcs Hrc Hpb Htrans.
+      destruct_and_split.
+      lia.
+      eexists; splits; eauto.
+      rewrite H1.
+      auto.
+    -
+      subst s1.
+      lets Hf: honest_call_GetGift_is_call_act_transition_correct_nopass' n Hcs Hrc Hpb Hhp; eauto.
+      clear Htr'.
+      rewrite Hf in Htrans.
+      false.
+    -
+      subst s1.
+      lets Hf: honest_call_PassHasBeenSetMsg_is_call_act_transition_correct_nopass' n Hcs Hrc Hpb Hhp; eauto.
+      clear Htr'.
+      rewrite Hf in Htrans.
+      false. 
+  Qed. 
+          
+  Require Import Coq.Logic.Classical_Prop.
+  Require Import Coq.Logic.Classical_Pred_Type.
+
+  Scheme uliq_mut := Induction for UserLiquidatesNSteps Sort Prop 
+      with eprs_mut := Induction for envProgress_Mutual Sort Prop.
+
+  Combined Scheme uliq_eprs_mut from uliq_mut, eprs_mut.
+
+  Lemma honeypot_not_liquidable:
+    (* transition_reachable miner contract caddr s0 s -> *)
+    forall s tr',
+      ((UserLiquidatesNSteps miner [honest] honest_strat [attacker] attacker_strat caddr s0 s tr' ->
+        transition_reachable miner contract caddr s0 s ->
+        forall cst,
+          funds s caddr > 0 ->
+          contract_state s caddr = Some cst ->
+          passHasBeenSet cst = true ->
+          hashPass cst <> sha3 honest_pass ->
+          False)
+       /\
+         (envProgress_Mutual miner [honest] honest_strat [attacker] attacker_strat caddr s0 s tr' ->
+          transition_reachable miner contract caddr s0 s ->
+          forall cst,
+            funds s caddr > 0 ->
+            contract_state s caddr = Some cst ->
+            passHasBeenSet cst = true ->
+            hashPass cst <> sha3 honest_pass ->
+            False
+      )).
+  Proof.
+    intros.
+    lets H__: uliq_eprs_mut miner [honest] honest_strat [attacker].
+    lets H_: H__ attacker_strat caddr s0.
+    clear H__.
+    lets H__: H_
+                (fun (s: ChainState)
+                     (tr : TransitionTrace miner s0 s)
+                     (evid: UserLiquidatesNSteps miner [honest] honest_strat [attacker] attacker_strat
+                              caddr s0 s tr) =>
+                   (
+                     transition_reachable miner contract caddr s0 s ->
+                     forall cst,
+                       funds s caddr > 0 -> contract_state s caddr = Some cst ->
+                       passHasBeenSet cst = true -> hashPass cst <> sha3 honest_pass -> False))
+                (fun (s : ChainState)
+                     (tr : TransitionTrace miner s0 s)
+                     (evid: envProgress_Mutual miner [honest] honest_strat [attacker] attacker_strat
+                              caddr s0 s tr) =>
+                   (
+                     transition_reachable miner contract caddr s0 s ->
+                     forall cst,
+                       funds s caddr > 0 -> contract_state s caddr = Some cst ->
+                       passHasBeenSet cst = true -> hashPass cst <> sha3 honest_pass -> False)).
+    clear H_.
+    eapply H__; eauto; 
+      clear H__.
+    - 
+      introv Htt Hz Hrc Hpos Hcs _ _.
+      rewrite Hz in Hpos.
+      lia.
+    -
+      introv Hsd Hep Ha Hrc Hpos Hcs Hpb Hhp.
+      lets H__: pos_funds_preserved_honest_trans Hrc Hsd.
+      specializes H__; eauto.
+      assert (H_: transition_reachable miner contract caddr s0 s').
+      { eapply transition_reachable_stratDrive_transition_reachable; eauto. }
+      destruct_and_split.
+      specializes Ha; eauto.
+    -
+      introv Htt Hz Hrc Hpos Hcs _ _.
+      rewrite Hz in Hpos.
+      lia.
+    -
+      introv Hpos Hmsd Hmsd'.
+      introv Hrc Hpos' Hcs Hpb Hhp.
+      specialize (Hmsd' s1 tr 0%nat).
+      eapply Hmsd'; eauto.
+      constructors.
+  Qed.         
+
+  Theorem honeypot_unsat_strat_liquidity:
+    ~strat_liquidity miner [honest] honest_strat [attacker] attacker_strat contract caddr s0. 
+  Proof.
+    unfold strat_liquidity.
+    apply impl_lem; auto.
+    split; auto.    
+    pose proof tmp as Htmp.
+    destruct Htmp as (tr & s & tr' & cst & Hiexe & Hcsteq & Hpass & Hsha & Hfunds).
+    repeat (apply ex_not_not_all; eexists). 
+    eauto.
+    introv Hliqd.
+
+    assert (Hrc: transition_reachable miner contract caddr s0 s).
+    {
+      eapply transition_reachable_interleavedExecution_transition_reachable; eauto.
+      eapply transition_reachable_init_state; eauto.
+    }
+    inverts Hliqd.
+
+    {
+      rewrite H in Hfunds; false.
+    }
+
+    pose proof honeypot_not_liquidable as Hconj.
+    specialize (Hconj s' tr'0).
+    destruct Hconj as (_ & Hprg).
+    assert (Hrc': transition_reachable miner contract caddr s0 s').
+    {
+      eapply transition_reachable_stratDrive_transition_reachable; eauto.      
+    }
+    lets H__: pos_funds_preserved_honest_trans Hrc H.
+    specializes H__; eauto.
+    destruct_and_split.
+    eapply Hprg; eauto.
+  Qed.
+
 End Liqiuidity.
 
